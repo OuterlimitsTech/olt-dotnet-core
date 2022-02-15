@@ -3,10 +3,10 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <Company>OuterLimits Technologies, Inc</Company>
-    <Product>Swagger extensions and builders</Product>
+    <Product>OLT Core Libraries</Product>
     <Authors>Chris Straw</Authors>
     <Copyright>Copyright © 2003-2022, OuterLimits Technologies, Inc Plainfield, IN</Copyright>
-    <RepositoryUrl>https://github.com/OuterlimitsTech/olt-dotnet-extensions-swagger</RepositoryUrl>
+    <RepositoryUrl>https://github.com/OuterlimitsTech/olt-dotnet-core</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <DebugType>embedded</DebugType>
@@ -14,6 +14,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
@@ -32,8 +36,8 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  <PropertyGroup>		
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
