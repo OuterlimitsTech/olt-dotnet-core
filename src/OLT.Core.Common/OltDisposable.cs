@@ -2,6 +2,9 @@
 
 namespace OLT.Core
 {
+    /// <summary>
+    /// General implmentation of <seealso cref="IDisposable"/>
+    /// </summary>
     public abstract class OltDisposable : IDisposable
     {
         /// <summary>
