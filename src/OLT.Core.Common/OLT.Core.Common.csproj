@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Description>Contains common generic assets for OLT Packages</Description>
+		<ProjectGuid>51c74595-d676-464c-becd-395627521a65</ProjectGuid>
+	</PropertyGroup>
+
+</Project>
