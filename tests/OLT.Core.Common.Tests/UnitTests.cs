@@ -88,6 +88,18 @@ namespace OLT.Core.Common.Tests
 
             Assert.Equal(expected, resultValidation.Results[0]?.Message);
 
+            Assert.Throws<System.ArgumentNullException>(() => new OltResultValidation(new OltValidationError(NullString)));
+            Assert.Throws<System.ArgumentNullException>(() => new OltResultValidation(new OltValidationError(EmptyString)));
+            Assert.Throws<System.ArgumentNullException>(() => new OltResultValidation(new OltValidationError(WhitespaceString)));
+
+            resultValidation = new OltResultValidation(new OltValidationError(expected));
+            Assert.False(resultValidation.Success);
+            Assert.True(resultValidation.Invalid);
+            Assert.NotEmpty(resultValidation.Results);
+            Assert.Equal(expected, resultValidation.Results[0]?.Message);
+
+
+
         }
 
         [Fact]
