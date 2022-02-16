@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OLT.Core
 {
-    public static partial class OltDefaults
+    public static class OltDefaults
     {
         public static partial class Characters
         {
