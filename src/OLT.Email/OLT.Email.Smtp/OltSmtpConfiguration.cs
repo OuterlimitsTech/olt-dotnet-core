@@ -1,6 +1,6 @@
 ﻿using OLT.Core;
 
-namespace OLT.Email
+namespace OLT.Email.Smtp
 {
     public class OltSmtpConfiguration : OltDisposable, IOltSmtpConfiguration
     {

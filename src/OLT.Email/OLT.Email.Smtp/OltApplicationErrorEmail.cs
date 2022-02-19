@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OLT.Email
+namespace OLT.Email.Smtp
 {
     public class OltApplicationErrorEmail : IOltApplicationErrorEmail
     {

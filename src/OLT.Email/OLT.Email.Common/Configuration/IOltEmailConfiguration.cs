@@ -21,9 +21,9 @@ namespace OLT.Email
         /// </summary>
         bool Production { get; }
 
-        /// <summary>
-        /// Determines if Email can be sent depending on <see cref="Production"/> is true or <see cref="TestWhitelist"/> <see cref="Production"/> is false
-        /// </summary>
-        bool SendEmail(string emailAddress);
+        ///// <summary>
+        ///// Determines if Email can be sent depending on <see cref="Production"/> is true or <see cref="TestWhitelist"/> <see cref="Production"/> is false
+        ///// </summary>
+        //bool SendEmail(string emailAddress);
     }
 }

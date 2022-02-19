@@ -26,19 +26,19 @@ namespace OLT.Email
         /// </summary>
         public virtual bool Production { get; set; }
 
-        /// <summary>
-        /// Determines if Email can be sent depending on <see cref="Production"/> is true or <see cref="TestWhitelist"/> <see cref="Production"/> is false
-        /// </summary>
-        public virtual bool SendEmail(string emailAddress)
-        {
-            if (Production)
-            {
-                return true;
-            }
+        ///// <summary>
+        ///// Determines if Email can be sent depending on <see cref="Production"/> is true or <see cref="TestWhitelist"/> <see cref="Production"/> is false
+        ///// </summary>
+        //public virtual bool SendEmail(string emailAddress)
+        //{
+        //    if (Production)
+        //    {
+        //        return true;
+        //    }
             
-            return TestWhitelist?.Domain?.Any(p => emailAddress.EndsWith(p, StringComparison.OrdinalIgnoreCase)) == true ||
-                   TestWhitelist?.Email?.Any(p => emailAddress.Equals(p, StringComparison.OrdinalIgnoreCase)) == true;
-        }
+        //    return TestWhitelist?.Domain?.Any(p => emailAddress.EndsWith(p, StringComparison.OrdinalIgnoreCase)) == true ||
+        //           TestWhitelist?.Email?.Any(p => emailAddress.Equals(p, StringComparison.OrdinalIgnoreCase)) == true;
+        //}
 
     }
 }

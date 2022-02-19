@@ -1,4 +1,4 @@
-﻿namespace OLT.Email
+﻿namespace OLT.Email.SendGrid
 {
     public class OltEmailConfigurationSendGrid : OltEmailConfiguration
     {

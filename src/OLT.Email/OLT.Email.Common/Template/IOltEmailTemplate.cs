@@ -4,6 +4,7 @@ namespace OLT.Email
 {
     public interface IOltEmailTemplate
     {
+        string TemplateName { get; }
         object GetTemplateData();
     }
 

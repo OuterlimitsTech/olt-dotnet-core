@@ -2,14 +2,48 @@
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using Microsoft.Extensions.DependencyInjection;
 using OLT.Email;
 
-// ReSharper disable once CheckNamespace
-namespace OLT.Core
+
+namespace OLT.Email.Smtp
 {
 
     public static class OltSmtpEmailExtensions
     {
+
+        ///// <summary>
+        ///// Configure SMTP email with a whitelist for non-production environments
+        ///// </summary>
+        ///// <typeparam name="TConfig"><seealso cref="IOltEmailConfiguration"/></typeparam>
+        ///// <param name="services"></param>
+        ///// <param name="configuration"><seealso cref="IOltEmailConfiguration"/></param>
+        ///// <returns></returns>
+        //public static IServiceCollection ConfigureOltEmailSmtpWithWhitelist<TConfig>(this IServiceCollection services, TConfig configuration) where TConfig : class, IOltEmailConfiguration
+        //{
+        //    var args = new OltEmailArgs()
+        //        .WithFromEmail(configuration.From.Email, configuration.From.Name)
+        //        .WithWhitelist(configuration.TestWhitelist)
+        //        .IsProduction(configuration.Production);
+
+        //    services.AddSingleton(args);
+
+        //    return services;
+
+        //}
+
+        ///// <summary>
+        ///// Configure SMTP email with a whitelist for non-production environments
+        ///// </summary>
+        ///// <param name="services"></param>
+        ///// <param name="args"></param>
+        ///// <returns></returns>
+        //public static IServiceCollection ConfigureOltEmailSmtpWithWhitelist(this IServiceCollection services, OltEmailArgs args)
+        //{
+        //    services.AddSingleton(args);
+        //    return services;
+        //}
+
         /// <summary>
         /// Sends email using SendGrid SMTP server using api key
         /// </summary>

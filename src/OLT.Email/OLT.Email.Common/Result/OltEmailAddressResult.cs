@@ -4,15 +4,15 @@ namespace OLT.Email
 {
     public class OltEmailAddressResult : OltEmailAddress
     {
-        public OltEmailAddressResult(IOltEmailAddress copyFrom, OltEmailConfiguration configuration)
+        public OltEmailAddressResult(IOltEmailAddress copyFrom, OltEmailBuilderArgs args)
         {
             Name = copyFrom.Name;
             Email = copyFrom.Email;
 
-            if (!configuration.Production && !configuration.SendEmail(Email))
+            if (!args.AllowSend(Email))
             {
                 Skipped = true;
-                SkipReason = "Email not in configuration to send";
+                SkipReason = "Email not in whitelist";
             }
         }
 
