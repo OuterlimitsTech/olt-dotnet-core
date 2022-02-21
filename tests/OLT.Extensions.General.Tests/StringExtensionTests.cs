@@ -504,7 +504,17 @@ namespace OLT.Extensions.General.Tests
             }
         }
 
-
+        [Theory]
+        [InlineData('A')]
+        [InlineData('Z')]
+        [InlineData('9')]
+        [InlineData('l')]
+        public void ToASCIIByteCharTests(char value)
+        {
+            var bytes = OltStringExtensions.ToASCIIBytes(value);
+            Assert.NotNull(bytes);
+            Assert.Equal(System.Text.Encoding.UTF8.GetString(bytes), value.ToString());
+        }
 
         //[Theory]
         //[InlineData(16, true, true, true, true, 16)]
