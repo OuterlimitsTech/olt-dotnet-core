@@ -89,10 +89,10 @@ namespace System.Reflection
         /// </remarks>
         /// <param name="assembly"><see cref="Assembly"/></param>
         /// <param name="resourceName"></param>
-        /// <exception cref="ArgumentNullException"><param name="resourceName"></param> name null</exception>
-        /// <exception cref="ArgumentException"><param name="resourceName"></param> empty string</exception>
-        /// <exception cref="FileNotFoundException"><param name="resourceName"></param> is not found</exception>
-        /// <returns>return stream of embedded resource or null if the <param name="resourceName"></param> is not found</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <returns>return stream of embedded resource or null if not found</returns>
         public static Stream GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
         {
             if (resourceName == null)
@@ -121,7 +121,7 @@ namespace System.Reflection
         }
 
         /// <summary>
-        /// Searches Assembly for embedded resource and save it to <param name="fileName"></param> rile. This method does not require the Fully Qualified Name
+        /// Searches Assembly for embedded resource and saves it to file. This method does not require the Fully Qualified Name
         /// </summary>
         /// <remarks>
         /// Example: MyNamespace.SomeDirectory.TheFile.csv -> this.GetType().Assembly.EmbeddedResourceToFile("TheFile.csv")
@@ -129,10 +129,10 @@ namespace System.Reflection
         /// <param name="assembly"><see cref="Assembly"/></param>
         /// <param name="resourceName"></param>
         /// <param name="fileName"></param>
-        /// <exception cref="ArgumentNullException"><param name="resourceName"></param> is null</exception>
-        /// <exception cref="ArgumentException"><param name="resourceName"></param> is empty string</exception>
-        /// <exception cref="FileNotFoundException"><param name="resourceName"></param> is not found</exception>
-        /// <returns>return stream of embedded resource or null if the <param name="resourceName"></param> is not found</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <returns>return stream of embedded resource or null if not found</returns>
         public static void EmbeddedResourceToFile(this Assembly assembly, string resourceName, string fileName)
         {
             if (resourceName == null)
@@ -179,10 +179,10 @@ namespace System.Reflection
         /// </remarks>
         /// <param name="assembly"><see cref="Assembly"/></param>
         /// <param name="resourceName"></param>
-        /// <exception cref="ArgumentNullException"><param name="resourceName"></param> is null</exception>
-        /// <exception cref="ArgumentException"><param name="resourceName"></param> is empty string</exception>
-        /// <exception cref="FileNotFoundException"><param name="resourceName"></param> is not found</exception>
-        /// <returns>return stream of embedded resource or null if the <param name="resourceName"></param> is not found</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        /// <returns>return stream of embedded resource or null if not found</returns>
         public static string GetEmbeddedResourceString(this Assembly assembly, string resourceName)
         {
             if (resourceName == null)
@@ -204,11 +204,11 @@ namespace System.Reflection
         }
 
         /// <summary>
-        /// Scans provided assemblies for all objects that implement <seealso cref="T"/>
+        /// Scans provided assemblies for all objects that implements interfaces
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="assemblies"></param>
-        /// <returns>Returns an instance for all objects that implement <seealso cref="T"/></returns>
+        /// <returns>Returns an instance for all objects</returns>
         public static IEnumerable<T> GetAllImplements<T>(this Assembly[] assemblies)
         {
             return GetAllImplements<T>(assemblies.ToList());
@@ -216,11 +216,11 @@ namespace System.Reflection
 
 
         /// <summary>
-        /// Scans provided assemblies for all objects that implement <seealso cref="T"/>
+        /// Scans provided assemblies for all objects that implement
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="assemblies"></param>
-        /// <returns>Returns an instance for all objects that implement <seealso cref="T"/></returns>
+        /// <returns>Returns an instance for all objects</returns>
         public static IEnumerable<T> GetAllImplements<T>(this List<Assembly> assemblies)
         {
 

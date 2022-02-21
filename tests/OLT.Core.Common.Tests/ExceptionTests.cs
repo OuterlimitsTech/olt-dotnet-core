@@ -54,22 +54,6 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(ex.Message, result.Message);
         }
 
-        //[Fact]
-        //public void AdapterNotFoundExceptionTest()
-        //{
-        //    var ex = new OltAdapterNotFoundException(DefaultMessage);
-        //    var result = ToSerialize(ex);
-        //    Assert.Equal(ex.Message, result.Message);
-        //}
-
-        //[Fact]
-        //public void AdapterNotFoundExceptionTestTyped()
-        //{
-        //    var ex = new OltAdapterNotFoundException<PersonEntity, PersonDto>();
-        //    var result = ToSerialize(ex);
-        //    Assert.Equal(ex.Message, result.Message);
-        //}
-
         [Fact]
         public void RecordNotFoundException()
         {
@@ -85,59 +69,5 @@ namespace OLT.Core.Common.Tests
             var result = ToSerialize(ex);
             Assert.Equal(ex.Message, result.Message);
         }
-
-        //[Fact]
-        //public void RuleNotFoundExceptionTest()
-        //{
-        //    var ex = new OltRuleNotFoundException(DefaultMessage);
-        //    var result = ToSerialize(ex);
-        //    Assert.Equal(ex.Message, result.Message);
-        //}
-
-        //[Fact]
-        //public void RuleNotFoundExceptionTestType()
-        //{
-        //    var ex = new OltRuleNotFoundException(typeof(INotValidRule));
-        //    var result = ToSerialize(ex);
-        //    Assert.Equal(ex.Message, result.Message);
-        //}
-
-        //[Fact]
-        //public void RuleExceptionTest()
-        //{
-        //    var ex = new OltRuleException(DefaultMessage);
-        //    var result = ToSerialize(ex);
-        //    Assert.Equal(ex.Message, result.Message);
-        //}
-
-        //[Fact]
-        //public void ValidationExceptionTest()
-        //{
-        //    var list = new List<OltValidationError> { new OltValidationError(DefaultMessage) };
-        //    var ex = new OltValidationException(list);
-        //    var result = ToSerialize(ex);
-        //    Assert.Equal(ex.Message, result.Message);
-        //}
-
-        //[Fact]
-        //public void AutoMapperExceptionTest()
-        //{
-        //    var innerException = new AutoMapperMappingException(DefaultMessage);
-        //    var ex = new OltAutoMapperException<PersonEntity, PersonDto>(innerException);
-        //    var expected =
-        //        $"AutoMapper Exception while using map {nameof(IOltAdapterMap<PersonEntity, PersonDto>)}: {typeof(PersonEntity).FullName} -> {typeof(PersonDto).FullName} {Environment.NewLine}{innerException.Message}";
-        //    Assert.Equal(expected, ex.Message);
-        //}
-
-
-        //[Fact]
-        //public void AutoMapperInnerExceptionTest()
-        //{
-        //    var innerException = new Exception(DefaultMessage);
-        //    var ex = new OltAutoMapperException<PersonEntity, PersonDto>(innerException);
-        //    var expected =
-        //        $"AutoMapper Exception while using map {nameof(IOltAdapterMap<PersonEntity, PersonDto>)}: {typeof(PersonEntity).FullName} -> {typeof(PersonDto).FullName}";
-        //    Assert.Equal(expected, ex.Message);
-        //}
     }
 }
