@@ -7,7 +7,6 @@ namespace OLT.Email.Smtp
         string Subject { get; }
         string Body { get; }
         IOltEmailAddress From { get; }
-        List<IOltEmailAddress> To { get; }
-        IOltSmtpConfiguration SmtpConfiguration { get; }
+        OltEmailRecipients Recipients { get; }
     }
 }

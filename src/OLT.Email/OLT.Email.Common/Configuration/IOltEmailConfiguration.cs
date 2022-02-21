@@ -4,7 +4,7 @@ using OLT.Core;
 // ReSharper disable once CheckNamespace
 namespace OLT.Email
 {
-    public interface IOltEmailConfiguration
+    public interface IOltEmailConfiguration 
     {
         /// <summary>
         /// Default From Address if not specified in Sned

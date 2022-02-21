@@ -6,4 +6,8 @@
 		<ProjectGuid>51c74595-d676-464c-becd-395627521a65</ProjectGuid>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
+	</ItemGroup>
+
 </Project>

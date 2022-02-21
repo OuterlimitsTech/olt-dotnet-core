@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OLT.Email.Smtp
+namespace OLT.Extensions.General
 {
-
-    public class OltTextCalendarEmail
+    public static class OltHelperAddress
     {
-        
-
     }
 }

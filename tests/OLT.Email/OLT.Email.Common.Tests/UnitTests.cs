@@ -48,6 +48,7 @@ namespace OLT.Email.Common.Tests
             Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
             Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
 
+            
             //Assert.False(config.SendEmail(Faker.Internet.FreeEmail()));
             //Assert.True(config.SendEmail(whiteEmail));
             //Assert.True(config.SendEmail(whiteDomainEmail));

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using OLT.Email.Smtp.Tests.Assets;
 
 namespace OLT.Email.Smtp.Tests
 {
@@ -26,8 +26,8 @@ namespace OLT.Email.Smtp.Tests
             var configuration = hostBuilderContext.Configuration;
 
             var portConfigValue = configuration.GetValue<string>("SMTP_PORT") ?? Environment.GetEnvironmentVariable("SMTP_PORT");
-            var portNumber = string.IsNullOrEmpty(portConfigValue) ? 587 : Convert.ToInt32(portConfigValue);
-            var smtpConfig = new OltSmtpConfiguration
+            short? portNumber = string.IsNullOrEmpty(portConfigValue) ? null : Convert.ToInt16(portConfigValue);
+            var smtpConfig = new SmtpServerConfig
             {
                 Server = configuration.GetValue<string>("SMTP_HOST") ?? Environment.GetEnvironmentVariable("SMTP_HOST"),
                 Port = portNumber,
@@ -36,7 +36,8 @@ namespace OLT.Email.Smtp.Tests
                 DisableSsl = false,
             };
 
-            services.Configure<OltSmtpConfiguration>(opt =>
+            //IOltSmtpConfiguration
+            services.Configure<SmtpServerConfig>(opt =>
             {
                 opt.Server = smtpConfig.Server;
                 opt.Port = smtpConfig.Port;
@@ -45,7 +46,6 @@ namespace OLT.Email.Smtp.Tests
                 opt.DisableSsl = smtpConfig.DisableSsl;
             });
 
-            services.AddSingleton<IOltSmtpConfiguration>(opt => smtpConfig);
         }
     }
 }

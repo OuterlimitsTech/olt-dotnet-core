@@ -1,4 +1,7 @@
-﻿namespace OLT.Email
+﻿using System;
+using System.Linq;
+
+namespace OLT.Email
 {
     public abstract class OltEmailArgsWhitelist<T> : OltEmailArgsProduction<T>
         where T : OltEmailArgsWhitelist<T>
@@ -19,10 +22,22 @@
             this.Whitelist = value;
             return (T)this;
         }
+
+
+        /// <summary>
+        /// Determines if Email can be sent depending on <see cref="Production"/> is true or <see cref="TestWhitelist"/> <see cref="Production"/> is false
+        /// </summary>
+        public override bool AllowSend(string emailAddress)
+        {
+            if (base.Enabled)
+            {
+                return true;
+            }
+
+            return Whitelist?.Domain?.Any(p => emailAddress.EndsWith(p, StringComparison.OrdinalIgnoreCase)) == true ||
+                   Whitelist?.Email?.Any(p => emailAddress.Equals(p, StringComparison.OrdinalIgnoreCase)) == true;
+        }
+
     }
-
-
-   
-
 
 }

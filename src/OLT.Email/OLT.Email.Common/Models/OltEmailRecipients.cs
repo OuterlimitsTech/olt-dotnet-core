@@ -4,7 +4,7 @@ namespace OLT.Email
 {
     public class OltEmailRecipients
     {
-        public virtual IEnumerable<IOltEmailAddress> To { get; set; } = new List<OltEmailAddress>();
-        public virtual IEnumerable<IOltEmailAddress> CarbonCopy { get; set; } = new List<OltEmailAddress>();
+        public virtual List<IOltEmailAddress> To { get; set; } = new List<IOltEmailAddress>();
+        public virtual List<IOltEmailAddress> CarbonCopy { get; set; } = new List<IOltEmailAddress>();
     }
 }
