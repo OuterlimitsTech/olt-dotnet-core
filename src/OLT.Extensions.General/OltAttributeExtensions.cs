@@ -28,7 +28,7 @@ namespace OLT.Core
         }
 
         /// <summary>
-        /// Returns first instance of <typeparamref name="T"/> attribute on <typeparamref name="TEnum"/>
+        /// Returns first instance of <typeparamref name="T"/> attribute on <seealso cref="Enum"/>
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="item"></param>
@@ -72,7 +72,7 @@ namespace OLT.Core
         /// Gets <see cref="DescriptionAttribute"/>
         /// </summary>
         /// <param name="value"></param>
-        /// <returns><see cref="DescriptionAttribute.Description"/> or <typeparamref name="TEnum"/> ToString() or <see langword="null"/></returns>
+        /// <returns><see cref="DescriptionAttribute.Description"/> or <seealso cref="Enum"/> ToString() or <see langword="null"/></returns>
         public static string GetDescription(this Enum value)
         {
             var attribute = GetAttributeInstance<DescriptionAttribute>(value);
