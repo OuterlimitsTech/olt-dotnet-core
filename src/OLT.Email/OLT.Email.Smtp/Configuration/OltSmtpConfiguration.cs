@@ -11,12 +11,12 @@ namespace OLT.Email.Smtp
 
         public OltSmtpServer(IOltSmtpServer server)
         {
-            Server = server.Server;
+            Host = server.Host;
             Port = server.Port;
             DisableSsl = server.DisableSsl;
         }
 
-        public virtual string Server { get; set; }
+        public virtual string Host { get; set; }
         public virtual short? Port { get; set; }
         public virtual bool DisableSsl { get; set; }
     }
