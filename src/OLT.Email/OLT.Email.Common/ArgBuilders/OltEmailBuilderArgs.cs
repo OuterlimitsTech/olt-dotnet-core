@@ -4,15 +4,20 @@ using System.Text;
 
 namespace OLT.Email
 {
-    public interface IEmailBuilderArgs
-    {
-        bool AllowSend(string emailAddress);
-    }
 
     public abstract class OltEmailBuilderArgs
-    {        
+    {
+
+        // <summary>
+        // Production Enabled
+        // </summary>
         protected internal abstract bool Enabled { get; }
+
+        // <summary>
+        // Determines if Email can be sent depending on whitelist or production
+        // </summary>
         public abstract bool AllowSend(string emailAddress);
+
 
         protected virtual List<string> Validate()
         {

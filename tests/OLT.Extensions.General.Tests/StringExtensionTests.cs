@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Xunit;
 
 namespace OLT.Extensions.General.Tests
@@ -446,7 +447,64 @@ namespace OLT.Extensions.General.Tests
         {
             Assert.Equal(expectedResult, value.ToSentenceCase());
         }
-        
+
+        [Theory]
+        [InlineData("κόσμε", 11)]
+        [InlineData("a", 1)] //1 byte
+        [InlineData("Ć", 2)] //2 bytes
+        [InlineData("ꦀ", 3)] //3 bytes - Javanese
+        [InlineData("𒀃", 4)] //4 bytes - Sumerian cuneiform
+        [InlineData("a𒀃", 5)] //5 bytes
+        [InlineData(null, 0)]
+        public void ToUTFByteTests(string value, int expectedLength)
+        {
+            if (value == null)
+            {
+                Assert.Throws<ArgumentNullException>(() => OltStringExtensions.ToUTF8Bytes(value));
+            }
+            else
+            {
+                var bytes = OltStringExtensions.ToUTF8Bytes(value);
+                Assert.NotNull(bytes);
+                Assert.Equal(System.Text.Encoding.UTF8.GetString(bytes), value);
+                Assert.Equal(expectedLength, bytes.Length);
+            }
+        }
+
+
+        [Theory]
+        [InlineData('')]
+        [InlineData('')]
+        [InlineData('')]
+        [InlineData('')]
+        public void ToUTFByteCharTests(char value)
+        {
+            var bytes = OltStringExtensions.ToUTF8Bytes(value);
+            Assert.NotNull(bytes);
+            Assert.Equal(System.Text.Encoding.UTF8.GetString(bytes), value.ToString());
+        }
+
+        [Theory]
+        [InlineData(" ", 1)]
+        [InlineData("", 0)]
+        [InlineData("123ABC", 6)]
+        [InlineData(null, 0)]
+        public void ToASCIIByteTests(string value, int expectedLength)
+        {
+            if (value == null)
+            {
+                Assert.Throws<ArgumentNullException>(() => OltStringExtensions.ToASCIIBytes(value));
+            }
+            else
+            {
+                var bytes = OltStringExtensions.ToASCIIBytes(value);
+                Assert.NotNull(bytes);
+                Assert.Equal(System.Text.Encoding.ASCII.GetString(bytes), value);
+                Assert.Equal(expectedLength, bytes.Length);
+            }
+        }
+
+
 
         //[Theory]
         //[InlineData(16, true, true, true, true, 16)]
@@ -477,7 +535,7 @@ namespace OLT.Extensions.General.Tests
         //    var password = OltKeyGenerator.GetUniqueKey(size);
         //    Assert.True(password.Length == size);
         //}
-        
+
         //[Theory]
         //[InlineData(1000000, 32, 2.0)]
         //[InlineData(1000000, 64, 2.0)]
