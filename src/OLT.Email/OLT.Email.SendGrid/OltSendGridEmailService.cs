@@ -40,18 +40,5 @@ namespace OLT.Email.SendGrid
             return result;
         }
 
-
-        //public virtual async Task<OltEmailResult> SendAsync(OltSendGridTextCalendarArgs args)
-        //{
-        //    try
-        //    {
-        //        var msg = args.BuildMessage();
-        //        return await SendAsync(msg, args);
-        //    }
-        //    catch (OltSendGridValidationException ex)
-        //    {
-        //        return ex.ToEmailResult();
-        //    }
-        //}
     }
 }

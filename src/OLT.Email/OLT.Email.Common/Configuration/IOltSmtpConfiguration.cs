@@ -10,7 +10,7 @@ namespace OLT.Email
 
     public interface IOltSmtpServer
     {
-        string Server { get; }
+        string Host { get; }
         bool DisableSsl { get; }
         short? Port { get; }
     }

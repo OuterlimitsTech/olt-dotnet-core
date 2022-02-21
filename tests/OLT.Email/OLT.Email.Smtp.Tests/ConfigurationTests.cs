@@ -58,7 +58,7 @@ namespace OLT.Email.Smtp.Tests
 
             var server = new SmtpServerConfig
             {
-                Server = Faker.Internet.DomainName(),
+                Host = Faker.Internet.DomainName(),
                 DisableSsl = true,                
                 Port = Convert.ToInt16(Faker.RandomNumber.Next(1, short.MaxValue)),
                 Username = Faker.Internet.UserName(),
@@ -72,7 +72,7 @@ namespace OLT.Email.Smtp.Tests
             config.From.Email = fromEmail;
 
             Assert.NotNull(config.Smtp);
-            Assert.Equal(server.Server, config.Smtp.Server);
+            Assert.Equal(server.Host, config.Smtp.Host);
             Assert.Equal(server.Port, config.Smtp.Port);
             Assert.Equal(server.DisableSsl, config.Smtp.DisableSsl);
 
@@ -115,12 +115,12 @@ namespace OLT.Email.Smtp.Tests
             var password = Faker.Lorem.GetFirstWord();
 
             var model = new SmtpServerConfig();
-            model.Server = server;
+            model.Host = server;
             model.Port = port;
             model.Username = username;
             model.Password = password;
 
-            Assert.Equal(server, model.Server);
+            Assert.Equal(server, model.Host);
             Assert.Equal(port, model.Port);
             Assert.Equal(username, model.Username);
             Assert.Equal(password, model.Password);
@@ -131,7 +131,7 @@ namespace OLT.Email.Smtp.Tests
             Assert.True(model.DisableSsl);
 
             var smtpServer = new OltSmtpServer(model);
-            Assert.Equal(server, smtpServer.Server);
+            Assert.Equal(server, smtpServer.Host);
             Assert.Equal(port, smtpServer.Port);
             Assert.True(smtpServer.DisableSsl);
         }        

@@ -2,9 +2,6 @@
 {
     public class OltSendGridTextCalendarArgs : OltSendGridSmtpArgs<OltSendGridTextCalendarArgs>
     {
-        //protected internal virtual SendGridMessage BuildMessage()
-        //{
 
-        //}
     }
 }

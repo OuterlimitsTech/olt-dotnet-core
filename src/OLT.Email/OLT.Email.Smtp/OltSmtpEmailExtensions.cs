@@ -16,7 +16,7 @@ namespace OLT.Email.Smtp
             var args = new OltSmtpArgs()
                 .WithFromEmail(template.From)
                 .WithWhitelist(configuration.TestWhitelist)
-                .WithSmtpHost(configuration.Smtp.Server)                
+                .WithSmtpHost(configuration.Smtp.Host)                
                 .WithBody(template.Body)
                 .WithSubject(template.Subject)
                 .WithRecipients(template.Recipients)                

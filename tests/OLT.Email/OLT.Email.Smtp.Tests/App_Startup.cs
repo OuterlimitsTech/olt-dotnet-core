@@ -29,7 +29,7 @@ namespace OLT.Email.Smtp.Tests
             short? portNumber = string.IsNullOrEmpty(portConfigValue) ? null : Convert.ToInt16(portConfigValue);
             var smtpConfig = new SmtpServerConfig
             {
-                Server = configuration.GetValue<string>("SMTP_HOST") ?? Environment.GetEnvironmentVariable("SMTP_HOST"),
+                Host = configuration.GetValue<string>("SMTP_HOST") ?? Environment.GetEnvironmentVariable("SMTP_HOST"),
                 Port = portNumber,
                 Username = configuration.GetValue<string>("SMTP_USERNAME") ?? Environment.GetEnvironmentVariable("SMTP_USERNAME"),
                 Password = configuration.GetValue<string>("SMTP_PASSWORD") ?? Environment.GetEnvironmentVariable("SMTP_PASSWORD"),
@@ -39,7 +39,7 @@ namespace OLT.Email.Smtp.Tests
             //IOltSmtpConfiguration
             services.Configure<SmtpServerConfig>(opt =>
             {
-                opt.Server = smtpConfig.Server;
+                opt.Host = smtpConfig.Host;
                 opt.Port = smtpConfig.Port;
                 opt.Username = smtpConfig.Username;
                 opt.Password = smtpConfig.Password;

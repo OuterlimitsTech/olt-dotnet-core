@@ -65,34 +65,5 @@ namespace OLT.Email.SendGrid
         }
 
 
-        //protected override List<string> Validate()
-        //{
-        //    var errors = base.Validate(); 
-
-
-        //    //switch (request)
-        //    //{
-        //    //    case IOltEmailCalendarRequest calendarRequest:
-        //    //        {
-        //    //            if (string.IsNullOrWhiteSpace(calendarRequest.Subject))
-        //    //            {
-        //    //                errors.Add("Subject Missing");
-        //    //            }
-
-        //    //            if (!(calendarRequest.CalendarInvite?.Bytes.Length > 0))
-        //    //            {
-        //    //                errors.Add("Calendar Invite Missing");
-        //    //            }
-
-        //    //            break;
-        //    //        }
-        //    //    default:
-  
-        //    //        break;
-        //    //}
-
-        //    return errors;
-        //}
-
     }
 }
