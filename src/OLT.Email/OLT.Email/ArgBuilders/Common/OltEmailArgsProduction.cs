@@ -12,11 +12,11 @@
         }
 
         /// <summary>
-        /// Sends emails for all requests 
+        /// Sends emails for all requests and regardless whitelist values
         /// </summary>
         /// <param name="value"><see cref="bool"/></param>
         /// <returns><typeparamref name="T"/></returns>
-        public T IsProduction(bool value)
+        public T EnableProductionEnvironment(bool value)
         {
             this._enabled = value;
             return (T)this;

@@ -134,7 +134,7 @@ namespace OLT.Email.Tests.Common
             Assert.NotEmpty(model.SkipReason);
             Assert.False(model.Success);
 
-            args.IsProduction(true);
+            args.EnableProductionEnvironment(true);
             model = new OltEmailAddressResult(new OltEmailAddress(email, personName), args);
             Assert.False(model.Skipped);
             Assert.Null(model.SkipReason);

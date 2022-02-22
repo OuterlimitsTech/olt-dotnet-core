@@ -44,7 +44,7 @@ namespace OLT.Email.SendGrid
             Attachments?.ForEach(attachment => msg.AddAttachment(attachment.FileName, Convert.ToBase64String(attachment.Bytes), attachment.ContentType));
 
             var recipients = BuildRecipients();
-            ConfigureRecipients(msg, recipients);           
+            ConfigureRecipients(msg, recipients);
 
             return msg;
         }

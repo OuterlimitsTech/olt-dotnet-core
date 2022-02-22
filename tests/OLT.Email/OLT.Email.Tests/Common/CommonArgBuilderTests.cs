@@ -113,7 +113,7 @@ namespace OLT.Email.Tests.Common
         [Fact]
         public void Whitelist()
         {
-            var args = new TestArgs().IsProduction(false);
+            var args = new TestArgs().EnableProductionEnvironment(false);
             var whiteEmail = Faker.Internet.Email();
             var whiteDomain = Faker.Internet.DomainName();
             var whiteDomainEmail = $"{Faker.Internet.UserName()}@{whiteDomain}";

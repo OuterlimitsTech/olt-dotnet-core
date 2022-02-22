@@ -15,7 +15,7 @@ namespace OLT.Email.SendGrid
                 .WithWhitelist(configuration.TestWhitelist)
                 .WithApiKey(configuration.ApiKey)
                 .WithTemplate(template)
-                .IsProduction(configuration.Production);
+                .EnableProductionEnvironment(configuration.Production);
 
             if (configuration.DisableClickTracking)
             {
