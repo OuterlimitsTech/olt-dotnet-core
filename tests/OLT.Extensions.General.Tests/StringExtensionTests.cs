@@ -237,17 +237,31 @@ namespace OLT.Extensions.General.Tests
 
 
         [Theory]
-        [InlineData("", int.MaxValue, int.MaxValue)]
         [InlineData("", null)]
         [InlineData(null, null)]
+        [InlineData(" ", null)]
+        [InlineData("FooBar", null)]
+        [InlineData("930248", 930248)]
+        [InlineData("54", 54)]
+        [InlineData("45.234", null)]
+        [InlineData("-1", -1)]
+        public void ToInt(string value, int? expectedResult)
+        {
+            Assert.Equal(expectedResult, OltStringExtensions.ToInt(value));
+        }
+
+        [Theory]
+        [InlineData("", int.MaxValue, int.MaxValue)]
+        [InlineData("", -100, -100)]
+        [InlineData(null, -150,-150)]
         [InlineData(" ", 0, 0)]
         [InlineData("FooBar", 0, 0)]
         [InlineData(null, 930248, 930248)]
-        [InlineData("45.234", null)]
-        [InlineData("-1", -1)]
-        public void ToInt(string value, int? expectedResult, int? defaultValue = null)
+        [InlineData("45.234", 950, 950)]
+        [InlineData("-1", -1, 10000)]
+        public void ToIntWithDefault(string value, int? expectedResult, int defaultValue)
         {
-            Assert.Equal(expectedResult, defaultValue.HasValue ? value.ToInt(defaultValue.Value) : value.ToInt());
+            Assert.Equal(expectedResult, OltStringExtensions.ToInt(value, defaultValue));
         }
 
         [Fact]
@@ -255,33 +269,47 @@ namespace OLT.Extensions.General.Tests
         {
             long num = int.MaxValue;
             var value = (num + 1).ToString();
-            Assert.Null(value.ToInt());
+            Assert.Null(OltStringExtensions.ToInt(value));
+            Assert.Equal(1234, OltStringExtensions.ToInt(value, 1234));
         }
-
-        [Fact]
-        public void ToIntDefaultValue()
-        {
-            int value = int.MaxValue - 100;
-            Assert.True(UnitTestConstants.StringValues.HelloWorld.ToInt(value).Equals(value));
-        }
-
 
 
         [Theory]
-        [InlineData("", long.MaxValue, long.MaxValue)]
         [InlineData("", null)]
         [InlineData(null, null)]
-        [InlineData(" ", 0, 0)]
-        [InlineData("FooBar", 0, 0)]
-        [InlineData(null, long.MaxValue, long.MaxValue)]
+        [InlineData(" ", null)]
+        [InlineData("FooBar", null)]
+        [InlineData("9223372036854775800", 9223372036854775800)]
         [InlineData("45.234", null)]
-        [InlineData("-9223372036854775800", -9223372036854775800, 0)]
+        [InlineData("-9223372036854775800", -9223372036854775800)]
         [InlineData("-1", -1)]
-        public void ToLong(string value, long? expectedResult, long? defaultValue = null)
+        public void ToLong(string value, long? expectedResult)
         {
-            Assert.Equal(expectedResult, defaultValue.HasValue ? value.ToLong(defaultValue.Value) : value.ToLong());
+            Assert.Equal(expectedResult, OltStringExtensions.ToLong(value));
         }
 
+        [Theory]
+        [InlineData("", long.MaxValue, long.MaxValue)]
+        [InlineData("", 9223372036854775800, 9223372036854775800)]
+        [InlineData(null, long.MaxValue, long.MaxValue)]
+        [InlineData(" ", 100, 100)]
+        [InlineData("FooBar", -9223372036854775800, -9223372036854775800)]        
+        [InlineData("45.234", 9223372036854775800, 9223372036854775800)]
+        [InlineData("-9223372036854775800", -9223372036854775800, 0)]
+        [InlineData("-1", -1, 0)]
+        public void ToLongWithDefault(string value, long? expectedResult, long defaultValue)
+        {
+            Assert.Equal(expectedResult, OltStringExtensions.ToLong(value, defaultValue));
+        }
+
+        [Fact]
+        public void ToLongOverflow()
+        {
+            long num = long.MaxValue;
+            var value = $"{num}5";
+            Assert.Null(OltStringExtensions.ToLong(value));
+            Assert.Equal(long.MinValue, OltStringExtensions.ToLong(value, long.MinValue));
+        }
 
         public static IEnumerable<object[]> ToDecimalMemberData =>
             new List<object[]>

@@ -7,8 +7,9 @@ namespace OLT.Email.SendGrid
     public class OltSendGridValidationException : OltEmailValidationException
 #pragma warning restore S3925 // "ISerializable" should be implemented correctly
     {
+        public new const string DefaultMessage = "SendGrid Validation Errors";
 
-        public OltSendGridValidationException(List<string> errors) : base(errors, "SendGrid Validation")
+        public OltSendGridValidationException(List<string> errors) : base(errors, DefaultMessage)
         {
             
         }
