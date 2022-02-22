@@ -1,14 +1,13 @@
 ﻿using FluentAssertions;
-using OLT.Email.Common.Tests.Assets;
+using OLT.Email.Smtp.Tests.Common.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace OLT.Email.Common.Tests
+namespace OLT.Email.Smtp.Tests.Common
 {
-
-    public class ArgBuilderTests
+    public class CommonArgBuilderTests
     {
 
         [Fact]
@@ -33,7 +32,7 @@ namespace OLT.Email.Common.Tests
                 }
             };
 
-            args = args.WithRecipients(new OltEmailRecipients {  To = null, CarbonCopy = null });
+            args = args.WithRecipients(new OltEmailRecipients { To = null, CarbonCopy = null });
             Assert.NotNull(args.ToValue);
             Assert.NotNull(args.CarbonCopyValue);
             Assert.Empty(args.ToValue);
@@ -54,8 +53,8 @@ namespace OLT.Email.Common.Tests
             var duplicate = new List<IOltEmailAddress>();
             duplicate.AddRange(toList);
             duplicate.AddRange(carbonList);
-            
-            args = args.WithRecipients(new OltEmailRecipients {  To = duplicate, CarbonCopy = duplicate });
+
+            args = args.WithRecipients(new OltEmailRecipients { To = duplicate, CarbonCopy = duplicate });
 
             var compareTo = new List<IOltEmailAddress>();
             compareTo.AddRange(toList);
@@ -77,7 +76,7 @@ namespace OLT.Email.Common.Tests
         {
             var args = new TestArgs();
 
-            var email = Faker.Internet.Email();            
+            var email = Faker.Internet.Email();
 
             args = args.WithFromEmail(email);
             Assert.Equal(email, args.EmailValue.Email);
@@ -131,7 +130,7 @@ namespace OLT.Email.Common.Tests
                 whiteDomain
             };
 
-            args.WithWhitelist(new OltEmailConfigurationWhitelist {  Domain =  null, Email =  null });
+            args.WithWhitelist(new OltEmailConfigurationWhitelist { Domain = null, Email = null });
             Assert.False(args.AllowSend(Faker.Internet.Email()));
             Assert.False(args.AllowSend(badDomainEmail));
             Assert.False(args.AllowSend(whiteEmail));
@@ -164,14 +163,14 @@ namespace OLT.Email.Common.Tests
             var args = new TestArgs();
 
 
-            args.Invoking(args => args.DoValidation()).Should().Throw<TestException>().WithMessage("Test Validation");
+            args.Invoking(args => args.DoValidation()).Should().Throw<OltEmailValidationException>().WithMessage(OltEmailValidationException.DefaultMessage);
 
             List<string> compareErrors = new List<string>();
             try
             {
                 args.DoValidation();
             }
-            catch (TestException ex)
+            catch (OltEmailValidationException ex)
             {
                 compareErrors = ex.Errors;
                 var errorResult = ex.ToEmailResult();
@@ -181,8 +180,7 @@ namespace OLT.Email.Common.Tests
 
             var errors = args.GetErrors();
             Assert.NotEmpty(errors);
-            errors.Should().HaveCount(2);
-            errors.Should().BeEquivalentTo("Requires To Recipient", "From Email Missing");
+            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithFromEmail(null)).Should().Throw<ArgumentNullException>();

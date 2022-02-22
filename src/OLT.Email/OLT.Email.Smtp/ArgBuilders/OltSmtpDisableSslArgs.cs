@@ -1,9 +1,9 @@
 ﻿namespace OLT.Email.Smtp
 {
-    public abstract class OltSmtpDisableSslArgs<T> : OltSmtpServerArgs<T>
+    public abstract class OltSmtpDisableSslArgs<T> : OltSmtpHostArgs<T>
       where T : OltSmtpDisableSslArgs<T>
     {
-        protected internal bool SmtpDisableSSL { get; set; }
+        protected internal bool SmtpSSLDisabled { get; set; }
 
         protected OltSmtpDisableSslArgs()
         {
@@ -14,9 +14,9 @@
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public T WithSmtpDisabledSSL(bool value)
+        public T WithSmtpSSLDisabled(bool value)
         {
-            this.SmtpDisableSSL = value;
+            this.SmtpSSLDisabled = value;
             return (T)this;
         }
 

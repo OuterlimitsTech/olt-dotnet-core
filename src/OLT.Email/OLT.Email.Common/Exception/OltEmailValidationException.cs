@@ -4,18 +4,26 @@ using System.Collections.Generic;
 namespace OLT.Email
 {
 #pragma warning disable S3925 // "ISerializable" should be implemented correctly
-    public abstract class OltEmailValidationException : OLT.Core.OltException
+    public class OltEmailValidationException : OLT.Core.OltException
 #pragma warning restore S3925 // "ISerializable" should be implemented correctly
     {
-        private OltEmailValidationException(string message) : base(message)
+        public const string DefaultMessage = "Email Validation Errors";
+
+        protected internal OltEmailValidationException(string message) : base(message)
         {
 
         }
 
-        protected OltEmailValidationException(List<string> errors, string message) : this(message)
+        public OltEmailValidationException(List<string> errors) : this(DefaultMessage)
         {
             Errors = errors;
         }
+
+        public OltEmailValidationException(List<string> errors, string message) : this(message)
+        {
+            Errors = errors;
+        }
+
 
         public List<string> Errors { get;  }
 

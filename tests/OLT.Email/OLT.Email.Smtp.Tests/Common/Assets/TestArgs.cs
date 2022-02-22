@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Email.Common.Tests.Assets
+namespace OLT.Email.Smtp.Tests.Common.Assets
 {
     public class TestArgs : OltFromEmailArgs<TestArgs>
     {
@@ -20,7 +20,7 @@ namespace OLT.Email.Common.Tests.Assets
             var errors = Validate();
             if (errors.Any())
             {
-                throw new TestException(errors);
+                throw new OltEmailValidationException(errors);
             }
             return true;
         }

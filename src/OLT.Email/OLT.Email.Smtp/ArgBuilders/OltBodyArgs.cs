@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email.Smtp
 {
@@ -12,12 +13,17 @@ namespace OLT.Email.Smtp
         }
 
         /// <summary>
-        /// Send Grid Template
+        /// Email Body
         /// </summary>
         /// <returns></returns>
-        public T WithBody(string value)
+        public T WithBody(string body)
         {
-            this.Body = value;
+            if (body == null)
+            {
+                throw new ArgumentNullException(nameof(body));
+            }
+
+            this.Body = body;
             return (T)this;
         }
 
@@ -26,7 +32,7 @@ namespace OLT.Email.Smtp
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(Body))
             {
-                errors.Add("Email Body Missing");
+                errors.Add(OltSmtpArgErrors.Body);
             }
             return errors;
         }

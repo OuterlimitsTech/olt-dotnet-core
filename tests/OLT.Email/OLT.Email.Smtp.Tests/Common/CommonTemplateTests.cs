@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
-using OLT.Email.Common.Tests.Assets;
+using OLT.Email.Smtp.Tests.Common.Assets;
 using System.Collections.Generic;
 using Xunit;
 
-namespace OLT.Email.Common.Tests
+namespace OLT.Email.Smtp.Tests.Common
 {
-    public class TemplateTests
+    public class CommonTemplateTests
     {
         [Fact]
         public void SingleEmail()

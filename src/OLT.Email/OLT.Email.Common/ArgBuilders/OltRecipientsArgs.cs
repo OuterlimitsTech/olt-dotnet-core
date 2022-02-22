@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OLT.Email
 {
-    public abstract class OltRecipientsArgs<T> : OltAttachmentsArgs<T>
+    public abstract class OltRecipientsArgs<T> : OltEmailArgsWhitelist<T>
       where T : OltRecipientsArgs<T>
     {
         protected internal List<OltEmailAddress> To { get; set; } = new List<OltEmailAddress>();
@@ -68,7 +68,7 @@ namespace OLT.Email
             var errors = base.Validate();
             if (!To.Any())
             {
-                errors.Add("Requires To Recipient");
+                errors.Add(OltCommonArgErrors.Recipients);
             }
             return errors;
         }

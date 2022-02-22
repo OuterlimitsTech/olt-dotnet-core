@@ -7,7 +7,7 @@ namespace OLT.Email
     /// <summary>
     /// OLT Email Configuration
     /// </summary>
-    public class OltEmailConfiguration : IOltEmailConfiguration
+    public class OltEmailConfiguration
     {
 
         /// <summary>

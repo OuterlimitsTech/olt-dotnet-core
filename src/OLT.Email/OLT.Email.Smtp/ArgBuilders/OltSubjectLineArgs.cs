@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email.Smtp
 {
@@ -12,12 +13,16 @@ namespace OLT.Email.Smtp
         }
 
         /// <summary>
-        /// Send Grid Template
+        /// Email Subject
         /// </summary>
         /// <returns></returns>
-        public T WithSubject(string value)
+        public T WithSubject(string subject)
         {
-            this.SubjectLine = value;
+            if (subject == null)
+            {
+                throw new ArgumentNullException(nameof(subject));
+            }
+            this.SubjectLine = subject;
             return (T)this;
         }
 
@@ -26,7 +31,7 @@ namespace OLT.Email.Smtp
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(SubjectLine))
             {
-                errors.Add("Email Subject Line Missing");
+                errors.Add(OltSmtpArgErrors.Subject);
             }
             return errors;
         }

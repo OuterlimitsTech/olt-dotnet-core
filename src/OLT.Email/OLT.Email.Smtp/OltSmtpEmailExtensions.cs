@@ -1,31 +1,24 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using Microsoft.Extensions.DependencyInjection;
-using OLT.Email;
-
-
+﻿
 namespace OLT.Email.Smtp
 {
 
     public static class OltSmtpEmailExtensions
     {
-        public static OltSmtpArgs BuildArgs<T>(this IOltSmtpConfiguration configuration, T template, IOltSmtpServerCredentials credentials = null)  where T : IOltSmtpEmail
+        public static OltSmtpArgs BuildArgs<T>(this OltSmtpConfiguration configuration, T smtpEmailTemplate)  where T : IOltSmtpEmail
         {
             var args = new OltSmtpArgs()
-                .WithFromEmail(template.From)
+                .WithFromEmail(smtpEmailTemplate.From)
                 .WithWhitelist(configuration.TestWhitelist)
                 .WithSmtpHost(configuration.Smtp.Host)                
-                .WithBody(template.Body)
-                .WithSubject(template.Subject)
-                .WithRecipients(template.Recipients)                
+                .WithBody(smtpEmailTemplate.Body)
+                .WithSubject(smtpEmailTemplate.Subject)
+                .WithRecipients(smtpEmailTemplate.Recipients)                
                 .IsProduction(configuration.Production);
 
             
-            if (credentials != null)
+            if (configuration.Smtp?.Credentials?.Username != null && configuration.Smtp?.Credentials?.Password != null)
             {
-                args.WithSmtpNetworkCredentials(credentials.Username, credentials.Password);
+                args.WithSmtpNetworkCredentials(configuration.Smtp.Credentials.Username, configuration.Smtp.Credentials.Password);
             }
 
             if (configuration.Smtp.Port != null && configuration.Smtp.Port > 0)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace OLT.Email
 {
 
-    public abstract class OltFromEmailArgs<T> : OltRecipientsArgs<T>
+    public abstract class OltFromEmailArgs<T> : OltAttachmentsArgs<T>
         where T : OltFromEmailArgs<T>
     {
         protected internal OltEmailAddress From { get; set; }
@@ -53,7 +53,7 @@ namespace OLT.Email
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(From?.Email))
             {
-                errors.Add("From Email Missing");
+                errors.Add(OltCommonArgErrors.From);
             }
 
             return errors;

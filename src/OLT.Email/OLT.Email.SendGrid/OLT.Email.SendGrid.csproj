@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Email.SendGrid.Common\OLT.Email.SendGrid.Common.csproj" />
-    <ProjectReference Include="..\OLT.Email.Smtp\OLT.Email.Smtp.csproj" />
   </ItemGroup>
 
 </Project>

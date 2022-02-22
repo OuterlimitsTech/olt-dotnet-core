@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email.Smtp
 {
@@ -19,24 +20,21 @@ namespace OLT.Email.Smtp
         /// <returns></returns>
         public T WithSmtpNetworkCredentials(string username, string password)
         {
+            if (username == null)
+            {
+                throw new ArgumentNullException(nameof(username));
+            }
+
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
+
             this.SmtpUsername = username;
             this.SmtpPassword = password;
             return (T)this;
         }
 
-        //protected override List<string> Validate()
-        //{
-        //    var errors = base.Validate();
-        //    if (string.IsNullOrWhiteSpace(SmtpUsername))
-        //    {
-        //        errors.Add("Smtp Username Missing");
-        //    }
-        //    if (string.IsNullOrWhiteSpace(SmtpPassword))
-        //    {
-        //        errors.Add("Smtp Password Missing");
-        //    }
-        //    return errors;
-        //}
     }
 
    

@@ -15,12 +15,12 @@ namespace OLT.Email.Smtp
             var errors = Validate();
             if (errors.Any())
             {
-                throw new OltSmtpValidationException(errors);
+                throw new OltEmailValidationException(errors);
             }
                 
             var client = new SmtpClient(SmtpHost, SmtpPort);
 
-            if (!SmtpDisableSSL)
+            if (!SmtpSSLDisabled)
             {
                 client.EnableSsl = true;
             }

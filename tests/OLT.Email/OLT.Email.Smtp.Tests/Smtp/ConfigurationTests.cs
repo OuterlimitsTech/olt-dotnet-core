@@ -1,14 +1,32 @@
-﻿using OLT.Email.Smtp.Tests.Assets;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.Email.Smtp.Tests
+namespace OLT.Email.Smtp.Tests.Smtp
 {
-    public class ConfigurationTests
+    public class SmtpConfigurationTests
     {
+        public class AppSettingsJsonDto
+        {
+            public OltSmtpConfiguration SmtpEmailConfig { get; set; } = new OltSmtpConfiguration();
+        }
+
+
+        private readonly OltEmailConfiguration _emailConfiguration;
+
+        public SmtpConfigurationTests(
+            IOptions<OltSmtpConfiguration> options)
+        {
+            _emailConfiguration = options.Value;
+        }
+
         [Fact]
-        public void OltSmtpConfiguration()
+        public void ConfigAllowSend()
         {
             var fromEmail = Faker.Internet.Email();
             var fromName = Faker.Name.FullName();
@@ -26,16 +44,23 @@ namespace OLT.Email.Smtp.Tests
 
 
 
-            var server = new SmtpServerConfig
+            var server = new OltSmtpServer
             {
                 Host = Faker.Internet.DomainName(),
                 DisableSsl = true,                
                 Port = Convert.ToInt16(Faker.RandomNumber.Next(1, short.MaxValue)),
-                Username = Faker.Internet.UserName(),
-                Password = Faker.Lorem.GetFirstWord()
+                Credentials = new OltSmtpCredentials
+                {
+                    Username = Faker.Internet.UserName(),
+                    Password = Faker.Lorem.GetFirstWord()
+                }
             };
 
-            var config = new OltSmtpConfiguration(server);
+            var config = new OltSmtpConfiguration
+            {
+                Smtp = server
+            };
+
             config.TestWhitelist.Domain.Add(whiteDomain);
             config.TestWhitelist.Email.Add(whiteEmail);
             config.From.Name = fromName;
@@ -103,7 +128,7 @@ namespace OLT.Email.Smtp.Tests
             Assert.True(args.AllowSend(whiteEmail));
             Assert.True(args.AllowSend(email));
 
-            args = config.BuildArgs(smtpEmail, server);
+            args = config.BuildArgs(smtpEmail);
 
             Assert.True(args.AllowSend(Faker.Internet.FreeEmail()));
             Assert.True(args.AllowSend(whiteEmail));
@@ -113,32 +138,46 @@ namespace OLT.Email.Smtp.Tests
         [Fact]
         public void OltSmtpServer()
         {
-            var server = Faker.Internet.DomainName();
+            var host = Faker.Internet.DomainName();
             var port = Convert.ToInt16(Faker.RandomNumber.Next(1, short.MaxValue));
             var username = Faker.Internet.UserName();
             var password = Faker.Lorem.GetFirstWord();
 
-            var model = new SmtpServerConfig();
-            model.Host = server;
-            model.Port = port;
-            model.Username = username;
-            model.Password = password;
+            var server = new OltSmtpServer();
 
-            Assert.Equal(server, model.Host);
-            Assert.Equal(port, model.Port);
-            Assert.Equal(username, model.Username);
-            Assert.Equal(password, model.Password);
-            Assert.False(model.DisableSsl);
+            Assert.NotNull(server.Credentials);
+            Assert.Null(server.Port);
+            Assert.False(server.DisableSsl);
 
-            model.DisableSsl = true;
+            server.Host = host;
+            server.Port = port;
+            server.DisableSsl = true;
+            server.Credentials.Username = username;
+            server.Credentials.Password = password;
 
-            Assert.True(model.DisableSsl);
+            Assert.Equal(host, server.Host);
+            Assert.Equal(port, server.Port);
+            Assert.True(server.DisableSsl);
+            Assert.Equal(username, server.Credentials.Username);
+            Assert.Equal(password, server.Credentials.Password);
+        }
 
-            var smtpServer = new OltSmtpServer(model);
-            Assert.Equal(server, smtpServer.Host);
-            Assert.Equal(port, smtpServer.Port);
-            Assert.True(smtpServer.DisableSsl);
-        }        
+        [Fact]
+        public async Task Options()
+        {
+            Assert.NotNull(_emailConfiguration);
+
+            string fileName = "appsettings.json";
+            var filePath = Path.Combine(AppContext.BaseDirectory, fileName);
+
+            using (FileStream openStream = File.OpenRead(filePath))
+            {
+                AppSettingsJsonDto expectedConfig = await JsonSerializer.DeserializeAsync<AppSettingsJsonDto>(openStream);
+                Assert.NotNull(expectedConfig);
+                _emailConfiguration.Should().BeEquivalentTo(expectedConfig?.SmtpEmailConfig);
+            }
+
+        }
 
     }
 }

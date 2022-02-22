@@ -9,8 +9,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="Faker.Net" Version="2.0.154" />
+		<PackageReference Include="FluentAssertions" Version="6.4.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 		<PackageReference Include="Xunit.DependencyInjection" Version="8.3.0" />
@@ -26,6 +28,16 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\OLT.Email\OLT.Email.Smtp\OLT.Email.Smtp.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Assets\" />
 	</ItemGroup>
 
 </Project>

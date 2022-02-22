@@ -4,7 +4,6 @@ using System.Text;
 
 namespace OLT.Email.Smtp
 {
-
     public class OltEmailTextCalendar
     {
         

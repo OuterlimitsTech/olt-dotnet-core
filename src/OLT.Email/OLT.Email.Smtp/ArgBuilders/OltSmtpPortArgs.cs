@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email.Smtp
 {
@@ -15,23 +16,18 @@ namespace OLT.Email.Smtp
         /// SMTP Server Port
         /// </summary>
         /// <remarks>Default is 587</remarks>
-        /// <param name="value"></param>
+        /// <param name="port"></param>
         /// <returns></returns>
-        public T WithSmtpPort(short value)
+        public T WithSmtpPort(short port)
         {
-            this.SmtpPort = value;
+            if (port <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(port), "must be greater than zero");
+            }
+            this.SmtpPort = port;
             return (T)this;
         }
-
-        protected override List<string> Validate()
-        {
-            var errors = base.Validate();
-            if (SmtpPort > 0)
-            {
-                errors.Add("Smtp Port Missing");
-            }
-            return errors;
-        }
+  
     }
 
    

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OLT.Email
 {
-    public abstract class OltAttachmentsArgs<T> : OltEmailArgsWhitelist<T>
+    public abstract class OltAttachmentsArgs<T> : OltRecipientsArgs<T> 
       where T : OltAttachmentsArgs<T>
     {
         protected internal List<OltEmailAttachment> Attachments { get; set; } = new List<OltEmailAttachment>();

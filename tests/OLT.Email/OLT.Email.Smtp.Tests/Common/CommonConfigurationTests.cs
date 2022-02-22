@@ -7,10 +7,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.Email.Common.Tests
+namespace OLT.Email.Smtp.Tests.Common
 {
 
-    public class ConfigurationTests
+    public class CommonConfigurationTests
     {
         public class AppSettingsJsonDto
         {
@@ -20,7 +20,7 @@ namespace OLT.Email.Common.Tests
 
         private readonly OltEmailConfiguration _emailConfiguration;
 
-        public ConfigurationTests(
+        public CommonConfigurationTests(
             IOptions<OltEmailConfiguration> options)
         {
             _emailConfiguration = options.Value;
@@ -34,7 +34,6 @@ namespace OLT.Email.Common.Tests
             
             var whiteEmail = Faker.Internet.Email();
             var whiteDomain = Faker.Internet.DomainName();
-            var whiteDomainEmail = $"{Faker.Internet.UserName()}@{whiteDomain}";
 
             var config = new OltEmailConfiguration();
             config.TestWhitelist.Domain.Add(whiteDomain);
@@ -49,19 +48,8 @@ namespace OLT.Email.Common.Tests
             Assert.NotEmpty(config.TestWhitelist.Domain);
             Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
             Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
-
-            
-            //Assert.False(config.SendEmail(Faker.Internet.FreeEmail()));
-            //Assert.True(config.SendEmail(whiteEmail));
-            //Assert.True(config.SendEmail(whiteDomainEmail));
-
             config.Production = true;
             Assert.True(config.Production);
-
-            //Assert.True(config.SendEmail(Faker.Internet.FreeEmail()));
-            //Assert.True(config.SendEmail(whiteEmail));
-            //Assert.True(config.SendEmail(whiteDomainEmail));
-
         }
 
         [Fact]

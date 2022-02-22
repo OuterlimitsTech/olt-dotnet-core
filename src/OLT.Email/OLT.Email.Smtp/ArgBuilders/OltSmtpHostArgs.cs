@@ -5,23 +5,27 @@ using System.Text;
 
 namespace OLT.Email.Smtp
 {
-    public abstract class OltSmtpServerArgs<T> : OltFromEmailArgs<T>
-       where T : OltSmtpServerArgs<T>
+    public abstract class OltSmtpHostArgs<T> : OltFromEmailArgs<T>
+       where T : OltSmtpHostArgs<T>
     {
         protected internal string SmtpHost { get; set; }
 
-        protected OltSmtpServerArgs()
+        protected OltSmtpHostArgs()
         {
         }
 
         /// <summary>
-        /// SMTP Server Address
+        /// SMTP Server Host Address
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="host"></param>
         /// <returns></returns>
-        public T WithSmtpHost(string value)
+        public T WithSmtpHost(string host)
         {
-            this.SmtpHost = value;
+            if (host == null)
+            {
+                throw new ArgumentNullException(nameof(host));
+            }
+            this.SmtpHost = host;
             return (T)this;
         }
 
@@ -30,7 +34,7 @@ namespace OLT.Email.Smtp
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(SmtpHost))
             {
-                errors.Add("Smtp Host Missing");
+                errors.Add(OltSmtpArgErrors.Host);
             }
             return errors;
         }
