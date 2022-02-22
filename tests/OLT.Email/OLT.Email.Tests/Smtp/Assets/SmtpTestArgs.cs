@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Email.Smtp.Tests.Smtp.Assets
+namespace OLT.Email.Tests.Smtp.Assets
 {
     public class SmtpTestArgs : OltSmtpNetworkCredentialArgs<SmtpTestArgs>
     {

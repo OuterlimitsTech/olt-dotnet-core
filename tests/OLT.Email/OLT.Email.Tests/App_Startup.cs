@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace OLT.Email.Smtp.Tests
+namespace OLT.Email.Tests
 {
 
     public class Startup

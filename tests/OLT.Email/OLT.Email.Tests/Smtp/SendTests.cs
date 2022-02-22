@@ -1,12 +1,12 @@
 ////using Microsoft.Extensions.Configuration;
 ////using Microsoft.Extensions.Options;
 ////using OLT.Core;
-////using OLT.Email.Smtp.Tests.Assets;
+////using OLT.Email.Tests.Assets;
 ////using System;
 ////using System.Collections.Generic;
 ////using Xunit;
 
-////namespace OLT.Email.Smtp.Tests.Smtp
+////namespace OLT.Email.Tests.Smtp
 ////{
 
 ////    public class SendTests

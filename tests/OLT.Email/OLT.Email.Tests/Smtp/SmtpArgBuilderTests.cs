@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using OLT.Email.Smtp.Tests.Smtp.Assets;
+using OLT.Email.Tests.Smtp.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.Email.Smtp.Tests.Smtp
+namespace OLT.Email.Tests.Smtp
 {
     public class SmtpArgBuilderTests
     {

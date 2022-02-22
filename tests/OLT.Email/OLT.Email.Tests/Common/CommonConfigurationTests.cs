@@ -7,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.Email.Smtp.Tests.Common
+namespace OLT.Email.Tests.Common
 {
 
     public class CommonConfigurationTests

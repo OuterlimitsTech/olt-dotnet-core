@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Email.Smtp.Tests.Common.Assets
+namespace OLT.Email.Tests.Common.Assets
 {
     public class TestArgs : OltFromEmailArgs<TestArgs>
     {

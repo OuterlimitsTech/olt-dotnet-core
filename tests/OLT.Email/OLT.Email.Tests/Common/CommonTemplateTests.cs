@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
-using OLT.Email.Smtp.Tests.Common.Assets;
+using OLT.Email.Tests.Common.Assets;
 using System.Collections.Generic;
 using Xunit;
 
-namespace OLT.Email.Smtp.Tests.Common
+namespace OLT.Email.Tests.Common
 {
     public class CommonTemplateTests
     {

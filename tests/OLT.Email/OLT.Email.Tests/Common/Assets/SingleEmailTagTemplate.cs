@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OLT.Email.Smtp.Tests.Common.Assets
+namespace OLT.Email.Tests.Common.Assets
 {
     public class SingleEmailTagTemplate : OltSingleEmailTagTemplate
     {
