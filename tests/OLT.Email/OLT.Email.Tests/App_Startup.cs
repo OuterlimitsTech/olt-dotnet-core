@@ -45,7 +45,6 @@ namespace OLT.Email.Tests
                 },                
             };
 
-            Console.Write($"{Environment.GetEnvironmentVariable("SMTP_HOST")}, {configuration.GetValue<string>("SMTP_HOST")}, {smtpTestServer.Host}");
 
             services.Configure<OltSmtpServer>(opt =>
             {
