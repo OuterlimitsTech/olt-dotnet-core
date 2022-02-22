@@ -24,7 +24,7 @@ namespace OLT.Email
         public  static Dictionary<string, string> ToDictionary(List<OltEmailTag> tags)
         {
             var dict = new Dictionary<string, string>();
-            tags.ForEach(tag =>
+            tags?.ForEach(tag =>
             {
                 if (!dict.ContainsKey(tag.Tag))
                 {

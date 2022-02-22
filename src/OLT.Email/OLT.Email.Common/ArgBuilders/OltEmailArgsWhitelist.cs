@@ -17,8 +17,13 @@ namespace OLT.Email
         /// </summary>
         /// <param name="value"><see cref="OltEmailConfigurationWhitelist"/></param>
         /// <returns><typeparamref name="T"/></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithWhitelist(OltEmailConfigurationWhitelist value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
             this.Whitelist = value;
             return (T)this;
         }

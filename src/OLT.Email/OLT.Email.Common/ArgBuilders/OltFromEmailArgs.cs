@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email
 {
@@ -19,19 +20,29 @@ namespace OLT.Email
         /// <param name="email"></param>
         /// <param name="name"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithFromEmail(string email, string name = null)
         {
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
             this.From = new OltEmailAddress(email, name);
             return (T)this;
         }
+
 
         /// <summary>
         /// From Email
         /// </summary>
         /// <param name="email"></param>
-        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithFromEmail(IOltEmailAddress email)
         {
+            if (email == null)
+            {
+                throw new ArgumentNullException(nameof(email));
+            }
             this.From = new OltEmailAddress(email.Email, email.Name);
             return (T)this;
         }

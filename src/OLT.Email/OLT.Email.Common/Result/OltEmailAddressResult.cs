@@ -1,11 +1,28 @@
 ﻿using OLT.Core;
+using System;
 
 namespace OLT.Email
 {
     public class OltEmailAddressResult : OltEmailAddress
     {
+        /// <summary>
+        /// Constructs Email Result 
+        /// </summary>
+        /// <param name="copyFrom"></param>
+        /// <param name="args"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public OltEmailAddressResult(IOltEmailAddress copyFrom, OltEmailBuilderArgs args)
         {
+            if (copyFrom == null)
+            {
+                throw new ArgumentNullException(nameof(copyFrom));
+            }
+
+            if (args == null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
             Name = copyFrom.Name;
             Email = copyFrom.Email;
 

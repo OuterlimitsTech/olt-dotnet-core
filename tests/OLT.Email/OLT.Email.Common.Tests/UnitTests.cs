@@ -1,6 +1,8 @@
 using FluentAssertions;
 using Microsoft.Extensions.Options;
+using OLT.Email.Common.Tests.Assets;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using Xunit;
 
 namespace OLT.Email.Common.Tests
 {
+
     public class ConfigurationTests
     {
         public class AppSettingsJsonDto
@@ -78,6 +81,10 @@ namespace OLT.Email.Common.Tests
             }           
 
         }
+
+       
+
+
 
     }
 }

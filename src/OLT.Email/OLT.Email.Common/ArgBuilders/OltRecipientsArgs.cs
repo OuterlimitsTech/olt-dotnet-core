@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OLT.Email
@@ -17,8 +18,14 @@ namespace OLT.Email
         /// Recipients to send to
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithRecipients(OltEmailRecipients value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             value.To?.ToList().ForEach(rec =>
             {
                 To.Add(new OltEmailAddress(rec.Email, rec.Name));
@@ -32,7 +39,7 @@ namespace OLT.Email
             return (T)this;
         }
         
-        protected OltEmailRecipientResult BuildRecipients()
+        protected virtual OltEmailRecipientResult BuildRecipients()
         {
             var recipientResult = new OltEmailRecipientResult();
 

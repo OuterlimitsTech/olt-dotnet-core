@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email
 {
@@ -15,8 +16,13 @@ namespace OLT.Email
         /// Add Attachment to Email
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithAttachment(OltEmailAttachment value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
             Attachments.Add(value);
             return (T)this;
         }

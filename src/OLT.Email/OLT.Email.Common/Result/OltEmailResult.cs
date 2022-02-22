@@ -8,7 +8,7 @@ namespace OLT.Email
     {
         public virtual bool Success => !Errors.Any();
         public virtual List<string> Errors { get; set; } = new List<string>();
-        public virtual OltEmailRecipientResult RecipientResults { get; set; }
+        public virtual OltEmailRecipientResult RecipientResults { get; set; } = new OltEmailRecipientResult();
     }
 
 
