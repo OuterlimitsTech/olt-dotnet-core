@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OLT.Email.Smtp\OLT.Email.Smtp.csproj" />
+    <ProjectReference Include="..\OLT.Email\OLT.Email.csproj" />
   </ItemGroup>
 
 </Project>

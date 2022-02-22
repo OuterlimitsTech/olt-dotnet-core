@@ -1,4 +1,4 @@
-﻿namespace OLT.Email.Smtp
+﻿namespace OLT.Email
 {
     public abstract class OltSmtpDisableSslArgs<T> : OltSmtpHostArgs<T>
       where T : OltSmtpDisableSslArgs<T>

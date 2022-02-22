@@ -10,7 +10,7 @@ using Xunit;
 
 namespace OLT.Extensions.General.Tests
 {
-    public class OltAttributeExtensionTests
+    public class AttributeExtensionsTests
     {
 
         public enum TestAttributeEnum1

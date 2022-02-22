@@ -1,4 +1,4 @@
-﻿namespace OLT.Email.Smtp
+﻿namespace OLT.Email
 {
     public class OltSmtpConfiguration : OltEmailConfiguration
     {

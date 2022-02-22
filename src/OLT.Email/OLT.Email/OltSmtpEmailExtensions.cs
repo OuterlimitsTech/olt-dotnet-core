@@ -1,5 +1,5 @@
 ﻿
-namespace OLT.Email.Smtp
+namespace OLT.Email
 {
 
     public static class OltSmtpEmailExtensions

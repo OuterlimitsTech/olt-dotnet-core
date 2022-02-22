@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace OLT.Email.Smtp
+namespace OLT.Email
 {
     public abstract class OltSmtpHostArgs<T> : OltFromEmailArgs<T>
        where T : OltSmtpHostArgs<T>

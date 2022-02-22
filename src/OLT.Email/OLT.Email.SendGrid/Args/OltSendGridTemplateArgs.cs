@@ -2,7 +2,6 @@
 using SendGrid.Helpers.Mail;
 using System;
 using System.Linq;
-using OLT.Email.Smtp;
 
 namespace OLT.Email.SendGrid
 {

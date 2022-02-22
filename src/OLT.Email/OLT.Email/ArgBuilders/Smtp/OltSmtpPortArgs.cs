@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OLT.Email.Smtp
+namespace OLT.Email
 {
     public abstract class OltSmtpPortArgs<T> : OltSmtpDisableSslArgs<T>
         where T : OltSmtpPortArgs<T>

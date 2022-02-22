@@ -189,6 +189,11 @@ namespace OLT.Email.Smtp.Tests.Common
             args.Invoking(args => args.WithAttachment(null)).Should().Throw<ArgumentNullException>();
             args.Invoking(args => args.WithWhitelist(null)).Should().Throw<ArgumentNullException>();
 
+            var msg = Faker.Lorem.GetFirstWord();
+            var testEx = new OltEmailValidationException(compareErrors, msg);
+            testEx.Errors.Should().BeEquivalentTo(compareErrors);
+            Assert.Equal(msg, testEx.Message);
+
         }
     }
 }

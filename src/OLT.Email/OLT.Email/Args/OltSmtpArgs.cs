@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 
-namespace OLT.Email.Smtp
+namespace OLT.Email
 {
     public class OltSmtpArgs : OltSmtpNetworkCredentialArgs<OltSmtpArgs>
     {

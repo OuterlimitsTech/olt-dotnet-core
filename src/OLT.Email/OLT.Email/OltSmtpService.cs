@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OLT.Email.Smtp
+namespace OLT.Email
 {
     public class OltSmtpService : OltDisposable
     {
