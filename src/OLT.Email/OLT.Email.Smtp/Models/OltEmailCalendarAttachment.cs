@@ -1,6 +1,4 @@
-﻿using OLT.Core;
-
-namespace OLT.Email
+﻿namespace OLT.Email
 {
     public class OltEmailCalendarAttachment : IOltEmailAttachment
     {

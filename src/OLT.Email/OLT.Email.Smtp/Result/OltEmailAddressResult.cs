@@ -1,5 +1,4 @@
-﻿using OLT.Core;
-using System;
+﻿using System;
 
 namespace OLT.Email
 {

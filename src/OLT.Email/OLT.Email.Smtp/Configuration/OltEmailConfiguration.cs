@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using OLT.Core;
-
-namespace OLT.Email
+﻿namespace OLT.Email
 {
     /// <summary>
     /// OLT Email Configuration
