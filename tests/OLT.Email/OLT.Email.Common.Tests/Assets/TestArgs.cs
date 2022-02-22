@@ -21,6 +21,7 @@ namespace OLT.Email.Common.Tests.Assets
         public List<OltEmailAddress> ToValue => base.To;
         public List<OltEmailAddress> CarbonCopyValue => base.CarbonCopy;
         public OltEmailRecipientResult BuildRecipientsValue => base.BuildRecipients();
+        public List<OltEmailAttachment> AttachmentValue => base.Attachments;
 
         public bool DoValidation()
         {

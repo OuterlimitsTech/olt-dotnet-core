@@ -99,7 +99,16 @@ namespace OLT.Email.Common.Tests
             args.WithFromEmail(new OltEmailAddress(email, personName));
             Assert.Equal(email, args.EmailValue.Email);
             Assert.Equal(personName, args.EmailValue.Name);
+            args.GetErrors().Should().HaveCount(1);
 
+            args.WithFromEmail(new OltEmailAddress(" ", personName));
+            args.GetErrors().Should().HaveCount(2);
+
+            args.WithFromEmail(new OltEmailAddress("", personName));
+            args.GetErrors().Should().HaveCount(2);
+
+            args.WithFromEmail(new OltEmailAddress(null, personName));
+            args.GetErrors().Should().HaveCount(2);
         }
 
         [Fact]
@@ -119,6 +128,9 @@ namespace OLT.Email.Common.Tests
             catch (TestException ex)
             {
                 compareErrors = ex.Errors;
+                var errorResult = ex.ToEmailResult();
+                compareErrors.Should().Equal(errorResult.Errors);
+                Assert.False(errorResult.Success);
             }
 
             var errors = args.GetErrors();

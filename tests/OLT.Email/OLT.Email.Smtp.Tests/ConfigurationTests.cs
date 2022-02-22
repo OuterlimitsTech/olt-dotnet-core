@@ -25,6 +25,37 @@ namespace OLT.Email.Smtp.Tests
             var message = Faker.Lorem.Paragraph();
 
 
+
+            var server = new SmtpServerConfig
+            {
+                Host = Faker.Internet.DomainName(),
+                DisableSsl = true,                
+                Port = Convert.ToInt16(Faker.RandomNumber.Next(1, short.MaxValue)),
+                Username = Faker.Internet.UserName(),
+                Password = Faker.Lorem.GetFirstWord()
+            };
+
+            var config = new OltSmtpConfiguration(server);
+            config.TestWhitelist.Domain.Add(whiteDomain);
+            config.TestWhitelist.Email.Add(whiteEmail);
+            config.From.Name = fromName;
+            config.From.Email = fromEmail;
+
+            Assert.NotNull(config.Smtp);
+            Assert.Equal(server.Host, config.Smtp.Host);
+            Assert.Equal(server.Port, config.Smtp.Port);
+            Assert.Equal(server.DisableSsl, config.Smtp.DisableSsl);
+
+            Assert.False(config.Production);
+            Assert.Equal(fromName, config.From.Name);
+            Assert.Equal(fromEmail, config.From.Email);
+            Assert.NotEmpty(config.TestWhitelist.Email);
+            Assert.NotEmpty(config.TestWhitelist.Domain);
+            Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
+            Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
+
+
+
             var smtpEmail = new OltSmtpEmail
             {
                 Subject = subject,
@@ -56,40 +87,13 @@ namespace OLT.Email.Smtp.Tests
             };
 
 
-            var server = new SmtpServerConfig
-            {
-                Host = Faker.Internet.DomainName(),
-                DisableSsl = true,                
-                Port = Convert.ToInt16(Faker.RandomNumber.Next(1, short.MaxValue)),
-                Username = Faker.Internet.UserName(),
-                Password = Faker.Lorem.GetFirstWord()
-            };
-
-            var config = new OltSmtpConfiguration(server);
-            config.TestWhitelist.Domain.Add(whiteDomain);
-            config.TestWhitelist.Email.Add(whiteEmail);
-            config.From.Name = fromName;
-            config.From.Email = fromEmail;
-
-            Assert.NotNull(config.Smtp);
-            Assert.Equal(server.Host, config.Smtp.Host);
-            Assert.Equal(server.Port, config.Smtp.Port);
-            Assert.Equal(server.DisableSsl, config.Smtp.DisableSsl);
-
-            Assert.False(config.Production);
-            Assert.Equal(fromName, config.From.Name);
-            Assert.Equal(fromEmail, config.From.Email);
-            Assert.NotEmpty(config.TestWhitelist.Email);
-            Assert.NotEmpty(config.TestWhitelist.Domain);
-            Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
-            Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
-
             var args = config.BuildArgs(smtpEmail);
             
             Assert.False(args.AllowSend(Faker.Internet.FreeEmail()));
             Assert.True(args.AllowSend(whiteEmail));
             Assert.True(args.AllowSend(email));
-
+            Assert.True(args.AllowSend($"{Faker.Lorem.GetFirstWord()}@{whiteDomain}"));
+            
             config.Production = true;
             Assert.True(config.Production);
 

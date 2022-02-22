@@ -44,7 +44,12 @@ namespace OLT.Email.Common.Tests
             Assert.Equal(model.FileName, fileName);
             Assert.Equal(model.ContentType, contentType);
             Assert.Equal(model.Bytes, bytes);
-            
+
+            var args = new TestArgs();
+            Assert.Empty(args.AttachmentValue);
+            args.WithAttachment(model);
+            Assert.NotEmpty(args.AttachmentValue);
+
         }
 
         [Fact]
