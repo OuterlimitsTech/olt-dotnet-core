@@ -8,8 +8,8 @@ namespace OLT.Email
         where TEmailAddress : class, IOltEmailAddress
     {
         public abstract string TemplateName { get; }
-        public virtual IEnumerable<TEmailAddress> To { get; set; }
-        public abstract IEnumerable<OltEmailTag> Tags { get; }
+        public virtual List<TEmailAddress> To { get; set; } = new List<TEmailAddress>();
+        public abstract List<OltEmailTag> Tags { get; }
         
 
         public object GetTemplateData()

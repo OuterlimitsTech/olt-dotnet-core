@@ -1,6 +1,5 @@
 using FluentAssertions;
 using Microsoft.Extensions.Options;
-using OLT.Email.Common.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using System.IO;

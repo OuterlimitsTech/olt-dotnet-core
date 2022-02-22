@@ -9,7 +9,7 @@ namespace OLT.Email
     {
         public abstract string TemplateName { get; }
         public virtual TEmailAddress To { get; set; }
-        public abstract IEnumerable<OltEmailTag> Tags { get; }        
+        public abstract List<OltEmailTag> Tags { get; }        
 
         public object GetTemplateData()
         {

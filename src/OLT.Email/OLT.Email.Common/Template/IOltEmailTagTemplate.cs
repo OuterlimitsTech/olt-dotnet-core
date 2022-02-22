@@ -4,12 +4,12 @@ namespace OLT.Email
 {
     public interface IOltEmailTagTemplate : IOltEmailTemplate
     {
-        IEnumerable<OltEmailTag> Tags { get; }
+        List<OltEmailTag> Tags { get; }
     }
 
-    public interface IOltEmailTagTemplate<out TEmailAddress> : IOltEmailTagTemplate
+    public interface IOltEmailTagTemplate<TEmailAddress> : IOltEmailTagTemplate
         where TEmailAddress : class, IOltEmailAddress
     {
-        IEnumerable<TEmailAddress> To { get; }
+        List<TEmailAddress> To { get; }
     }
 }

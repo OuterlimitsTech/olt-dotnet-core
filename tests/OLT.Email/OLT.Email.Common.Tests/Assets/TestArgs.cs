@@ -6,14 +6,6 @@ using System.Threading.Tasks;
 
 namespace OLT.Email.Common.Tests.Assets
 {
-    public class TestException : OltEmailValidationException
-    {
-        public TestException(List<string> errors) : base(errors, "Test Validation")
-        {
-        }
-
-    }
-
     public class TestArgs : OltFromEmailArgs<TestArgs>
     {
 

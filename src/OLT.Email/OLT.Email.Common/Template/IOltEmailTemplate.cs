@@ -8,10 +8,10 @@ namespace OLT.Email
         object GetTemplateData();
     }
 
-    public interface IOltEmailTemplate<out TEmailAddress> : IOltEmailTemplate
+    public interface IOltEmailTemplate<TEmailAddress> : IOltEmailTemplate
         where TEmailAddress : class, IOltEmailAddress
     {
-        IEnumerable<TEmailAddress> To { get; }
+        List<TEmailAddress> To { get; }
     }
 
 

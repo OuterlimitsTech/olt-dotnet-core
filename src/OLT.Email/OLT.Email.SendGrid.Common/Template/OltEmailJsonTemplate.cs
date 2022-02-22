@@ -8,7 +8,7 @@ namespace OLT.Email.SendGrid
 
     {
         public abstract string TemplateName { get; }
-        public abstract IEnumerable<TEmailAddress> To { get; set; }
+        public abstract List<TEmailAddress> To { get; set; }
         public abstract TModel TemplateData { get; set; }        
 
         public object GetTemplateData()
