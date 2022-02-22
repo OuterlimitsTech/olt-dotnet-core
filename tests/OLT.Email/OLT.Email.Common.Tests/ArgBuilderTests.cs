@@ -112,6 +112,52 @@ namespace OLT.Email.Common.Tests
         }
 
         [Fact]
+        public void Whitelist()
+        {
+            var args = new TestArgs().IsProduction(false);
+            var whiteEmail = Faker.Internet.Email();
+            var whiteDomain = Faker.Internet.DomainName();
+            var whiteDomainEmail = $"{Faker.Internet.UserName()}@{whiteDomain}";
+            var badDomainEmail = $"{Faker.Internet.UserName()}@{Faker.Internet.DomainName()}";
+
+
+            var emailList = new List<string>
+            {
+                whiteEmail
+            };
+
+            var domainList = new List<string>
+            {
+                whiteDomain
+            };
+
+            args.WithWhitelist(new OltEmailConfigurationWhitelist {  Domain =  null, Email =  null });
+            Assert.False(args.AllowSend(Faker.Internet.Email()));
+            Assert.False(args.AllowSend(badDomainEmail));
+            Assert.False(args.AllowSend(whiteEmail));
+            Assert.False(args.AllowSend(whiteDomainEmail));
+
+
+            args.WithWhitelist(new OltEmailConfigurationWhitelist { Domain = null, Email = emailList });
+            Assert.False(args.AllowSend(Faker.Internet.Email()));
+            Assert.False(args.AllowSend(badDomainEmail));
+            Assert.True(args.AllowSend(whiteEmail));
+            Assert.False(args.AllowSend(whiteDomainEmail));
+
+            args.WithWhitelist(new OltEmailConfigurationWhitelist { Domain = domainList, Email = null });
+            Assert.False(args.AllowSend(Faker.Internet.Email()));
+            Assert.False(args.AllowSend(badDomainEmail));
+            Assert.False(args.AllowSend(whiteEmail));
+            Assert.True(args.AllowSend(whiteDomainEmail));
+
+            args.WithWhitelist(new OltEmailConfigurationWhitelist { Domain = domainList, Email = emailList });
+            Assert.False(args.AllowSend(Faker.Internet.Email()));
+            Assert.False(args.AllowSend(badDomainEmail));
+            Assert.True(args.AllowSend(whiteEmail));
+            Assert.True(args.AllowSend(whiteDomainEmail));
+        }
+
+        [Fact]
         public void Errors()
         {
 

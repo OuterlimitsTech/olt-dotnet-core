@@ -27,6 +27,7 @@ namespace OLT.Email.Common.Tests
             Assert.Equal(nameof(SingleEmailTagTemplate), template.TemplateName);
             Assert.NotEmpty(template.Tags);
 
+            Assert.NotNull(template.GetTemplateData());
         }
 
 
@@ -57,6 +58,8 @@ namespace OLT.Email.Common.Tests
 
             Assert.Equal(nameof(EmailTagTemplate), template.TemplateName);
             Assert.NotEmpty(template.Tags);
+
+            Assert.NotNull(template.GetTemplateData());
 
         }
     }
