@@ -42,8 +42,7 @@ namespace OLT.Email
 
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this Exception ex, OltSmtpServer server, T template) where T : IOltApplicationErrorEmail
         {
-            var env = template.Environment ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
-            return BuildOltEmailClient(server, true, template).WithAppError(ex, template.AppName, env);
+            return BuildOltEmailClient(server, true, template).WithAppError(ex, template.AppName, template.Environment);
         }
 
         /// <summary>

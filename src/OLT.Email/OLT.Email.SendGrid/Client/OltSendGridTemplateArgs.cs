@@ -52,12 +52,12 @@ namespace OLT.Email.SendGrid
 
         protected virtual void ConfigureRecipients(SendGridMessage msg, OltEmailRecipientResult recipients)
         {
-            recipients.To?.Where(p => !p.Skipped && string.IsNullOrWhiteSpace(p.Error)).ToList().ForEach(rec =>
+            recipients.To.Where(p => !p.Skipped && string.IsNullOrWhiteSpace(p.Error)).ToList().ForEach(rec =>
             {
                 msg.AddTo(new EmailAddress(rec.Email, rec.Name));
             });
 
-            recipients.CarbonCopy?.Where(p => !p.Skipped && string.IsNullOrWhiteSpace(p.Error)).ToList().ForEach(rec =>
+            recipients.CarbonCopy.Where(p => !p.Skipped && string.IsNullOrWhiteSpace(p.Error)).ToList().ForEach(rec =>
             {
                 msg.AddCc(new EmailAddress(rec.Email, rec.Name));
             });

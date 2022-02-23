@@ -112,7 +112,7 @@ namespace OLT.Email.Tests.Smtp
             };
 
 
-            var args = config.BuildOltEmailClient(smtpEmail);
+            var args = OltSmtpEmailExtensions.BuildOltEmailClient(config, smtpEmail);
             
             Assert.False(args.AllowSend(Faker.Internet.FreeEmail()));
             Assert.True(args.AllowSend(whiteEmail));
@@ -122,13 +122,13 @@ namespace OLT.Email.Tests.Smtp
             config.Production = true;
             Assert.True(config.Production);
 
-            args = config.BuildOltEmailClient(smtpEmail);
+            args = OltSmtpEmailExtensions.BuildOltEmailClient(config, smtpEmail);
 
             Assert.True(args.AllowSend(Faker.Internet.FreeEmail()));
             Assert.True(args.AllowSend(whiteEmail));
             Assert.True(args.AllowSend(email));
 
-            args = config.BuildOltEmailClient(smtpEmail);
+            args = OltSmtpEmailExtensions.BuildOltEmailClient(config, smtpEmail);
 
             Assert.True(args.AllowSend(Faker.Internet.FreeEmail()));
             Assert.True(args.AllowSend(whiteEmail));

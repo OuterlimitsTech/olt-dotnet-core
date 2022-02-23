@@ -66,6 +66,26 @@ namespace OLT.Email.Tests.Smtp
             errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Body);
         }
 
+
+        [Fact]
+        public void WithAppError()
+        {
+            var args = new SmtpTestArgs();
+            var errorMsg = Faker.Lorem.Paragraph(10);
+            var appName = Faker.Lorem.Words(20).Last();
+            var environment = Faker.Lorem.Words(10).Last();
+
+            var ex = new Exception(errorMsg);
+            
+
+            args = args.WithAppError(ex, appName, environment);
+            Assert.StartsWith($"[{appName}] APPLICATION ERROR in {environment} Environment occurred at", args.SubjectLineValue);
+            Assert.Equal($"The following error occurred:{Environment.NewLine}{ex}", args.BodyValue);
+
+            var errors = args.GetErrors();
+            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host);
+        }
+
         [Fact]
         public void WithBody()
         {

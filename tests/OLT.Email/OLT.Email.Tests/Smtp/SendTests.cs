@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using OLT.Email.Tests.Smtp.Assets;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,10 +26,12 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
-        public async Task SmtpEmailException()
+        public async Task SmtpEmailExtensionsExceptionsTest()
         {
-            Assert.Throws<ArgumentNullException>(() => _smtpTestServer.BuildOltEmailClient(true, new OltSmtpEmail()).Send());
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _smtpTestServer.BuildOltEmailClient(true, new OltSmtpEmail()).SendAsync());
+
+
+            Assert.Throws<ArgumentNullException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, new OltSmtpEmail()).Send());
+            await Assert.ThrowsAsync<ArgumentNullException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, new OltSmtpEmail()).SendAsync());
 
             var smtpEmail = new OltSmtpEmail
             {
@@ -41,8 +44,60 @@ namespace OLT.Email.Tests.Smtp
                 },
             };
 
-            Assert.Throws<OltEmailValidationException>(() => _smtpTestServer.BuildOltEmailClient(true, smtpEmail).Send());
-            await Assert.ThrowsAsync<OltEmailValidationException>(() => _smtpTestServer.BuildOltEmailClient(true, smtpEmail).SendAsync());            
+            Assert.Throws<OltEmailValidationException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).Send());
+            await Assert.ThrowsAsync<OltEmailValidationException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).SendAsync());
+
+        }
+
+        [Fact]
+        public void ApplicationErrorEmailTests()
+        {
+            var exceptionMessage = Faker.Lorem.Paragraph(10);
+            var appName = $"Unit Test of {nameof(ApplicationErrorEmailTests)}";
+            var environment = Faker.Company.Name();
+            var email = Faker.Internet.Email();
+            var ex = new Exception(exceptionMessage);
+
+
+            var smtpEmail = new OltApplicationErrorEmail
+            {
+                Subject = Faker.Lorem.Words(34).Last(),
+                Body = Faker.Lorem.Paragraph(4),
+                AppName = appName,
+                Environment = environment,
+                From = new OltEmailAddress
+                {
+                    Name = Faker.Name.FullName(),
+                    Email = Faker.Internet.Email()
+                },
+                Recipients = new OltEmailRecipients
+                {
+                    To = new List<IOltEmailAddress>
+                    {
+                        new OltEmailAddress(email)
+                    }
+                }
+            };
+
+            Assert.Equal(appName, smtpEmail.AppName);
+            Assert.Equal(environment, smtpEmail.Environment);
+
+            var args = OltSmtpEmailExtensions.BuildOltEmailClient(ex, _smtpTestServer, smtpEmail);
+            Assert.True(args.AllowSend(email));
+
+            Assert.Throws<Exception>(() => OltSmtpEmailExtensions.OltEmailError(ex, _smtpTestServer, smtpEmail, true));
+
+            try
+            {
+                OltSmtpEmailExtensions.OltEmailError(ex, _smtpTestServer, smtpEmail, false);
+                Assert.True(true);
+            }
+            catch
+            {
+                Assert.True(false);
+            }
+            
+            
 
         }
 
@@ -52,12 +107,13 @@ namespace OLT.Email.Tests.Smtp
             var invalidServer = new OltSmtpServer
             {
                 Host = _smtpTestServer.Host,
-                Port = _smtpTestServer.Port,
+                Port = null,
+                Credentials = null
             };
 
             var smtpEmail = new OltSmtpEmail
             {
-                Subject = Faker.Lorem.GetFirstWord(),
+                Subject = $"{Faker.Lorem.Words(10).Last()} {Faker.Lorem.Words(40).Last()}",
                 Body = Faker.Lorem.Paragraph(4),
                 From = new OltEmailAddress
                 {
@@ -77,11 +133,74 @@ namespace OLT.Email.Tests.Smtp
                 },
             };
 
-            var result1 = invalidServer.BuildOltEmailClient(true, smtpEmail).Send();
-            var result2 = await invalidServer.BuildOltEmailClient(true, smtpEmail).SendAsync();
+            var result1 = OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).Send();
+            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).SendAsync();
 
             Assert.False(result2.Success);
             result2.Should().BeEquivalentTo(result1);
+
+        }
+
+        [Fact]
+        public async Task PortTests()
+        {
+            short? portNumber = 0;
+            var subject = $"{Faker.Lorem.Words(10).Last()} {Faker.Lorem.Words(40).Last()}";
+
+            var smtpEmail = new OltSmtpEmail
+            {
+                Subject = $"Port {portNumber} Test - {subject}",
+                Body = Faker.Lorem.Paragraph(4),
+                From = new OltEmailAddress
+                {
+                    Name = Faker.Name.FullName(),
+                    Email = Faker.Internet.Email()
+                },
+                Recipients = new OltEmailRecipients
+                {
+                    To = new List<IOltEmailAddress>
+                        {
+                            new OltEmailAddress
+                            {
+                                Name = Faker.Name.FullName(),
+                                Email = Faker.Internet.FreeEmail()
+                            }
+                        },
+                },
+            };
+
+            var validServerNoPort = new OltSmtpServer
+            {
+                Host = _smtpTestServer.Host,
+                Port = portNumber,
+                Credentials = new OltSmtpCredentials
+                {
+                    Username = _smtpTestServer.Credentials.Username,
+                    Password = _smtpTestServer.Credentials.Password
+                }
+            };
+
+            var result = await OltSmtpEmailExtensions.BuildOltEmailClient(validServerNoPort, true, smtpEmail).SendAsync();
+            Assert.True(result.Success);
+
+            portNumber = 2525;
+
+            smtpEmail.Subject = $"Port {portNumber} Test - {subject}";
+
+            validServerNoPort = new OltSmtpServer
+            {
+                Host = _smtpTestServer.Host,
+                Port = portNumber,
+                Credentials = new OltSmtpCredentials
+                {
+                    Username = _smtpTestServer.Credentials.Username,
+                    Password = _smtpTestServer.Credentials.Password
+                }
+            };
+
+            result = await OltSmtpEmailExtensions.BuildOltEmailClient(validServerNoPort, true, smtpEmail).SendAsync();
+            Assert.True(result.Success);
+
         }
 
         [Fact]
@@ -165,10 +284,10 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(fromName, smtpEmail.From.Name);
             Assert.Equal(fromEmail, smtpEmail.From.Email);
 
-            var result = _smtpTestServer.BuildOltEmailClient(true, smtpEmail).Send();
+            var result = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).Send();
             Assert.True(result.Success);
 
-            var result2 = await _smtpTestServer.BuildOltEmailClient(true, smtpEmail).SendAsync();
+            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).SendAsync();
             Assert.True(result.Success);
             result2.Should().BeEquivalentTo(result);
             result2.RecipientResults.To.Should().HaveSameCount(smtpEmail.Recipients.To);
@@ -232,7 +351,7 @@ namespace OLT.Email.Tests.Smtp
             var bytes = Encoding.ASCII.GetBytes(calString);
 
             Assert.NotEmpty(bytes);
-            var result1 = _smtpTestServer.BuildOltEmailClient(true, smtpEmail).WithCalendarInvite(bytes).Send();                       
+            var result1 = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).WithCalendarInvite(bytes).Send();                       
             Assert.True(result1.Success);
         }
 
