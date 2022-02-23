@@ -53,7 +53,7 @@ namespace OLT.Email
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(From?.Email))
             {
-                errors.Add(OltCommonArgErrors.From);
+                errors.Add(OltArgErrorsCommon.From);
             }
 
             return errors;

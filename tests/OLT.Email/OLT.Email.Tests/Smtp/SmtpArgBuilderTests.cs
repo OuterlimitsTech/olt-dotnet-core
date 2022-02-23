@@ -11,6 +11,7 @@ namespace OLT.Email.Tests.Smtp
 {
     public class SmtpArgBuilderTests
     {
+
         [Fact]
         public void WithSmtpHost()
         {
@@ -22,7 +23,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.SmtpHostValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
         [Fact]
@@ -35,7 +36,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.True(args.SmtpSSLDisabledValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
         [Fact]
@@ -49,7 +50,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.SmtpPortValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
         [Fact]
@@ -63,7 +64,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.SubjectLineValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Body);
         }
 
 
@@ -83,7 +84,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal($"The following error occurred:{Environment.NewLine}{ex}", args.BodyValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host);
         }
 
         [Fact]
@@ -97,7 +98,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.BodyValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject);
         }
 
         [Fact]
@@ -113,7 +114,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(password, args.SmtpPasswordValue);
 
             var errors = args.GetErrors();
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
 
@@ -140,7 +141,7 @@ namespace OLT.Email.Tests.Smtp
 
             var errors = args.GetErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithSmtpNetworkCredentials(null, null)).Should().Throw<ArgumentNullException>();
@@ -150,7 +151,130 @@ namespace OLT.Email.Tests.Smtp
             args.Invoking(args => args.WithSubject(null)).Should().Throw<ArgumentNullException>();
             args.Invoking(args => args.WithSmtpPort(0)).Should().Throw<ArgumentOutOfRangeException>();
             args.Invoking(args => args.WithSmtpHost(null)).Should().Throw<ArgumentNullException>();
-            args.Invoking(args => args.WithCalendarInvite(null)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithCalendarInvite(null)).Should().Throw<ArgumentNullException>();            
+            args.Invoking(args => args.WithAppError(null, null, null)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithAppError(new Exception(Faker.Name.Last()), null, null)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithAppError(new Exception(Faker.Name.First()), Faker.Company.Name(), null)).Should().Throw<ArgumentNullException>();
+        }
+
+
+        [Fact]
+        public void AllowSendTests()
+        {
+
+            var blockEmail1 = Faker.Internet.Email();
+            var blockEmail2 = Faker.Internet.Email();
+
+            var whiteEmail = Faker.Internet.Email();
+            var whiteDomain = Faker.Internet.DomainName();
+            var whiteEmailDomain = $"{Faker.Internet.UserName()}@{whiteDomain}";
+            
+
+            var bccWhiteEmail = Faker.Internet.Email();
+            var bccWhiteDomain = Faker.Internet.DomainName();
+            var bccWhiteEmailDomain = $"{Faker.Internet.UserName()}@{bccWhiteDomain}";
+
+            var whitelist = new OltEmailConfigurationWhitelist();
+            whitelist.Email.Add(whiteEmail);
+            whitelist.Email.Add(bccWhiteEmail);
+
+            whitelist.Domain.Add(whiteDomain);
+            whitelist.Domain.Add(bccWhiteDomain);
+
+
+            var server = new OltSmtpServer
+            {
+                Host = Faker.Internet.DomainName(),
+                DisableSsl = true,
+                Port = Convert.ToInt16(Faker.RandomNumber.Next(1, short.MaxValue)),
+                Credentials = new OltSmtpCredentials
+                {
+                    Username = Faker.Internet.UserName(),
+                    Password = Faker.Lorem.GetFirstWord()
+                }
+            };
+
+            var smtpEmail = new OltSmtpEmail
+            {
+                Subject = Faker.Lorem.Sentence(),
+                Body = Faker.Lorem.Paragraph(),
+                Recipients = new OltEmailRecipients
+                {
+                    To = new List<IOltEmailAddress>
+                    {
+                        new OltEmailAddress
+                        {
+                            Email = whiteEmail
+                        },
+                        new OltEmailAddress
+                        {
+                            Email = whiteEmailDomain
+                        },
+                        new OltEmailAddress
+                        {
+                            Email = blockEmail1
+                        },
+                    },
+                    CarbonCopy = new List<IOltEmailAddress>
+                    {
+                        new OltEmailAddress
+                        {
+                            Email = bccWhiteEmail
+                        },
+                        new OltEmailAddress
+                        {
+                            Email = bccWhiteEmailDomain
+                        },
+                        new OltEmailAddress
+                        {
+                            Email = blockEmail2
+                        },
+                    }
+                },
+                From = new OltEmailAddress
+                {
+                    Email = Faker.Internet.Email()
+                },
+            };
+
+            var args = OltSmtpEmailExtensions.BuildOltEmailClient(server, false, smtpEmail).WithWhitelist(whitelist);
+            var recipientResult = args.BuildRecipients();
+
+            recipientResult.To.Should().NotBeNull();
+            recipientResult.To.Should().HaveCount(smtpEmail.Recipients.To.Count);
+
+            recipientResult.CarbonCopy.Should().NotBeNull();
+            recipientResult.CarbonCopy.Should().HaveCount(smtpEmail.Recipients.CarbonCopy.Count);
+
+            TestResult(recipientResult.To.FirstOrDefault(p => p.Email == whiteEmail), true);
+            TestResult(recipientResult.To.FirstOrDefault(p => p.Email == whiteEmailDomain), true);
+            TestResult(recipientResult.To.FirstOrDefault(p => p.Email == blockEmail1), false);
+
+            TestResult(recipientResult.CarbonCopy.FirstOrDefault(p => p.Email == bccWhiteEmail), true);
+            TestResult(recipientResult.CarbonCopy.FirstOrDefault(p => p.Email == bccWhiteEmailDomain), true);
+            TestResult(recipientResult.CarbonCopy.FirstOrDefault(p => p.Email == blockEmail2), false);
+
+            
+        }
+
+        private static void TestResult(OltEmailAddressResult result, bool success)
+        {
+            Assert.Equal(success, result.Success);
+            Assert.Null(result.Error);
+
+            if (success)
+            {
+                Assert.True(result.Sent);
+                Assert.False(result.Skipped);
+                Assert.Null(result.SkipReason);                
+            }
+            else
+            {
+                Assert.False(result.Sent);
+                Assert.True(result.Skipped);
+                Assert.Equal("Email not in whitelist", result.SkipReason);
+            }
+            
 
         }
     }

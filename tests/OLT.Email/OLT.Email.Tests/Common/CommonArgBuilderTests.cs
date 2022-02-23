@@ -180,7 +180,7 @@ namespace OLT.Email.Tests.Common
 
             var errors = args.GetErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltCommonArgErrors.Recipients, OltCommonArgErrors.From);
+            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithFromEmail(null)).Should().Throw<ArgumentNullException>();

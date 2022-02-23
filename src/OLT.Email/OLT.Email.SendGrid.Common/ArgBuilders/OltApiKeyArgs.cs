@@ -18,8 +18,13 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <param name="apiKey"></param>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithApiKey(string apiKey)
         {
+            if (apiKey == null)
+            {
+                throw new ArgumentNullException(nameof(apiKey));
+            }
             this.ApiKey = apiKey;
             return (T)this;
         }
@@ -29,7 +34,7 @@ namespace OLT.Email.SendGrid
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(ApiKey))
             {
-                errors.Add("SendGrid API Key Missing");
+                errors.Add(OltArgErrorsSendGrid.ApiKey);
             }
             return errors;
         }

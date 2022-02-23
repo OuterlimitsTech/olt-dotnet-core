@@ -1,4 +1,6 @@
-﻿namespace OLT.Email.SendGrid
+﻿using System;
+
+namespace OLT.Email.SendGrid
 {
     public abstract class OltUnsubscribeGroupArgs<T> : OltDisableClickTrackingArgs<T>
         where T : OltUnsubscribeGroupArgs<T>
@@ -13,9 +15,14 @@
         /// Send Grid Template
         /// </summary>
         /// <returns></returns>
-        public T WithUnsubscribeGroupId(int value)
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public T WithUnsubscribeGroupId(int unsubscribeGroupId)
         {
-            this.UnsubscribeGroupId = value;
+            if (unsubscribeGroupId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(unsubscribeGroupId), "must be greater than zero");
+            }
+            this.UnsubscribeGroupId = unsubscribeGroupId;
             return (T)this;
         }
 

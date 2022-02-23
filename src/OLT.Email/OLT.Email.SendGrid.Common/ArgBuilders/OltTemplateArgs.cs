@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Email.SendGrid
 {
@@ -16,8 +17,13 @@ namespace OLT.Email.SendGrid
         /// Send Grid Template
         /// </summary>
         /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public T WithTemplate(IOltEmailTemplate template)
         {
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
             this.Template = template;
             return (T)this;
         }
@@ -27,7 +33,7 @@ namespace OLT.Email.SendGrid
             var errors = base.Validate();
             if (string.IsNullOrWhiteSpace(Template?.TemplateId))
             {
-                errors.Add("SendGrid Template ID Missing");
+                errors.Add(OltArgErrorsSendGrid.TemplateId);
             }
             return errors;
         }

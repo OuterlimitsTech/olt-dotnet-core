@@ -99,8 +99,8 @@ namespace OLT.Email.Tests.Smtp
                     {
                         new OltEmailAddress
                         {
-                            Name = bccEmail,
-                            Email = bccName
+                            Name = bccName,
+                            Email = bccEmail,
                         }
                     }
                 },

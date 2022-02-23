@@ -38,6 +38,14 @@ namespace OLT.Email
             {
                 throw new ArgumentNullException(nameof(exception));
             }
+            if (appName == null)
+            {
+                throw new ArgumentNullException(nameof(appName));
+            }
+            if (environment == null)
+            {
+                throw new ArgumentNullException(nameof(environment));
+            }
             this.SubjectLine = $"[{appName}] APPLICATION ERROR in {environment} Environment occurred at {DateTimeOffset.Now:f}";
             this.Body = $"The following error occurred:{Environment.NewLine}{exception}";
             return (T)this;

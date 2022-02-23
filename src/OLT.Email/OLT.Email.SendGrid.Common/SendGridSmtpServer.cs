@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace OLT.Email.SendGrid.Common
+namespace OLT.Email.SendGrid
 {
     public class OltSendGridSmtpServer : OltSmtpServer
     {        
