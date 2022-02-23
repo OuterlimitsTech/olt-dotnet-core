@@ -17,7 +17,7 @@ namespace OLT.Email.Tests.Common.Assets
 
         public bool DoValidation()
         {
-            var errors = Validate();
+            var errors = ValidationErrors();
             if (errors.Any())
             {
                 throw new OltEmailValidationException(errors);
@@ -25,9 +25,9 @@ namespace OLT.Email.Tests.Common.Assets
             return true;
         }
 
-        public List<string> GetErrors()
+        public override Task<OltEmailResult> SendAsync()
         {
-            return Validate();
+            throw new NotImplementedException();
         }
     }
 }

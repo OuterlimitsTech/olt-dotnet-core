@@ -51,9 +51,9 @@ namespace OLT.Email
             return (T)this;
         }
 
-        protected override List<string> Validate()
+        public override List<string> ValidationErrors()
         {
-            var errors = base.Validate();
+            var errors = base.ValidationErrors();
             if (string.IsNullOrWhiteSpace(Body))
             {
                 errors.Add(OltSmtpArgErrors.Body);
@@ -61,7 +61,7 @@ namespace OLT.Email
             return errors;
         }
 
-        public virtual MailMessage CreateMessage(OltEmailRecipientResult recipients)
+        public override MailMessage CreateMessage(OltEmailRecipientResult recipients)
         {
             var msg = new MailMessage
             {

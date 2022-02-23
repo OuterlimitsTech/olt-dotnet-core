@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using OLT.Email.SendGrid;
+using System.Collections.Generic;
 
-namespace OLT.Email.Tests.Common.Assets
+namespace OLT.Email.SendGrid.Tests.Assets
 {
     public class EmailTagTemplate : OltEmailTagTemplate
     {
-        public override string TemplateId => nameof(EmailTagTemplate);
+        public override string TemplateId { get; set; } = nameof(EmailTagTemplate);
 
         public string Value1 { get; set; }
         public string Value2 { get; set; }

@@ -39,7 +39,7 @@ namespace OLT.Email
             return (T)this;
         }
         
-        public virtual OltEmailRecipientResult BuildRecipients()
+        public override OltEmailRecipientResult BuildRecipients()
         {
             var recipientResult = new OltEmailRecipientResult();
 
@@ -63,9 +63,9 @@ namespace OLT.Email
             return recipientResult;
         }
 
-        protected override List<string> Validate()
+        public override List<string> ValidationErrors()
         {
-            var errors = base.Validate();
+            var errors = base.ValidationErrors();
             if (!To.Any())
             {
                 errors.Add(OltArgErrorsCommon.Recipients);

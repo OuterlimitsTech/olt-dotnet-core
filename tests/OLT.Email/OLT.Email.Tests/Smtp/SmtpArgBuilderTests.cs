@@ -22,7 +22,7 @@ namespace OLT.Email.Tests.Smtp
             args = args.WithSmtpHost(value);
             Assert.Equal(value, args.SmtpHostValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
@@ -35,7 +35,7 @@ namespace OLT.Email.Tests.Smtp
             args = args.WithSmtpSSLDisabled(true);
             Assert.True(args.SmtpSSLDisabledValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
@@ -49,7 +49,7 @@ namespace OLT.Email.Tests.Smtp
             args = args.WithSmtpPort(value);
             Assert.Equal(value, args.SmtpPortValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
@@ -63,7 +63,7 @@ namespace OLT.Email.Tests.Smtp
             args = args.WithSubject(value);
             Assert.Equal(value, args.SubjectLineValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Body);
         }
 
@@ -83,7 +83,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.StartsWith($"[{appName}] APPLICATION ERROR in {environment} Environment occurred at", args.SubjectLineValue);
             Assert.Equal($"The following error occurred:{Environment.NewLine}{ex}", args.BodyValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host);
         }
 
@@ -97,7 +97,7 @@ namespace OLT.Email.Tests.Smtp
             args = args.WithBody(value);
             Assert.Equal(value, args.BodyValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject);
         }
 
@@ -113,7 +113,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(username, args.SmtpUsernameValue);
             Assert.Equal(password, args.SmtpPasswordValue);
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
@@ -139,7 +139,7 @@ namespace OLT.Email.Tests.Smtp
                 Assert.False(errorResult.Success);
             }
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
             errors.Should().BeEquivalentTo(compareErrors);

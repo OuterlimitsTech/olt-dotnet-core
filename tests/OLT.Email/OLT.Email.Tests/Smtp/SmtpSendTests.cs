@@ -14,12 +14,12 @@ namespace OLT.Email.Tests.Smtp
     /// <summary>
     /// BE CAREFUL.  The free tier for mailtrap limits the number of emails sent
     /// </summary>
-    public class SendTests
+    public class SmtpSendTests
     {
         private readonly OltSmtpServer _smtpTestServer;
         private readonly IConfiguration _configuration;
 
-        public SendTests(
+        public SmtpSendTests(
             IConfiguration configuration,
             IOptions<OltSmtpServer> options)
         {
@@ -140,8 +140,8 @@ namespace OLT.Email.Tests.Smtp
                 },
             };
 
-            var result1 = OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).Send();  //SHOULD FAIL
-            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).SendAsync();  //SHOULD FAIL
+            var result1 = OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).Send();
+            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).SendAsync();
 
             Assert.False(result2.Success);
             result2.Should().BeEquivalentTo(result1);
@@ -175,7 +175,7 @@ namespace OLT.Email.Tests.Smtp
             var fromName = $"{Faker.Name.First()} Unit Test";
             var fromEmail = _configuration.GetValue<string>("SMTP_FROM_ADDRESS") ?? Environment.GetEnvironmentVariable("SMTP_FROM_ADDRESS");
             var subject = $"Unit Test Email {now:f} Run - {buildVersion} ";
-            var message = $"{buildVersion} -> This was generated on {now:f} from {this.GetType().Assembly.GetName().Name}.{nameof(SendTests)}.{nameof(SmtpEmail)}";
+            var message = $"{buildVersion} -> This was generated on {now:f} from {this.GetType().Assembly.GetName().Name}.{nameof(SmtpSendTests)}.{nameof(SmtpEmail)}";
 
 
             var smtpEmail = new OltSmtpEmail

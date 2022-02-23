@@ -2,17 +2,16 @@
 
 namespace OLT.Email.SendGrid
 {
-    public class OltSendGridSmtpServer : OltSmtpServer
+    public class OltSmtpServerSendGrid : OltSmtpServer
     {        
-        public OltSendGridSmtpServer()
+        protected OltSmtpServerSendGrid()
         {
             Host = "smtp.sendgrid.net";
             Port = 587;
-            Credentials.Username = "apiKey";
-            Credentials.Password =  Environment.GetEnvironmentVariable("SMTP_PASSWORD");
+            Credentials.Username = "apiKey";            
         }
 
-        public OltSendGridSmtpServer(string apiKey) : this()
+        public OltSmtpServerSendGrid(string apiKey) : this()
         {
             if (apiKey == null)
             {

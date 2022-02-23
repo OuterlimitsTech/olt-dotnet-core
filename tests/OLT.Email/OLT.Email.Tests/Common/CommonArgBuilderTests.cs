@@ -98,16 +98,16 @@ namespace OLT.Email.Tests.Common
             args.WithFromEmail(new OltEmailAddress(email, personName));
             Assert.Equal(email, args.EmailValue.Email);
             Assert.Equal(personName, args.EmailValue.Name);
-            args.GetErrors().Should().HaveCount(1);
+            args.ValidationErrors().Should().HaveCount(1);
 
             args.WithFromEmail(new OltEmailAddress(" ", personName));
-            args.GetErrors().Should().HaveCount(2);
+            args.ValidationErrors().Should().HaveCount(2);
 
             args.WithFromEmail(new OltEmailAddress("", personName));
-            args.GetErrors().Should().HaveCount(2);
+            args.ValidationErrors().Should().HaveCount(2);
 
             args.WithFromEmail(new OltEmailAddress(null, personName));
-            args.GetErrors().Should().HaveCount(2);
+            args.ValidationErrors().Should().HaveCount(2);
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace OLT.Email.Tests.Common
                 Assert.False(errorResult.Success);
             }
 
-            var errors = args.GetErrors();
+            var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
             errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From);
             errors.Should().BeEquivalentTo(compareErrors);

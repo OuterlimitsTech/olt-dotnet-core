@@ -1,35 +1,55 @@
 ﻿using FluentAssertions;
-using OLT.Email.SendGrid.Tests.Assets.SendGrid.Json;
+using OLT.Email.SendGrid.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.Email.SendGrid.Tests
 {
-    public class GeneralTests
+    public class SendGridGeneralTests
     {
         [Fact]
         public void ServerValues()
         {
-            var server = new OltSendGridSmtpServer();
+            var password = Faker.Internet.UserName();
+            var server = new OltSmtpServerSendGrid(password);
             short port = 587;
 
             Assert.Equal("smtp.sendgrid.net", server.Host);
             Assert.Equal(port, server.Port);
             Assert.False(server.DisableSsl);
             Assert.Equal("apiKey", server.Credentials.Username);
-            Assert.Equal(Environment.GetEnvironmentVariable("SMTP_PASSWORD"), server.Credentials.Password);
-
-
-            var password = Faker.Internet.UserName();
-            server = new OltSendGridSmtpServer(password);
             Assert.Equal(password, server.Credentials.Password);
 
+            Assert.Throws<ArgumentNullException>(() => new OltSmtpServerSendGrid(null));
         }
 
+        [Fact]
+        public void SmtpClient()
+        {
+            var password = Faker.Internet.UserName();
+            var server = new OltSmtpServerSendGrid(password);
+            var args = new OltEmailClientSmtpSendGrid().WithApiKey(password);
+
+            using (var client = args.CreateClient())
+            {
+                Assert.Equal(server.Host, client.Host);
+                Assert.Equal(server.Port.Value, client.Port);
+                Assert.True(client.EnableSsl);
+                Assert.Equal(password, server.Credentials.Password);
+
+                var cred = (NetworkCredential)client.Credentials;
+                Assert.Equal(server.Credentials.Username, cred.UserName);                
+                Assert.Equal(password, cred.Password);
+            }
+
+
+
+        }
 
         [Fact]
         public void SendGridValidationExceptionTests()
@@ -52,6 +72,11 @@ namespace OLT.Email.SendGrid.Tests
             
             var data = new EmailDataJson
             {
+                Recipient = new EmailRecipientJson
+                {
+                    First = Faker.Name.First(),
+                    FullName = Faker.Name.FullName(),
+                },
                 Build = new EmailDataBuildVersionJson
                 {
                     Version = Faker.Country.Name()
@@ -63,7 +88,7 @@ namespace OLT.Email.SendGrid.Tests
                 }
             };
 
-            var template = new JsonEmailTemplate
+            var template = new FakeJsonEmailTemplate
             {
                 TemplateData = data
             };
@@ -80,11 +105,11 @@ namespace OLT.Email.SendGrid.Tests
                 new OltEmailAddress(email2, firstName2)
             };
 
-            template.To.Add(new OltEmailAddress(email1, firstName1));
-            template.To.Add(new OltEmailAddress(email2, firstName2));
-            template.To.Should().BeEquivalentTo(list);
+            template.Recipients.To.Add(new OltEmailAddress(email1, firstName1));
+            template.Recipients.To.Add(new OltEmailAddress(email2, firstName2));
+            template.Recipients.To.Should().BeEquivalentTo(list);
             template.TemplateData.Should().BeEquivalentTo(data);
-            Assert.Equal(nameof(JsonEmailTemplate), template.TemplateId);
+            Assert.Equal(nameof(FakeJsonEmailTemplate), template.TemplateId);
             template.GetTemplateData().Should().BeEquivalentTo(data);
         }
     }

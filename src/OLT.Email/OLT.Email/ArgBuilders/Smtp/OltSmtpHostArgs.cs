@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Email
 {
-    public abstract class OltSmtpHostArgs<T> : OltFromEmailArgs<T>
+    public abstract class OltSmtpHostArgs<T> : OltFromEmailArgs<T>, IOltSmtpClient
        where T : OltSmtpHostArgs<T>
     {
         protected internal string SmtpHost { get; set; }
@@ -31,9 +31,9 @@ namespace OLT.Email
             return (T)this;
         }
 
-        protected override List<string> Validate()
+        public override List<string> ValidationErrors()
         {
-            var errors = base.Validate();
+            var errors = base.ValidationErrors();
             if (string.IsNullOrWhiteSpace(SmtpHost))
             {
                 errors.Add(OltSmtpArgErrors.Host);
@@ -53,6 +53,9 @@ namespace OLT.Email
                 msg.CC.Add(new MailAddress(rec.Email, rec.Name));
             });
         }
+
+        public abstract SmtpClient CreateClient();
+        public abstract MailMessage CreateMessage(OltEmailRecipientResult recipients);
     }
 
    

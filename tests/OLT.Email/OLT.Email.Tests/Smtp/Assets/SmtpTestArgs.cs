@@ -10,7 +10,7 @@ namespace OLT.Email.Tests.Smtp.Assets
     {
         public string SmtpHostValue => base.SmtpHost;
         public bool SmtpSSLDisabledValue => base.SmtpSSLDisabled;
-        public short SmtpPortValue => base.SmtpPort;
+        public int SmtpPortValue => base.SmtpPort;
         public string BodyValue => base.Body;
         public string SubjectLineValue => base.SubjectLine;
         public string SmtpUsernameValue => base.SmtpUsername;
@@ -18,17 +18,12 @@ namespace OLT.Email.Tests.Smtp.Assets
 
         public bool DoValidation()
         {
-            var errors = Validate();
+            var errors = ValidationErrors();
             if (errors.Any())
             {
                 throw new OltEmailValidationException(errors);
             }
             return true;
-        }
-
-        public List<string> GetErrors()
-        {
-            return Validate();
         }
 
         public override OltEmailResult Send()

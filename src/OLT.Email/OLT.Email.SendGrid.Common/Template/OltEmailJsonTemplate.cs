@@ -2,14 +2,15 @@
 
 namespace OLT.Email.SendGrid
 {
-    public abstract class OltEmailJsonTemplate<TEmailAddress, TModel> : IOltEmailJsonTemplate<TEmailAddress, TModel>
-        where TEmailAddress : class, IOltEmailAddress
+    public abstract class OltEmailJsonTemplate<TModel> : IOltEmailJsonTemplate<TModel>, IOltEmailTemplate
         where TModel : class
 
     {
-        public abstract string TemplateId { get; }
-        public abstract List<TEmailAddress> To { get; set; }
-        public abstract TModel TemplateData { get; set; }        
+        public abstract string TemplateId { get; set; }
+        
+        public abstract TModel TemplateData { get; set; }
+
+        public virtual OltEmailRecipients Recipients {  get; set; } = new OltEmailRecipients();
 
         public object GetTemplateData()
         {

@@ -15,7 +15,7 @@ namespace OLT.Email.SendGrid.Common
         /// <param name="rethrowException"></param>
         public static void OltEmailError(this Exception ex, string apiKey, IOltApplicationErrorEmail template, bool rethrowException = false)
         {
-            OltSmtpEmailExtensions.OltEmailError(ex, new OltSendGridSmtpServer(apiKey), template, rethrowException);
+            OltSmtpEmailExtensions.OltEmailError(ex, new OltSmtpServerSendGrid(apiKey), template, rethrowException);
         }
 
     }

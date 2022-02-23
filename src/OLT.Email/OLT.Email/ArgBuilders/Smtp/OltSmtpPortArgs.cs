@@ -7,7 +7,7 @@ namespace OLT.Email
     public abstract class OltSmtpPortArgs<T> : OltSmtpDisableSslArgs<T>
         where T : OltSmtpPortArgs<T>
     {
-        protected internal short SmtpPort { get; set; } = 587;
+        protected internal int SmtpPort { get; set; } = 587;
 
         protected OltSmtpPortArgs()
         {
@@ -19,7 +19,7 @@ namespace OLT.Email
         /// <remarks>Default is 587</remarks>
         /// <param name="port"></param>
         /// <returns></returns>
-        public T WithSmtpPort(short port)
+        public T WithSmtpPort(int port)
         {
             if (port <= 0)
             {
@@ -29,10 +29,9 @@ namespace OLT.Email
             return (T)this;
         }
 
-        public virtual SmtpClient CreateClient()
+        public override SmtpClient CreateClient()
         {
             var client = new SmtpClient(SmtpHost, SmtpPort);
-
             if (!SmtpSSLDisabled)
             {
                 client.EnableSsl = true;

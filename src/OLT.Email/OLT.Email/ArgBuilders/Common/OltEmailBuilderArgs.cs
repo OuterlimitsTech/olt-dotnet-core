@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OLT.Email
 {
 
-    public abstract class OltEmailBuilderArgs
+    public abstract class OltEmailBuilderArgs : IOltEmailClient 
     {
-
+        
         // <summary>
         // Production Enabled
         // </summary>
@@ -18,10 +20,26 @@ namespace OLT.Email
         // </summary>
         public abstract bool AllowSend(string emailAddress);
 
+        public virtual bool IsValid => !ValidationErrors().Any();
 
-        protected virtual List<string> Validate()
+        public virtual List<string> ValidationErrors()
         {
             return new List<string>();
         }
+
+        public virtual OltEmailResult Send()
+        {
+            try
+            {
+                return Task.Run(() => SendAsync()).Result;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public abstract OltEmailRecipientResult BuildRecipients();        
+        public abstract Task<OltEmailResult> SendAsync();
     }
 }

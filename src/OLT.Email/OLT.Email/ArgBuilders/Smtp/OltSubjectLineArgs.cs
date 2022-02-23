@@ -26,9 +26,9 @@ namespace OLT.Email
             return (T)this;
         }       
 
-        protected override List<string> Validate()
+        public override List<string> ValidationErrors()
         {
-            var errors = base.Validate();
+            var errors = base.ValidationErrors();
             if (string.IsNullOrWhiteSpace(SubjectLine))
             {
                 errors.Add(OltSmtpArgErrors.Subject);

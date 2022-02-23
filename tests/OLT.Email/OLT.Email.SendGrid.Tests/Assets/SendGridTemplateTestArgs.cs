@@ -8,7 +8,7 @@ namespace OLT.Email.SendGrid.Tests.Assets
 {
     public class SendGridTemplateTestArgs : OltTemplateArgs<SendGridTemplateTestArgs>
     {
-        public IOltEmailTemplate TemplateValue => base.Template;
+        public IOltEmailTemplateId TemplateValue => base.Template;
         public string ApiKeyValue => base.ApiKey;
         public int? UnsubscribeGroupIdValue => base.UnsubscribeGroupId;
         public bool ClickTrackingValue => base.ClickTracking;
@@ -16,27 +16,13 @@ namespace OLT.Email.SendGrid.Tests.Assets
 
         public bool DoValidation()
         {
-            var errors = Validate();
+            var errors = ValidationErrors();
             if (errors.Any())
             {
                 throw new OltSendGridValidationException(errors);
             }
             return true;
-        }
+        }      
 
-        public List<string> GetErrors()
-        {
-            return Validate();
-        }
-
-        //public override OltEmailResult Send()
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public override Task<OltEmailResult> SendAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

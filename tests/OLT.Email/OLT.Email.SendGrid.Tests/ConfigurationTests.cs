@@ -32,7 +32,6 @@ namespace OLT.Email.SendGrid.Tests
 
             var whiteEmail = Faker.Internet.Email();
             var whiteDomain = Faker.Internet.DomainName();
-            var whiteDomainEmail = $"{Faker.Internet.UserName()}@{whiteDomain}";
 
             var config = new OltEmailConfigurationSendGrid();
             config.ApiKey = apiKey;
@@ -50,16 +49,8 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
             Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
 
-            //Assert.False(config.AllowSend(Faker.Internet.FreeEmail()));
-            //Assert.True(config.AllowSend(whiteEmail));
-            //Assert.True(config.AllowSend(whiteDomainEmail));
-
             config.Production = true;
             Assert.True(config.Production);
-
-            //Assert.True(config.AllowSend(Faker.Internet.FreeEmail()));
-            //Assert.True(config.AllowSend(whiteEmail));
-            //Assert.True(config.AllowSend(whiteDomainEmail));
 
         }
 

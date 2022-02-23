@@ -48,9 +48,9 @@ namespace OLT.Email
         }
 
 
-        protected override List<string> Validate()
+        public override List<string> ValidationErrors()
         {
-            var errors = base.Validate();
+            var errors = base.ValidationErrors();
             if (string.IsNullOrWhiteSpace(From?.Email))
             {
                 errors.Add(OltArgErrorsCommon.From);
