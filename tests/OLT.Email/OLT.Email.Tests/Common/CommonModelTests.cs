@@ -65,7 +65,7 @@ namespace OLT.Email.Tests.Common
 
 
             Assert.Equal(model.FileName, OltEmailCalendarAttachment.DefaultFileName);
-            Assert.Equal(model.ContentType, OltEmailCalendarAttachment.DefaultTextCalendar);
+            Assert.Equal(model.ContentType, OltEmailCalendarAttachment.DefaultContentType);
             Assert.Equal(model.Bytes, bytes);
 
         }

@@ -30,5 +30,15 @@ namespace OLT.Email.Tests.Smtp.Assets
         {
             return Validate();
         }
+
+        public override OltEmailResult Send()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<OltEmailResult> SendAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

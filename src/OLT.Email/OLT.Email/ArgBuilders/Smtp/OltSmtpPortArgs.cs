@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 
 namespace OLT.Email
 {
@@ -27,7 +28,17 @@ namespace OLT.Email
             this.SmtpPort = port;
             return (T)this;
         }
-  
+
+        protected virtual SmtpClient CreateClient()
+        {
+            var client = new SmtpClient(SmtpHost, SmtpPort);
+
+            if (!SmtpSSLDisabled)
+            {
+                client.EnableSsl = true;
+            }         
+            return client;
+        }
     }
 
    

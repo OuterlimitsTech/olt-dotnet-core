@@ -6,9 +6,9 @@ namespace OLT.Email
 
     public static class OltSmtpEmailExtensions
     {
-        public static OltSmtpArgs BuildArgs<T>(this OltSmtpConfiguration configuration, T smtpEmailTemplate)  where T : IOltSmtpEmail
+        public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpConfiguration configuration, T smtpEmailTemplate)  where T : IOltSmtpEmail
         {
-            var args = new OltSmtpArgs()
+            var args = new OltEmailClientSmtp()
                 .WithFromEmail(smtpEmailTemplate.From)
                 .WithWhitelist(configuration.TestWhitelist)
                 .WithSmtpHost(configuration.Smtp.Host)                
@@ -31,9 +31,9 @@ namespace OLT.Email
             return args;
         }
 
-        public static OltSmtpArgs BuildArgs<T>(this OltSmtpServer smtpServer, bool disableWhitelist, T smtpEmailTemplate) where T : IOltSmtpEmail
+        public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpServer smtpServer, bool disableWhitelist, T smtpEmailTemplate) where T : IOltSmtpEmail
         {
-            var args = new OltSmtpArgs()
+            var args = new OltEmailClientSmtp()
                 .WithFromEmail(smtpEmailTemplate.From)
                 .WithSmtpHost(smtpServer.Host)
                 .WithBody(smtpEmailTemplate.Body)

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Mail;
 
 namespace OLT.Email
 {
-    public abstract class OltSmtpNetworkCredentialArgs<T> : OltBodyArgs<T>
+    public abstract class OltSmtpNetworkCredentialArgs<T> : OltSmtpSendArgs<T>
         where T : OltSmtpNetworkCredentialArgs<T>
     {        
         protected internal string SmtpUsername { get; set; }
@@ -35,7 +37,18 @@ namespace OLT.Email
             return (T)this;
         }
 
+
+        protected override SmtpClient CreateClient()
+        {
+            var client = base.CreateClient();
+            if (!string.IsNullOrWhiteSpace(SmtpUsername) || !string.IsNullOrWhiteSpace(SmtpPassword))
+            {
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(SmtpUsername, SmtpPassword);
+            }
+            return client;
+        }
     }
 
-   
+
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 
 namespace OLT.Email
 {
@@ -36,7 +37,19 @@ namespace OLT.Email
             }
             return errors;
         }
-    }
 
-   
+        protected virtual MailMessage CreateMessage(OltEmailRecipientResult recipients)
+        {
+            var msg = new MailMessage
+            {
+                From = new MailAddress(From.Email, From.Name),
+                Subject = SubjectLine,
+                Body = Body,
+            };
+
+            ConfigureRecipients(msg, recipients);
+
+            return msg;
+        }
+    }
 }
