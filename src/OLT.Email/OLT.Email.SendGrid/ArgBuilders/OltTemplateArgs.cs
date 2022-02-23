@@ -98,7 +98,6 @@ namespace OLT.Email.SendGrid
             var result = new OltEmailResult();
             var client = CreateClient();
             var msg = CreateMessage(BuildRecipients());
-            var json = msg.Serialize();
             var sendResponse = await client.SendEmailAsync(msg);
             if (sendResponse.StatusCode != HttpStatusCode.Accepted)
             {
