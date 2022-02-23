@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OLT.Email.SendGrid.Common;
 using OLT.Email.SendGrid.Tests.Assets;
-using OLT.Libraries.UnitTest.Assets.Email.SendGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,14 +37,8 @@ namespace OLT.Email.SendGrid.Tests
             template.TemplateData.Recipient.First = firstName;
             template.TemplateData.Recipient.FullName = fullName;
 
-            //SendGrid uses Newtsoft to Convert, but doesn't give a way to change the resolver, so you have to do it globally. YUCK!!!
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-
             var result2 = await OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
-                .WithCustomArg("EmailUID", Guid.NewGuid().ToString())
+                .WithCustomArg("email_uid", Guid.NewGuid().ToString())
                 .SendAsync();
             Assert.True(result2.Success);
         }
@@ -66,13 +59,7 @@ namespace OLT.Email.SendGrid.Tests
             template.Recipient.First = firstName;
             template.Recipient.FullName = fullName;
 
-            ////SendGrid uses Newtsoft to Convert, but doesn't give a way to change the resolver, so you have to do it globally. YUCK!!!
-            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-            //{
-            //    ContractResolver = new CamelCasePropertyNamesContractResolver()
-            //};
-
-            var args = OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template).WithCustomArg("EmailUID", Guid.NewGuid().ToString());
+            var args = OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template).WithCustomArg("email_uid", Guid.NewGuid().ToString());
 
             if (_prodConfig.UnsubscribeGroupId > 0)
             {

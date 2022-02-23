@@ -10,8 +10,10 @@ namespace OLT.Email.SendGrid.Tests.Assets
     {
         public IOltEmailTemplateId TemplateValue => base.Template;
         public string ApiKeyValue => base.ApiKey;
+        public Dictionary<string, string> CustomArgsValue => base.CustomArgs;
         public int? UnsubscribeGroupIdValue => base.UnsubscribeGroupId;
         public bool ClickTrackingValue => base.ClickTracking;
+        public bool SandboxModeValue => base.SandboxMode;
 
 
         public bool DoValidation()

@@ -8,55 +8,6 @@ using System.Threading.Tasks;
 
 namespace OLT.Email.SendGrid
 {
-    public abstract class OltCustomArgsArgs<T> : OltUnsubscribeGroupArgs<T>
-    where T : OltCustomArgsArgs<T>
-    {
-        protected internal Dictionary<string, string> CustomArgs { get; set; } = new Dictionary<string, string>();
-
-        protected OltCustomArgsArgs()
-        {
-        }
-
-        /// <summary>
-        /// Adds Custom Arg to Email Request that can be used to assoicate to internal data when subscribing to the Webhooks
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public T WithCustomArg(string customArgKey, string customArgValue)
-        {
-            if (customArgKey == null)
-            {
-                throw new ArgumentNullException(nameof(customArgKey));
-            }
-            if (customArgValue == null)
-            {
-                throw new ArgumentNullException(nameof(customArgValue));
-            }
-            this.CustomArgs.Add(customArgKey, customArgValue);
-            return (T)this;
-        }
-    }
-
-    public abstract class OltEnableSandboxArgs<T> : OltCustomArgsArgs<T>
-        where T : OltEnableSandboxArgs<T>
-    {
-        protected internal bool SandboxMode { get; set; }
-
-        protected OltEnableSandboxArgs()
-        {
-        }
-
-        /// <summary>
-        /// Enables Sandbox mode in Sendgrid message
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public T EnableSandbox()
-        {
-            this.SandboxMode = true;
-            return (T)this;
-        }
-    }
 
     public abstract class OltTemplateArgs<T> : OltEnableSandboxArgs<T>
         where T : OltTemplateArgs<T>

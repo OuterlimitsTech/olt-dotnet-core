@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OLT.Libraries.UnitTest.Assets.Email.SendGrid;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using OLT.Email.SendGrid.Tests.Assets;
 
 namespace OLT.Email.SendGrid.Tests
 {
@@ -24,6 +26,12 @@ namespace OLT.Email.SendGrid.Tests
 
         public virtual void ConfigureServices(IServiceCollection services, HostBuilderContext hostBuilderContext)
         {
+            //SendGrid uses Newtsoft to Convert, but doesn't give a way to change the resolver, so you have to do it globally. YUCK!!!
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
             var configuration = hostBuilderContext.Configuration;
 
             var configSection = configuration.GetSection("SendGrid");
@@ -42,7 +50,6 @@ namespace OLT.Email.SendGrid.Tests
                 opt.ToEmail =  configuration.GetValue<string>("SMTP_TO_ADDRESS") ?? Environment.GetEnvironmentVariable("SMTP_TO_ADDRESS");
                 opt.UnsubscribeGroupId = envGroupId;
                 opt.Production = false;
-                opt.DisableClickTracking = false;
                 opt.RunNumber = configuration.GetValue<string>("GITHUB_RUN_NUMBER") ??  Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER") ??  "[No Run Number]";
                 opt.TestWhitelist = new OltEmailConfigurationWhitelist
                 {

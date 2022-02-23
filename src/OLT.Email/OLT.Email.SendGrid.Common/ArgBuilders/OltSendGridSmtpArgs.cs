@@ -35,7 +35,7 @@ namespace OLT.Email.SendGrid
         public override List<string> ValidationErrors()
         {
             var errors = base.ValidationErrors();
-            if (string.IsNullOrWhiteSpace(SubjectLine))
+            if (string.IsNullOrWhiteSpace(ApiKey))
             {
                 errors.Add(OltArgErrorsSendGrid.ApiKey);
             }
