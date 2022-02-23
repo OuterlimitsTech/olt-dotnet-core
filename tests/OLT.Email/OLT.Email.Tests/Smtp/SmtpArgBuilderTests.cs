@@ -130,6 +130,7 @@ namespace OLT.Email.Tests.Smtp
             args.Invoking(args => args.WithSubject(null)).Should().Throw<ArgumentNullException>();
             args.Invoking(args => args.WithSmtpPort(0)).Should().Throw<ArgumentOutOfRangeException>();
             args.Invoking(args => args.WithSmtpHost(null)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithCalendarInvite(null)).Should().Throw<ArgumentNullException>();
 
         }
     }

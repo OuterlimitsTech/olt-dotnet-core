@@ -28,6 +28,21 @@ namespace OLT.Email
             return (T)this;
         }
 
+        /// <summary>
+        /// Sets email body and subject to format an error
+        /// </summary>
+        /// <returns></returns>
+        public T WithAppError(Exception exception, string appName, string environment)
+        {
+            if (exception == null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+            this.SubjectLine = $"[{appName}] APPLICATION ERROR in {environment} Environment occurred at {DateTimeOffset.Now:f}";
+            this.Body = $"The following error occurred:{Environment.NewLine}{exception}";
+            return (T)this;
+        }
+
         protected override List<string> Validate()
         {
             var errors = base.Validate();

@@ -24,7 +24,7 @@ namespace OLT.Email
             }
             this.SubjectLine = subject;
             return (T)this;
-        }
+        }       
 
         protected override List<string> Validate()
         {

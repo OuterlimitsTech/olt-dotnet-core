@@ -24,7 +24,7 @@ namespace OLT.Email.Tests.Common
             Assert.Equal(lastName, template.LastName);
             Assert.Equal(email, template.To.Email);
             Assert.Equal(firstName, template.To.Name);
-            Assert.Equal(nameof(SingleEmailTagTemplate), template.TemplateName);
+            Assert.Equal(nameof(SingleEmailTagTemplate), template.TemplateId);
             Assert.NotEmpty(template.Tags);
 
             Assert.NotNull(template.GetTemplateData());
@@ -56,7 +56,7 @@ namespace OLT.Email.Tests.Common
 
             template.To.Should().BeEquivalentTo(list);
 
-            Assert.Equal(nameof(EmailTagTemplate), template.TemplateName);
+            Assert.Equal(nameof(EmailTagTemplate), template.TemplateId);
             Assert.NotEmpty(template.Tags);
 
             Assert.NotNull(template.GetTemplateData());

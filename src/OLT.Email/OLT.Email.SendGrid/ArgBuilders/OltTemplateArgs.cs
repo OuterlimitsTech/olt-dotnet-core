@@ -25,7 +25,7 @@ namespace OLT.Email.SendGrid
         protected override List<string> Validate()
         {
             var errors = base.Validate();
-            if (string.IsNullOrWhiteSpace(Template?.TemplateName))
+            if (string.IsNullOrWhiteSpace(Template?.TemplateId))
             {
                 errors.Add("SendGrid Template ID Missing");
             }

@@ -9,6 +9,10 @@ namespace OLT.Email
     {
         protected internal byte[] CalendarInviteBtyes { get; set; }
 
+        public const string DefaultFileName = "invite.ics";
+        public const string DefaultContentType = "text/calendar";
+
+
         protected OltCalendarInviteArgs()
         {
         }
@@ -28,31 +32,16 @@ namespace OLT.Email
             return (T)this;
         }
 
-        /// <summary>
-        /// ICS File
-        /// </summary>
-        /// <returns></returns>
-        public T WithCalendarInvite(OltEmailCalendarAttachment attachment)
-        {
-            if (attachment == null)
-            {
-                throw new ArgumentNullException(nameof(attachment));
-            }
-
-            this.CalendarInviteBtyes = attachment.Bytes;
-            return (T)this;
-        }
-
         protected override MailMessage CreateMessage(OltEmailRecipientResult recipients)
         {
             var msg = base.CreateMessage(recipients);
 
             if (CalendarInviteBtyes != null)
             {
-                System.Net.Mime.ContentType contentType = new System.Net.Mime.ContentType(OltEmailCalendarAttachment.DefaultContentType);
+                System.Net.Mime.ContentType contentType = new System.Net.Mime.ContentType(DefaultContentType);
                 contentType.Parameters.Add("method", "REQUEST");
                 msg.Headers.Add("Content-class", "urn:content-classes:calendarmessage");
-                contentType.Parameters.Add("name", OltEmailCalendarAttachment.DefaultFileName);
+                contentType.Parameters.Add("name", DefaultFileName);
                 AlternateView avCal = AlternateView.CreateAlternateViewFromString(Encoding.UTF8.GetString(CalendarInviteBtyes, 0, CalendarInviteBtyes.Length), contentType);
                 msg.AlternateViews.Add(avCal);
             }

@@ -52,24 +52,6 @@ namespace OLT.Email.Tests.Common
 
         }
 
-        [Fact]
-        public void EmailCalendarAttachment()
-        {
-            var words = Faker.Lorem.Paragraph(1);
-            var bytes = Encoding.ASCII.GetBytes(words);
-
-            var model = new OltEmailCalendarAttachment
-            {
-                Bytes = bytes,
-            };
-
-
-            Assert.Equal(model.FileName, OltEmailCalendarAttachment.DefaultFileName);
-            Assert.Equal(model.ContentType, OltEmailCalendarAttachment.DefaultContentType);
-            Assert.Equal(model.Bytes, bytes);
-
-        }
-
 
         [Fact]
         public void EmailTag()

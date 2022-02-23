@@ -6,7 +6,7 @@ namespace OLT.Email
     {
         string Subject { get; }
         string Body { get; }
-        IOltEmailAddress From { get; }
+        OltEmailAddress From { get; }
         OltEmailRecipients Recipients { get; }
     }
 }

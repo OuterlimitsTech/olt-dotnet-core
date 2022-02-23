@@ -7,7 +7,7 @@ namespace OLT.Email
     public abstract class OltEmailTagTemplate<TEmailAddress> : IOltEmailTagTemplate<TEmailAddress>
         where TEmailAddress : class, IOltEmailAddress
     {
-        public abstract string TemplateName { get; }
+        public abstract string TemplateId { get; }
         public virtual List<TEmailAddress> To { get; set; } = new List<TEmailAddress>();
         public abstract List<OltEmailTag> Tags { get; }
         

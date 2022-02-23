@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using OLT.Email.Tests.Smtp.Assets;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -41,11 +42,8 @@ namespace OLT.Email.Tests.Smtp
             };
 
             Assert.Throws<OltEmailValidationException>(() => _smtpTestServer.BuildOltEmailClient(true, smtpEmail).Send());
-            await Assert.ThrowsAsync<OltEmailValidationException>(() => _smtpTestServer.BuildOltEmailClient(true, smtpEmail).SendAsync());
+            await Assert.ThrowsAsync<OltEmailValidationException>(() => _smtpTestServer.BuildOltEmailClient(true, smtpEmail).SendAsync());            
 
-
-
-            
         }
 
         [Fact]
@@ -175,6 +173,67 @@ namespace OLT.Email.Tests.Smtp
             result2.Should().BeEquivalentTo(result);
             result2.RecipientResults.To.Should().HaveSameCount(smtpEmail.Recipients.To);
             result2.RecipientResults.CarbonCopy.Should().HaveSameCount(smtpEmail.Recipients.CarbonCopy);
+        }
+
+        [Fact]
+        public void TestCalendar()
+        {
+            
+            var created = DateTimeOffset.UtcNow.ToString("s").Replace(":", string.Empty).Replace("-", string.Empty);
+            var start = DateTimeOffset.UtcNow.AddHours(6).ToString("s").Replace(":", string.Empty).Replace("-", string.Empty);
+            var end = DateTimeOffset.UtcNow.AddHours(7).ToString("s").Replace(":", string.Empty).Replace("-", string.Empty);
+
+            var calString = @$"
+                BEGIN:VCALENDAR
+                METHOD:REQUEST
+                PRODID:-//github.com/rianjs/ical.net//NONSGML ical.net 4.0//EN
+                VERSION:2.0
+                BEGIN:VEVENT
+                ATTENDEE;CN={Faker.Name.FullName()};RSVP=TRUE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION:mailto:{Faker.Internet.Email()}
+                ATTENDEE;CN={Faker.Name.FullName()};RSVP=TRUE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION:mailto:{Faker.Internet.FreeEmail()}
+                CREATED:{created}Z
+                DTEND:{end}Z
+                DTSTAMP:{created}Z
+                DTSTART:{start}Z
+                LAST-MODIFIED:{created}Z
+                LOCATION:In a van down by the river
+                ORGANIZER;CN={Faker.Name.FullName()}:mailto:{Faker.Internet.Email()}
+                SEQUENCE:0
+                STATUS:CONFIRMED
+                SUMMARY:This is a bogus invite
+                TRANSP:OPAQUE
+                UID:9e31362b-4d65-44bc-b8ad-a29c7b80f294
+                END:VEVENT
+                END:VCALENDAR
+                ".RemoveDoubleSpaces();
+
+            var smtpEmail = new OltSmtpEmail
+            {
+                Subject = $"Invite Test to {Faker.Address.City()}",
+                Body = Faker.Lorem.Paragraph(4),
+                From = new OltEmailAddress
+                {
+                    Name = Faker.Name.FullName(),
+                    Email = Faker.Internet.Email()
+                },
+                Recipients = new OltEmailRecipients
+                {
+                    To = new List<IOltEmailAddress>
+                        {
+                            new OltEmailAddress
+                            {
+                                Name = Faker.Name.FullName(),
+                                Email = Faker.Internet.FreeEmail()
+                            }
+                        },
+                },
+            };
+
+            var bytes = Encoding.ASCII.GetBytes(calString);
+
+            Assert.NotEmpty(bytes);
+            var result1 = _smtpTestServer.BuildOltEmailClient(true, smtpEmail).WithCalendarInvite(bytes).Send();                       
+            Assert.True(result1.Success);
         }
 
 

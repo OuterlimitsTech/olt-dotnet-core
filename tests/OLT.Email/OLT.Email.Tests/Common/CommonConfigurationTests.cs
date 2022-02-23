@@ -62,7 +62,7 @@ namespace OLT.Email.Tests.Common
 
             using (FileStream openStream = File.OpenRead(filePath))
             {
-                AppSettingsJsonDto? expectedConfig = await JsonSerializer.DeserializeAsync<AppSettingsJsonDto>(openStream);
+                AppSettingsJsonDto expectedConfig = await JsonSerializer.DeserializeAsync<AppSettingsJsonDto>(openStream);
                 Assert.NotNull(expectedConfig);
                 _emailConfiguration.Should().BeEquivalentTo(expectedConfig?.EmailConfig);
             }           

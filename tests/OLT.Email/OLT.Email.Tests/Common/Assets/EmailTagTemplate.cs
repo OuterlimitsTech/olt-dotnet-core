@@ -4,7 +4,7 @@ namespace OLT.Email.Tests.Common.Assets
 {
     public class EmailTagTemplate : OltEmailTagTemplate
     {
-        public override string TemplateName => nameof(EmailTagTemplate);
+        public override string TemplateId => nameof(EmailTagTemplate);
 
         public string Value1 { get; set; }
         public string Value2 { get; set; }

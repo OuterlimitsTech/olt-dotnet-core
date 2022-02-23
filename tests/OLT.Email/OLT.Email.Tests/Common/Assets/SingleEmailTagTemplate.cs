@@ -4,7 +4,7 @@ namespace OLT.Email.Tests.Common.Assets
 {
     public class SingleEmailTagTemplate : OltSingleEmailTagTemplate
     {
-        public override string TemplateName => nameof(SingleEmailTagTemplate);
+        public override string TemplateId => nameof(SingleEmailTagTemplate);
 
         public string FirstName { get; set; }
         public string LastName { get; set; }

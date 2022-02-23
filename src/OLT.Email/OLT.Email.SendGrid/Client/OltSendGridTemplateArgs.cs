@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace OLT.Email.SendGrid
 {
+
     public class OltSendGridTemplateArgs : OltTemplateArgs<OltSendGridTemplateArgs>
     {
 
@@ -23,7 +24,7 @@ namespace OLT.Email.SendGrid
 
             var msg = new SendGridMessage();
             msg.SetFrom(new EmailAddress(From.Email, From.Name));
-            msg.SetTemplateId(Template.TemplateName);
+            msg.SetTemplateId(Template.TemplateId);
 
             if (ClickTracking)
             {
