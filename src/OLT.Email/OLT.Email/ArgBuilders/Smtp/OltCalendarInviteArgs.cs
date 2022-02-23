@@ -12,7 +12,6 @@ namespace OLT.Email
         public const string DefaultFileName = "invite.ics";
         public const string DefaultContentType = "text/calendar";
 
-
         protected OltCalendarInviteArgs()
         {
         }
@@ -32,15 +31,16 @@ namespace OLT.Email
             return (T)this;
         }
 
-        protected override MailMessage CreateMessage(OltEmailRecipientResult recipients)
+        public override MailMessage CreateMessage(OltEmailRecipientResult recipients)
         {
             var msg = base.CreateMessage(recipients);
 
             if (CalendarInviteBtyes != null)
             {
+                msg.Headers.Add("Content-class", "urn:content-classes:calendarmessage");
+
                 System.Net.Mime.ContentType contentType = new System.Net.Mime.ContentType(DefaultContentType);
                 contentType.Parameters.Add("method", "REQUEST");
-                msg.Headers.Add("Content-class", "urn:content-classes:calendarmessage");
                 contentType.Parameters.Add("name", DefaultFileName);
                 AlternateView avCal = AlternateView.CreateAlternateViewFromString(Encoding.UTF8.GetString(CalendarInviteBtyes, 0, CalendarInviteBtyes.Length), contentType);
                 msg.AlternateViews.Add(avCal);

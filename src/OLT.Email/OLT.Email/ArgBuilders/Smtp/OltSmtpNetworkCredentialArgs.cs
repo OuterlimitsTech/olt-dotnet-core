@@ -38,7 +38,7 @@ namespace OLT.Email
         }
 
 
-        protected override SmtpClient CreateClient()
+        public override SmtpClient CreateClient()
         {
             var client = base.CreateClient();
             if (!string.IsNullOrWhiteSpace(SmtpUsername) || !string.IsNullOrWhiteSpace(SmtpPassword))

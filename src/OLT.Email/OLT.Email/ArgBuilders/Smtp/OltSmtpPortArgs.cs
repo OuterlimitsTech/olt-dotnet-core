@@ -29,7 +29,7 @@ namespace OLT.Email
             return (T)this;
         }
 
-        protected virtual SmtpClient CreateClient()
+        public virtual SmtpClient CreateClient()
         {
             var client = new SmtpClient(SmtpHost, SmtpPort);
 

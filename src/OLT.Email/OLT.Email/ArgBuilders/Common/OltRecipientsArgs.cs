@@ -39,7 +39,7 @@ namespace OLT.Email
             return (T)this;
         }
         
-        protected virtual OltEmailRecipientResult BuildRecipients()
+        public virtual OltEmailRecipientResult BuildRecipients()
         {
             var recipientResult = new OltEmailRecipientResult();
 

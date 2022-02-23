@@ -53,7 +53,7 @@ namespace OLT.Email
             return errors;
         }
 
-        protected virtual MailMessage CreateMessage(OltEmailRecipientResult recipients)
+        public virtual MailMessage CreateMessage(OltEmailRecipientResult recipients)
         {
             var msg = new MailMessage
             {

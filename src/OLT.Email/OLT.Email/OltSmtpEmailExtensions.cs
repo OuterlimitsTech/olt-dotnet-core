@@ -6,11 +6,27 @@ namespace OLT.Email
 
     public static class OltSmtpEmailExtensions
     {
+
+        /// <summary>
+        /// Build whitelist compliant SMTP client
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="configuration"></param>
+        /// <param name="template"></param>
+        /// <returns></returns>
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpConfiguration configuration, T template)  where T : IOltSmtpEmail
         {
             return BuildOltEmailClient(configuration.Smtp, configuration.Production, template).WithWhitelist(configuration.TestWhitelist);
         }
 
+        /// <summary>
+        /// Build whitelist compliant SMTP client
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="smtpServer"></param>
+        /// <param name="enableProduction">Sends all email, otherwise email must be in whitelist</param>
+        /// <param name="template"></param>
+        /// <returns></returns>
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpServer smtpServer, bool enableProduction, T template) where T : IOltSmtpEmail
         {
             var args = new OltEmailClientSmtp()
