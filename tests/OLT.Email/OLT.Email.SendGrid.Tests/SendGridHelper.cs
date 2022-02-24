@@ -24,6 +24,16 @@ namespace OLT.Email.SendGrid.Tests
             return config;
         }
 
+        public static Dictionary<string, string> FakerCustomArgs(int number)
+        {
+            var dict = new Dictionary<string, string>();
+            for (int i = 0; i < number; i++)
+            {
+                var num = Faker.RandomNumber.Next(1, 2000);
+                dict.Add($"Key-{i}", $"Value-{num}");
+            }
+            return dict;
+        }
 
         public static OltEmailConfigurationSendGrid FakerConfig(bool production, int numEmailWhitelist, int numDomainWhitelist)
         {
@@ -46,6 +56,32 @@ namespace OLT.Email.SendGrid.Tests
             for (int i = 0; i < numDomainWhitelist; i++)
             {
                 result.TestWhitelist.Email.Add(Faker.Internet.DomainName());
+            }
+
+            return result;
+        }
+
+        public static List<OltEmailAttachment> FakerAttachment(int number)
+        {
+            var contentType = "text/plain";
+            var starting = 15;
+            var result = new List<OltEmailAttachment>();
+
+            for (int idx = 1; idx <= number; idx++)
+            {
+                var seed = starting * idx;
+                
+                var fileName = $"{Faker.Lorem.Words(seed).Last()}-{idx}.txt";
+                var bytes = Encoding.ASCII.GetBytes(Faker.Lorem.Paragraph(seed));
+
+                var attachment = new OltEmailAttachment
+                {
+                    FileName = fileName,
+                    ContentType = contentType,
+                    Bytes = bytes,
+                };
+
+                result.Add(attachment);
             }
 
             return result;

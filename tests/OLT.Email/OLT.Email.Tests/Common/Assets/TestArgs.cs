@@ -25,9 +25,6 @@ namespace OLT.Email.Tests.Common.Assets
             return true;
         }
 
-        public override Task<OltEmailResult> SendAsync()
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

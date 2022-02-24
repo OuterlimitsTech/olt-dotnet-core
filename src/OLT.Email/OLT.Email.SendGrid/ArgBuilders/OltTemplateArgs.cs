@@ -49,10 +49,7 @@ namespace OLT.Email.SendGrid
             msg.SetFrom(new EmailAddress(From.Email, From.Name));
             msg.SetTemplateId(Template.TemplateId);
 
-            if (ClickTracking)
-            {
-                msg.SetClickTracking(true, true);
-            }
+            msg.SetClickTracking(ClickTracking, ClickTracking);
 
             if (UnsubscribeGroupId.HasValue)
             {
@@ -74,35 +71,35 @@ namespace OLT.Email.SendGrid
 
             ConfigureRecipients(msg, recipients);
 
-
-            if (SandboxMode)
-            {
-                msg.MailSettings = new MailSettings
-                {
-                    SandboxMode = new SandboxMode
-                    {
-                        Enable = true
-                    }
-                };
-            }
+            msg.SetSandBoxMode(SandboxMode);
 
             return msg;
         }
 
-        public override async Task<OltEmailResult> SendAsync()
+        public override async Task<OltSendGridEmailResult> SendAsync()
         {
             if (!IsValid)
             {
                 throw new OltSendGridValidationException(ValidationErrors());
             }
-            var result = new OltEmailResult();
+
+            var result = new OltSendGridEmailResult();
             var client = CreateClient();
             var msg = CreateMessage(BuildRecipients());
             var sendResponse = await client.SendEmailAsync(msg);
+
             if (sendResponse.StatusCode != HttpStatusCode.Accepted)
             {
                 var body = await sendResponse.Body.ReadAsStringAsync();
-                result.Errors.Add($"{sendResponse.StatusCode} - {body}");
+
+                result.Errors.Add($"{sendResponse.StatusCode}");
+                result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body);
+                result.SendGrid.Errors.ForEach(error =>
+                {
+                    result.Errors.Add($"{error.Field} - {error.Message}");
+                });
+
+                
             }
             return result;
         }

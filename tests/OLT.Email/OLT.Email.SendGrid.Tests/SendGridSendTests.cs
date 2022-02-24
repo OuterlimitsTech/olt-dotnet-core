@@ -127,5 +127,44 @@ namespace OLT.Email.SendGrid.Tests
             await Assert.ThrowsAsync<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).SendAsync());  //SHOULD FAIL
         }
 
+        [Fact]
+        public async Task SendExceptionTest()
+        {
+            Assert.NotNull(_prodConfig.ApiKey);
+
+            var firstName = Faker.Name.First();
+            var fullName = $"{firstName} Unit Test";
+            
+            var fakeTemplate = FakeNoTemplateDataTemplate.FakerData(0, 0);
+            fakeTemplate.Recipients.To.Add(new OltEmailAddress(_prodConfig.ToEmail, fullName));
+            fakeTemplate.Recipients.To.Add(new OltEmailAddress(Faker.Internet.Email(), $"Unit Test {Faker.Name.Last()}"));
+
+            //Invalid Template
+            var args = OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, fakeTemplate);
+
+            var result = await args.SendAsync();
+            Assert.NotEmpty(result.Errors);
+
+
+            var config = new OltEmailConfigurationSendGrid
+            {
+                From = _prodConfig.From,
+                Production = _prodConfig.Production,
+                TestWhitelist = _prodConfig.TestWhitelist,
+                ApiKey = "FakerAPIKey",
+            };
+
+            var jsonTemplate = TagEmailTemplate.FakerData(_prodConfig.TemplateIdTag);
+            jsonTemplate.Build.Version = _prodConfig.RunNumber;
+            jsonTemplate.Recipient.First = firstName;
+            jsonTemplate.Recipient.FullName = fullName;
+
+            //Invalid API Key
+            args = OltEmailSendGridExtensions.BuildOltEmailClient(config, jsonTemplate);
+
+            result = await args.SendAsync();
+            Assert.NotEmpty(result.Errors);
+
+        }
     }
 }

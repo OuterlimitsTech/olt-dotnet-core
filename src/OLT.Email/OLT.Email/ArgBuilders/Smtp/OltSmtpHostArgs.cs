@@ -56,6 +56,20 @@ namespace OLT.Email
 
         public abstract SmtpClient CreateClient();
         public abstract MailMessage CreateMessage(OltEmailRecipientResult recipients);
+
+        public virtual OltEmailResult Send()
+        {
+            try
+            {
+                return Task.Run(() => SendAsync()).Result;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public abstract Task<OltEmailResult> SendAsync();
     }
 
    

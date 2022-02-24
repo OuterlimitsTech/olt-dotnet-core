@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
 namespace OLT.Email.SendGrid
 {
-    public abstract class OltApiKeyArgs<T> : OltFromEmailArgs<T>, IOltApiKeyArgs<T>, IOltEmailClient<SendGridClient, SendGridMessage>
+    public abstract class OltApiKeyArgs<T> : OltFromEmailArgs<T>, IOltApiKeyArgs<T>, IOltEmailClient<SendGridClient, SendGridMessage, OltSendGridEmailResult>
         where T : OltApiKeyArgs<T>
     {
         protected internal string ApiKey { get; set; }
@@ -62,5 +63,20 @@ namespace OLT.Email.SendGrid
             });
 
         }
+
+        public virtual OltSendGridEmailResult Send()
+        {
+            try
+            {
+                return Task.Run(() => SendAsync()).Result;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
+        public abstract Task<OltSendGridEmailResult> SendAsync();
+
     }
 }

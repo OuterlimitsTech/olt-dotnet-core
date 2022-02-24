@@ -9,15 +9,17 @@ namespace OLT.Email
         bool IsValid { get; }
         List<string> ValidationErrors();
         OltEmailRecipientResult BuildRecipients();
-        OltEmailResult Send();
-        Task<OltEmailResult> SendAsync();
     }
 
-    public interface IOltEmailClient<out TClient, out TMessage> : IOltEmailClient
+    public interface IOltEmailClient<out TClient, out TMessage, TResult> : IOltEmailClient
         where TClient : class
         where TMessage : class
+        where TResult : class, IOltEmailResult
     {        
         TClient CreateClient();
         TMessage CreateMessage(OltEmailRecipientResult recipients);
+        TResult Send();
+        Task<TResult> SendAsync();
+
     }
 }

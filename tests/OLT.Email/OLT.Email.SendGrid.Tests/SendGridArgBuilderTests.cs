@@ -33,7 +33,7 @@ namespace OLT.Email.SendGrid.Tests
         public void WithTemplate()
         {
             var args = new SendGridTemplateTestArgs();
-            var template = FakeJsonEmailTemplate.FakerData();
+            var template = FakeJsonEmailTemplate.FakerData(2, 2);
 
             args = args.WithTemplate(template);
             args.TemplateValue.Should().BeEquivalentTo(template);

@@ -7,22 +7,26 @@ namespace OLT.Email.SendGrid.Tests.Assets
         public FakeJsonEmailTemplate() : base(nameof(FakeJsonEmailTemplate))
         {
 
-        }
+        }    
 
-        public static FakeJsonEmailTemplate FakerData()
+        public static FakeJsonEmailTemplate FakerData(int numTo, int numCarbonCopy)
         {
-            return new FakeJsonEmailTemplate
+            var result = new FakeJsonEmailTemplate
             {
-                Recipients = new OltEmailRecipients
-                {
-                    To = new List<IOltEmailAddress>
-                   {
-                       new OltEmailAddress(Faker.Internet.Email(), Faker.Name.First()),
-                       new OltEmailAddress(Faker.Internet.Email(), Faker.Name.First()),
-                   }
-                },
                 TemplateData = EmailDataJson.FakerData(),
             };
+
+            for (int i = 0; i < numTo; i++)
+            {
+                result.Recipients.To.Add(SendGridHelper.FakerEmailAddress());
+            }
+
+            for (int i = 0; i < numCarbonCopy; i++)
+            {
+                result.Recipients.CarbonCopy.Add(SendGridHelper.FakerEmailAddress());
+            }
+
+            return result;
         }
 
     }

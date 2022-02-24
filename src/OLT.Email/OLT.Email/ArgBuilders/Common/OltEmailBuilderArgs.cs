@@ -27,19 +27,7 @@ namespace OLT.Email
             return new List<string>();
         }
 
-        public virtual OltEmailResult Send()
-        {
-            try
-            {
-                return Task.Run(() => SendAsync()).Result;
-            }
-            catch (AggregateException ex)
-            {
-                throw ex.InnerException;
-            }
-        }
-
         public abstract OltEmailRecipientResult BuildRecipients();        
-        public abstract Task<OltEmailResult> SendAsync();
+        
     }
 }
