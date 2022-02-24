@@ -38,7 +38,7 @@ namespace OLT.Email
                 .EnableProductionEnvironment(enableProduction);
 
 
-            if (smtpServer.Credentials?.Username != null && smtpServer.Credentials?.Password != null)
+            if (smtpServer.Credentials?.Username != null && smtpServer.Credentials.Password != null)
             {
                 args.WithSmtpNetworkCredentials(smtpServer.Credentials.Username, smtpServer.Credentials.Password);
             }

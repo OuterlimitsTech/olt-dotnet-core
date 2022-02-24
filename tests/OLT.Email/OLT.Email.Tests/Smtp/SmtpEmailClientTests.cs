@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.Email.Tests.Smtp
-{
-    public class SmtpEmailExtensionsTests
+{ 
+
+    public class SmtpEmailClientTests
     {
         private readonly string FakeHost = Faker.Internet.DomainName();
 
