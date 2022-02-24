@@ -23,11 +23,7 @@ namespace OLT.Email
         /// <returns></returns>
         public T WithSmtpHost(string host)
         {
-            if (host == null)
-            {
-                throw new ArgumentNullException(nameof(host));
-            }
-            this.SmtpHost = host;
+            this.SmtpHost = host ?? throw new ArgumentNullException(nameof(host));
             return (T)this;
         }
 

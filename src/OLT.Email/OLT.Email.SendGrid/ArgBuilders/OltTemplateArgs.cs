@@ -25,11 +25,7 @@ namespace OLT.Email.SendGrid
         /// <exception cref="ArgumentNullException"></exception>
         public T WithTemplate(IOltEmailTemplateId template)
         {
-            if (template == null)
-            {
-                throw new ArgumentNullException(nameof(template));
-            }
-            this.Template = template;            
+            this.Template = template ?? throw new ArgumentNullException(nameof(template));            
             return (T)this;
         }
 

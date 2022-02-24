@@ -21,13 +21,8 @@ namespace OLT.Email
         /// </summary>
         /// <returns></returns>
         public T WithCalendarInvite(byte[] icsFileBytes)
-        {
-            if (icsFileBytes == null)
-            {
-                throw new ArgumentNullException(nameof(icsFileBytes));
-            }
-
-            this.CalendarInviteBtyes = icsFileBytes;
+        {            
+            this.CalendarInviteBtyes = icsFileBytes ?? throw new ArgumentNullException(nameof(icsFileBytes));
             return (T)this;
         }
 

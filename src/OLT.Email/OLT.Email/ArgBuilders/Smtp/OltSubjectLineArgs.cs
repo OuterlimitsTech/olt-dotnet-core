@@ -18,11 +18,7 @@ namespace OLT.Email
         /// <returns></returns>
         public T WithSubject(string subject)
         {
-            if (subject == null)
-            {
-                throw new ArgumentNullException(nameof(subject));
-            }
-            this.SubjectLine = subject;
+            this.SubjectLine = subject ?? throw new ArgumentNullException(nameof(subject));
             return (T)this;
         }       
 

@@ -164,7 +164,6 @@ namespace OLT.Email.SendGrid.Tests
 
             smtpArgs.Invoking(args => args.WithApiKey(null)).Should().Throw<ArgumentNullException>();
 
-            List<string> smtpCompareErrors = new List<string>();
             try
             {
                 args.DoValidation();

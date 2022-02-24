@@ -22,18 +22,8 @@ namespace OLT.Email
         /// <returns></returns>
         public T WithSmtpNetworkCredentials(string username, string password)
         {
-            if (username == null)
-            {
-                throw new ArgumentNullException(nameof(username));
-            }
-
-            if (password == null)
-            {
-                throw new ArgumentNullException(nameof(password));
-            }
-
-            this.SmtpUsername = username;
-            this.SmtpPassword = password;
+            this.SmtpUsername = username ?? throw new ArgumentNullException(nameof(username));
+            this.SmtpPassword = password ?? throw new ArgumentNullException(nameof(password));
             return (T)this;
         }
 

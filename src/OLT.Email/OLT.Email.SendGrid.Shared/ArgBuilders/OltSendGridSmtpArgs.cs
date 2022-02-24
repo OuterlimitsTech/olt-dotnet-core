@@ -24,11 +24,7 @@ namespace OLT.Email.SendGrid
         /// <exception cref="ArgumentNullException"></exception>
         public T WithApiKey(string apiKey)
         {
-            if (apiKey == null)
-            {
-                throw new ArgumentNullException(nameof(apiKey));
-            }
-            this.ApiKey = apiKey;
+            this.ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
             return (T)this;
         }
 

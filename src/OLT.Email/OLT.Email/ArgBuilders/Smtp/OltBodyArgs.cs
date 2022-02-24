@@ -19,12 +19,7 @@ namespace OLT.Email
         /// <returns></returns>
         public T WithBody(string body)
         {
-            if (body == null)
-            {
-                throw new ArgumentNullException(nameof(body));
-            }
-
-            this.Body = body;
+            this.Body = body ?? throw new ArgumentNullException(nameof(body));
             return (T)this;
         }
 
