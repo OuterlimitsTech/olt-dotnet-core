@@ -11,7 +11,7 @@ namespace OLT.Email.SendGrid.Tests
         [Fact]
         public void EmailTagTemplateTest()
         {
-            var template = new EmailTagTemplate();
+            var template = new FakeEmailTagTemplate();
             var firstName1 = Faker.Name.First();
             var email1 = Faker.Internet.Email();
 
@@ -33,7 +33,7 @@ namespace OLT.Email.SendGrid.Tests
 
             template.Recipients.To.Should().BeEquivalentTo(list);
 
-            Assert.Equal(nameof(EmailTagTemplate), template.TemplateId);
+            Assert.Equal(nameof(FakeEmailTagTemplate), template.TemplateId);
             Assert.NotEmpty(template.Tags);
 
             Assert.NotNull(template.GetTemplateData());

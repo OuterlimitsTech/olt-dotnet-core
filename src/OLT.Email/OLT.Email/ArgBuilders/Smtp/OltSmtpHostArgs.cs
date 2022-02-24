@@ -43,12 +43,12 @@ namespace OLT.Email
 
         protected virtual void ConfigureRecipients(MailMessage msg, OltEmailRecipientResult recipients)
         {
-            recipients.To.Where(p => !p.Skipped && string.IsNullOrWhiteSpace(p.Error)).ToList().ForEach(rec =>
+            recipients.To.Where(p => !p.Skipped).ToList().ForEach(rec =>
             {
                 msg.To.Add(new MailAddress(rec.Email, rec.Name));
             });
 
-            recipients.CarbonCopy.Where(p => !p.Skipped && string.IsNullOrWhiteSpace(p.Error)).ToList().ForEach(rec =>
+            recipients.CarbonCopy.Where(p => !p.Skipped).ToList().ForEach(rec =>
             {
                 msg.CC.Add(new MailAddress(rec.Email, rec.Name));
             });

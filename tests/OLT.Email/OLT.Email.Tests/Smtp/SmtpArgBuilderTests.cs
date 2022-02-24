@@ -23,7 +23,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.SmtpHostValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.True(args.SmtpSSLDisabledValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.SmtpPortValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.SubjectLineValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Body);
         }
 
 
@@ -84,7 +84,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal($"The following error occurred:{Environment.NewLine}{ex}", args.BodyValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(value, args.BodyValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject);
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(password, args.SmtpPasswordValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
         }
 
 
@@ -141,7 +141,7 @@ namespace OLT.Email.Tests.Smtp
 
             var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithSmtpNetworkCredentials(null, null)).Should().Throw<ArgumentNullException>();

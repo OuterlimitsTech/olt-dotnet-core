@@ -27,15 +27,14 @@ namespace OLT.Email
 
             if (!args.AllowSend(Email))
             {
-                Skipped = true;
-                SkipReason = "Email not in whitelist";
+                SkipReason = OltErrorMessages.WhitelistSkip;
             }
         }
 
-        public bool Success => Sent;
+        public virtual bool Success => Sent;
         public virtual bool Sent => !Skipped && string.IsNullOrWhiteSpace(Error);
+        public virtual bool Skipped => !string.IsNullOrWhiteSpace(SkipReason);
 
-        public virtual bool Skipped { get; set; }
         public virtual string SkipReason { get; set; }
         public virtual string Error { get; set; }
         

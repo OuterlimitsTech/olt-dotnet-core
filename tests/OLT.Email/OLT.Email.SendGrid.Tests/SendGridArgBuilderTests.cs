@@ -26,7 +26,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.True(args.ClickTrackingValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.TemplateId);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.TemplateId);
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.True(args.ClickTrackingValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.ApiKey);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.ApiKey);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Null(args.TemplateValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.ApiKey, OltArgErrorsSendGrid.TemplateId);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.ApiKey, OltArgErrorsSendGrid.TemplateId);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Null(args.TemplateValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.ApiKey, OltArgErrorsSendGrid.TemplateId);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.ApiKey, OltArgErrorsSendGrid.TemplateId);
         }
 
 
@@ -106,7 +106,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.True(args.ClickTrackingValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.TemplateId, OltArgErrorsSendGrid.ApiKey);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.TemplateId, OltArgErrorsSendGrid.ApiKey);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Null(args.UnsubscribeGroupIdValue);
 
             var errors = args.ValidationErrors();
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.TemplateId, OltArgErrorsSendGrid.ApiKey);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.TemplateId, OltArgErrorsSendGrid.ApiKey);
                         
         }
 
@@ -150,7 +150,7 @@ namespace OLT.Email.SendGrid.Tests
 
             var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltArgErrorsSendGrid.TemplateId, OltArgErrorsSendGrid.ApiKey);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltArgErrorsSendGrid.TemplateId, OltArgErrorsSendGrid.ApiKey);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithApiKey(null)).Should().Throw<ArgumentNullException>();
@@ -187,13 +187,13 @@ namespace OLT.Email.SendGrid.Tests
             var args = new OltEmailClientSmtpSendGrid();
             var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body, OltArgErrorsSendGrid.ApiKey);            
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body, OltArgErrorsSendGrid.ApiKey);            
             args.Invoking(args => args.WithApiKey(null)).Should().Throw<ArgumentNullException>();
 
             args.WithApiKey(Faker.Internet.UserName());
             errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
 
         }
 
@@ -205,7 +205,7 @@ namespace OLT.Email.SendGrid.Tests
 
             var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltArgErrorsCommon.Recipients, OltArgErrorsCommon.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
+            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From, OltSmtpArgErrors.Host, OltSmtpArgErrors.Subject, OltSmtpArgErrors.Body);
 
         }
     }

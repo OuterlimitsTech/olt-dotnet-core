@@ -68,7 +68,7 @@ namespace OLT.Email
             var errors = base.ValidationErrors();
             if (!To.Any())
             {
-                errors.Add(OltArgErrorsCommon.Recipients);
+                errors.Add(OltErrorMessages.Recipients);
             }
             return errors;
         }

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OLT.Email.SendGrid.Common\OLT.Email.SendGrid.Common.csproj" />
+    <ProjectReference Include="..\OLT.Email.SendGrid.Shared\OLT.Email.SendGrid.Shared.csproj" />
   </ItemGroup>
 
 </Project>

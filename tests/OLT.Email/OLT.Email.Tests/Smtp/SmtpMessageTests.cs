@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
@@ -8,66 +9,70 @@ using Xunit;
 
 namespace OLT.Email.Tests.Smtp
 {
-    public  class GeneralSmtpTests
+    public class SmtpMessageTests
     {
-        private readonly string Host = Faker.Internet.DomainName();
+        private readonly string FakeHost = Faker.Internet.DomainName();
 
         [Fact]
-        public void PortNumberTests()
+        public void TestRecipients()
         {
-            
-
-            var smtpEmail = new OltSmtpEmail
+            var smtpServer = new OltSmtpServer
             {
-                Subject = $"{Faker.Lorem.Words(10).Last()} {Faker.Lorem.Words(40).Last()}",
-                Body = Faker.Lorem.Paragraph(4),
-                From = new OltEmailAddress
-                {
-                    Name = Faker.Name.FullName(),
-                    Email = Faker.Internet.Email()
-                },
-                Recipients = new OltEmailRecipients
-                {
-                    To = new List<IOltEmailAddress>
-                        {
-                            new OltEmailAddress
-                            {
-                                Name = Faker.Name.FullName(),
-                                Email = Faker.Internet.FreeEmail()
-                            }
-                        },
-                },
-            };
-
-            var serverNoPort = new OltSmtpServer
-            {
-                Host = Host,
-                Port = null,
+                Host = FakeHost,
                 Credentials = null
             };
 
-            using (var client = OltSmtpEmailExtensions.BuildOltEmailClient(serverNoPort, true, smtpEmail).CreateClient())
+            var smtpEmail = SmtpHelper.FakerSmtpEmail(5, 4);
+            var toList = new List<IOltEmailAddress>() { smtpEmail.Recipients.To[1], smtpEmail.Recipients.To[2] };
+            var ccList = new List<IOltEmailAddress>() { smtpEmail.Recipients.CarbonCopy[0], smtpEmail.Recipients.CarbonCopy[2] };
+
+            var prodEnv = OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail);
+            using (var msg = prodEnv.CreateMessage(prodEnv.BuildRecipients()))
             {
-                Assert.True(client.Port > 0);
+                var compareTo = msg.To.Select(x => new OltEmailAddress { Email = x.Address, Name = x.DisplayName }).ToList();
+                var compareCc = msg.CC.Select(x => new OltEmailAddress { Email = x.Address, Name = x.DisplayName }).ToList();
+                Assert.Empty(msg.Bcc);
+                compareTo.Should().BeEquivalentTo(smtpEmail.Recipients.To);
+                compareCc.Should().BeEquivalentTo(smtpEmail.Recipients.CarbonCopy);
             }
 
-            short? portNumber = 0;
-            serverNoPort.Port = portNumber;
 
-            using (var client = OltSmtpEmailExtensions.BuildOltEmailClient(serverNoPort, true, smtpEmail).CreateClient())
+            prodEnv = OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail)
+                .WithWhitelist(SmtpHelper.BuildWhitelist(toList))
+                .WithWhitelist(SmtpHelper.BuildWhitelist(ccList));
+
+            using (var msg = prodEnv.CreateMessage(prodEnv.BuildRecipients()))
             {
-                Assert.NotEqual(portNumber.Value, client.Port);
+                var compareTo = msg.To.Select(x => new OltEmailAddress { Email = x.Address, Name = x.DisplayName }).ToList();
+                var compareCc = msg.CC.Select(x => new OltEmailAddress { Email = x.Address, Name = x.DisplayName }).ToList();
+                Assert.Empty(msg.Bcc);
+                compareTo.Should().BeEquivalentTo(smtpEmail.Recipients.To);
+                compareCc.Should().BeEquivalentTo(smtpEmail.Recipients.CarbonCopy);
             }
 
-            portNumber = 2525;
-            serverNoPort.Port = portNumber;
-
-            using (var client = OltSmtpEmailExtensions.BuildOltEmailClient(serverNoPort, true, smtpEmail).CreateClient())
+            var testEnv = OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer,false, smtpEmail);
+            using (var msg = testEnv.CreateMessage(testEnv.BuildRecipients()))
             {
-                Assert.Equal(portNumber.Value, client.Port);
+                Assert.Empty(msg.To);
+                Assert.Empty(msg.CC);
+                Assert.Empty(msg.Bcc);
             }
 
+            testEnv = OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, false, smtpEmail)
+                .WithWhitelist(SmtpHelper.BuildWhitelist(toList))
+                .WithWhitelist(SmtpHelper.BuildWhitelist(ccList));
+
+            using (var msg = testEnv.CreateMessage(testEnv.BuildRecipients()))
+            {
+                var compareTo = msg.To.Select(x => new OltEmailAddress { Email = x.Address, Name = x.DisplayName }).ToList();
+                var compareCc = msg.CC.Select(x => new OltEmailAddress { Email = x.Address, Name = x.DisplayName }).ToList();
+                Assert.Empty(msg.Bcc);
+                compareTo.Should().BeEquivalentTo(toList);
+                compareCc.Should().BeEquivalentTo(ccList);
+            }
         }
+
+
 
         [Fact]
         public void TestCalendar()
@@ -75,7 +80,7 @@ namespace OLT.Email.Tests.Smtp
 
             var smtpServer = new OltSmtpServer
             {
-                Host = Host,
+                Host = FakeHost,
                 Credentials = null
             };
 
@@ -145,8 +150,9 @@ namespace OLT.Email.Tests.Smtp
                 Assert.Equal("invite.ics", avCal.ContentType.Name);
                 Assert.Equal("REQUEST", avCal.ContentType.Parameters["method"]);
             }
-
-            
         }
+
+
+        
     }
 }

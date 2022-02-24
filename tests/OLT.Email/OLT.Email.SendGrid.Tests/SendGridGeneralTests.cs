@@ -46,9 +46,6 @@ namespace OLT.Email.SendGrid.Tests
                 Assert.Equal(server.Credentials.Username, cred.UserName);                
                 Assert.Equal(password, cred.Password);
             }
-
-
-
         }
 
         [Fact]
@@ -68,26 +65,8 @@ namespace OLT.Email.SendGrid.Tests
 
         [Fact]
         public void EmailTemplateTests()
-        {
-            
-            var data = new EmailDataJson
-            {
-                Recipient = new EmailRecipientJson
-                {
-                    First = Faker.Name.First(),
-                    FullName = Faker.Name.FullName(),
-                },
-                Build = new EmailDataBuildVersionJson
-                {
-                    Version = Faker.Country.Name()
-                },
-                Communication = new EmailDataCommunicationJson
-                {
-                    Body1 = Faker.Lorem.Sentences(4).LastOrDefault(),
-                    Body2 = Faker.Lorem.Sentences(10).LastOrDefault(),
-                }
-            };
-
+        {            
+            var data = EmailDataJson.FakerData();
             var template = new FakeJsonEmailTemplate
             {
                 TemplateData = data

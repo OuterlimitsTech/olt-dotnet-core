@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email", "src\OLT.Email\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.Email.SendGrid", "OLT.Email.SendGrid", "{B88D2009-30C8-4B4A-9BD3-999746786D0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid.Common", "src\OLT.Email\OLT.Email.SendGrid.Common\OLT.Email.SendGrid.Common.csproj", "{BF3D09B2-F804-451A-83FE-8CCE87C96256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid.Shared", "src\OLT.Email\OLT.Email.SendGrid.Shared\OLT.Email.SendGrid.Shared.csproj", "{BF3D09B2-F804-451A-83FE-8CCE87C96256}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid", "src\OLT.Email\OLT.Email.SendGrid\OLT.Email.SendGrid.csproj", "{14AAD8BD-1405-491F-8371-091945376ECB}"
 EndProject

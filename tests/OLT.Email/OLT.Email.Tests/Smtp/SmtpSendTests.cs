@@ -92,6 +92,9 @@ namespace OLT.Email.Tests.Smtp
             var args = OltSmtpEmailExtensions.BuildOltEmailClient(ex, _smtpTestServer, smtpEmail);
             Assert.True(args.AllowSend(email));
 
+            args = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, smtpEmail, ex);
+            Assert.True(args.AllowSend(email));
+
             Assert.Throws<Exception>(() => OltSmtpEmailExtensions.OltEmailError(ex, _smtpTestServer, smtpEmail, true)); //SENDS EMAIL
 
             try
