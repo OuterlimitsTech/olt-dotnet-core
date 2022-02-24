@@ -24,16 +24,6 @@ namespace OLT.Email.Tests.Smtp.Assets
                 throw new OltEmailValidationException(errors);
             }
             return true;
-        }
-
-        public override OltEmailResult Send()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Task<OltEmailResult> SendAsync()
-        {
-            throw new NotImplementedException();
-        }
+        }       
     }
 }
