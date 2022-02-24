@@ -97,6 +97,13 @@ namespace OLT.Email.Tests.Smtp
                 Assert.Equal(smtpServer.Credentials.Password, cred.Password);
 
             }
+
+            smtpServer.Credentials = null;
+
+            using (var client = OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).CreateClient())
+            {
+                Assert.Null(client.Credentials);
+            }
         }
     }
 }

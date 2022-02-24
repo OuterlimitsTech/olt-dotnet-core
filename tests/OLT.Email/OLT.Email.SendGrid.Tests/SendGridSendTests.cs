@@ -123,8 +123,14 @@ namespace OLT.Email.SendGrid.Tests
         {
             var config = new OltEmailConfigurationSendGrid();
             var template = JsonEmailTemplate.FakerData(_prodConfig.TemplateIdJson);
+
             Assert.Throws<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).Send());  //SHOULD FAIL
             await Assert.ThrowsAsync<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).SendAsync());  //SHOULD FAIL
+
+            var noRecTemplate = JsonEmailTemplate.FakerData(_prodConfig.TemplateIdJson);
+            noRecTemplate.Recipients = new OltEmailRecipients();
+            Assert.Throws<OltSendGridValidationException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, noRecTemplate).Send());  //SHOULD FAIL
+            await Assert.ThrowsAsync<OltSendGridValidationException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, noRecTemplate).SendAsync());  //SHOULD FAIL
         }
 
         [Fact]
