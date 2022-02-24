@@ -13,7 +13,7 @@
     /// Request with a passed value
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
-    public interface IOltRequest<out TValue> : IOltRequest
+    public interface IOltRequest<TValue> : IOltRequest
     {
         TValue Value { get; }
     }
