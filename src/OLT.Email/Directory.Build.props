@@ -1,0 +1,16 @@
+<Project>
+
+  <ItemGroup>
+    <None Include="..\..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <PropertyGroup>		
+    <NoWarn>$(NoWarn);S110</NoWarn>
+    <NoWarn>$(NoWarn);S2436</NoWarn>
+    <NoWarn>$(NoWarn);S5332</NoWarn>
+  </PropertyGroup>
+
+</Project>

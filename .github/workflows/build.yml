@@ -14,8 +14,18 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  SOURCE_DIRECTORY: ${{ github.workspace }}
   SOLUTION_FILE: "OLT.Core.sln"
+  SOURCE_DIRECTORY: ${{ github.workspace }}
+  SENDGRID_TMPL_JSON: ${{ secrets.SENDGRID_TMPL_JSON }}
+  SENDGRID_TMPL_TAG: ${{ secrets.SENDGRID_TMPL_TAG }}
+  SENDGRID_UNSUBSCRIBE_GROUP_ID: ${{ secrets.SENDGRID_UNSUBSCRIBE_GROUP_ID }}
+  SENDGRID_TOKEN: ${{ secrets.SENDGRID_TOKEN }}
+  SMTP_HOST: ${{ secrets.SMTP_HOST }}
+  SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+  SMTP_PORT: ${{ secrets.SMTP_PORT }}
+  SMTP_FROM_ADDRESS: ${{ secrets.SMTP_FROM_ADDRESS }}
+  SMTP_TO_ADDRESS: ${{ secrets.SMTP_TO_ADDRESS }}
 
 jobs:
   build:
