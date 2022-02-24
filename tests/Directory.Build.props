@@ -2,4 +2,8 @@
   <PropertyGroup>
     <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
+  </PropertyGroup>
 </Project>
