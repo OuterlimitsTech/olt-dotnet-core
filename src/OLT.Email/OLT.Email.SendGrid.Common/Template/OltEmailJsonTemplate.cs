@@ -2,7 +2,7 @@
 
 namespace OLT.Email.SendGrid
 {
-    public abstract class OltEmailJsonTemplate<TModel> : IOltEmailJsonTemplate<TModel>, IOltEmailTemplate
+    public abstract class OltEmailJsonTemplate<TModel> : IOltEmailJsonTemplate<TModel>
         where TModel : class
 
     {
