@@ -7,4 +7,8 @@
     </None>
   </ItemGroup>
 
+  <PropertyGroup>		
+    <NoWarn>$(NoWarn);S110</NoWarn>
+  </PropertyGroup>
+
 </Project>
