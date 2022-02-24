@@ -10,7 +10,7 @@ namespace OLT.Email
     public abstract class OltSmtpHostArgs<T> : OltFromEmailArgs<T>, IOltSmtpClient
        where T : OltSmtpHostArgs<T>
     {
-        protected internal string SmtpHost { get; set; }
+        protected  string SmtpHost { get; set; }
 
         protected OltSmtpHostArgs()
         {

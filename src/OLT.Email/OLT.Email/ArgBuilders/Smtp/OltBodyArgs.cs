@@ -7,7 +7,7 @@ namespace OLT.Email
     public abstract class OltBodyArgs<T> : OltSubjectLineArgs<T>
         where T : OltBodyArgs<T>
     {
-        protected internal string Body { get; set; }
+        protected  string Body { get; set; }
 
         protected OltBodyArgs()
         {

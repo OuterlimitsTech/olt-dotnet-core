@@ -6,7 +6,7 @@ namespace OLT.Email.SendGrid
     public abstract class OltCustomArgsArgs<T> : OltUnsubscribeGroupArgs<T>
     where T : OltCustomArgsArgs<T>
     {
-        protected internal Dictionary<string, string> CustomArgs { get; set; } = new Dictionary<string, string>();
+        protected Dictionary<string, string> CustomArgs { get; set; } = new Dictionary<string, string>();
 
         protected OltCustomArgsArgs()
         {

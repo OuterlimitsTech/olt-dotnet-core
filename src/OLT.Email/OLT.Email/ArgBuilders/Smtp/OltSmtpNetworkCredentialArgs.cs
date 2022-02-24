@@ -8,8 +8,8 @@ namespace OLT.Email
     public abstract class OltSmtpNetworkCredentialArgs<T> : OltSmtpSendArgs<T>
         where T : OltSmtpNetworkCredentialArgs<T>
     {        
-        protected internal string SmtpUsername { get; set; }
-        protected internal string SmtpPassword { get; set; }
+        protected  string SmtpUsername { get; set; }
+        protected  string SmtpPassword { get; set; }
 
         protected OltSmtpNetworkCredentialArgs()
         {

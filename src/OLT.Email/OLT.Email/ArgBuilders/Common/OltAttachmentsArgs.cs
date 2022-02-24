@@ -6,7 +6,7 @@ namespace OLT.Email
     public abstract class OltAttachmentsArgs<T> : OltRecipientsArgs<T> 
       where T : OltAttachmentsArgs<T>
     {
-        protected internal List<OltEmailAttachment> Attachments { get; set; } = new List<OltEmailAttachment>();
+        protected List<OltEmailAttachment> Attachments { get; set; } = new List<OltEmailAttachment>();
 
         protected OltAttachmentsArgs()
         {

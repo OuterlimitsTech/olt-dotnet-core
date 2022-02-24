@@ -9,7 +9,7 @@ namespace OLT.Email
     {
         public const string DefaultMessage = "Email Validation Errors";
 
-        protected internal OltEmailValidationException(string message) : base(message)
+        protected  OltEmailValidationException(string message) : base(message)
         {
 
         }

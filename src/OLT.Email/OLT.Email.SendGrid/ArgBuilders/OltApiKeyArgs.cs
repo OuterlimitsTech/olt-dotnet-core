@@ -10,7 +10,7 @@ namespace OLT.Email.SendGrid
     public abstract class OltApiKeyArgs<T> : OltFromEmailArgs<T>, IOltApiKeyArgs<T>, IOltEmailClient<SendGridClient, SendGridMessage, OltSendGridEmailResult>
         where T : OltApiKeyArgs<T>
     {
-        protected internal string ApiKey { get; set; }
+        protected string ApiKey { get; set; }
 
         protected OltApiKeyArgs()
         {

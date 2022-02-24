@@ -3,7 +3,7 @@
     public abstract class OltDisableClickTrackingArgs<T> : OltApiKeyArgs<T>
       where T : OltDisableClickTrackingArgs<T>
     {
-        protected internal bool ClickTracking { get; set; } = true;
+        protected bool ClickTracking { get; set; } = true;
 
         protected OltDisableClickTrackingArgs()
         {

@@ -7,8 +7,8 @@ namespace OLT.Email
     public abstract class OltRecipientsArgs<T> : OltEmailArgsWhitelist<T>
       where T : OltRecipientsArgs<T>
     {
-        protected internal List<OltEmailAddress> To { get; set; } = new List<OltEmailAddress>();
-        protected internal List<OltEmailAddress> CarbonCopy { get; set; } = new List<OltEmailAddress>();
+        protected  List<OltEmailAddress> To { get; set; } = new List<OltEmailAddress>();
+        protected  List<OltEmailAddress> CarbonCopy { get; set; } = new List<OltEmailAddress>();
 
         protected OltRecipientsArgs()
         {

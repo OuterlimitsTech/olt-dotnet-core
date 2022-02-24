@@ -3,7 +3,7 @@
     public abstract class OltSmtpDisableSslArgs<T> : OltSmtpHostArgs<T>
       where T : OltSmtpDisableSslArgs<T>
     {
-        protected internal bool SmtpSSLDisabled { get; set; }
+        protected  bool SmtpSSLDisabled { get; set; }
 
         protected OltSmtpDisableSslArgs()
         {

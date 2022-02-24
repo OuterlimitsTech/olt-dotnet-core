@@ -13,7 +13,7 @@ namespace OLT.Email
         // <summary>
         // Production Enabled
         // </summary>
-        protected internal abstract bool Enabled { get; }
+        protected  abstract bool Enabled { get; }
 
         // <summary>
         // Determines if Email can be sent depending on whitelist or production

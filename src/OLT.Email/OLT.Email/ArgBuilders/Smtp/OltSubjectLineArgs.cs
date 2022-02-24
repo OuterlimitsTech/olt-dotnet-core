@@ -6,7 +6,7 @@ namespace OLT.Email
     public abstract class OltSubjectLineArgs<T> : OltSmtpPortArgs<T>
        where T : OltSubjectLineArgs<T>
     {
-        protected internal string SubjectLine { get; set; }
+        protected  string SubjectLine { get; set; }
 
         protected OltSubjectLineArgs()
         {

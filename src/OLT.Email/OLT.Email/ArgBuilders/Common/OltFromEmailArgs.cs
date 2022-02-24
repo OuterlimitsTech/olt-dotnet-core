@@ -7,7 +7,7 @@ namespace OLT.Email
     public abstract class OltFromEmailArgs<T> : OltAttachmentsArgs<T>
         where T : OltFromEmailArgs<T>
     {
-        protected internal OltEmailAddress From { get; set; }
+        protected  OltEmailAddress From { get; set; }
 
         protected OltFromEmailArgs()
         {

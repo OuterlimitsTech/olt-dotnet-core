@@ -7,7 +7,7 @@ namespace OLT.Email
     public abstract class OltSmtpPortArgs<T> : OltSmtpDisableSslArgs<T>
         where T : OltSmtpPortArgs<T>
     {
-        protected internal int SmtpPort { get; set; } = 587;
+        protected  int SmtpPort { get; set; } = 587;
 
         protected OltSmtpPortArgs()
         {

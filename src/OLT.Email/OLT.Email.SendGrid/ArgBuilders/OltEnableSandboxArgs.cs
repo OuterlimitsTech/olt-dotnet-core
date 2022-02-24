@@ -5,7 +5,7 @@ namespace OLT.Email.SendGrid
     public abstract class OltEnableSandboxArgs<T> : OltCustomArgsArgs<T>
         where T : OltEnableSandboxArgs<T>
     {
-        protected internal bool SandboxMode { get; set; }
+        protected bool SandboxMode { get; set; }
 
         protected OltEnableSandboxArgs()
         {

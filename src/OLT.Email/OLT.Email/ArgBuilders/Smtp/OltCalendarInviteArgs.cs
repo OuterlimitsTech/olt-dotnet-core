@@ -7,7 +7,7 @@ namespace OLT.Email
     public abstract class OltCalendarInviteArgs<T> : OltBodyArgs<T>
        where T : OltCalendarInviteArgs<T>
     {
-        protected internal byte[] CalendarInviteBtyes { get; set; }
+        protected  byte[] CalendarInviteBtyes { get; set; }
 
         public const string DefaultFileName = "invite.ics";
         public const string DefaultContentType = "text/calendar";

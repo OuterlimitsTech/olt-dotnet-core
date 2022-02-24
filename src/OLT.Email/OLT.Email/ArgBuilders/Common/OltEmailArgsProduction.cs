@@ -5,7 +5,7 @@
     {
         private bool _enabled = false;
 
-        protected internal override bool Enabled => _enabled;        
+        protected  override bool Enabled => _enabled;        
 
         protected OltEmailArgsProduction()
         {

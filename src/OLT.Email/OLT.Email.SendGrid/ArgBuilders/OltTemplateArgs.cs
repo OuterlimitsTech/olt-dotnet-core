@@ -12,7 +12,7 @@ namespace OLT.Email.SendGrid
     public abstract class OltTemplateArgs<T> : OltEnableSandboxArgs<T>
         where T : OltTemplateArgs<T>
     {
-        protected internal IOltEmailTemplateId Template { get; set; }
+        protected IOltEmailTemplateId Template { get; set; }
 
         protected OltTemplateArgs()
         {
@@ -67,7 +67,7 @@ namespace OLT.Email.SendGrid
                 msg.AddCustomArgs(CustomArgs);
             }            
 
-            Attachments?.ForEach(attachment => msg.AddAttachment(attachment.FileName, Convert.ToBase64String(attachment.Bytes), attachment.ContentType));
+            Attachments.ForEach(attachment => msg.AddAttachment(attachment.FileName, Convert.ToBase64String(attachment.Bytes), attachment.ContentType));
 
             ConfigureRecipients(msg, recipients);
 

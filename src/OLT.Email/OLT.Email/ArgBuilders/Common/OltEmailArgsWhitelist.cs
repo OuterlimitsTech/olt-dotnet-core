@@ -6,7 +6,7 @@ namespace OLT.Email
     public abstract class OltEmailArgsWhitelist<T> : OltEmailArgsProduction<T>
         where T : OltEmailArgsWhitelist<T>
     {
-        protected internal OltEmailConfigurationWhitelist Whitelist { get; set; } = new OltEmailConfigurationWhitelist();
+        protected  OltEmailConfigurationWhitelist Whitelist { get; set; } = new OltEmailConfigurationWhitelist();
 
         protected OltEmailArgsWhitelist()
         {

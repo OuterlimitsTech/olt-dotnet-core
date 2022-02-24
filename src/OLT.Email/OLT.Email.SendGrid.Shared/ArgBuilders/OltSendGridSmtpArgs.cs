@@ -9,7 +9,7 @@ namespace OLT.Email.SendGrid
     public abstract class OltSendGridSmtpArgs<T> : OltSmtpNetworkCredentialArgs<T>, IOltSmtpClient, IOltApiKeyArgs<T>
         where T : OltSendGridSmtpArgs<T>
     {
-        protected internal string ApiKey { get; set; }
+        protected  string ApiKey { get; set; }
         
         protected OltSendGridSmtpArgs()
         {
