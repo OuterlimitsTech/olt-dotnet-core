@@ -68,18 +68,22 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
          {
                 new object[] { OltNgxLoggerLevel.Error, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Fatal, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Info, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Information, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { null, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Trace, true, new HelperNgxExceptionTest(null) },
-                new object[] { OltNgxLoggerLevel.Warn, true, new HelperNgxExceptionTest(null) },
+                new object[] { OltNgxLoggerLevel.Warning, true, new HelperNgxExceptionTest(null) },
 
                 new object[] { OltNgxLoggerLevel.Error, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Fatal, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Warn, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Warning, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { null, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { null, false, new HelperNgxExceptionTest(null) },
                 new object[] { OltNgxLoggerLevel.Debug, false, new HelperNgxExceptionTest(null) },
                 new object[] { OltNgxLoggerLevel.Log, false, new HelperNgxExceptionTest(null) },
+
+                new object[] { OltNgxLoggerLevel.Error, false, new HelperNgxExceptionTest(DateTimeOffset.Now, true) },
+                new object[] { OltNgxLoggerLevel.Error, false, new HelperNgxExceptionTest(null, true) },
+
          };
 
     }

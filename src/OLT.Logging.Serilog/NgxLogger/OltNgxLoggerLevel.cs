@@ -4,9 +4,9 @@
     {
         Trace = 0,
         Debug,
-        Info,
+        Information,
         Log,
-        Warn,
+        Warning,
         Error,
         Fatal,
         Off

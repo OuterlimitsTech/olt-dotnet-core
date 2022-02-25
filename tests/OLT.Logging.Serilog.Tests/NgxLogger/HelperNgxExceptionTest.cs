@@ -7,7 +7,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 {
     public class HelperNgxExceptionTest
     {
-        public HelperNgxExceptionTest(DateTimeOffset? dt)
+        public HelperNgxExceptionTest(DateTimeOffset? dt, bool nullStack = false)
         {
             if (dt.HasValue)
             {
@@ -16,6 +16,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             }
 
 
+            
             Stack = new List<OltNgxLoggerStackJson>
             {
                 new OltNgxLoggerStackJson
@@ -52,6 +53,11 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 User = Result["User"],
                 Stack = Stack
             };
+
+            if (nullStack)
+            {
+                Detail.Stack = null;
+            }
         }
 
 
