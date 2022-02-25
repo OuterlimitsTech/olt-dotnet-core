@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using OLT.Logging.Serilog.Enricher;
 using Serilog;
 using Serilog.Configuration;
@@ -27,16 +26,11 @@ namespace OLT.Logging.Serilog
         /// <returns>Configuration object allowing method chaining.</returns>
         public static LoggerConfiguration WithOltEnvironment(this LoggerEnrichmentConfiguration loggerConfiguration, string environmentName)
         {
-            var config = loggerConfiguration.WithProperty(OltSerilogConstants.Properties.Environment, environmentName);
-
-#if DEBUG
-            // Used to filter out potentially bad data due debugging.
-            // Very useful when doing Seq dashboards and want to remove logs under debugging session.
-            config.Enrich.WithProperty(OltSerilogConstants.Properties.DebuggerAttached, Debugger.IsAttached);
-#endif
-
-            return config;
-        }
-
+            return loggerConfiguration
+                .WithProperty(OltSerilogConstants.Properties.Environment, environmentName)
+                // Used to filter out potentially bad data due debugging.
+                // Very useful when doing Seq dashboards and want to remove logs under debugging session.
+                .Enrich.WithProperty(OltSerilogConstants.Properties.DebuggerAttached, Debugger.IsAttached);
+        }        
     }
 }
