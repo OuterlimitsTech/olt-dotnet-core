@@ -19,16 +19,8 @@ namespace OLT.Logging.Serilog
         public virtual string Source { get; set; }
 
         public override string ToString()
-        {
-            var list = new List<string>
-            {
-                $"Column Number: {ColumnNumber}",
-                $"Line Number: {LineNumber}",
-                $"FileName: {FileName}",
-                $"FunctionName: {FunctionName}",
-                $"Source: {Source}",
-            };
-            return string.Join(Environment.NewLine, list);
+        {           
+            return OltNgxLoggerExtensions.FormatStack(this);
         }
     }
 }

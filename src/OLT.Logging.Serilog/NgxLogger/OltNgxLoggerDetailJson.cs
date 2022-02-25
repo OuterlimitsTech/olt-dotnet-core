@@ -13,6 +13,8 @@ namespace OLT.Logging.Serilog
     /// </remarks>
     public class OltNgxLoggerDetailJson
     {
+
+        
         public virtual string Name { get; set; }
         public virtual string AppId { get; set; }
         public virtual string User { get; set; }
@@ -44,11 +46,10 @@ namespace OLT.Logging.Serilog
                 ex.Data.Add("Time", null);
             }
             ex.Data.Add("Url", Url);
-            ex.Data.Add("Status", Status);
-            var stack = Stack?.Select(s => $"{s}{Environment.NewLine}{Environment.NewLine}").ToList();
-            if (stack?.Count > 0)
+            ex.Data.Add("Status", Status);            
+            if (Stack?.Count > 0)
             {
-                ex.Data.Add("Stack", string.Join(Environment.NewLine, stack));
+                ex.Data.Add("Stack", Stack.FormatStack());
             }
 
 

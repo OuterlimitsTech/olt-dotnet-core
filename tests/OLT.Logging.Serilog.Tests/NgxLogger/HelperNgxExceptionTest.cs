@@ -19,14 +19,8 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             
             Stack = new List<OltNgxLoggerStackJson>
             {
-                new OltNgxLoggerStackJson
-                {
-                    ColumnNumber = Faker.RandomNumber.Next(3),
-                    LineNumber = Faker.RandomNumber.Next(4),
-                    FileName = Faker.Lorem.GetFirstWord(),
-                    FunctionName = Faker.Lorem.GetFirstWord(),
-                    Source = Faker.Lorem.Paragraph()
-                }
+                NgxTestHelper.FakerStackJson(6),
+                NgxTestHelper.FakerStackJson(12),
             };
 
 
@@ -38,7 +32,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 { "Time", UnixTime.HasValue ? DateTimeOffset.FromUnixTimeMilliseconds(UnixTime.Value).ToString(OltSerilogConstants.FormatString.ISO8601) : null },
                 { "Url", Faker.Internet.Url() },
                 { "Status", Faker.RandomNumber.Next(200, 600).ToString() },
-                { "Stack", string.Join(Environment.NewLine,  Stack.Select(s => $"{s}{Environment.NewLine}{Environment.NewLine}").ToList()) }
+                { "Stack", Stack.FormatStack() }
             };
 
             Detail = new OltNgxLoggerDetailJson
