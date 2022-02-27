@@ -89,13 +89,14 @@ namespace System
         /// Removes special characters from <see cref="string"/> using <see cref="OltRegExPatterns.RemoveSpecialCharacters"/>
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
-        public static string RemoveSpecialCharacters(this string self)
+        /// <param name="replaceWith">What to replace the special character with</param> 
+        public static string RemoveSpecialCharacters(this string self, string replaceWith = "")
         {
             if (string.IsNullOrEmpty(self))
             {
                 return self;
             }            
-            return OltRegExPatterns.RemoveSpecialCharacters.Replace(self, string.Empty);
+            return OltRegExPatterns.RemoveSpecialCharacters.Replace(self, replaceWith);
         }
 
         public static string CleanForSearch(this string self)
