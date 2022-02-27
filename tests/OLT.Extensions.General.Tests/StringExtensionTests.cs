@@ -49,7 +49,20 @@ namespace OLT.Extensions.General.Tests
         [InlineData("Hello &!There", "Hello There")]
         public void RemoveSpecialCharacters(string value, string expectedResult)
         {
-            Assert.Equal(expectedResult, value.RemoveSpecialCharacters());
+            Assert.Equal(expectedResult, OltStringExtensions.RemoveSpecialCharacters(value));
+        }
+
+        [Theory]
+        [InlineData("", "", "")]
+        [InlineData(" ", "", " ")]
+        [InlineData(null, null, null)]
+        [InlineData("!&*$", "", "")]
+        [InlineData("!&*$", "-", "----")]
+        [InlineData("Hello &!There", "", "Hello There")]
+        [InlineData("Hello &!There", "_", "Hello __There")]
+        public void RemoveSpecialCharactersReplaceWith(string value, string replaceWith, string expectedResult)
+        {
+            Assert.Equal(expectedResult, OltStringExtensions.RemoveSpecialCharacters(value, replaceWith));
         }
 
         [Fact]

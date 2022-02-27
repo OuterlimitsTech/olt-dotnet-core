@@ -15,25 +15,45 @@ namespace OLT.Extensions.General.Tests
         private const string EmbeddedFile = "ImportTest.xlsx";
 
         [Fact]
+        public void NameWithoutExtTest()
+        {
+            var fileInfo = new FileInfo(EmbeddedFile);
+            Assert.Equal("ImportTest", OltSystemIOExtensions.NameWithoutExt(fileInfo));
+        }
+
+        [Fact]
         public void ToFile()
         {
             var dir = UnitTestHelper.BuildTempPath();
 
             try
             {
-                var fileName = Path.Combine(dir, "ToBytes_Import.xlsx");
+                var fileName = Path.Combine(dir, $"{nameof(ToFile)}_{Guid.NewGuid()}.xlsx");
+                using (var resource = this.GetType().Assembly.GetEmbeddedResourceStream(EmbeddedFile))
+                {
+                    try
+                    {
+                        var bytes = OltSystemIOExtensions.ToBytes(resource);                        
 
-                var ms = this.GetType().Assembly
-                    .GetEmbeddedResourceStream(EmbeddedFile)
-                    .ToBytes()
-                    .ToMemoryStream();
+                        using (var ms = OltSystemIOExtensions.ToMemoryStream(bytes))
+                        {
+                            OltSystemIOExtensions.ToFile(ms, fileName);
+                            Assert.True(File.Exists(fileName));
+                        }
 
-
-                ms.ToFile(fileName);
-                Assert.True(File.Exists(fileName));
-
-                ms.ToFile(fileName); //Checking File Exists
-                Assert.True(File.Exists(fileName));
+                        using (var ms = OltSystemIOExtensions.ToMemoryStream(bytes))
+                        {
+                            OltSystemIOExtensions.ToFile(ms, fileName); //override the file
+                            Assert.True(File.Exists(fileName));
+                        }
+                                                
+                    }
+                    catch(Exception ex)
+                    {
+                        Assert.True(false, ex.ToString());
+                    }
+                }
+ 
             }
             catch (Exception)
             {
@@ -51,21 +71,29 @@ namespace OLT.Extensions.General.Tests
             var dir = UnitTestHelper.BuildTempPath();
             try
             {
-                var fileName = Path.Combine(dir, "FileToBytes_Import.xlsx");
+                var fileName = Path.Combine(dir, $"{nameof(FileToBytes)}_{Guid.NewGuid()}.xlsx");
 
-                var ms = this.GetType().Assembly
-                    .GetEmbeddedResourceStream(EmbeddedFile)
-                    .ToBytes()
-                    .ToMemoryStream();
+                using (var resource = this.GetType().Assembly.GetEmbeddedResourceStream(EmbeddedFile))
+                {
+                    try
+                    {
+                        var bytes = OltSystemIOExtensions.ToBytes(resource);
+                        Assert.True(true);
 
-                ms.ToFile(fileName);
+                        using (var ms = OltSystemIOExtensions.ToMemoryStream(bytes))
+                        {
+                            OltSystemIOExtensions.ToFile(ms, fileName);
+                        }
 
-                var bytes = File.ReadAllBytes(fileName);
-                Assert.Equal(ms.Length, bytes.Length);
-                Assert.True(File.Exists(fileName));
-
-                ms.ToFile(fileName); //Checking File Exists
-                Assert.True(File.Exists(fileName));
+                        var expectedBytes = File.ReadAllBytes(fileName);
+                        Assert.True(File.Exists(fileName));
+                        Assert.Equal(expectedBytes.Length, bytes.Length);
+                    }
+                    catch (Exception ex)
+                    {
+                        Assert.True(false, ex.ToString());
+                    }
+                }
             }
             catch (Exception)
             {
@@ -89,7 +117,7 @@ namespace OLT.Extensions.General.Tests
                     .ToBytes()
                     .ToMemoryStream();
                 ms.ToFile(fileName);
-                var msCopy = File.ReadAllBytes(fileName).ToMemoryStream();
+                var msCopy = OltSystemIOExtensions.ToMemoryStream(File.ReadAllBytes(fileName));
                 Assert.Equal(ms.Length, msCopy.Length);
                 Assert.True(File.Exists(fileName));
             }

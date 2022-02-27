@@ -16,6 +16,7 @@ namespace OLT.Logging.Serilog
         public virtual DateTimeOffset? Timestamp { get; set; }
         public virtual string FileName { get; set; }
         public virtual string LineNumber { get; set; }
+        public virtual bool IsError => Level.GetValueOrDefault(OltNgxLoggerLevel.Information) == OltNgxLoggerLevel.Fatal || Level.GetValueOrDefault(OltNgxLoggerLevel.Information) == OltNgxLoggerLevel.Error;
 
         public virtual string GetUsername()
         {

@@ -57,7 +57,7 @@ namespace System.IO
         {
             var fStream = file.OpenRead();
             var fileData = new byte[fStream.Length];
-            fStream.Read(fileData, 0, (fStream.Length).ToInt());
+            fStream.Read(fileData, 0, ToInt(fStream.Length));
             fStream.Close();
             return fileData;
         }
@@ -95,7 +95,7 @@ namespace System.IO
                 File.Delete(saveToFileName);
             }
 
-            var fileOutput = File.Create(saveToFileName, (stream.Length - 1).ToInt());
+            var fileOutput = File.Create(saveToFileName, ToInt(stream.Length - 1));
             stream.WriteTo(fileOutput);
             fileOutput.Close();
         }
@@ -107,7 +107,7 @@ namespace System.IO
         /// <param name="searchPattern"></param>
         public static void DeleteFiles(this DirectoryInfo self, string searchPattern)
         {
-            self.DeleteFiles(searchPattern, false);
+            DeleteFiles(self, searchPattern, false);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace System.IO
             {
                 foreach (var dir in self.GetDirectories())
                 {
-                    dir.DeleteFiles(searchPattern, true);
+                    DeleteFiles(dir, searchPattern, true);
                 }
             }
         }
@@ -153,10 +153,20 @@ namespace System.IO
             {
                 foreach (var dir in self.GetDirectories())
                 {
-                    dir.DeleteFiles(searchPattern, olderThan, true);
+                    DeleteFiles(dir, searchPattern, olderThan, true);
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Removes extension from <see cref="FileInfo.Name"/> 
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns><see cref="string"/></returns>
+        public static string NameWithoutExt(this FileInfo file)
+        {
+            return file.Name.Replace(file.Extension, string.Empty);
         }
     }
 }
