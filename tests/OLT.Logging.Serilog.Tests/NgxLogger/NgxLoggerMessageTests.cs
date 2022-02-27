@@ -14,7 +14,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
         [Theory]
         [MemberData(nameof(NgxLoggerMessageData))]
-        public void MessageTest(OltNgxLoggerLevel? level, bool loadDetail, HelperNgxExceptionTest data)
+        public void MessageTest(OltNgxLoggerLevel? level, bool loadDetail, bool expectedError, HelperNgxExceptionTest data)
         {
             var msg = data.BuildMessage(level, loadDetail ? data.Detail : null);
 
@@ -29,6 +29,8 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
             var formattedLogMsg = msg.FormatMessage();
             Assert.Equal(exception.Message, formattedLogMsg);
+
+            Assert.Equal(expectedError, msg.IsError);
 
             var dict = TestHelper.ToDictionary(exception.Data);
             if (loadDetail)
@@ -66,23 +68,23 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
         public static IEnumerable<object[]> NgxLoggerMessageData =>
          new List<object[]>
          {
-                new object[] { OltNgxLoggerLevel.Error, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Fatal, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Information, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { null, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Trace, true, new HelperNgxExceptionTest(null) },
-                new object[] { OltNgxLoggerLevel.Warning, true, new HelperNgxExceptionTest(null) },
+                new object[] { OltNgxLoggerLevel.Error, true, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Fatal, true, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Information, true, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { null, true, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Trace, true, false, new HelperNgxExceptionTest(null) },
+                new object[] { OltNgxLoggerLevel.Warning, true, false, new HelperNgxExceptionTest(null) },
 
-                new object[] { OltNgxLoggerLevel.Error, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Fatal, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { OltNgxLoggerLevel.Warning, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { null, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { null, false, new HelperNgxExceptionTest(null) },
-                new object[] { OltNgxLoggerLevel.Debug, false, new HelperNgxExceptionTest(null) },
-                new object[] { OltNgxLoggerLevel.Log, false, new HelperNgxExceptionTest(null) },
+                new object[] { OltNgxLoggerLevel.Error, false, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Fatal, false, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { OltNgxLoggerLevel.Warning, false, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { null, false, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { null, false, false, new HelperNgxExceptionTest(null) },
+                new object[] { OltNgxLoggerLevel.Debug, false, false, new HelperNgxExceptionTest(null) },
+                new object[] { OltNgxLoggerLevel.Log, false, false, new HelperNgxExceptionTest(null) },
 
-                new object[] { OltNgxLoggerLevel.Error, false, new HelperNgxExceptionTest(DateTimeOffset.Now, true) },
-                new object[] { OltNgxLoggerLevel.Error, false, new HelperNgxExceptionTest(null, true) },
+                new object[] { OltNgxLoggerLevel.Error, false, true, new HelperNgxExceptionTest(DateTimeOffset.Now, true) },
+                new object[] { OltNgxLoggerLevel.Error, false, true, new HelperNgxExceptionTest(null, true) },
 
          };
 
