@@ -35,7 +35,7 @@ namespace OLT.Extensions.General.Tests
             var dirInfo = new DirectoryInfo(testFile.MasterPath);
             Assert.Equal(files, dirInfo.GetFiles("*.*", SearchOption.AllDirectories).Length);
             Assert.Equal(createDirectories, dirInfo.GetDirectories("*.*", SearchOption.AllDirectories).Length);
-            dirInfo.DeleteFiles("*.*", olderThan, recursive);
+            OltSystemIOExtensions.DeleteFiles(dirInfo, "*.*", olderThan, recursive);
             Assert.Equal(expectedFiles, dirInfo.GetFiles("*.*", SearchOption.AllDirectories).Length);
             testFile.Dispose();
         }
@@ -68,11 +68,11 @@ namespace OLT.Extensions.General.Tests
 
             if (recursive)
             {
-                dirInfo.DeleteFiles("*.*", true);
+                OltSystemIOExtensions.DeleteFiles(dirInfo, "*.*", true);
             }
             else
             {
-                dirInfo.DeleteFiles("*.*");
+                OltSystemIOExtensions.DeleteFiles(dirInfo, "*.*");
             }
             
             Assert.Equal(expectedFiles, dirInfo.GetFiles("*.*", SearchOption.AllDirectories).Length);

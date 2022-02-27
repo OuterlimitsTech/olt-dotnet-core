@@ -24,8 +24,10 @@ namespace OLT.Extensions.General.Tests
                 var fileName = Path.Combine(dir, "ToBytes_Import.xlsx");
                 try
                 {
-                    var stream = this.GetType().Assembly.GetEmbeddedResourceStream(resourceName);
-                    stream?.ToBytes().ToFile(fileName);
+                    using (var stream = this.GetType().Assembly.GetEmbeddedResourceStream(resourceName))
+                    {
+                        stream?.ToBytes().ToFile(fileName);
+                    }                        
                 }
                 catch
                 {
