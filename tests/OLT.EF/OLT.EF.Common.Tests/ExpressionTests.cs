@@ -23,6 +23,7 @@ namespace OLT.EF.Common.Tests
                 Value = expected.Select(s => s.Id).ToList()
             };
             var results = expression.BuildQueryable(list.AsQueryable()).ToList();
+            results.Should().HaveCount(expected.Count);
             results.Should().BeEquivalentTo(expected);
         }
 
@@ -95,6 +96,7 @@ namespace OLT.EF.Common.Tests
                 Value = firstName
             };
             var results = expression.BuildQueryable(list.AsQueryable()).ToList();
+            results.Should().HaveCount(expected.Count);
             results.Should().BeEquivalentTo(expected);
         }
 
@@ -128,7 +130,8 @@ namespace OLT.EF.Common.Tests
             {
                 Value = firstName
             };
-            var results = expression.BuildQueryable(list.AsQueryable()).ToList();            
+            var results = expression.BuildQueryable(list.AsQueryable()).ToList();
+            results.Should().HaveCount(expected.Count);
             results.Should().BeEquivalentTo(expected);
         }
 
@@ -167,6 +170,7 @@ namespace OLT.EF.Common.Tests
                 Value = firstName
             };
             var results = expression.BuildQueryable(list.AsQueryable()).ToList();
+            results.Should().HaveCount(expected.Count);
             results.Should().BeEquivalentTo(expected);
         }
     }

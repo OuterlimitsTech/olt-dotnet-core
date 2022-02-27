@@ -47,7 +47,7 @@ namespace OLT.EF.Common.Tests
         public void SearcherGetByUid()
         {
             var expected = EntityPersonModel.FakerData();
-            var list = EntityPersonModel.FakerList(Faker.RandomNumber.Next(10, 25));
+            var list = TestHelper.BuildTestList(expected);
             var queryable = list.AsQueryable();
 
             Assert.True(new OltSearcherGetByUid<EntityPersonModel>(expected.UniqueId).IncludeDeleted);
@@ -85,10 +85,6 @@ namespace OLT.EF.Common.Tests
 
             var list = TestHelper.BuildTestList(expected);
             var queryable = list.AsQueryable();
-
-
-            Assert.NotEmpty(list.Where(p => p.DeletedOn == null));
-            Assert.NotEmpty(list.Where(p => p.DeletedOn != null));
             
 
             var results = queryable.Where(searcher).ToList();
