@@ -65,7 +65,7 @@ namespace OLT.EF.Common.Tests
         [Fact]
         public void IncludeDeleted()
         {
-            var firstName = Faker.Name.First();
+            var firstName = nameof(IncludeDeleted);
             Assert.False(new PersonFirstNameStartsWithSearcher(firstName).IncludeDeleted);
             Assert.True(new PersonFirstNameStartsWithSearcher(firstName, true).IncludeDeleted);
             Assert.False(new PersonFirstNameStartsWithSearcher(firstName, false).IncludeDeleted);
@@ -76,7 +76,7 @@ namespace OLT.EF.Common.Tests
         [Fact]
         public void WhereExtensionTests()
         {
-            var firstName = Faker.Name.First();
+            var firstName = nameof(WhereExtensionTests);
             var searcher = new PersonFirstNameStartsWithSearcher(firstName);
 
             var expected = EntityPersonModel.FakerList(Faker.RandomNumber.Next(10, 25));
@@ -104,8 +104,8 @@ namespace OLT.EF.Common.Tests
         [Fact]
         public void WhereExtensionArrayTests()
         {
-            var firstName = Faker.Name.First();
-            var lastName = Faker.Name.First();
+            var firstName = $"First_{nameof(WhereExtensionArrayTests)}";
+            var lastName = $"Last_{nameof(WhereExtensionArrayTests)}";
             var searcher1 = new PersonLastNameStartsWithSearcher(lastName);
             var searcher2 = new PersonFirstNameStartsWithSearcher(firstName);
 

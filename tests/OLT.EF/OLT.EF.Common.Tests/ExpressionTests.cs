@@ -71,7 +71,7 @@ namespace OLT.EF.Common.Tests
         [Fact]
         public void StringContains()
         {
-            var firstName = Faker.Name.First();
+            var firstName = nameof(StringContains);
             var expected = new List<EntityPersonModel>();
 
             for (int i = 0; i < Faker.RandomNumber.Next(10, 40); i++)
@@ -103,7 +103,7 @@ namespace OLT.EF.Common.Tests
         [Fact]
         public void StringStartsWith()
         {
-            var firstName = Faker.Name.First();
+            var firstName = nameof(StringStartsWith);
 
             var expected = new List<EntityPersonModel>();
             expected.AddRange(EntityPersonModel.FakerList(Faker.RandomNumber.Next(4, 8)));
@@ -138,7 +138,7 @@ namespace OLT.EF.Common.Tests
         [Fact]
         public void StringEquals()
         {
-            var firstName = Faker.Name.First();
+            var firstName = nameof(StringEquals);
 
             var expected = new List<EntityPersonModel>();
             expected.AddRange(EntityPersonModel.FakerList(Faker.RandomNumber.Next(4, 8)));
