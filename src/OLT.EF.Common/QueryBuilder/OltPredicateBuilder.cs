@@ -99,7 +99,7 @@ namespace System.Linq
             public OltParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
             {
 
-                this.map = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
+                this.map = map;
 
             }
 
