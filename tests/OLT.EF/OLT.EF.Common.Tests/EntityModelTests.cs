@@ -32,7 +32,6 @@ namespace OLT.EF.Common.Tests
             Assert.IsAssignableFrom<IOltEntity>(model);
             Assert.IsAssignableFrom<IOltEntityId>(model);
             Assert.IsAssignableFrom<IOltEntityAudit>(model);
-            Assert.IsAssignableFrom<IOltEntityDeletable>(model);            
             Assert.Throws<IsAssignableFromException>(() => Assert.IsAssignableFrom<IOltEntityDeletable>(model));
         }
 
