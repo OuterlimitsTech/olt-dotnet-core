@@ -56,10 +56,14 @@ namespace OLT.EF.Common.Tests
         public void AndTests()
         {
             var firstNamePrefix = nameof(AndTests);
-            var person = EntityPersonModel.FakerData();            
+            var person = EntityPersonModel.FakerData();
+            
+
             var expected = EntityPersonModel.FakerList(4);
             expected.Add(person);
+            
             expected.SetFirstNameStartsWith(firstNamePrefix);
+
             var list = TestHelper.BuildTestList(expected, 1000, 7, 12);
             var queryable = list.AsQueryable();
 
@@ -73,6 +77,16 @@ namespace OLT.EF.Common.Tests
             expression = p => p.DeletedOn == null;
             expression = expression.And(p => p.FirstName.StartsWith(firstNamePrefix));
             expression = expression.And(p => p.LastName == person.LastName);            
+            results = queryable.Where(expression).ToList();
+            results.Should().HaveCount(1);
+            results.FirstOrDefault().Should().BeEquivalentTo(person);
+
+
+            expression = p => p.DeletedOn == null;
+            expression = expression.And(p => p.FirstName.StartsWith(firstNamePrefix));
+            expression = expression.And(p => p.LastName == person.LastName);
+            expression = expression.And(p => p.FirstName.StartsWith(firstNamePrefix));
+            expression = expression.And(p => p.LastName == person.LastName);
             results = queryable.Where(expression).ToList();
             results.Should().HaveCount(1);
             results.FirstOrDefault().Should().BeEquivalentTo(person);
