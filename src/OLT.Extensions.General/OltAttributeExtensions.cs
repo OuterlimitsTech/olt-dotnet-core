@@ -17,7 +17,7 @@ namespace OLT.Core
         /// <param name="item"></param>
         /// <returns>First instance of <see cref="Attribute"/></returns>
         /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
-        public static T GetAttributeInstance<T, TEnum>(TEnum item)
+        public static T GetAttributeInstance<T, TEnum>(this TEnum item)
             where T : Attribute
             where TEnum : System.Enum
         {            
@@ -34,7 +34,7 @@ namespace OLT.Core
         /// <param name="item"></param>
         /// <returns>First instance of <see cref="Attribute"/> to search for or <see langword="null"/></returns>
         /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
-        public static T GetAttributeInstance<T>(Enum item)
+        public static T GetAttributeInstance<T>(this Enum item)
             where T : Attribute
         {
             if (item == null) return null;

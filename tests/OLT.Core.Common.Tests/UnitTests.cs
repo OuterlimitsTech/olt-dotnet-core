@@ -14,12 +14,16 @@ namespace OLT.Core.Common.Tests
         [Fact]
         public void OltDisposable()
         {
-            using(var obj = new TestDisposable())
+            var obj = new TestDisposable();
+            Assert.NotNull(obj);
+            Assert.False(obj.IsDisposed());
+            obj.Dispose();
+            Assert.True(obj.IsDisposed());
+
+            using (var obj2 = new TestDisposable())
             {
-                Assert.NotNull(obj);
-                Assert.False(obj.IsDeposed());
-                obj.Dispose();
-                Assert.True(obj.IsDeposed());
+                Assert.NotNull(obj2);
+                Assert.False(obj2.IsDisposed());                
             }
         }
 
