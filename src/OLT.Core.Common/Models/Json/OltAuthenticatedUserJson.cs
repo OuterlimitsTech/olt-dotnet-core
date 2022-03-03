@@ -7,7 +7,7 @@ namespace OLT.Core
     /// Standardized User Tokan Model
     /// </summary>
     /// <typeparam name="TNameModel"></typeparam>
-    public abstract class OltAuthenticatedUserTokenJson<TNameModel> 
+    public class OltAuthenticatedUserTokenJson<TNameModel> 
         where TNameModel : class, IOltPersonName, new()
     {
 
@@ -29,8 +29,8 @@ namespace OLT.Core
         public virtual DateTimeOffset Expires { get; set; }
         public virtual string ExpiresIn => $"{(Expires - Issued).TotalSeconds}";
 
-        public virtual IEnumerable<string> Roles { get; set; }
-        public virtual IEnumerable<string> Permissions { get; set; }
+        public virtual List<string> Roles { get; set; } = new List<string>();
+        public virtual List<string> Permissions { get; set; } = new List<string>();
 
     }
 }

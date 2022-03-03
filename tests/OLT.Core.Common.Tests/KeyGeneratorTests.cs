@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OLT.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -58,9 +59,9 @@ namespace OLT.Core.Common.Tests
         {
             var result = new Dictionary<char, double>();
             var chars = (new char[0])
-                .Concat(OltDefaults.Characters.UpperCase)
-                .Concat(OltDefaults.Characters.LowerCase)
-                .Concat(OltDefaults.Characters.Numerals)
+                .Concat(OltCharacters.UpperCase)
+                .Concat(OltCharacters.LowerCase)
+                .Concat(OltCharacters.Numerals)
                 .ToArray();
 
             Dictionary<char, int> counts = new Dictionary<char, int>();

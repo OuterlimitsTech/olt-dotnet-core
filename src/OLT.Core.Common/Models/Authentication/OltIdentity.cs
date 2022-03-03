@@ -86,7 +86,7 @@ namespace OLT.Core
         /// </summary>
         public virtual string GetDbUsername()
         {
-            return this.Username;
+            return this.Username ?? FullName;
         }
 
         /// <summary>

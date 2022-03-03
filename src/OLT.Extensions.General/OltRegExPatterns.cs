@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace OLT.Core
+namespace OLT.Constants
 {
     public static class OltRegExPatterns
     {
@@ -10,5 +10,4 @@ namespace OLT.Core
         public static readonly Regex RemoveSpecialCharacters = new Regex("(?:[^a-z0-9 ]|(?<=['\"])s)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         public static readonly Regex ZipRegex = new Regex("\\d{5}(-?\\d{4})?");
     }
-
 }
