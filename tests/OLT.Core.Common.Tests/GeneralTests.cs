@@ -5,7 +5,7 @@ using Xunit;
 namespace OLT.Core.Common.Tests
 {
 
-    public class UnitTests
+    public class GeneralTests
     {
         private const string NullString = null;
         private const string EmptyString = "";

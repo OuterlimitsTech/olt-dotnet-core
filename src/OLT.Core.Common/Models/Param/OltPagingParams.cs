@@ -4,20 +4,6 @@ namespace OLT.Core
 {
     public class OltPagingParams : IOltPagingParams
     {
-        [Obsolete("Move to Page")]
-        public virtual int PageNumber
-        {
-            get => Page;
-            set => Page = value;
-        }
-
-        [Obsolete("Move to Size")]
-        public virtual int PageSize
-        {
-            get => Size;
-            set => Size = value;
-        }
-
         private int? _page;
         public virtual int Page
         {

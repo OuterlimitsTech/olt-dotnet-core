@@ -5,7 +5,7 @@ using Xunit;
 
 namespace OLT.Core.Common.Tests
 {
-    public class OltKeyGeneratorTests
+    public class KeyGeneratorTests
     {
         [Theory]
         [InlineData(16, true, true, true, true, 16)]
