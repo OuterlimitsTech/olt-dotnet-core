@@ -5,7 +5,7 @@ namespace OLT.Core
 {
     /// <summary>
     /// Standardized Authenticated User Model used by the Angular
-    /// <see href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/ee913589(v=ws.11)?redirectedfrom=MSDN#what-are-claim-types"=""/>
+    /// <see href="https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/ee913589(v=ws.11)?redirectedfrom=MSDN#what-are-claim-types"/>
     /// </summary>
     /// <typeparam name="TNameModel"></typeparam>
     /// <remarks>

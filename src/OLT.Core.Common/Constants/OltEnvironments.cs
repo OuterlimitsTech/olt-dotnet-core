@@ -4,7 +4,7 @@
     /// Commonly used environment names
     /// </summary>
     /// <remarks>
-    /// Copied from Microsoft.Extensions.Hosting.Environments in <see cref="https://www.nuget.org/packages/Microsoft.Extensions.Hosting"/>
+    /// Copied from Microsoft.Extensions.Hosting.Environments in <see href="https://www.nuget.org/packages/Microsoft.Extensions.Hosting"/>
     /// </remarks>
     public static class OltEnvironments
     {

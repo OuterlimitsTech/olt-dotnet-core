@@ -121,6 +121,7 @@ namespace OLT.Core.Common.Tests
             Assert.False(model.HasRole(TestSecurityPermissions.PermOne));
             Assert.True(model.HasRole(TestSecurityPermissions.PermTwo));
 
+            Assert.True(model.HasRole(TestSecurityRoles.RoleOne, TestSecurityRoles.RoleThree));
             Assert.True(model.HasRole(TestSecurityRoles.RoleTwo, TestSecurityRoles.RoleThree));
             Assert.True(model.HasRole(TestSecurityRoles.RoleTwo, TestSecurityRoles.RoleOne));
             Assert.True(model.HasRole(TestSecurityRoles.RoleTwo, TestSecurityRoles.RoleThree, TestSecurityRoles.RoleOne));

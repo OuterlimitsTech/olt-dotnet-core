@@ -116,18 +116,7 @@ namespace OLT.Core
         /// <returns></returns>
         public bool HasRole<TRoleEnum>(params TRoleEnum[] roles) where TRoleEnum : System.Enum
         {
-            if (roles == null) return false;
-
-            var val = false;
-            foreach (var role in roles)
-            {
-                if (HasRole(role.GetCodeEnum()))
-                {
-                    val = true;
-                    break;
-                }
-            }
-            return val;
+            return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
         }
 
 
