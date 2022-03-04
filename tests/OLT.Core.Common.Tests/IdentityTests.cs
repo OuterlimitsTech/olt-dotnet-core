@@ -14,52 +14,10 @@ namespace OLT.Core.Common.Tests
     public class IdentityTests
     {
         [Fact]
-        public void IdentityTest()
+        public void IdentityTestEmpty()
         {
-            var name = new OltPersonName
-            {
-                First = Faker.Name.First(),
-                Middle = Faker.Name.Middle(),
-                Last = Faker.Name.Last(),
-                Suffix = Faker.Name.Suffix(),
-            };
-
-            var upn = Faker.RandomNumber.Next();
-            var username = Faker.Internet.UserName();
-            var emailAddress = Faker.Internet.Email();
-            var phone = Faker.Phone.Number();
-
-
-            var list = new List<Claim>();
-            list.Add(new Claim(ClaimTypes.NameIdentifier, username));
-            list.Add(new Claim(ClaimTypes.GivenName, name.First));
-            list.Add(new Claim(OltClaimTypes.MiddleName, name.Middle));
-            list.Add(new Claim(ClaimTypes.Surname, name.Last));
-            list.Add(new Claim(ClaimTypes.Email, emailAddress));
-            list.Add(new Claim(ClaimTypes.HomePhone, phone));
-            list.Add(new Claim(ClaimTypes.Upn, upn.ToString()));
-
-            var roles = new List<string>();
-            var permissions = new List<string>();
-            for (int i = 1; i <= Faker.RandomNumber.Next(8, 13); i++)
-            {
-                roles.Add($"role-{i}");
-            }
-
-            roles.Add(TestSecurityRoles.RoleOne.GetCodeEnum());
-            roles.Add(TestSecurityRoles.RoleThree.GetCodeEnum());
-
-            for (int i = 1; i <= Faker.RandomNumber.Next(11, 23); i++)
-            {
-                permissions.Add($"perm-{i}");
-            }
-
-            roles.ForEach(role => list.Add(new Claim(ClaimTypes.Role, role)));
-
-            var identity = new GenericIdentity(name.FullName);
-            identity.AddClaims(list);
-
             var model = new TestIdentity();
+            Assert.NotNull(model as IOltIdentity);
             Assert.Null(model.Identity);
             Assert.True(model.IsAnonymous);
             Assert.Empty(model.GetAllClaims());
@@ -67,40 +25,127 @@ namespace OLT.Core.Common.Tests
             Assert.Empty(model.GetClaims(null));
             Assert.Null(model.GetDbUsername());
             Assert.False(model.HasRole(null));
+        }
 
+        [Fact]
+        public void IsAnonymousTest()
+        {
+            var model = new TestIdentity();
+            Assert.True(model.IsAnonymous);
 
+            var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
+            var identity = new GenericIdentity(user.FullName);
             model = new TestIdentity(identity);
+            Assert.True(model.IsAnonymous);
 
-            Assert.NotNull(model as IOltIdentity);
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, Faker.Internet.UserName()));
+            model = new TestIdentity(identity);
+            Assert.False(model.IsAnonymous);
+
+        }
+
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("Jr.", null)]
+        [InlineData("Sr", "555-867-5309")]
+        [InlineData(null, "555-867-5309")]
+        [InlineData(" ", "")]
+        [InlineData("", " ")]
+        [InlineData(" ", " ")]
+        public void ClaimsTest(string nameSuffix, string phone)
+        {
+            var user = TestHelper.FakerAuthUserToken(nameSuffix);
+
+            var claims = user.ToClaims();
+            claims.AddClaim(ClaimTypes.HomePhone, phone);
+
+            var identity = new GenericIdentity(user.FullName);
+            identity.AddClaims(claims);
+
+            var model = new TestIdentity(identity);
             Assert.NotNull(model.Identity);
-            Assert.Equal(username, model.Username);
-            Assert.Equal(name.Last, model.LastName);
-            Assert.Equal(name.Middle, model.MiddleName);
-            Assert.Equal(name.Last, model.LastName);
-            Assert.Equal(emailAddress, model.Email);
-            Assert.Equal(phone, model.Phone);
-            Assert.Equal(name.FullName, model.FullName);
-            Assert.Equal(upn.ToString(), model.UserPrincipalName);
+            Assert.False(model.IsAnonymous);
 
-            roles.ForEach(role => Assert.True(model.HasRole(role)));
-            permissions.ForEach(perm => Assert.False(model.HasRole(perm)));
+            TestClaims(user, model, phone);
+
+            Assert.Equal(claims.Count + 1, model.GetAllClaims().Count);  //GenericIdentity adds the ClaimTypes.Name
+        }
+
+
+        [Fact]
+        public void ClaimRoleTest()
+        {
+            var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
+            user.Roles.Add(TestSecurityRoles.RoleOne.GetCodeEnum());
+            user.Roles.Add(TestSecurityRoles.RoleThree.GetCodeEnum());
+            user.Permissions.Add(TestSecurityPermissions.PermTwo.GetCodeEnum());
+            var identity = new GenericIdentity(user.FullName);
+            identity.AddClaims(user.ToClaims());
+
+            var model = new TestIdentity(identity);
+
+            user.Roles.ForEach(role => Assert.True(model.HasRole(role)));
+            user.Permissions.ForEach(perm => Assert.True(model.HasRole(perm)));
+
+            TestClaims(user, model, null);
+
+            Assert.False(model.HasRole(TestSecurityRoles.RoleTwo.GetCodeEnum()));
+            Assert.False(model.HasRole(TestSecurityPermissions.PermOne.GetCodeEnum()));
+            Assert.False(model.HasRole(null));
+            Assert.False(model.HasRole(""));
+            Assert.False(model.HasRole(" "));
+        }
+
+        [Fact]
+        public void ClaimRoleEnumTest()
+        {
+            var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
+            user.Roles.Add(TestSecurityRoles.RoleOne.GetCodeEnum());
+            user.Roles.Add(TestSecurityRoles.RoleThree.GetCodeEnum());
+            user.Permissions.Add(TestSecurityPermissions.PermTwo.GetCodeEnum());
+            var identity = new GenericIdentity(user.FullName);
+            identity.AddClaims(user.ToClaims());
+
+            var model = new TestIdentity(identity);
+
+            TestClaims(user, model, null);
 
             TestSecurityRoles[] nullTest = null;
 
             Assert.False(model.HasRole(nullTest));
+
             Assert.True(model.HasRole(TestSecurityRoles.RoleOne));
             Assert.False(model.HasRole(TestSecurityRoles.RoleTwo));
             Assert.True(model.HasRole(TestSecurityRoles.RoleThree));
+
             Assert.False(model.HasRole(TestSecurityPermissions.PermOne));
-            Assert.False(model.HasRole(TestSecurityPermissions.PermTwo));
+            Assert.True(model.HasRole(TestSecurityPermissions.PermTwo));
 
             Assert.True(model.HasRole(TestSecurityRoles.RoleTwo, TestSecurityRoles.RoleThree));
-
-            list.Add(new Claim(ClaimTypes.Name, name.FullName));
-            Assert.Equal(list.Count, model.GetAllClaims().Count);
-
-            //list.ForEach(item => Assert.True(model.HasRole(item.Type)));
-            
+            Assert.True(model.HasRole(TestSecurityRoles.RoleTwo, TestSecurityRoles.RoleOne));
+            Assert.True(model.HasRole(TestSecurityRoles.RoleTwo, TestSecurityRoles.RoleThree, TestSecurityRoles.RoleOne));
         }
+
+
+        private void TestClaims(OltAuthenticatedUserJson<OltPersonName> user, TestIdentity model, string phone)
+        {
+            var lastName = string.IsNullOrWhiteSpace(user.Name.Suffix) ? user.Name.Last : $"{user.Name.Last} {user.Name.Suffix}";
+
+            Assert.Equal(user.Name.First, model.FirstName);
+            Assert.Equal(user.Name.Middle, model.MiddleName);
+            Assert.Equal(lastName, model.LastName);
+            Assert.Equal(user.FullName, model.FullName);
+
+            Assert.Equal(user.Username, model.Username);
+            Assert.Equal(user.Email, model.Email);
+            Assert.Equal(user.UserPrincipalName, model.UserPrincipalName);
+
+            if (!string.IsNullOrWhiteSpace(phone))
+            {
+                Assert.Equal(phone, model.Phone);
+            }
+        }
+
     }
 }
+
