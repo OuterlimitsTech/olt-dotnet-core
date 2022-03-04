@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using OLT.Core;
+using System.Collections.Generic;
 
 namespace OLT.EF.Common.Tests.Assets.Models
 {
-    public class PersonEntity
+    public class PersonEntity : IOltEntity
     {
         public string NameFirst { get; set; }
         public string NameLast { get; set; }

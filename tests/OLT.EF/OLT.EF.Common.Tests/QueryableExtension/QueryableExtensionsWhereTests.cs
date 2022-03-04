@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OLT.Core;
 using OLT.EF.Common.Tests.Assets;
 using OLT.EF.Common.Tests.Assets.Models;
 using System;
@@ -71,6 +72,22 @@ namespace OLT.EF.Common.Tests
             searcher2 = new PersonFirstNameStartsWithSearcher(firstName, false);
             results = queryable.Where(searcher1, searcher2).ToList();
             results.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void WhereExceptions()
+        {
+            var list = PersonEntity.FakerList(20);            
+            var queryable = list.AsQueryable();
+            IOltSearcher<PersonEntity>[] searchers = null;
+
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(null, searchers));
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(queryable, searchers));
+
+
+            IOltSearcher<PersonEntity> searcher = null;
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(null, searcher));
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(queryable, searcher));            
         }
     }
 }

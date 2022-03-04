@@ -60,6 +60,23 @@ namespace OLT.EF.Common.Tests
 
         }
 
+        [Fact]
+        public void ToPagedExceptions()
+        {
+            var list = PersonEntity.FakerList(153);
+            var queryable = list.AsQueryable();
+
+            var @params = new OltPagingParams
+            {
+                Page = Faker.RandomNumber.Next(1, 4),
+                Size = Faker.RandomNumber.Next(10, 20)
+            };
+
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.ToPaged<PersonEntity>(null, null));
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.ToPaged<PersonEntity>(queryable, null));
+            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.ToPaged<PersonEntity>(null, @params));
+        }
+
         private List<PersonEntity> ExpectedPage(List<PersonEntity> list, OltPagingParams pagingParams)
         {
             return list.Skip((pagingParams.Page - 1) * pagingParams.Size).Take(pagingParams.Size).ToList();
