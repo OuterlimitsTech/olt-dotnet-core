@@ -25,6 +25,16 @@ namespace OLT.Core.Common.Tests
             Assert.Empty(model.GetClaims(null));
             Assert.Null(model.GetDbUsername());
             Assert.False(model.HasRole(null));
+
+
+            Assert.Null(model.Username);
+            Assert.Null(model.FirstName);
+            Assert.Null(model.MiddleName);
+            Assert.Null(model.LastName);
+            Assert.Null(model.Email);
+            Assert.Null(model.Phone);
+            Assert.Null(model.FullName);
+            Assert.Null(model.UserPrincipalName);
         }
 
         [Fact]

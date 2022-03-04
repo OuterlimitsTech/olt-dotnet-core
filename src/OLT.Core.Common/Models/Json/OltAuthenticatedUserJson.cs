@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using OLT.Constants;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace OLT.Core
@@ -9,7 +10,7 @@ namespace OLT.Core
     /// </summary>
     /// <typeparam name="TNameModel"></typeparam>
     /// <remarks>
-    /// Use extension to convert to claims <see cref="OltClaimExtensions.ToClaims{TNameModel}(OltAuthenticatedUserTokenJson{TNameModel})"/>
+    /// Use extension to convert to claims <see cref="OltClaimExtensions.ToClaims"/>
     /// </remarks>
     public class OltAuthenticatedUserJson<TNameModel>
         where TNameModel : class, IOltPersonName, new()

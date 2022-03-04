@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OLT.Constants;
 using OLT.Email.Tests.Common.Assets;
 using System;
 using System.Collections.Generic;
@@ -194,7 +195,7 @@ namespace OLT.Email.Tests.Common
 
             var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From);
+            errors.Should().BeEquivalentTo(OltEmailErrors.Recipients, OltEmailErrors.From);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithFromEmail(null)).Should().Throw<ArgumentNullException>();

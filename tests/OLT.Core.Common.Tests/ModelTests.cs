@@ -9,6 +9,42 @@ namespace OLT.Core.Common.Tests
 {
     public class ModelTests
     {
+
+        [Fact]
+        public void FileBase64Tests()
+        {
+            var model = new OltFileBase64();
+            Assert.Null(model.FileBase64);
+            Assert.Null(model.FileName);
+            Assert.Null(model.ContentType);
+            Assert.False(model.Success);
+
+            Assert.NotNull(model as IOltFileBase64);
+
+            var fileName = Faker.Internet.DomainName();
+            var contentType = Faker.Internet.DomainWord();
+            var fileBase64 = Faker.Lorem.Paragraph();
+
+
+            model.FileName = fileName;
+            model.ContentType = contentType;
+            Assert.False(model.Success);
+
+            model.FileBase64 = "";
+            Assert.False(model.Success);
+
+            model.FileBase64 = " ";
+            Assert.False(model.Success);
+
+            model.FileBase64 = fileBase64;
+            Assert.True(model.Success);
+
+            Assert.Equal(fileName, model.FileName);
+            Assert.Equal(contentType, model.ContentType);
+            Assert.Equal(fileBase64, model.FileBase64);
+        }
+
+
         [Theory]
         [InlineData("Test Jones", "Test", null, "Jones", null)]
         [InlineData("Test M Jones", "Test", "M", "Jones", null)]
@@ -50,10 +86,26 @@ namespace OLT.Core.Common.Tests
             model.Size = size;
 
             Assert.Equal(page, model.Page);
-            Assert.Equal(size, model.Size);
-            
+            Assert.Equal(size, model.Size);            
         }
 
+        [Fact]
+        public void OltSortParamsTest()
+        {
+            var model = new OltSortParams();
+            Assert.False(model.IsAscending);
+            Assert.Null(model.PropertyName);
+            Assert.NotNull(model as IOltSortParams);
+
+            var propName = Faker.Lorem.Words(11).Last();
+            
+            model.PropertyName = propName;
+            model.IsAscending = true;
+
+            Assert.Equal(propName, model.PropertyName);
+            Assert.True(model.IsAscending);
+
+        }
 
         [Fact]
         public void OltPagedJsonTest()
@@ -107,17 +159,21 @@ namespace OLT.Core.Common.Tests
                 FirstName = Faker.Name.First(),
                 LastName = Faker.Name.Last(),
             };
-            
+            var key = Guid.NewGuid().ToString();
+
             var model = new OltPagedSearchJson<TestPersonModel, TestCriteriaModel>();
             Assert.Null(model.Criteria);
             Assert.Null(model.Data);
+            Assert.Null(model.Key);
             Assert.Null(model as IOltPagingParams);
             Assert.NotNull(model as IOltPaged);
             Assert.NotNull(model as IOltPaged<TestPersonModel>);
             Assert.NotNull(model as OltPagedJson<TestPersonModel>);
 
+            model.Key = key;
             model.Criteria = criteria;            
             model.Criteria.Should().BeEquivalentTo(criteria);
+            Assert.Equal(key, model.Key);
         }
 
         [Fact]

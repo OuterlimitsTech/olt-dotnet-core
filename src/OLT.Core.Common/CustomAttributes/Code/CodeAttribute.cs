@@ -10,7 +10,6 @@ namespace OLT.Core
         public string Code { get; private set; }
         public short DefaultSort { get; set; } = 9999;
 
-        private CodeAttribute() { }
         public CodeAttribute(string code)
         {
             this.Code = code;

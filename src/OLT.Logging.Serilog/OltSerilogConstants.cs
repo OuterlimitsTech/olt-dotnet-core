@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
 
-
-// ReSharper disable once CheckNamespace
-namespace OLT.Logging.Serilog
+namespace OLT.Constants
 {
 
-    public static partial class OltSerilogConstants
+    public static class OltSerilogConstants
     {
         public static class FormatString
         {

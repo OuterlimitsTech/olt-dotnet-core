@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OLT.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -68,7 +69,7 @@ namespace OLT.Email
             var errors = base.ValidationErrors();
             if (!To.Any())
             {
-                errors.Add(OltErrorMessages.Recipients);
+                errors.Add(OltEmailErrors.Recipients);
             }
             return errors;
         }

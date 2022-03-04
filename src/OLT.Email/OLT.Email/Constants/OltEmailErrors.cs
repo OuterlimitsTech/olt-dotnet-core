@@ -1,6 +1,6 @@
-﻿namespace OLT.Email
+﻿namespace OLT.Constants
 {
-    public static class OltErrorMessages
+    public static class OltEmailErrors
     {
         public const string WhitelistSkip = "Email not in whitelist";
         public const string From = "From Email Missing";

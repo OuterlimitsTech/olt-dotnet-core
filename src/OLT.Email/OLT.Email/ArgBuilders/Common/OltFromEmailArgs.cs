@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OLT.Constants;
+using System;
 using System.Collections.Generic;
 
 namespace OLT.Email
@@ -53,7 +54,7 @@ namespace OLT.Email
             var errors = base.ValidationErrors();
             if (string.IsNullOrWhiteSpace(From?.Email))
             {
-                errors.Add(OltErrorMessages.From);
+                errors.Add(OltEmailErrors.From);
             }
 
             return errors;

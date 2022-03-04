@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OLT.Email.SendGrid
+﻿namespace OLT.Constants
 {
     public static class OltArgErrorsSendGrid
     {

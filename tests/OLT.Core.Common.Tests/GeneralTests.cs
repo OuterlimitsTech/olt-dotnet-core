@@ -48,7 +48,7 @@ namespace OLT.Core.Common.Tests
             Assert.Null(request.Value);
 
             var stringRequest = new OltRequest<string>(null);
-            Assert.Null(request.Value);
+            Assert.Null(stringRequest.Value);
 
             stringRequest = new OltRequest<string>(model.Name);
             Assert.NotNull(stringRequest.Value);
@@ -129,25 +129,6 @@ namespace OLT.Core.Common.Tests
 
         }
 
-        [Fact]
-        public void OltDefaultCharacter()
-        {
-            Assert.Equal(26, OltCharacters.UpperCase.Length);
-            Assert.Equal(26, OltCharacters.UpperCase.ToList().Distinct().Count());
-
-            Assert.Equal(26, OltCharacters.LowerCase.Length);
-            Assert.Equal(26, OltCharacters.LowerCase.ToList().Distinct().Count());
-
-            Assert.Equal(10, OltCharacters.Numerals.Length);
-            Assert.Equal(10, OltCharacters.Numerals.ToList().Distinct().Count());
-
-            Assert.Equal(29, OltCharacters.Symbols.Length);
-            Assert.Equal(29, OltCharacters.Symbols.ToList().Distinct().Count());
-
-            Assert.Equal(8, OltCharacters.Special.Length);
-            Assert.Equal(8, OltCharacters.Special.ToList().Distinct().Count());
-
-        }
 
     }
 }

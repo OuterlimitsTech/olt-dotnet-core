@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
+using OLT.Constants;
 
 namespace OLT.Logging.Serilog.Tests
 {

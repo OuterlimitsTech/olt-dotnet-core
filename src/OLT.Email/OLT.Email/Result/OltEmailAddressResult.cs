@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OLT.Constants;
+using System;
 
 namespace OLT.Email
 {
@@ -27,7 +28,7 @@ namespace OLT.Email
 
             if (!args.AllowSend(Email))
             {
-                SkipReason = OltErrorMessages.WhitelistSkip;
+                SkipReason = OltEmailErrors.WhitelistSkip;
             }
         }
 
