@@ -9,4 +9,8 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+  </ItemGroup>
+
 </Project>

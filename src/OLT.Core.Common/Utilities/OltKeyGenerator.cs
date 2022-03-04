@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using OLT.Constants;
+using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -21,10 +21,10 @@ namespace OLT.Core
         public static string GeneratePassword(int length = 8, bool useNumbers = true, bool useLowerCaseLetters = true, bool useUpperCaseLetters = true, bool useSymbols = true)
         {
             var total = (new char[0])
-                            .Concat(useUpperCaseLetters ? OltDefaults.Characters.UpperCase : new char[0])
-                            .Concat(useLowerCaseLetters ? OltDefaults.Characters.LowerCase : new char[0])
-                            .Concat(useNumbers ? OltDefaults.Characters.Numerals : new char[0])
-                            .Concat(useSymbols ? OltDefaults.Characters.Symbols : new char[0])
+                            .Concat(useUpperCaseLetters ? OltCharacters.UpperCase : new char[0])
+                            .Concat(useLowerCaseLetters ? OltCharacters.LowerCase : new char[0])
+                            .Concat(useNumbers ? OltCharacters.Numerals : new char[0])
+                            .Concat(useSymbols ? OltCharacters.Symbols : new char[0])
                             .ToArray();
 
             var random = new Random(GetCryptographicRandomNumber());
@@ -65,9 +65,9 @@ namespace OLT.Core
         public static string GetUniqueKey(int size)
         {
             var chars = (new char[0])
-                .Concat(OltDefaults.Characters.UpperCase)
-                .Concat(OltDefaults.Characters.LowerCase)
-                .Concat(OltDefaults.Characters.Numerals)
+                .Concat(OltCharacters.UpperCase)
+                .Concat(OltCharacters.LowerCase)
+                .Concat(OltCharacters.Numerals)
                 .ToArray();
 
 
@@ -91,9 +91,9 @@ namespace OLT.Core
         public static string GetUniqueKeyOriginal_BIASED(int size)
         {
             var chars = (new char[0])
-                .Concat(OltDefaults.Characters.UpperCase)
-                .Concat(OltDefaults.Characters.LowerCase)
-                .Concat(OltDefaults.Characters.Numerals)
+                .Concat(OltCharacters.UpperCase)
+                .Concat(OltCharacters.LowerCase)
+                .Concat(OltCharacters.Numerals)
                 .ToArray();
 
             byte[] data = new byte[size];

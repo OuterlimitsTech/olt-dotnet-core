@@ -8,7 +8,7 @@ using Xunit;
 
 namespace OLT.Email.SendGrid.Tests
 {
-    public class ConfigurationTests
+    public class SendGridConfigurationTests
     {
         public class AppSettingsJsonDto
         {
@@ -18,7 +18,7 @@ namespace OLT.Email.SendGrid.Tests
 
         private readonly OltEmailConfigurationSendGrid _emailConfiguration;
 
-        public ConfigurationTests(IOptions<OltEmailConfigurationSendGrid> options)
+        public SendGridConfigurationTests(IOptions<OltEmailConfigurationSendGrid> options)
         {
             _emailConfiguration = options.Value;
         }

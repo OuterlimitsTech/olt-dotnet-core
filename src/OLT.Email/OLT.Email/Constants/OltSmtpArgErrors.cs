@@ -1,4 +1,4 @@
-﻿namespace OLT.Email
+﻿namespace OLT.Constants
 {
     public static class OltSmtpArgErrors 
     {

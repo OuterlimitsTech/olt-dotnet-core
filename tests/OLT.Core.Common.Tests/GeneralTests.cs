@@ -1,3 +1,4 @@
+using OLT.Constants;
 using OLT.Core.Common.Tests.Assets;
 using System.Linq;
 using Xunit;
@@ -5,7 +6,7 @@ using Xunit;
 namespace OLT.Core.Common.Tests
 {
 
-    public class UnitTests
+    public class GeneralTests
     {
         private const string NullString = null;
         private const string EmptyString = "";
@@ -14,36 +15,40 @@ namespace OLT.Core.Common.Tests
         [Fact]
         public void OltDisposable()
         {
-            using(var obj = new TestDisposable())
+            var obj = new TestDisposable();
+            Assert.NotNull(obj);
+            Assert.False(obj.IsDisposed());
+            obj.Dispose();
+            Assert.True(obj.IsDisposed());
+
+            using (var obj2 = new TestDisposable())
             {
-                Assert.NotNull(obj);
-                Assert.False(obj.IsDeposed());
-                obj.Dispose();
-                Assert.True(obj.IsDeposed());
+                Assert.NotNull(obj2);
+                Assert.False(obj2.IsDisposed());                
             }
         }
 
         [Fact]
         public void OltRequest()
         {
-            var model = new TestModel
+            var model = new TestPersonModel
             {
                 Name = Faker.Name.FullName(),
                 StreetAddress = Faker.Address.StreetAddress()
             };
 
-            var request = new OltRequest<TestModel>(model);
+            var request = new OltRequest<TestPersonModel>(model);
 
             Assert.NotNull(request.Value);
-            Assert.IsType<TestModel>(request.Value);
+            Assert.IsType<TestPersonModel>(request.Value);
             Assert.Equal(model.Name, request.Value.Name);
             Assert.Equal(model.StreetAddress, request.Value.StreetAddress);
 
-            request = new OltRequest<TestModel>(null);
+            request = new OltRequest<TestPersonModel>(null);
             Assert.Null(request.Value);
 
             var stringRequest = new OltRequest<string>(null);
-            Assert.Null(request.Value);
+            Assert.Null(stringRequest.Value);
 
             stringRequest = new OltRequest<string>(model.Name);
             Assert.NotNull(stringRequest.Value);
@@ -124,25 +129,6 @@ namespace OLT.Core.Common.Tests
 
         }
 
-        [Fact]
-        public void OltDefaultCharacter()
-        {
-            Assert.Equal(26, OltDefaults.Characters.UpperCase.Length);
-            Assert.Equal(26, OltDefaults.Characters.UpperCase.ToList().Distinct().Count());
-
-            Assert.Equal(26, OltDefaults.Characters.LowerCase.Length);
-            Assert.Equal(26, OltDefaults.Characters.LowerCase.ToList().Distinct().Count());
-
-            Assert.Equal(10, OltDefaults.Characters.Numerals.Length);
-            Assert.Equal(10, OltDefaults.Characters.Numerals.ToList().Distinct().Count());
-
-            Assert.Equal(29, OltDefaults.Characters.Symbols.Length);
-            Assert.Equal(29, OltDefaults.Characters.Symbols.ToList().Distinct().Count());
-
-            Assert.Equal(8, OltDefaults.Characters.Special.Length);
-            Assert.Equal(8, OltDefaults.Characters.Special.ToList().Distinct().Count());
-
-        }
 
     }
 }

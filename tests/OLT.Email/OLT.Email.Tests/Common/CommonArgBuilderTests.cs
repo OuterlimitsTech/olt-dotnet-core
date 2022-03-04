@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OLT.Constants;
 using OLT.Email.Tests.Common.Assets;
 using System;
 using System.Collections.Generic;
@@ -116,7 +117,7 @@ namespace OLT.Email.Tests.Common
             var whiteEmail = Faker.Internet.Email();
             var whiteDomain = Faker.Internet.DomainName();
             var whiteDomainEmail = $"{Faker.Internet.UserName()}@{whiteDomain}";
-            var badDomainEmail = $"{Faker.Internet.UserName()}@{Faker.Internet.DomainName()}";
+            var badDomainEmail = $"{Faker.Internet.UserName()}@bad.{Faker.Internet.DomainName()}";
 
 
             var emailList = new List<string>
@@ -194,7 +195,7 @@ namespace OLT.Email.Tests.Common
 
             var errors = args.ValidationErrors();
             Assert.NotEmpty(errors);
-            errors.Should().BeEquivalentTo(OltErrorMessages.Recipients, OltErrorMessages.From);
+            errors.Should().BeEquivalentTo(OltEmailErrors.Recipients, OltEmailErrors.From);
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithFromEmail(null)).Should().Throw<ArgumentNullException>();
