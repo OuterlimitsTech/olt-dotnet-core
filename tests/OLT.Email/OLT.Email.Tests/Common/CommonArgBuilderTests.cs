@@ -117,7 +117,7 @@ namespace OLT.Email.Tests.Common
             var whiteEmail = Faker.Internet.Email();
             var whiteDomain = Faker.Internet.DomainName();
             var whiteDomainEmail = $"{Faker.Internet.UserName()}@{whiteDomain}";
-            var badDomainEmail = $"{Faker.Internet.UserName()}@{Faker.Internet.DomainName()}";
+            var badDomainEmail = $"{Faker.Internet.UserName()}@bad.{Faker.Internet.DomainName()}";
 
 
             var emailList = new List<string>
