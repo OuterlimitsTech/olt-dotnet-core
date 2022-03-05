@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ProjectGuid>6bedf8d5-0303-408e-b9c9-06ad7885d3a3</ProjectGuid>
+		<Description>OLT AspNetCore Autentication for API Key in the Header or Query</Description>
+		<RootNamespace>OLT.AspNetCore.Authentication</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.Authentication.ApiKey" Version="6.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OLT.AspNetCore.Authentication\OLT.AspNetCore.Authentication.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <PackagePath></PackagePath>
+	    <Pack>True</Pack>
+	  </None>
+	</ItemGroup>
+
+</Project>
