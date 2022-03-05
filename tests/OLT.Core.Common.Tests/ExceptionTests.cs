@@ -69,5 +69,14 @@ namespace OLT.Core.Common.Tests
             var result = ToSerialize(ex);
             Assert.Equal(ex.Message, result.Message);
         }
+
+        [Fact]
+        public void ValidationExceptionTest()
+        {
+            var list = new List<OltValidationError> { new OltValidationError(DefaultMessage) };
+            var ex = new OltValidationException(list);
+            var result = ToSerialize(ex);
+            Assert.Equal(ex.Message, result.Message);
+        }
     }
 }

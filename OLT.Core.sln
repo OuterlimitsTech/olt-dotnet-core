@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.EF.Common", "OLT.EF.Com
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.EF.Common.Tests", "tests\OLT.EF\OLT.EF.Common.Tests\OLT.EF.Common.Tests.csproj", "{DBCA539E-EA8B-4939-BE79-DCB52DA98BF1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.AspNetCore", "OLT.AspNetCore", "{FC12AA4E-E1A3-4893-95F0-2230525468F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
