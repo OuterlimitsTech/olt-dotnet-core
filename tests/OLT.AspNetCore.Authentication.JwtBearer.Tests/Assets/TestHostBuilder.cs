@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
-namespace OLT.AspNetCore.Authentication.ApiKey.Tests.Assets
+namespace OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets
 {
     public static class TestHostBuilder
     {

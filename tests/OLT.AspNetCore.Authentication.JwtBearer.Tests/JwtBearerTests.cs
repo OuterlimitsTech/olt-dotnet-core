@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using OLT.AspNetCore.Authentication.ApiKey.Tests.Assets;
 using OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets;
 using OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets.Startups;
 using OLT.Core;
