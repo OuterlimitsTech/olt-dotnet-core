@@ -90,7 +90,7 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests
         [Fact]
         public async Task ApiKeyStartupDefault()
         {
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupDefault>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupDefault>()))
             {
                 await ApiAuthTest<ApiKeyInHeaderOrQueryParamsHandler>(testServer);
             }
@@ -100,12 +100,12 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests
         [Fact]
         public async Task ApiKeyStartupQueryParamsOnly()
         {
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupQueryParamsOnly>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupQueryParamsOnly>()))
             {
                 await ApiAuthTest<ApiKeyInQueryParamsHandler>(testServer);
             }
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupQueryParamsOnlyWithOptions>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupQueryParamsOnlyWithOptions>()))
             {
                 await ApiAuthTest<ApiKeyInQueryParamsHandler>(testServer);
             }
@@ -114,12 +114,12 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests
         [Fact]
         public async Task ApiKeyStartupHeaderOnly()
         {
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupHeaderOnly>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupHeaderOnly>()))
             {
                 await ApiAuthTest<ApiKeyInHeaderHandler>(testServer);
             }
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupHeaderOnlyWithOptions>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupHeaderOnlyWithOptions>()))
             {
                 await ApiAuthTest<ApiKeyInHeaderHandler>(testServer);
             }
@@ -128,12 +128,12 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests
         [Fact]
         public async Task ApiKeyStartupHeaderOrQueryParams()
         {
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupHeaderOrQueryParams>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupHeaderOrQueryParams>()))
             {
                 await ApiAuthTest<ApiKeyInHeaderOrQueryParamsHandler>(testServer);
             }
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<ApiKeyStartupHeaderOrQueryParamsWithOptions>()))
+            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<ApiKeyStartupHeaderOrQueryParamsWithOptions>()))
             {
                 await ApiAuthTest<ApiKeyInHeaderOrQueryParamsHandler>(testServer);
             }

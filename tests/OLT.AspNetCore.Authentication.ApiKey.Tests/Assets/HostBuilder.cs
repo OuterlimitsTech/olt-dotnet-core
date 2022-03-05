@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace OLT.AspNetCore.Authentication.ApiKey.Tests.Assets
 {
-    public static class TestHelper
+    public static class TestHostBuilder
     {
 
         public static IWebHostBuilder WebHostBuilder<T>() where T : class
