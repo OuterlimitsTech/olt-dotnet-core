@@ -17,14 +17,20 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests.Assets
                 new Claim(ClaimTypes.NameIdentifier, ownerName, ClaimValueTypes.String)
             };
 
-            var result = new ApiKeyResult(claimsList)
+            if (key == "1234")
             {
-                Key = key,
-                OwnerName = ownerName
-            };
+                var result = new ApiKeyResult(claimsList)
+                {
+                    Key = key,
+                    OwnerName = ownerName
+                };
+
+                return Task.FromResult<IApiKey>(result);
+            }
 
 
-            return Task.FromResult<IApiKey>(result);
+            return Task.FromException<IApiKey>(new OltException("Invalid Key"));
+
         }
     }
 }

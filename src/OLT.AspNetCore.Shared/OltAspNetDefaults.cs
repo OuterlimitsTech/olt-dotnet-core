@@ -1,4 +1,4 @@
-﻿namespace OLT.Core
+﻿namespace OLT.Constants
 {
     public static class OltAspNetDefaults
     {

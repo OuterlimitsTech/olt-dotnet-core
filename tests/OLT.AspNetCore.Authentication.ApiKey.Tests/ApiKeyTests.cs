@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OLT.AspNetCore.Authentication.ApiKey.Tests.Assets;
 using OLT.AspNetCore.Authentication.ApiKey.Tests.Assets.Startups;
+using OLT.Core;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -23,7 +24,6 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests
                 KeyName = keyName
             };
         }
-
 
         [Fact]
         public void ArgumentExceptions()
@@ -85,6 +85,17 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests
             Assert.NotNull(services.GetService<IOltApiKeyService>());
             Assert.NotNull(services.GetService<IOltApiKeyProvider>());
             Assert.NotNull(services.GetService<IApiKeyProvider>());
+
+            var provider = services.GetService<IOltApiKeyProvider>();
+            var result = await provider.ProvideAsync("1234");
+            Assert.NotNull(result);
+            Assert.NotEmpty(result.Claims);
+            Assert.Equal("1234", result.Key);
+            Assert.Equal("Test Api Key", result.OwnerName);
+
+
+            await Assert.ThrowsAsync<OltException>(() => provider.ProvideAsync("9876"));
+
         }
 
         [Fact]

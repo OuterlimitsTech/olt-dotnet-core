@@ -1,3 +1,4 @@
+using OLT.Constants;
 using OLT.Core;
 using Xunit;
 
@@ -10,6 +11,7 @@ namespace OLT.AspNetCore.Shared.Tests
         public void AspNetAppSettingTests()
         {
 
+            Assert.Equal("Olt_CorsPolicy_Disabled", OltAspNetDefaults.CorsPolicyName);
             Assert.Equal("Olt_CorsPolicy_Disabled", OltAspNetDefaults.CorsPolicies.Disabled);
             Assert.Equal("Olt_CorsPolicy_Wildcard", OltAspNetDefaults.CorsPolicies.Wildcard);
 

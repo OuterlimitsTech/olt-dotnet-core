@@ -27,7 +27,7 @@ namespace OLT.AspNetCore.Authentication
             }
             catch (System.Exception exception)
             {
-                _logger.LogError(exception, exception.Message);
+                _logger.LogError(exception, $"{nameof(OltApiKeyProvider<TService>)} Validation Exception");                
                 throw;
             }
         }
