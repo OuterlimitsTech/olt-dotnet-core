@@ -8,10 +8,12 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace OLT.AspNetCore.Serilog.Tests
 {
+    [ExcludeFromCodeCoverage]
     public static class TestHelper
     {
 

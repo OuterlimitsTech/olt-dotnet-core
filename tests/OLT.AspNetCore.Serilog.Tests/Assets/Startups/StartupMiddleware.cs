@@ -3,9 +3,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.Logging.Serilog;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OLT.AspNetCore.Serilog.Tests
 {
+    [ExcludeFromCodeCoverage]
     public class StartupMiddleware : BaseStartup
     {
         public StartupMiddleware(IConfiguration configuration) : base(configuration) { }

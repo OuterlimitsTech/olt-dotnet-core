@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OLT.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OLT.AspNetCore.Serilog.Tests
 {
+    [ExcludeFromCodeCoverage]
     public abstract class BaseStartup
     {
         protected BaseStartup(IConfiguration configuration)

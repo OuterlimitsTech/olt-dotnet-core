@@ -2,9 +2,11 @@
 using OLT.Core;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OLT.AspNetCore.Serilog.Tests
 {
+    [ExcludeFromCodeCoverage]
     [ApiController]
     [Produces("application/json")]
     [Route("/api")]
