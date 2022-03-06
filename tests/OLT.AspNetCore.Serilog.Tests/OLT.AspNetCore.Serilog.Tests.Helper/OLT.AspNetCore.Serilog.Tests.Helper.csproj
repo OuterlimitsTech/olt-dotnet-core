@@ -4,4 +4,9 @@
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
 		<PackageReference Include="xunit" Version="2.4.1" />
 	</ItemGroup>
+
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);CA1822</NoWarn>
+	</PropertyGroup>
+	
 </Project>
