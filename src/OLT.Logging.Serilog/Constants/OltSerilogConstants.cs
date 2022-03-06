@@ -19,12 +19,32 @@ namespace OLT.Constants
             public const string EventType = "OltEventType";
             public const string Environment = "Environment";
             public const string DebuggerAttached = "DebuggerAttached";
+
+            public static class AspNetCore
+            {
+                public const string AppRequestUid = "AppRequestUid";
+                public const string RequestHeaders = "RequestHeaders";
+                public const string ResponseHeaders = "ResponseHeaders";
+                public const string RequestBody = "RequestBody";
+                public const string ResponseBody = "ResponseBody";
+                public const string RequestUri = "RequestUri";
+            }
         }
+
+
 
         public static class Templates
         {
+            public static class AspNetCore
+            {
+                public const string ServerError = "{AppRequestUid}:{Message}";
+                public const string Payload = "{AppRequestUid}:APP PAYLOAD LOG {RequestMethod} {RequestPath} {statusCode}";
+            }
+
             public const string DefaultOutput =
                 "[{Timestamp:HH:mm:ss} {Level:u3}] {OltEventType:x8} {Message:lj}{NewLine}{Exception}";
+
+
 
             public static class Email
             {
@@ -38,5 +58,8 @@ namespace OLT.Constants
                     "APPLICATION {Level} on {Application} {Environment} Environment occurred at {Timestamp}";
             }
         }
+
+
+
     }
 }
