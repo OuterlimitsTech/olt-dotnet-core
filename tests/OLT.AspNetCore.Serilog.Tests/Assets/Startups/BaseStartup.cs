@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.AspNetCore.Serilog.Tests.Assets.Startups
+namespace OLT.AspNetCore.Serilog.Tests
 {
     public abstract class BaseStartup
     {
@@ -21,7 +21,7 @@ namespace OLT.AspNetCore.Serilog.Tests.Assets.Startups
 
         public virtual void Configure(IApplicationBuilder app)
         {
-            
+
         }
 
         public virtual void ConfigureServices(IServiceCollection services)

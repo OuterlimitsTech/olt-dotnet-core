@@ -3,7 +3,7 @@ using OLT.Core;
 using System;
 using System.Collections.Generic;
 
-namespace OLT.AspNetCore.Serilog.Tests.Assets
+namespace OLT.AspNetCore.Serilog.Tests
 {
     [ApiController]
     [Produces("application/json")]

@@ -1,0 +1,29 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.1" />
+    <PackageReference Include="Serilog.Sinks.InMemory" Version="0.6.0" />
+    <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Assets\Startups\BaseStartup.cs" Link="BaseStartup.cs" />
+    <Compile Include="..\Assets\Startups\StartupDefault.cs" Link="StartupDefault.cs" />
+    <Compile Include="..\Assets\Startups\StartupMiddleware.cs" Link="StartupMiddleware.cs" />
+    <Compile Include="..\Assets\PersonModel.cs" Link="PersonModel.cs" />
+    <Compile Include="..\Assets\TestController.cs" Link="TestController.cs" />
+    <Compile Include="..\Assets\TestHelper.cs" Link="TestHelper.cs" />
+    <Compile Include="..\Assets\TestIdentity.cs" Link="TestIdentity.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\OLT.AspNetCore.Serilog\OLT.AspNetCore.Serilog.csproj" />
+  </ItemGroup>
+</Project>

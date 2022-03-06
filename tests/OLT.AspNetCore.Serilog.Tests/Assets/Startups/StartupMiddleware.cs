@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.Logging.Serilog;
 
-namespace OLT.AspNetCore.Serilog.Tests.Assets.Startups
+namespace OLT.AspNetCore.Serilog.Tests
 {
     public class StartupMiddleware : BaseStartup
     {
         public StartupMiddleware(IConfiguration configuration) : base(configuration) { }
-                
+
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
@@ -32,7 +32,7 @@ namespace OLT.AspNetCore.Serilog.Tests.Assets.Startups
         public override void Configure(IApplicationBuilder app)
         {
             base.Configure(app);
-            
+
             //app.UseAuthentication();
             app.UseOltSerilogRequestLogging();
             app.UseRouting();

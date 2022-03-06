@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.AspNetCore.Serilog.Tests.Assets
+namespace OLT.AspNetCore.Serilog.Tests
 {
     public class PersonModel
     {

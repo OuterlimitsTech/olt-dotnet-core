@@ -1,11 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using OLT.AspNetCore.Serilog.Tests.Assets;
-using OLT.AspNetCore.Serilog.Tests.Assets.Startups;
 using OLT.Core;
 using OLT.Logging.Serilog;
 using System;
@@ -15,51 +11,13 @@ using System.Net;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.AspNetCore.Serilog.Tests
+
+namespace OLT.AspNetCore.Serilog.Tests.General
 {
-    public class SerilogTests
+    public class UnitTestsMiddleware
     {
         [Fact]
-        public void SerilogOptions()
-        {
-            var options = new OltSerilogOptions();
-            Assert.False(options.ShowExceptionDetails);
-            Assert.Equal("An error has occurred.", options.ErrorMessage);
-        }
-
-        [Fact]
-        public async Task TestLogging()
-        {
-            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<StartupDefault>()))
-            {
-                var response = await testServer.CreateRequest("/api/league/1").SendAsync("GET");
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-                response = await testServer.CreateRequest("/api/league/2").SendAsync("GET");
-                Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-            }
-        }
-
-        [Fact]
-        public void SerializeErrorHttp()
-        {
-            var obj = new OltErrorHttpSerilog
-            {
-                Message = Faker.Lorem.GetFirstWord(),
-                Errors = new List<string>
-                {
-                    Faker.Lorem.GetFirstWord(),
-                    Faker.Lorem.GetFirstWord()
-                }
-            };
-
-            var compareTo = JsonConvert.SerializeObject(obj, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-            Assert.Equal(obj.ToString(), compareTo);
-        }
-
-
-
-        [Fact]
-        public async Task OltMiddlewarePayload_Returns500StatusCode()
+        public async Task Returns500StatusCode()
         {
             var expectedMsg = "An error has occurred.";
             var overrideMsg = "Override Error Message";
@@ -91,7 +49,7 @@ namespace OLT.AspNetCore.Serilog.Tests
 
 
         [Fact]
-        public async Task OltMiddlewarePayload_OltBadRequestException()
+        public async Task OltBadRequestException()
         {
             //arrange
             var expectedException = new OltBadRequestException("Test Bad Request");
@@ -104,20 +62,20 @@ namespace OLT.AspNetCore.Serilog.Tests
         }
 
         [Fact]
-        public async Task OltMiddlewarePayload_OltValidationException()
+        public async Task OltValidationException()
         {
             var expectedException = new OltValidationException(new List<IOltValidationError> { new OltValidationError("Test Validation") });
             RequestDelegate next = (HttpContext hc) => Task.FromException(expectedException);
             var response = await this.InvokeMiddlewareAsync(GetOptions(true), next, HttpStatusCode.BadRequest);
 
-            Assert.Equal("A validation error has occurred.", response.Message);
+            Assert.Equal("Please correct the validation errors", response.Message);
             Assert.NotNull(response.ErrorUid);
             Assert.NotEmpty(response.Errors);
             Assert.Collection(response.Errors, item => Assert.Equal("Test Validation", item));
         }
 
         [Fact]
-        public async Task OltMiddlewarePayload_OltRecordNotFoundException()
+        public async Task OltRecordNotFoundException()
         {
             var expectedException = new OltRecordNotFoundException("Person");
             RequestDelegate next = (HttpContext hc) => Task.FromException(expectedException);
@@ -129,7 +87,7 @@ namespace OLT.AspNetCore.Serilog.Tests
 
 
         [Fact]
-        public async Task OltMiddlewarePayload_Completed()
+        public async Task Completed()
         {
             var dto = new PersonModel
             {
@@ -147,47 +105,6 @@ namespace OLT.AspNetCore.Serilog.Tests
             response.Should().BeEquivalentTo(dto);
         }
 
-
-        //[Fact]
-        //public async Task UseSerilogRequestLogging()
-        //{
-
-        //    var webBuilder = new WebHostBuilder();
-        //    webBuilder
-        //        .UseSerilog()
-        //        .ConfigureAppConfiguration(builder =>
-        //        {
-        //            builder
-        //                .SetBasePath(AppContext.BaseDirectory)
-        //                .AddUserSecrets<Startup>()
-        //                .AddJsonFile("appsettings.json", false, true)
-        //                .AddEnvironmentVariables();
-        //        })
-        //        .ConfigureServices((host, services) =>
-        //        {
-        //            services
-        //                .AddOltAspNetCore(new AppSettingsDto(), this.GetType().Assembly, null)
-        //                .AddOltSerilog(configOptions => configOptions.ShowExceptionDetails = true);
-        //        })
-        //        .Configure(app =>
-        //        {
-        //            app.UseOltSerilogRequestLogging(
-        //                options =>
-        //                {
-        //                    options.MessageTemplate =
-        //                        "[{Timestamp:HH:mm:ss} {Level:u3}] {EventType:x8} {Message:lj}{NewLine}{Exception}";
-        //                });
-
-        //        })
-        //        .UseStartup<SerilogStartup>();
-
-
-        //    using (var testServer = new TestServer(webBuilder))
-        //    {
-        //        var response = await testServer.CreateRequest("/api/league/2").SendAsync("GET");
-        //        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-        //    }
-        //}
 
         private IOptions<OltSerilogOptions> GetOptions(bool showExceptionDetails = false, string errorMsg = null)
         {
