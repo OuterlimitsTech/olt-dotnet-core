@@ -1,13 +1,8 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets;
-using OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets.Startups;
 using OLT.Core;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
@@ -22,6 +17,7 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             var services = new ServiceCollection();
             var invalidOptions = new OltAuthenticationJwtBearer();
             var validOptions = new OltAuthenticationJwtBearer(Secret);
+            var builder = new AuthenticationBuilder(services);
 
             Action<JwtBearerOptions> action = (JwtBearerOptions opts) =>
             {
@@ -46,41 +42,71 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             Assert.Throws<ArgumentNullException>("options", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action, authAction));
 
             Assert.Throws<ArgumentNullException>("builder", () => invalidOptions.AddScheme(null));
+            Assert.Throws<ArgumentNullException>("builder", () => new OltAuthenticationJwtBearer().AddScheme(null, null));
+
+            Assert.Throws<OltException>(() => new OltAuthenticationJwtBearer().AddScheme(builder, null));
+            Assert.Throws<OltException>(() => new OltAuthenticationJwtBearer().AddScheme(builder, action));            
             Assert.Throws<OltException>(() => invalidOptions.AddScheme(services.AddAuthentication(invalidOptions.Scheme)));
 
             Assert.Throws<ArgumentNullException>("services", () => invalidOptions.AddAuthentication(null));
 
         }
 
-        private async Task AuthTest(TestServer testServer)
-        {
-            var options = JwtTokenTestExts.GetOptions();
-            var services = testServer.Host.Services;
-            var schemeProvider = services.GetRequiredService<IAuthenticationSchemeProvider>();
-            Assert.NotNull(schemeProvider);
-            var scheme = await schemeProvider.GetDefaultAuthenticateSchemeAsync();
-            Assert.NotNull(scheme);
-            Assert.Equal(typeof(JwtBearerHandler), scheme.HandlerType);
 
-            var optionsSnapshot = services.GetService<IOptionsSnapshot<JwtBearerOptions>>();
-            var schemeOptions = optionsSnapshot.Get(scheme.Name);
-            Assert.NotNull(schemeOptions);
-
-            Assert.Equal(options.Scheme, scheme.Name);
-            Assert.Equal(options.RequireHttpsMetadata, schemeOptions.RequireHttpsMetadata);
-            Assert.Equal(options.ValidateIssuer, schemeOptions.TokenValidationParameters.ValidateIssuer);
-            Assert.Equal(options.ValidateAudience, schemeOptions.TokenValidationParameters.ValidateAudience);
-            Assert.Equal(JwtTokenTestExts.Authority, schemeOptions.Authority);
-            Assert.Equal(JwtTokenTestExts.Audience, schemeOptions.Audience);
-        }
 
         [Fact]
-        public async Task ApiKeyStartupDefault()
+        public void SchemeBuilder()
         {
-            using (var testServer = new TestServer(TestHostBuilder.WebHostBuilder<JwtTokenStartupDefault>()))
+            var token = Guid.NewGuid().ToString();
+            var services = new ServiceCollection();
+            var builder = new AuthenticationBuilder(services);
+
+            var model = new OltAuthenticationJwtBearer();
+            Assert.Equal(JwtBearerDefaults.AuthenticationScheme, model.Scheme);
+            Assert.Null(model.JwtSecret);
+            Assert.True(model.RequireHttpsMetadata);
+            Assert.False(model.ValidateIssuer);
+            Assert.False(model.ValidateAudience);
+
+            model = new OltAuthenticationJwtBearer(token);
+            model.RequireHttpsMetadata = false;
+            model.ValidateIssuer = true;
+            model.ValidateAudience = true;
+
+            Assert.Equal(JwtBearerDefaults.AuthenticationScheme, model.Scheme);
+            Assert.Equal(token, model.JwtSecret);
+            Assert.False(model.RequireHttpsMetadata);
+            Assert.True(model.ValidateIssuer);
+            Assert.True(model.ValidateAudience);
+
+
+
+            try
             {
-                await AuthTest(testServer);
+                model.AddScheme(builder, null);
+                Assert.True(true);
             }
+            catch
+            {
+                Assert.True(false);
+            }
+                        
+            Action<JwtBearerOptions> action = (JwtBearerOptions opts) =>
+            {
+                var opt2 = opts;
+                Assert.True(true);
+            };
+
+            try
+            {
+                model.AddScheme(builder, action);
+                Assert.True(true);
+            }
+            catch
+            {
+                Assert.True(false);
+            }
+
         }
     }
 }

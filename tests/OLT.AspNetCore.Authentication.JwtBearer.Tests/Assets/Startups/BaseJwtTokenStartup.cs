@@ -18,14 +18,18 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets.Startups
 
         protected IConfiguration Configuration { get; }
 
-        public void Configure(IApplicationBuilder app)
-        {
+        public virtual void Configure(IApplicationBuilder app)
+        {        
             app.UseAuthentication();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
-        public void DefaultServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            //Do Nothing
+            services.AddRouting();
+            services.AddControllers();
         }
     }
 }
