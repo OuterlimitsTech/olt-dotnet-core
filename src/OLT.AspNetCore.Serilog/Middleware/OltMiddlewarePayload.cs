@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using OLT.Constants;
 using OLT.Core;
 using Serilog;
 using Serilog.Events;
@@ -12,6 +13,7 @@ namespace OLT.Logging.Serilog
 {
     public class OltMiddlewarePayload : IMiddleware
     {
+        private const string ContentType = "application/json";
         private readonly OltSerilogOptions _options;
 
         public OltMiddlewarePayload(IOptions<OltSerilogOptions> options)
@@ -37,7 +39,7 @@ namespace OLT.Logging.Serilog
             catch (OltBadRequestException badRequestException)
             {
                 var msg = new OltErrorHttpSerilog { ErrorUid = uid, Message = badRequestException.Message };
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = ContentType;
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 logLevel = LogEventLevel.Warning;
                 await context.Response.WriteAsync(msg.ToJson());
@@ -47,10 +49,10 @@ namespace OLT.Logging.Serilog
                 var msg = new OltErrorHttpSerilog
                 {
                     ErrorUid = uid,
-                    Message = "A validation error has occurred.",
+                    Message = validationException.Message,
                     Errors = validationException.Results.Select(s => s.Message)
                 };
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = ContentType;
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 logLevel = LogEventLevel.Warning;
                 await context.Response.WriteAsync(msg.ToJson());
@@ -58,7 +60,7 @@ namespace OLT.Logging.Serilog
             catch (OltRecordNotFoundException recordNotFoundException)
             {
                 var msg = new OltErrorHttpSerilog { ErrorUid = uid, Message = recordNotFoundException.Message };
-                context.Response.ContentType = "application/json";
+                context.Response.ContentType = ContentType;
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 logLevel = LogEventLevel.Warning;
                 await context.Response.WriteAsync(msg.ToJson());
@@ -72,7 +74,7 @@ namespace OLT.Logging.Serilog
 
             var responseBodyText = await FormatResponseAsync(context.Response);
             var logger = BuildLogger(context, uid, requestUri, requestBodyText, responseBodyText);
-            logger.Write(logLevel, "{AppRequestUid}:APP PAYLOAD LOG {RequestMethod} {RequestPath} {statusCode}", uid, context.Request.Method, context.Request.Path, context.Response.StatusCode);
+            logger.Write(logLevel, OltSerilogConstants.Templates.AspNetCore.Payload, uid, context.Request.Method, context.Request.Path, context.Response.StatusCode);
 
             await responseBodyStream.CopyToAsync(originalResponseBodyReference);
         }
@@ -80,18 +82,19 @@ namespace OLT.Logging.Serilog
         private static ILogger BuildLogger(HttpContext context, Guid uid, string requestUri, string requestBodyText, string responseBodyText)
         {
             return Log
-                .ForContext("AppRequestUid", uid)
-                .ForContext("RequestHeaders", context.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()), destructureObjects: true)
-                .ForContext("ResponseHeaders", context.Response.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()), destructureObjects: true)
-                .ForContext("RequestBody", requestBodyText)
-                .ForContext("ResponseBody", responseBodyText)
-                .ForContext("RequestUri", requestUri);
+                .ForContext(OltSerilogConstants.Properties.AspNetCore.AppRequestUid, uid)
+                .ForContext(OltSerilogConstants.Properties.AspNetCore.RequestHeaders, context.Request.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()), destructureObjects: true)
+                .ForContext(OltSerilogConstants.Properties.AspNetCore.ResponseHeaders, context.Response.Headers.ToDictionary(h => h.Key, h => h.Value.ToString()), destructureObjects: true)
+                .ForContext(OltSerilogConstants.Properties.AspNetCore.RequestBody, requestBodyText)
+                .ForContext(OltSerilogConstants.Properties.AspNetCore.ResponseBody, responseBodyText)
+                .ForContext(OltSerilogConstants.Properties.AspNetCore.RequestUri, requestUri);
         }
 
         private OltErrorHttpSerilog FormatServerError(HttpContext context, Exception exception, Guid uid)
         {
-            Log.ForContext("AppRequestUid", uid).Error(exception, "{AppRequestUid}:{Message}", exception.Message, uid);
-            context.Response.ContentType = "application/json";
+            Log.ForContext(OltSerilogConstants.Properties.AspNetCore.AppRequestUid, uid)
+                .Error(exception, OltSerilogConstants.Templates.AspNetCore.ServerError, uid, exception.Message);
+            context.Response.ContentType = ContentType;
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             var result = new OltErrorHttpSerilog { ErrorUid = uid, Message = _options.ErrorMessage };
             if (_options.ShowExceptionDetails)

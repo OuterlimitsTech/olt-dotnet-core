@@ -19,6 +19,13 @@ namespace OLT.AspNetCore.Serilog.Tests
 {
     public class SerilogTests
     {
+        [Fact]
+        public void SerilogOptions()
+        {
+            var options = new OltSerilogOptions();
+            Assert.False(options.ShowExceptionDetails);
+            Assert.Equal("An error has occurred.", options.ErrorMessage);
+        }
 
         [Fact]
         public async Task TestLogging()

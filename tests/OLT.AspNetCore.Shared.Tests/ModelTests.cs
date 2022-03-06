@@ -11,17 +11,14 @@ namespace OLT.AspNetCore.Shared.Tests
         public void AspNetAppSettingTests()
         {
 
-            Assert.Equal("Olt_CorsPolicy_Disabled", OltAspNetDefaults.CorsPolicyName);
             Assert.Equal("Olt_CorsPolicy_Disabled", OltAspNetDefaults.CorsPolicies.Disabled);
             Assert.Equal("Olt_CorsPolicy_Wildcard", OltAspNetDefaults.CorsPolicies.Wildcard);
-
-            Assert.Equal(OltAspNetDefaults.CorsPolicies.Disabled, OltAspNetDefaults.CorsPolicyName);
 
             var model = new OltAspNetAppSettings();
             Assert.NotNull(model as IOltOptionsAspNet);
             Assert.NotNull(model.Hosting);
             Assert.NotNull(model.Hosting as IOltOptionsAspNetHosting);
-            Assert.Equal(OltAspNetDefaults.CorsPolicyName, model.Hosting.CorsPolicyName);
+            Assert.Equal(OltAspNetDefaults.CorsPolicies.Disabled, model.Hosting.CorsPolicyName);
             Assert.Null(model.Hosting.PathBase);
             Assert.False(model.Hosting.UseHsts);
             Assert.False(model.Hosting.DisableHttpsRedirect);
@@ -51,8 +48,6 @@ namespace OLT.AspNetCore.Shared.Tests
         {
 
             Assert.Equal("api-version", OltAspNetDefaults.ApiQueryParameterName);
-
-            Assert.Equal(OltAspNetDefaults.CorsPolicies.Disabled, OltAspNetDefaults.CorsPolicyName);
 
             var model = new OltOptionsApiVersion();
             Assert.NotNull(model as IOltOptionsApiVersion);

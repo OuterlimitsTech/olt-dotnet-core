@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OLT.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,14 +19,14 @@ namespace OLT.AspNetCore.Serilog.Tests.Assets.Startups
 
         protected IConfiguration Configuration { get; }
 
-        public void Configure(IApplicationBuilder app)
+        public virtual void Configure(IApplicationBuilder app)
         {
             
         }
 
-        public void DefaultServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            //Do Nothing
+
         }
     }
 }

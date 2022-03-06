@@ -8,9 +8,9 @@ namespace OLT.Core
         /// CORS Policy to apply
         /// </summary>
         /// <remarks>
-        /// Default Value is Olt_CorsPolicy_Disabled
+        /// Default Value is <see cref="OltAspNetDefaults.CorsPolicies.Disabled"/>
         /// </remarks>
-        public virtual string CorsPolicyName { get; set; } = OltAspNetDefaults.CorsPolicyName;
+        public virtual string CorsPolicyName { get; set; } = OltAspNetDefaults.CorsPolicies.Disabled;
 
         /// <summary>
         /// Adds middleware for using HSTS, which adds the Strict-Transport-Security header.

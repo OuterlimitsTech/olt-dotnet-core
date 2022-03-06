@@ -3,7 +3,6 @@
     public static class OltAspNetDefaults
     {
         public const string ApiQueryParameterName = "api-version";
-        public const string CorsPolicyName = CorsPolicies.Disabled;
 
         public static class CorsPolicies
         {

@@ -8,18 +8,23 @@ using Serilog.AspNetCore;
 namespace OLT.Logging.Serilog
 {
 
-    public static class OltSerilogExtensions
+    public static class OltSerilogAspNetCoreExtensions
     {
 
         /// <summary>
         /// Registers OLT assets like middleware objects used for Serilog
         /// </summary>
-        /// <param name="service"></param>
+        /// <param name="services"></param>
         /// <param name="configOptions"></param>
         /// <returns></returns>
-        public static IServiceCollection AddOltSerilog(this IServiceCollection service, Action<OltSerilogOptions> configOptions)
+        public static IServiceCollection AddOltSerilog(this IServiceCollection services, Action<OltSerilogOptions> configOptions)
         {
-            return service
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            return services
                 .Configure<OltSerilogOptions>(binding =>
                 {
                     var serilogOptions = new OltSerilogOptions();
@@ -38,9 +43,13 @@ namespace OLT.Logging.Serilog
         /// <returns><seealso cref="IApplicationBuilder"/></returns>
         public static IApplicationBuilder UseOltSerilogRequestLogging(this IApplicationBuilder app, Action<RequestLoggingOptions> configureOptions = null)
         {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
 
             return app
-                .UseSerilogRequestLogging(configureOptions)
+                //.UseSerilogRequestLogging(configureOptions)
                 .UseMiddleware<OltMiddlewareSession>()
                 .UseMiddleware<OltMiddlewarePayload>();
         }
