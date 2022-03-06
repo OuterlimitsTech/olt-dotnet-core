@@ -13,4 +13,10 @@
     </PackageReference>
   </ItemGroup>
 
+
+	<ItemGroup>
+		<ProjectReference Include="..\OLT.AspNetCore.Serilog.Tests.Helper\OLT.AspNetCore.Serilog.Tests.Helper.csproj" />
+	</ItemGroup>
+
+	
 </Project>

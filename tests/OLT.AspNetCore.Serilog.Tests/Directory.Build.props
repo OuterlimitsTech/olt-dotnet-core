@@ -14,16 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\Assets\Startups\BaseStartup.cs" Link="BaseStartup.cs" />
-    <Compile Include="..\Assets\Startups\StartupDefault.cs" Link="StartupDefault.cs" />
-    <Compile Include="..\Assets\Startups\StartupMiddleware.cs" Link="StartupMiddleware.cs" />
-    <Compile Include="..\Assets\PersonModel.cs" Link="PersonModel.cs" />
-    <Compile Include="..\Assets\TestController.cs" Link="TestController.cs" />
-    <Compile Include="..\Assets\TestHelper.cs" Link="TestHelper.cs" />
-    <Compile Include="..\Assets\TestIdentity.cs" Link="TestIdentity.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\src\OLT.AspNetCore.Serilog\OLT.AspNetCore.Serilog.csproj" />
   </ItemGroup>
+
 </Project>

@@ -83,11 +83,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9E65BAB1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Serilog.Tests.RecordNotFound", "tests\OLT.AspNetCore.Serilog.Tests\OLT.AspNetCore.Serilog.Tests.RecordNotFound\OLT.AspNetCore.Serilog.Tests.RecordNotFound.csproj", "{F9C2DFD4-CC77-4211-97B0-80D50AD57998}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.AspNetCore.Serilog.Tests.Identity", "tests\OLT.AspNetCore.Serilog.Tests\OLT.AspNetCore.Serilog.Tests.Identity\OLT.AspNetCore.Serilog.Tests.Identity.csproj", "{90D4F277-E7B2-4062-A77B-AB12EE1E079F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Serilog.Tests.Identity", "tests\OLT.AspNetCore.Serilog.Tests\OLT.AspNetCore.Serilog.Tests.Identity\OLT.AspNetCore.Serilog.Tests.Identity.csproj", "{90D4F277-E7B2-4062-A77B-AB12EE1E079F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.AspNetCore.Serilog.Tests.General", "tests\OLT.AspNetCore.Serilog.Tests\OLT.AspNetCore.Serilog.Tests.General\OLT.AspNetCore.Serilog.Tests.General.csproj", "{F31356F8-FF23-4AC6-AD91-9D07714CFB3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Serilog.Tests.General", "tests\OLT.AspNetCore.Serilog.Tests\OLT.AspNetCore.Serilog.Tests.General\OLT.AspNetCore.Serilog.Tests.General.csproj", "{F31356F8-FF23-4AC6-AD91-9D07714CFB3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.AspNetCore.Authentication.Tests", "tests\OLT.AspNetCore.Authentication.Tests\OLT.AspNetCore.Authentication.Tests.csproj", "{21CA52A4-ACEA-4BD3-84DF-162861730448}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Authentication.Tests", "tests\OLT.AspNetCore.Authentication.Tests\OLT.AspNetCore.Authentication.Tests.csproj", "{21CA52A4-ACEA-4BD3-84DF-162861730448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.AspNetCore.Serilog.Tests.Helper", "tests\OLT.AspNetCore.Serilog.Tests\OLT.AspNetCore.Serilog.Tests.Helper\OLT.AspNetCore.Serilog.Tests.Helper.csproj", "{E4159819-4EE1-4590-8906-950C87B95F57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -207,6 +209,10 @@ Global
 		{21CA52A4-ACEA-4BD3-84DF-162861730448}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21CA52A4-ACEA-4BD3-84DF-162861730448}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21CA52A4-ACEA-4BD3-84DF-162861730448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4159819-4EE1-4590-8906-950C87B95F57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4159819-4EE1-4590-8906-950C87B95F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4159819-4EE1-4590-8906-950C87B95F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4159819-4EE1-4590-8906-950C87B95F57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -249,6 +255,7 @@ Global
 		{90D4F277-E7B2-4062-A77B-AB12EE1E079F} = {9E65BAB1-3581-46E9-BB80-E518A9552167}
 		{F31356F8-FF23-4AC6-AD91-9D07714CFB3B} = {9E65BAB1-3581-46E9-BB80-E518A9552167}
 		{21CA52A4-ACEA-4BD3-84DF-162861730448} = {728D140A-B44A-459A-8539-2EE848F165B7}
+		{E4159819-4EE1-4590-8906-950C87B95F57} = {9E65BAB1-3581-46E9-BB80-E518A9552167}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B70EDC-6E19-4295-BFA0-9474A97DF56F}
