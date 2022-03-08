@@ -73,7 +73,7 @@ namespace OLT.Extensions.Caching.Tests
 
             model = TestHelper.CreateModel(Guid.NewGuid().ToString());
 
-            (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), TimeSpan.FromMilliseconds(1), null)).Should().BeEquivalentTo(model);
+            (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), null, TimeSpan.FromMilliseconds(1))).Should().BeEquivalentTo(model);
             Assert.False(new ManualResetEvent(false).WaitOne(500));
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
         }
