@@ -73,18 +73,33 @@ namespace OLT.Email.SendGrid
             return msg;
         }
 
+
+        public override OltSendGridEmailResult Send()
+        {
+            OltSendGridEmailResult result;
+            try
+            {
+                result = Task.Run(() => SendAsync()).Result;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex.InnerException;
+            }
+            return result;
+        }
+
         public override async Task<OltSendGridEmailResult> SendAsync()
         {
             if (!IsValid)
             {
                 throw new OltSendGridValidationException(ValidationErrors());
             }
-
-            var result = new OltSendGridEmailResult();
+            
             var client = CreateClient();
             var msg = CreateMessage(BuildRecipients());
             var sendResponse = await client.SendEmailAsync(msg);
 
+            var result = new OltSendGridEmailResult();
             if (sendResponse.StatusCode != HttpStatusCode.Accepted)
             {
                 var body = await sendResponse.Body.ReadAsStringAsync();
