@@ -79,12 +79,12 @@ namespace OLT.Email.SendGrid
             {
                 throw new OltSendGridValidationException(ValidationErrors());
             }
-
-            var result = new OltSendGridEmailResult();
+            
             var client = CreateClient();
             var msg = CreateMessage(BuildRecipients());
             var sendResponse = await client.SendEmailAsync(msg);
 
+            var result = new OltSendGridEmailResult();
             if (sendResponse.StatusCode != HttpStatusCode.Accepted)
             {
                 var body = await sendResponse.Body.ReadAsStringAsync();

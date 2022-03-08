@@ -18,7 +18,8 @@ namespace OLT.Email
         /// <summary>
         /// SMTP Server Username
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
         public T WithSmtpNetworkCredentials(string username, string password)
         {

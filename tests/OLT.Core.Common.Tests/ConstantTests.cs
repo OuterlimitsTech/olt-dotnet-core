@@ -30,14 +30,5 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(8, OltCharacters.Special.Distinct().Count());
 
         }
-
-        [Fact]
-        public void OltEnvironmentsTests()
-        {
-            Assert.Equal("Development", OltEnvironments.Development);
-            Assert.Equal("Test", OltEnvironments.Test);
-            Assert.Equal("Staging", OltEnvironments.Staging);
-            Assert.Equal("Production", OltEnvironments.Production);
-        }
     }
 }

@@ -61,11 +61,13 @@ namespace OLT.Email
             return BuildOltEmailClient(server, true, template).WithAppError(ex, template.AppName, template.Environment);
         }
 
+
         /// <summary>
         /// Sends email with exception
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="server"></param>
+        /// <param name="template"></param>
         /// <param name="rethrowException"></param>
         public static void OltEmailError(this Exception ex, OltSmtpServer server, IOltApplicationErrorEmail template, bool rethrowException = false)
         {

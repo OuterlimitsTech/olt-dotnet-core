@@ -33,14 +33,26 @@ namespace OLT.Email.SendGrid.Tests
             template.Recipients.To.Add(new OltEmailAddress(_prodConfig.ToEmail, fullName));
             template.Recipients.To.Add(new OltEmailAddress(Faker.Internet.Email(), $"Unit Test {Faker.Name.Last()}"));
 
-            template.TemplateData.Build.Version = _prodConfig.RunNumber;
+            
             template.TemplateData.Recipient.First = firstName;
             template.TemplateData.Recipient.FullName = fullName;
+            var uid = Guid.NewGuid().ToString();
 
-            var result2 = await OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
-                .WithCustomArg("email_uid", Guid.NewGuid().ToString())
+            template.TemplateData.Build.Version = $"{_prodConfig.RunNumber}.Sync";
+
+            var result = OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
+                .WithCustomArg("email_uid", uid)
+                .Send();
+
+            Assert.True(result.Success);
+
+            template.TemplateData.Build.Version = $"{_prodConfig.RunNumber}.Async";
+
+            var resultAsync = await OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
+                .WithCustomArg("email_uid", uid)
                 .SendAsync();
-            Assert.True(result2.Success);
+
+            Assert.True(resultAsync.Success);
         }
 
         [Fact]
@@ -66,9 +78,9 @@ namespace OLT.Email.SendGrid.Tests
                 args = args.WithUnsubscribeGroupId(_prodConfig.UnsubscribeGroupId.Value);
             }
 
-            var result2 = await args.SendAsync();
+            var resultAsync = await args.SendAsync();
 
-            Assert.True(result2.Success);
+            Assert.True(resultAsync.Success);
         }
 
 

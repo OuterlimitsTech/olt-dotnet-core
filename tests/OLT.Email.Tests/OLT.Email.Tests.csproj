@@ -25,13 +25,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\src\OLT.Email\OLT.Email.SendGrid\OLT.Email.SendGrid.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Update="appsettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\src\OLT.Email\OLT.Email.csproj" />
 	</ItemGroup>
 
 </Project>

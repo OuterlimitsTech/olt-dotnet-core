@@ -8,4 +8,11 @@
     <ProjectReference Include="..\OLT.Email\OLT.Email.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="README.md">
+      <PackagePath></PackagePath>
+      <Pack>True</Pack>
+    </None>
+  </ItemGroup>
+
 </Project>
