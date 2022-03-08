@@ -11,17 +11,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Core.Common.Tests", "te
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.Email", "OLT.Email", "{F6D85F54-C3A1-4698-B671-1AA2B7304C32}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.Tests", "tests\OLT.Email\OLT.Email.Tests\OLT.Email.Tests.csproj", "{666033FB-83B6-4861-8EF0-B1B5C5816BFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.Tests", "tests\OLT.Email.Tests\OLT.Email.Tests.csproj", "{666033FB-83B6-4861-8EF0-B1B5C5816BFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email", "src\OLT.Email\OLT.Email\OLT.Email.csproj", "{8A5044DC-B781-4FF5-8A09-6D5A58306788}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email", "src\OLT.Email\OLT.Email.csproj", "{8A5044DC-B781-4FF5-8A09-6D5A58306788}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.Email.SendGrid", "OLT.Email.SendGrid", "{B88D2009-30C8-4B4A-9BD3-999746786D0B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid.Shared", "src\OLT.Email\OLT.Email.SendGrid.Shared\OLT.Email.SendGrid.Shared.csproj", "{BF3D09B2-F804-451A-83FE-8CCE87C96256}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid.Shared", "src\OLT.Email.SendGrid.Shared\OLT.Email.SendGrid.Shared.csproj", "{BF3D09B2-F804-451A-83FE-8CCE87C96256}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid", "src\OLT.Email\OLT.Email.SendGrid\OLT.Email.SendGrid.csproj", "{14AAD8BD-1405-491F-8371-091945376ECB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid", "src\OLT.Email.SendGrid\OLT.Email.SendGrid.csproj", "{14AAD8BD-1405-491F-8371-091945376ECB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid.Tests", "tests\OLT.Email\OLT.Email.SendGrid.Tests\OLT.Email.SendGrid.Tests.csproj", "{7037E517-0DAD-42BD-8372-933F98B2B638}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Email.SendGrid.Tests", "tests\OLT.Email.SendGrid.Tests\OLT.Email.SendGrid.Tests.csproj", "{7037E517-0DAD-42BD-8372-933F98B2B638}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.Extensions.General", "OLT.Extensions.General", "{47CD24FC-21E0-4840-A056-6C147B8E1131}"
 EndProject
@@ -97,7 +97,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Caching.Shar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Caching.Memory", "src\OLT.Extensions.Caching.Memory\OLT.Extensions.Caching.Memory.csproj", "{BEC3840B-B42C-4C71-A2D5-910065D34B36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Extensions.Caching.Tests", "tests\OLT.Extensions.Caching.Tests\OLT.Extensions.Caching.Tests.csproj", "{B5104E84-B77C-4644-8015-183E379A8CC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Caching.Tests", "tests\OLT.Extensions.Caching.Tests\OLT.Extensions.Caching.Tests.csproj", "{B5104E84-B77C-4644-8015-183E379A8CC9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

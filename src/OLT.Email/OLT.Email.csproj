@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\OLT.Core.Common\OLT.Core.Common.csproj" />
+    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
   </ItemGroup>
 
 </Project>

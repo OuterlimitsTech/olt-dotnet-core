@@ -66,7 +66,7 @@ namespace OLT.Email
         }
 
         /// <summary>
-        /// Determines if Email can be sent depending on <see cref="Production"/> is true or <see cref="TestWhitelist"/> <see cref="Production"/> is false
+        /// Determines if Email can be sent depending on EnableProductionEnvironment() is true or <see cref="Whitelist"/> and EnableProductionEnvironment() is false
         /// </summary>
         public override bool AllowSend(string emailAddress)
         {
