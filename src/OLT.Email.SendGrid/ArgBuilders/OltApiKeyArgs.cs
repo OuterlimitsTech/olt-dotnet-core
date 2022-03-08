@@ -61,7 +61,18 @@ namespace OLT.Email.SendGrid
 
         }
 
-        public abstract OltSendGridEmailResult Send();
+        public virtual OltSendGridEmailResult Send()
+        {
+            try
+            {
+                return Task.Run(() => SendAsync()).Result;
+            }
+            catch (AggregateException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
+
         public abstract Task<OltSendGridEmailResult> SendAsync();
 
     }

@@ -73,21 +73,6 @@ namespace OLT.Email.SendGrid
             return msg;
         }
 
-
-        public override OltSendGridEmailResult Send()
-        {
-            OltSendGridEmailResult result;
-            try
-            {
-                result = Task.Run(() => SendAsync()).Result;
-            }
-            catch (AggregateException ex)
-            {
-                throw ex.InnerException;
-            }
-            return result;
-        }
-
         public override async Task<OltSendGridEmailResult> SendAsync()
         {
             if (!IsValid)
