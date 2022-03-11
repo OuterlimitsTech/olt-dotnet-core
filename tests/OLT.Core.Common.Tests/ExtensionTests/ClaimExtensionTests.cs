@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.Core.Common.Tests
+namespace OLT.Core.Common.Tests.ExtensionTests
 {
     public class ClaimExtensionTests
     {
@@ -22,11 +22,11 @@ namespace OLT.Core.Common.Tests
         public void ToClaimsOltPerson(string suffix)
         {
             IOltPersonName model = null;
-            Assert.Throws<System.ArgumentNullException>(() => OltClaimExtensions.ToClaims(model));
+            Assert.Throws<ArgumentNullException>(() => model.ToClaims());
 
 
             model = TestHelper.FakerPersonName(suffix);
-            var claims = OltClaimExtensions.ToClaims(model);
+            var claims = model.ToClaims();
             var lastName = string.IsNullOrWhiteSpace(model.Suffix) ? model.Last : $"{model.Last} {model.Suffix}";
 
             Assert.Equal(nameClaims, claims.Count);
@@ -44,13 +44,13 @@ namespace OLT.Core.Common.Tests
         public void ToClaimsOltAuthenticatedUserJson()
         {
             OltAuthenticatedUserJson<OltPersonName> model = null;
-            Assert.Throws<System.ArgumentNullException>(() => OltClaimExtensions.ToClaims(model));
+            Assert.Throws<ArgumentNullException>(() => model.ToClaims());
 
 
             model = TestHelper.FakerAuthUser(Faker.Name.Suffix());
             model.Roles.AddRange(TestHelper.FakerRoleList("role-", 5, 9));
             model.Permissions.AddRange(TestHelper.FakerRoleList("perm-", 6, 12));
-            var claims = OltClaimExtensions.ToClaims(model);            
+            var claims = model.ToClaims();
 
             var totalClaims = nameClaims + userClaims + model.Roles.Count + model.Permissions.Count;
 
@@ -82,7 +82,7 @@ namespace OLT.Core.Common.Tests
         public void AddClaim(int expectedCount, string type, string value)
         {
             var list = new List<Claim>();
-            OltClaimExtensions.AddClaim(list, type, value);
+            list.AddClaim(type, value);
             list.Should().HaveCount(expectedCount);
         }
 
@@ -93,25 +93,25 @@ namespace OLT.Core.Common.Tests
         public void AddClaimWithClaimObject(int expectedCount, string type, string value)
         {
             var list = new List<Claim>();
-            OltClaimExtensions.AddClaim(list, new Claim(type, value));            
+            list.AddClaim(new Claim(type, value));
             list.Should().HaveCount(expectedCount);
         }
 
         [Fact]
         public void AddClaimException()
         {
-            Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(null, null));            
-            Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(new List<Claim>(), null));
+            Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(null, null));
+            Assert.Throws<ArgumentNullException>(() => new List<Claim>().AddClaim(null));
             Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(null, new Claim("Claim", "Value")));
 
 
             Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(new List<Claim>(), null, null));
+            Assert.Throws<ArgumentNullException>(() => new List<Claim>().AddClaim(null, null));
             Assert.Throws<ArgumentNullException>(() => OltClaimExtensions.AddClaim(null, "Claim", "Value"));
 
             try
             {
-                OltClaimExtensions.AddClaim(new List<Claim>(), "Claim", null);
+                new List<Claim>().AddClaim("Claim", null);
                 Assert.True(true);
             }
             catch

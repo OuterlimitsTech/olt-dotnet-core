@@ -28,17 +28,17 @@ namespace OLT.EF.Common.Tests
             var queryable = list.AsQueryable();
 
 
-            var results = OltQueryableExtensions.Where(queryable, searcher).ToList();
+            var results = OltWhereExtensions.Where(queryable, searcher).ToList();
             results.Should().BeEquivalentTo(expected);
 
             searcher = new PersonFirstNameStartsWithSearcher(firstName, true);
 
-            results = OltQueryableExtensions.Where(queryable, searcher).ToList();
+            results = OltWhereExtensions.Where(queryable, searcher).ToList();
             results.Should().BeEquivalentTo(expected);
 
             searcher = new PersonFirstNameStartsWithSearcher(firstName, false);
             Assert.False(searcher.IncludeDeleted);
-            results = OltQueryableExtensions.Where(queryable, searcher).ToList();
+            results = OltWhereExtensions.Where(queryable, searcher).ToList();
             results.Should().BeEquivalentTo(expected);
         }
 
@@ -81,13 +81,13 @@ namespace OLT.EF.Common.Tests
             var queryable = list.AsQueryable();
             IOltSearcher<PersonEntity>[] searchers = null;
 
-            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(null, searchers));
-            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(queryable, searchers));
+            Assert.Throws<ArgumentNullException>(() => OltWhereExtensions.Where<PersonEntity>(null, searchers));
+            Assert.Throws<ArgumentNullException>(() => OltWhereExtensions.Where<PersonEntity>(queryable, searchers));
 
 
             IOltSearcher<PersonEntity> searcher = null;
-            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(null, searcher));
-            Assert.Throws<ArgumentNullException>(() => OltQueryableExtensions.Where<PersonEntity>(queryable, searcher));            
+            Assert.Throws<ArgumentNullException>(() => OltWhereExtensions.Where<PersonEntity>(null, searcher));
+            Assert.Throws<ArgumentNullException>(() => OltWhereExtensions.Where<PersonEntity>(queryable, searcher));            
         }
     }
 }
