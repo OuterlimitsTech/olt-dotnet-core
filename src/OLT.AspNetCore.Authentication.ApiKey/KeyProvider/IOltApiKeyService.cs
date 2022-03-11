@@ -4,7 +4,7 @@ using OLT.Core;
 
 namespace OLT.AspNetCore.Authentication
 {
-    public interface IOltApiKeyService : IOltCoreService
+    public interface IOltApiKeyService : IOltInjectableScoped
     {
         Task<IApiKey> ValidateAsync(string key);
     }
