@@ -4,17 +4,20 @@ using System.Linq;
 
 namespace OLT.Core
 {
-    public abstract class OltAdapterPagedMap<TEntity, TModel> : AutoMapper.Profile, IOltAdapterPagedMap<TEntity, TModel>
+    [Obsolete("Move to BeforeMap or AfterMap")]
+    public abstract class OltAdapterPagedMap<TEntity, TModel> : Profile, IOltAdapterPagedMap<TEntity, TModel>
         where TEntity : class
     {
 
         protected OltAdapterPagedMap() => CreateMaps();
 
-        public string Name => $"{typeof(TEntity).FullName}->{typeof(TModel).FullName}";
+        public string Name => OltAdapterExtensions.BuildAdapterName<TEntity, TModel>();
 
         public void CreateMaps()
-        {
-            BuildMap(CreateMap<TEntity, TModel>());
+        {            
+            var mapping = CreateMap<TEntity, TModel>();
+            BuildMap(mapping);
+            mapping.BeforeMap(new OltBeforeMapOrderBy<TEntity, TModel>(DefaultOrderBy));
         }
 
         public abstract void BuildMap(IMappingExpression<TEntity, TModel> mappingExpression);

@@ -29,4 +29,16 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Assets.Models
             return list;
         }
     }
+
+
+    public class AdapterObject4 : AdapterObject2
+    {
+        public string Value => $"{ObjectId}={Name.FullName}";
+    }
+
+
+    public class AdapterObject5 : AdapterObject3
+    {
+        
+    }
 }

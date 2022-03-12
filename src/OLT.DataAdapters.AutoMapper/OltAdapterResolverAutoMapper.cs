@@ -47,6 +47,7 @@ namespace OLT.Core
         {
             try
             {
+                source = ApplyBeforeMaps<TEntity, TDestination>(source);
                 return ApplyAfterMaps<TEntity, TDestination>(source.ProjectTo<TDestination>(Mapper.ConfigurationProvider));
             }
             catch (Exception exception)
@@ -59,6 +60,7 @@ namespace OLT.Core
         {
             if (HasAutoMap<TEntity, TDestination>())
             {
+                source = ApplyBeforeMaps<TEntity, TDestination>(source);
                 return ApplyAfterMaps<TEntity, TDestination>(ProjectFromQueryable<TEntity, TDestination>(source));
             }
 

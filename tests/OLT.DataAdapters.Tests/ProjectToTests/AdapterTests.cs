@@ -12,9 +12,9 @@ using Xunit;
 
 namespace OLT.DataAdapters.Tests.ProjectToTests
 {
-    public abstract class BaseAdpaterTests : BaseAdapterTests
+    public abstract class BaseAdpaterTests 
     {
-        protected override ServiceProvider BuildProvider()
+        protected ServiceProvider BuildProvider()
         {
             var services = new ServiceCollection();
             services.AddSingleton<IOltAdapterResolver, OltAdapterResolver>();

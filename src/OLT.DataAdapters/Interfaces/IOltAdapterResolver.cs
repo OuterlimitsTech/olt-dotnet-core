@@ -16,5 +16,7 @@ namespace OLT.Core
         List<TDestination> Map<TSource, TDestination>(List<TSource> source);
         TDestination Map<TSource, TDestination>(TSource source, TDestination destination);
 
+
+        //IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable);
     }
 }

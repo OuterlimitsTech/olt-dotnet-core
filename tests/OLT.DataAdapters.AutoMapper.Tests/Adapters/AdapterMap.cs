@@ -11,6 +11,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.AdapterTests
         {
             BuildMap(CreateMap<AdapterObject1, AdapterObject2>());
             BuildMap(CreateMap<AdapterObject1, OltPersonName>());
+            BuildMap(CreateMap<AdapterObject3, OltPersonName>());
         }
 
         public void BuildMap(IMappingExpression<AdapterObject1, AdapterObject2> mappingExpression)

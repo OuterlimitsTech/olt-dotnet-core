@@ -21,16 +21,21 @@ namespace OLT.Core
             return OltAdapterExtensions.BuildAdapterName<TSource, TDestination>();
         }
 
-        #region [ Apply After Maps ]
+        #region [ Before & After Maps ]
 
-        public virtual IEnumerable<TDestination> ApplyAfterMaps<TSource, TDestination>(IEnumerable<TDestination> list)
+        //public virtual IEnumerable<TDestination> ApplyAfterMaps<TSource, TDestination>(IEnumerable<TDestination> list)
+        //{
+        //    return OltMapConfigs.ApplyAfterMaps<TSource, TDestination>(list.AsQueryable());
+        //}
+
+        protected virtual IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable)
         {
-            return OltAfterMapConfig.ApplyAfterMaps<TSource, TDestination>(list.AsQueryable());
+            return OltAdapterMapConfigs.ApplyBeforeMaps<TSource, TDestination>(queryable);
         }
 
-        public virtual IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable)
+        protected virtual IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable)
         {
-            return OltAfterMapConfig.ApplyAfterMaps<TSource, TDestination>(queryable);
+            return OltAdapterMapConfigs.ApplyAfterMaps<TSource, TDestination>(queryable);
         }
 
         #endregion
@@ -60,9 +65,9 @@ namespace OLT.Core
         {
             if (adapter is IOltAdapterQueryable<TEntity, TDestination> queryableAdapter)
             {
+                source = ApplyBeforeMaps<TEntity, TDestination>(source);
                 return ApplyAfterMaps<TEntity, TDestination>(queryableAdapter.Map(source));
             }
-
             throw new OltAdapterNotFoundException(GetAdapterName<TEntity, TDestination>());
         }
 
