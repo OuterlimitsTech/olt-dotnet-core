@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace OLT.Core
 {
-    [Obsolete("Move to BeforeMap or AfterMap")]
+    [Obsolete("Move ToPaged Extension to BeforeMap or AfterMap")]
     public interface IOltAdapterPaged<TEntity, TDestination> : IOltAdapterQueryable<TEntity, TDestination>
     {
         IQueryable<TEntity> DefaultOrderBy(IQueryable<TEntity> queryable);

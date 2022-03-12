@@ -5,7 +5,9 @@ using System.Linq;
 
 namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
 {
+#pragma warning disable CS0618 // Type or member is obsolete
     public class AdapterObject4PagedMap : OltAdapterPagedMap<AdapterObject2, AdapterObject4>
+#pragma warning restore CS0618 // Type or member is obsolete
     {
         public bool IsDisposed()
         {

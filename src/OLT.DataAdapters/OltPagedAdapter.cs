@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace OLT.Core
 {
-    [Obsolete("Move to BeforeMap or AfterMap")]
+    [Obsolete("Move ToPaged Extension to BeforeMap or AfterMap")]
     public abstract class OltAdapterPaged<TSource, TDestination> : OltAdapterQueryable<TSource, TDestination>, IOltAdapterPaged<TSource, TDestination>
         where TSource : class, new()
         where TDestination : class, new()
