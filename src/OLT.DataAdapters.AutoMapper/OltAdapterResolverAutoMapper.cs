@@ -31,6 +31,11 @@ namespace OLT.Core
             return new OltAutoMapperException<TSource, TResult>(exception);
         }
 
+        public override bool CanMap<TSource, TDestination>()
+        {
+            return CanProjectTo<TSource, TDestination>() || base.CanMap<TSource, TDestination>();
+        }
+
         #region [ ProjectTo Maps ]
 
         public override bool CanProjectTo<TEntity, TDestination>()
