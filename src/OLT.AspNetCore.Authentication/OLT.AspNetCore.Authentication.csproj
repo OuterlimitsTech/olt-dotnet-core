@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <ProjectGuid>0518122c-a418-4eba-a8d5-7211c4b4ead0</ProjectGuid>
+    <ProjectGuid>{0518122c-a418-4eba-a8d5-7211c4b4ead0}</ProjectGuid>
     <Description>OLT AspNetCore Library</Description>
   </PropertyGroup>
 
@@ -14,11 +14,5 @@
     <ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
-  </ItemGroup>
 
 </Project>

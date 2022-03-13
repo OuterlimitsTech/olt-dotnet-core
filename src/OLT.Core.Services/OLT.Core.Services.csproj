@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+		<Description>Core Services library for general services architecture and EF Core</Description>
+		<ProjectGuid>{7afcdb94-8828-4f37-951e-3c3291e51ba1}</ProjectGuid>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
@@ -10,13 +12,6 @@
 
 	<ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
   </ItemGroup>
 
 </Project>

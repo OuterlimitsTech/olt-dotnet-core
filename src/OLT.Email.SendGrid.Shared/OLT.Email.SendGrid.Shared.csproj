@@ -2,17 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+		<Description>SendGrid builder for SMTP and whitelist for non-production environments</Description>
+		<ProjectGuid>{c47f3df2-8f42-4bd0-a5f5-cff3d99063ee}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Email\OLT.Email.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
   </ItemGroup>
 
 </Project>

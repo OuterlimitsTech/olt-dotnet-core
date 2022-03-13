@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+		<Description>SMTP builder with whitelist for non-production environments</Description>
+		<ProjectGuid>{8fb34772-1bda-4bf0-be7d-f9210927b2c8}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>

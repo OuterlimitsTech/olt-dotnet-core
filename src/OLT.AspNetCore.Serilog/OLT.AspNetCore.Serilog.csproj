@@ -19,12 +19,6 @@
 		<ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
 		<ProjectReference Include="..\OLT.Logging.Serilog\OLT.Logging.Serilog.csproj" />
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <None Update="README.md">
-	    <PackagePath></PackagePath>
-	    <Pack>True</Pack>
-	  </None>
-	</ItemGroup>
+
 
 </Project>

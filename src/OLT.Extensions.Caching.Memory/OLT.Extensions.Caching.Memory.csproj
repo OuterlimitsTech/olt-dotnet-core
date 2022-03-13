@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<Description>Server Memory Caching Library</Description>
-    <ProjectGuid>bec3840b-b42c-4c71-a2d5-910065d34b36</ProjectGuid>
+	  <Description>Server Memory Caching Library</Description>
+    <ProjectGuid>{bec3840b-b42c-4c71-a2d5-910065d34b36}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,13 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Extensions.Caching.Shared\OLT.Extensions.Caching.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
   </ItemGroup>
 
 </Project>

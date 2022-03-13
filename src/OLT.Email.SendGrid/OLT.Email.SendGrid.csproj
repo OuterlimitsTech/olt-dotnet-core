@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>Sends Email via SendGrid</Description>
-    <ProjectGuid>14aad8bd-1405-491f-8371-091945376ecb</ProjectGuid>
+    <Description>Sends Email via SendGrid with whitelist for non-production environments</Description>
+    <ProjectGuid>{14aad8bd-1405-491f-8371-091945376ecb}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,13 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Email.SendGrid.Shared\OLT.Email.SendGrid.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
   </ItemGroup>
 
 </Project>

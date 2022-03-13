@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>DataAdapters AutoMapper Library</Description>
-    <ProjectGuid>a2c1d7ce-6d46-43fb-af9c-357c2949e98b</ProjectGuid>
+    <ProjectGuid>{a2c1d7ce-6d46-43fb-af9c-357c2949e98b}</ProjectGuid>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,13 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.DataAdapters\OLT.DataAdapters.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
   </ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<RootNamespace>OLT.Core</RootNamespace>
 		<Description>OLT AspNetCore Shared Library</Description>
-		<ProjectGuid>5c22588f-cf15-44c5-830b-5d63819a6df1</ProjectGuid>
+		<ProjectGuid>{5c22588f-cf15-44c5-830b-5d63819a6df1}</ProjectGuid>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,13 +13,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="README.md">
-	    <PackagePath></PackagePath>
-	    <Pack>True</Pack>
-	  </None>
 	</ItemGroup>
 
 </Project>
