@@ -93,7 +93,9 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
                         
             Action<JwtBearerOptions> action = (JwtBearerOptions opts) =>
             {
+#pragma warning disable S1481 // Unused local variables should be removed
                 var opt2 = opts;
+#pragma warning restore S1481 // Unused local variables should be removed
                 Assert.True(true);
             };
 
