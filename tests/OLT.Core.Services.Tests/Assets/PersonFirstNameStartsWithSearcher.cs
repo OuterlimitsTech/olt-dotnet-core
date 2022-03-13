@@ -1,8 +1,8 @@
 ﻿using OLT.Core;
-using OLT.EF.Common.Tests.Assets.Models;
+using OLT.Core.Services.Tests.Assets.Models;
 using System.Linq;
 
-namespace OLT.EF.Common.Tests.Assets
+namespace OLT.Core.Services.Tests.Assets
 {
     public class PersonFirstNameStartsWithSearcher : OltSearcher<EntityPersonModel>
     {

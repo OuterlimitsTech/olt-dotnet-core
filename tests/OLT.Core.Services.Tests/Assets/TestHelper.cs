@@ -1,11 +1,11 @@
-﻿using OLT.EF.Common.Tests.Assets.Models;
+﻿using OLT.Core.Services.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.EF.Common.Tests.Assets
+namespace OLT.Core.Services.Tests.Assets
 {
     public static class TestHelper
     {

@@ -1,16 +1,14 @@
 ﻿using OLT.Core;
 
-namespace OLT.EF.Common.Tests.Assets.Models
+namespace OLT.Core.Services.Tests.Assets.Models
 {
-    public class EntityDeletableModel : OltEntityDeletable
+    public class EntityIdModel : OltEntityId
     {
-
-        public static EntityDeletableModel FakerData()
+        public static EntityIdModel FakerData()
         {
-            return new EntityDeletableModel
+            return new EntityIdModel
             {
-                DeletedBy = Faker.Internet.UserName(),
-                DeletedOn = TestHelper.FakerDateTimePast(),
+                Id = Faker.RandomNumber.Next(1000, 10000),
                 CreateUser = Faker.Internet.UserName(),
                 CreateDate = TestHelper.FakerDateTimePast(),
                 ModifyUser = Faker.Internet.UserName(),

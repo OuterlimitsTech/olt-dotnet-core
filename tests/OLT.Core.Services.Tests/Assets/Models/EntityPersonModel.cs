@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.EF.Common.Tests.Assets.Models
+namespace OLT.Core.Services.Tests.Assets.Models
 {
     public abstract class BaseEntityPersonModel : IOltEntity
     {

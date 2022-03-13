@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using OLT.EF.Common.Tests.Assets;
-using OLT.EF.Common.Tests.Assets.Models;
+using OLT.Core.Services.Tests.Assets;
+using OLT.Core.Services.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.EF.Common.Tests
+namespace OLT.Core.Services.Tests
 {
     public class PredicateBuilderTests
     {

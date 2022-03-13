@@ -1,10 +1,10 @@
 using OLT.Core;
-using OLT.EF.Common.Tests.Assets.Models;
+using OLT.Core.Services.Tests.Assets.Models;
 using System;
 using Xunit;
 using Xunit.Sdk;
 
-namespace OLT.EF.Common.Tests
+namespace OLT.Core.Services.Tests
 {
     public class EntityModelTests
     {
