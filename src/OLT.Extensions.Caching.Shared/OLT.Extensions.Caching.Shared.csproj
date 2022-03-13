@@ -1,14 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<RootNamespace>OLT.Core</RootNamespace>
-		<Description>Abstract Caching Library</Description>
-		<ProjectGuid>{d055cdc9-ea56-4745-9d37-3d4aef139f1d}</ProjectGuid>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-	</ItemGroup>
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>OLT.Core</RootNamespace>
+    <Description>Abstract Caching Library</Description>
+    <ProjectGuid>6155F10A-0E8E-4E90-A7C3-E995CE67E3AF</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+  </ItemGroup>
 </Project>

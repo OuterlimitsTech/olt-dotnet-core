@@ -1,18 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>DataAdapters AutoMapper Library</Description>
-    <ProjectGuid>{a2c1d7ce-6d46-43fb-af9c-357c2949e98b}</ProjectGuid>
+    <ProjectGuid>07F972FB-E132-4FBF-B52F-DC18A2FFB622</ProjectGuid>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OLT.DataAdapters\OLT.DataAdapters.csproj" />
   </ItemGroup>
-
 </Project>

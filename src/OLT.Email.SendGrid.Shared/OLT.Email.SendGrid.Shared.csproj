@@ -1,13 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-		<Description>SendGrid builder for SMTP and whitelist for non-production environments</Description>
-		<ProjectGuid>{c47f3df2-8f42-4bd0-a5f5-cff3d99063ee}</ProjectGuid>
+    <Description>SendGrid builder for SMTP and whitelist for non-production environments</Description>
+    <ProjectGuid>98D1636A-58C3-4EA5-9153-21A8699910C8</ProjectGuid>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OLT.Email\OLT.Email.csproj" />
   </ItemGroup>
-
 </Project>

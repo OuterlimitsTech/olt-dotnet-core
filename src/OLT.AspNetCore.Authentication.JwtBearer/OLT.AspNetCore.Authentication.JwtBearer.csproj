@@ -1,19 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ProjectGuid>{A1D8D9AD-65BE-4D5B-BA3E-1DD4526F8C0A}</ProjectGuid>
-		<Description>OLT AspNetCore Autentication for JWT Tokens</Description>
-		<RootNamespace>OLT.AspNetCore.Authentication</RootNamespace>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\OLT.AspNetCore.Authentication\OLT.AspNetCore.Authentication.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
-	</ItemGroup>
-
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Description>OLT AspNetCore Autentication for JWT Tokens</Description>
+    <RootNamespace>OLT.AspNetCore.Authentication</RootNamespace>
+    <ProjectGuid>3B677756-5F7F-41D7-97E2-3DC91C641E32</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OLT.AspNetCore.Authentication\OLT.AspNetCore.Authentication.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
+  </ItemGroup>
 </Project>
