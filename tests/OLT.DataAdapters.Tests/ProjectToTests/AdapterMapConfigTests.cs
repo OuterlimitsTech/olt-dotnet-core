@@ -53,5 +53,59 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
             var expected = mapped.OrderBy(p => p.LastName).ThenByDescending(p => p.FirstName).Where(p => p.FirstName.Contains(value));
             results.Should().BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
         }
+
+        [Fact]
+        public void BeforeMapExtensionTests()
+        {
+            AdapterObject3ToAdapterObject6QueryableAdapter adapter = null;
+            IOltBeforeMap<AdapterObject3, AdapterObject6> beforeMap = null;
+            Func<IQueryable<AdapterObject3>, IQueryable<AdapterObject3>> func = null;
+
+            Assert.Throws<ArgumentNullException>(nameof(beforeMap), () => OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), beforeMap));
+            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));
+
+            var orderBy = new OltBeforeMapOrderBy<AdapterObject3, AdapterObject6>(p => p.OrderBy(t => t.First));
+
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.BeforeMap(adapter, p => p.OrderBy(p => p.Last)));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.BeforeMap(adapter, orderBy));
+
+            try
+            {
+                OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.Last));
+                OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), orderBy);
+                Assert.True(true);
+            }
+            catch
+            {
+                Assert.True(false);
+            }
+        }
+
+        [Fact]
+        public void AfterMapExtensionTests()
+        {
+            AdapterObject3ToAdapterObject6QueryableAdapter adapter = null;
+            IOltAfterMap<AdapterObject3, AdapterObject6> afterMap = null;
+            Func<IQueryable<AdapterObject6>, IQueryable<AdapterObject6>> func = null;
+
+            Assert.Throws<ArgumentNullException>(nameof(afterMap), () => OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), afterMap));
+            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));
+
+            var orderBy = new OltAfterMapOrderBy<AdapterObject3, AdapterObject6>(p => p.OrderBy(t => t.FirstName));
+
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.AfterMap(adapter, p => p.OrderBy(p => p.LastName)));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.AfterMap(adapter, orderBy));
+
+            try
+            {
+                OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.LastName));
+                OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), orderBy);
+                Assert.True(true);
+            }
+            catch
+            {
+                Assert.True(false);
+            }
+        }
     }
 }
