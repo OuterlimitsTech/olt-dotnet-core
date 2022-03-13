@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
 {
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class InvalidMap : OltAdapterPagedMap<AdapterObject8, AdapterObject9>
+    public class InvalidPagedMap : OltAdapterPagedMap<AdapterObject8, AdapterObject9>
 #pragma warning restore CS0618 // Type or member is obsolete
     {
 

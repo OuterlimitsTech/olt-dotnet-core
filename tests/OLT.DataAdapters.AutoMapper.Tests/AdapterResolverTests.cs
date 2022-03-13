@@ -93,12 +93,12 @@ namespace OLT.DataAdapters.AutoMapper.Tests
         [Fact]
         public void InvalidMapExceptionTests()
         {
-            using (var provider = BuildProvider(new List<Profile> { new InvalidMap() }))
+            using (var provider = BuildProvider(new List<Profile> { new InvalidPagedMap() }))
             {
                 var adapterResolver = provider.GetService<IOltAdapterResolver>();
                 var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
 
-                Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject9>>(() => adapterResolver.Map<AdapterObject8, AdapterObject9>(AdapterObject8.FakerData(3), new AdapterObject9()));                
+                Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject9>>(() => adapterResolver.Map<AdapterObject8, AdapterObject9>(AdapterObject8.FakerData(3), new AdapterObject9()));
                 Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject9>>(() => adapterResolver.Map<AdapterObject8, AdapterObject9>(AdapterObject8.FakerList(28)));
                 Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject9>>(() => adapterResolver.ProjectTo<AdapterObject8, AdapterObject9>(AdapterObject8.FakerList(28).AsQueryable()));
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -106,6 +106,13 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
+
+            //Not a AutoMapperMappingException
+            using (var provider = BuildProvider(new List<Profile> { new InvalidMaps() }))
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject1>>(() => adapterResolver.ProjectTo<AdapterObject8, AdapterObject1>(AdapterObject8.FakerList(28).AsQueryable()));
+            }
 
         }
 

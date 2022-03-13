@@ -25,7 +25,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject3Adapter>();
             services.AddSingleton<IOltAdapter, AdapterObject4PagedMap>();
             services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject5PagedAdapter>();
-            services.AddSingleton<IOltAdapter, InvalidMap>();
+            services.AddSingleton<IOltAdapter, InvalidPagedMap>();
             RegisterMaps(services, maps ?? DefaultMaps);
             return services.BuildServiceProvider();
         }
