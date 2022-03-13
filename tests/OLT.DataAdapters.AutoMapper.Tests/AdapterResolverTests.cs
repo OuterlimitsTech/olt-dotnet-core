@@ -1,8 +1,11 @@
-﻿using FluentAssertions;
+﻿using AutoMapper;
+using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
+using OLT.DataAdapters.AutoMapper.Tests.Adapters;
 using OLT.DataAdapters.AutoMapper.Tests.Assets.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -11,8 +14,6 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 
     public class AdapterResolverTests : BaseAdpaterTests
     {
-
-
         [Fact]
         public void GetAdapterTests()
         {
@@ -31,7 +32,6 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 
             }
         }
-
 
         [Fact]
         public void CanMapTests()
@@ -67,16 +67,43 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             }
         }
 
-        //[Fact]
-        //public void ProjectToTests()
-        //{
-        //    using (var provider = BuildProvider())
-        //    {
-        //        var adapterResolver = provider.GetService<IOltAdapterResolver>();
-        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(AdapterObject1.FakerList(3).AsQueryable()));
-        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(3).AsQueryable()));
-        //    }
-        //}
+        [Fact]
+        public void ProjectToTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+
+                var obj1Values = AdapterObject1.FakerList(23);
+
+                var obj2ResultQueryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
+
+                var obj2Result = obj2ResultQueryable.ToList();
+                obj2Result
+                    .Select(s => new { ObjectId = s.ObjectId, FirstName = s.Name.First, LastName = s.Name.Last, })
+                    .Should()
+                    .BeEquivalentTo(obj1Values);                
+
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject1, AdapterObject4>(AdapterObject1.FakerList(3).AsQueryable()));
+                
+            }
+        }
+
+
+        [Fact]
+        public void InvalidMapTests()
+        {
+            using (var provider = BuildProvider(new List<Profile> { new InvalidMap() }))
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
+
+                Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject9>>(() => adapterResolver.ProjectTo<AdapterObject8, AdapterObject9>(AdapterObject8.FakerList(28).AsQueryable()));
+#pragma warning disable CS0618 // Type or member is obsolete
+                Assert.Throws<OltAutoMapperException<AdapterObject8, AdapterObject9>>(() => adapterResolver.ProjectTo<AdapterObject8, AdapterObject9>(AdapterObject8.FakerList(28).AsQueryable(), pagingParams));
+#pragma warning restore CS0618 // Type or member is obsolete
+            }
+        }
 
         [Fact]
         public void MapTests()
@@ -161,15 +188,19 @@ namespace OLT.DataAdapters.AutoMapper.Tests
                 results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject4>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
                 results.Data.Should().BeEquivalentTo(expectedResults.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
 
+                var expectedObj5Results = obj2Values.Select(s => new AdapterObject5 { ObjectId = s.ObjectId, First = s.Name.First, Last = s.Name.Last });
+                var obj5Results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject5>(queryable, pagingParams);
+                obj5Results.Data.Should().BeEquivalentTo(expectedObj5Results.OrderBy(p => p.Last).ThenBy(p => p.First).ThenBy(p => p.ObjectId));
+
+
+                obj5Results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject5>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
+                obj5Results.Data.Should().BeEquivalentTo(expectedObj5Results.OrderByDescending(p => p.Last).ThenByDescending(p => p.First).ThenBy(p => p.ObjectId));
+
 
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(10).AsQueryable(), pagingParams));
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject3, AdapterObject5>(AdapterObject3.FakerList(10).AsQueryable(), pagingParams));
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(AdapterObject1.FakerList(10).AsQueryable(), pagingParams));  //Has Map, but not paged
             }
         }
-
-
-
     }
-
-
 }

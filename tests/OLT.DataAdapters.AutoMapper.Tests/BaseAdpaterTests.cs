@@ -24,20 +24,9 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             services.AddSingleton<IOltAdapterResolver, OltAdapterResolverAutoMapper>();
             services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject3Adapter>();
             services.AddSingleton<IOltAdapter, AdapterObject4PagedMap>();
+            services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject5PagedAdapter>();
+            services.AddSingleton<IOltAdapter, InvalidMap>();
             RegisterMaps(services, maps ?? DefaultMaps);
-            //services.AddAutoMapper(this.GetType().Assembly);
-            //services.AddAutoMapper(cfg =>
-            //{
-            //    if (maps != null)
-            //    {
-            //        maps.ForEach(map => cfg.AddProfile(map));
-            //    }
-            //    else
-            //    {
-            //        cfg.AddProfile(new TestMaps());
-            //        cfg.AddProfile(new AdapterObject4PagedMap());
-            //    }
-            //});
             return services.BuildServiceProvider();
         }
     }

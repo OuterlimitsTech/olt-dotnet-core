@@ -21,7 +21,8 @@ namespace OLT.Core
         /// <param name="source"></param>
         /// <returns></returns>
         /// <exception cref="OltAdapterNotFoundException"></exception>
-        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source); //, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = null
+        /// <exception cref="OltAutoMapperException"></exception>
+        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source);
 
         [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
         IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams) where TSource : class;

@@ -43,31 +43,26 @@ namespace OLT.Core
             return HasAutoMap<TSource, TDestination>() || base.CanProjectTo<TSource, TDestination>();
         }
 
-        protected override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltAdapter adapter)
+        public override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source)
         {
             if (HasAutoMap<TSource, TDestination>())
             {
-                source = ApplyBeforeMaps<TSource, TDestination>(source);
-                return ApplyAfterMaps<TSource, TDestination>(source.ProjectTo<TDestination>(Mapper.ConfigurationProvider));
+                try
+                {
+                    source = ApplyBeforeMaps<TSource, TDestination>(source);
+                    return ApplyAfterMaps<TSource, TDestination>(source.ProjectTo<TDestination>(Mapper.ConfigurationProvider));
+                }
+                catch (Exception ex)
+                {
+                    throw BuildException<TSource, TDestination>(ex);
+                }
             }
-            return base.ProjectTo<TSource, TDestination>(source, adapter);
+            return base.ProjectTo<TSource, TDestination>(source);
         }
-
 
         #endregion
 
-
         #region [ Paged ]
-
-        [Obsolete("Move to BeforeMap or AfterMap")]
-        public override bool CanMapPaged<TSource, TDestination>()
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                return GetPagedAdapterMap<TSource, TDestination>(false) != null;                
-            }
-            return base.CanMapPaged<TSource, TDestination>();
-        }
 
         [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
         public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams)
@@ -99,6 +94,18 @@ namespace OLT.Core
             return base.ProjectTo<TSource, TDestination>(source, pagingParams, orderBy);
         }
 
+
+        [Obsolete("Move to BeforeMap or AfterMap")]
+        public override bool CanMapPaged<TSource, TDestination>()
+        {
+            if (HasAutoMap<TSource, TDestination>())
+            {
+                return GetPagedAdapterMap<TSource, TDestination>(false) != null;
+            }
+            return base.CanMapPaged<TSource, TDestination>();
+        }
+
+
         protected virtual IOltAdapterPagedMap<TSource, TDestination> GetPagedAdapterMap<TSource, TDestination>(bool throwException)
         {
             var adapterName = GetAdapterName<TSource, TDestination>();
@@ -109,7 +116,6 @@ namespace OLT.Core
                 throw new OltAdapterNotFoundException($"{adapterName} Paged");
             }
             return mapAdapter;
-
         }
 
   
