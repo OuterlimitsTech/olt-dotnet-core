@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Core.Services.Interfaces
+namespace OLT.Core
 {
     public interface IOltEntityService<TEntity> : IOltCoreService
         where TEntity : class, IOltEntity

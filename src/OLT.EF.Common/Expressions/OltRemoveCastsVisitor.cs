@@ -2,6 +2,9 @@
 
 namespace OLT.Core
 {
+    /// <summary>
+    /// Not sure if this is needed any longer
+    /// </summary>
     public class OltRemoveCastsVisitor : ExpressionVisitor
     {
         private static readonly ExpressionVisitor Default = new OltRemoveCastsVisitor();

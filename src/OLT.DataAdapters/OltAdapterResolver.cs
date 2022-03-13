@@ -87,12 +87,11 @@ namespace OLT.Core
         [Obsolete("Move to BeforeMap or AfterMap")]
         public virtual bool CanMapPaged<TSource, TDestination>()
         {
-            return GetAdapter(this.GetAdapterName<TSource, TDestination>(), false) is IOltAdapterPaged<TSource, TDestination>;
+            return GetPagedAdapter<TSource, TDestination>(false) != null;
         }
 
         [Obsolete("Move to BeforeMap or AfterMap")]
         protected virtual IOltAdapterPaged<TSource, TDestination> GetPagedAdapter<TSource, TDestination>(bool throwException = true)
-            where TSource : class
         {
             var adapterName = GetAdapterName<TSource, TDestination>();
             var adapter = GetAdapter(adapterName, throwException);

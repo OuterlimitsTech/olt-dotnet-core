@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.DataAdapters.AutoMapper.Tests.Assets.Models;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -124,6 +125,47 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             }
         }
 
+        [Fact]
+        [Obsolete("Legacy Paged Process")]
+        public void CanMapPagedTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                Assert.False(adapterResolver.CanMapPaged<AdapterObject1, AdapterObject2>());
+                Assert.False(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject3>());
+                Assert.True(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject4>());
+                Assert.False(adapterResolver.CanMapPaged<AdapterObject4, AdapterObject2>());
+            }
+        }
+
+
+        [Fact]
+        [Obsolete("Legacy Paged Process")]
+        public void LegacyPagedTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
+
+                var obj2Values = AdapterObject2.FakerList(10);
+                var queryable = obj2Values.AsQueryable();
+
+                var expectedResults = obj2Values.Select(s => new AdapterObject4 { ObjectId = s.ObjectId, Name = new OltPersonName { First = s.Name.First, Last = s.Name.Last } });
+
+                var results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject4>(queryable, pagingParams);
+                results.Data.Should().BeEquivalentTo(expectedResults.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.ObjectId));
+
+
+                results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject4>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
+                results.Data.Should().BeEquivalentTo(expectedResults.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
+
+
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(10).AsQueryable(), pagingParams));
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject3, AdapterObject5>(AdapterObject3.FakerList(10).AsQueryable(), pagingParams));
+            }
+        }
 
 
 

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OLT.Core.Services.Interfaces
+namespace OLT.Core
 {
     public interface IOltEntityIdService<TEntity> : IOltEntityService<TEntity>
         where TEntity : class, IOltEntityId, IOltEntity

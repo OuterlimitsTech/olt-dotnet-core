@@ -10,7 +10,6 @@ using Xunit;
 
 namespace OLT.EF.Common.Tests
 {
-
     public class QueryableExtensionsWhereTests
     {
 

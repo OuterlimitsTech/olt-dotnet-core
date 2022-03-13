@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace OLT.EF.Common.Tests.Assets.Models
 {
-    public class EntityPersonModel : IOltEntityId, IOltEntityDeletable, IOltEntityUniqueId
+    public abstract class BaseEntityPersonModel : IOltEntity
     {
-        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+    }
+
+    public class EntityPersonModel : BaseEntityPersonModel, IOltEntityId, IOltEntityDeletable, IOltEntityUniqueId
+    {
+        public int Id { get; set; }
 
         public DateTimeOffset? DeletedOn { get; set; }
         public string DeletedBy { get; set; }

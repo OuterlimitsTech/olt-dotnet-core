@@ -59,6 +59,15 @@ namespace OLT.Core
 
         #region [ Paged ]
 
+        [Obsolete("Move to BeforeMap or AfterMap")]
+        public override bool CanMapPaged<TSource, TDestination>()
+        {
+            if (HasAutoMap<TSource, TDestination>())
+            {
+                return GetPagedAdapterMap<TSource, TDestination>(false) != null;                
+            }
+            return base.CanMapPaged<TSource, TDestination>();
+        }
 
         [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
         public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams)
@@ -103,11 +112,7 @@ namespace OLT.Core
 
         }
 
-        //public override Func<IQueryable<TSource>, IQueryable<TSource>> DefaultOrderBy<TSource, TDestination>()
-        //{
-        //    return HasAutoMap<TSource, TDestination>() ? GetPagedAdapterMap<TSource, TDestination>(true).DefaultOrderBy : base.DefaultOrderBy<TSource, TDestination>();
-        //}
-
+  
         #endregion
 
         #region [ Maps ]

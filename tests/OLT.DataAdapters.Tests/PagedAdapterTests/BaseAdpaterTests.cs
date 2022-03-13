@@ -12,6 +12,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
             services.AddSingleton<IOltAdapterResolver, OltAdapterResolver>();
             services.AddSingleton<IOltAdapter, AdapterObject1ToAdapterObject2PagedAdapter>();
             services.AddSingleton<IOltAdapter, AdapterObject3ToAdapterObject1Adapter>();
+            services.AddSingleton<IOltAdapter, AdapterObject3ToAdapterObject5Adapter>();
             return services.BuildServiceProvider();
         }
     }

@@ -3,27 +3,28 @@ using OLT.Core;
 using OLT.DataAdapters.AutoMapper.Tests.Assets.Models;
 using System.Linq;
 
-namespace OLT.DataAdapters.AutoMapper.Tests.AdapterTests
+namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
 {
-    public class AdapterMap : Profile
+    public class TestMaps : Profile
     {
-        public AdapterMap()
+        public TestMaps()
         {
             BuildMap(CreateMap<AdapterObject1, AdapterObject2>());
             BuildMap(CreateMap<AdapterObject1, OltPersonName>());
             BuildMap(CreateMap<AdapterObject3, OltPersonName>());
         }
 
-        public void BuildMap(IMappingExpression<AdapterObject1, AdapterObject2> mappingExpression)
+
+        protected virtual void BuildMap(IMappingExpression<AdapterObject1, AdapterObject2> mappingExpression)
         {
             mappingExpression
                 .ForMember(f => f.ObjectId, opt => opt.MapFrom(t => t.ObjectId))
                 .ForMember(f => f.Name, opt => opt.MapFrom(t => t))
-                .ReverseMap()                
+                .ReverseMap()
                 ;
         }
 
-        public void BuildMap(IMappingExpression<AdapterObject1, OltPersonName> mappingExpression)
+        protected virtual void BuildMap(IMappingExpression<AdapterObject1, OltPersonName> mappingExpression)
         {
             mappingExpression
                 .ForMember(f => f.First, opt => opt.MapFrom(t => t.FirstName))
@@ -33,7 +34,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.AdapterTests
         }
 
 
-        public void BuildMap(IMappingExpression<AdapterObject3, OltPersonName> mappingExpression)
+        protected virtual void BuildMap(IMappingExpression<AdapterObject3, OltPersonName> mappingExpression)
         {
             mappingExpression
                 .ForMember(f => f.First, opt => opt.MapFrom(t => t.First))
@@ -42,7 +43,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.AdapterTests
                 ;
         }
 
-        public void BuildMap(IMappingExpression<AdapterObject2, AdapterObject3> mappingExpression)
+        protected virtual void BuildMap(IMappingExpression<AdapterObject2, AdapterObject3> mappingExpression)
         {
             mappingExpression
                 .ForMember(f => f.ObjectId, opt => opt.MapFrom(t => t.ObjectId))

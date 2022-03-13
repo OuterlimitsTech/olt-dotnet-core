@@ -20,6 +20,15 @@ namespace OLT.EF.Common.Tests.Assets
             return BuildTestList(new List<EntityPersonModel> { expected }, startingId, minMix, maxMix);
         }
 
+
+        /// <summary>
+        /// Randomize the List
+        /// </summary>
+        /// <param name="expected">Expected list of data to randomly add to results</param>
+        /// <param name="startingId"></param>
+        /// <param name="minMix"></param>
+        /// <param name="maxMix"></param>
+        /// <returns></returns>
         public static List<EntityPersonModel> BuildTestList(List<EntityPersonModel> expected, int startingId = 1000, int minMix = 0, int maxMix = 6)
         {
             var randomized = expected.OrderBy(x => Guid.NewGuid()).ToList();
