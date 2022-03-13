@@ -36,8 +36,6 @@ namespace OLT.Core
                 result.Add(obj1);
             });
             return result.ToList();
-        }
-
-
+        }        
     }
 }

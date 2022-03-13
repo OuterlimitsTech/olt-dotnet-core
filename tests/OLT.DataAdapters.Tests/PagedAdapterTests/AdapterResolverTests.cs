@@ -94,7 +94,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();                
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(3).AsQueryable()));
 
                 try
@@ -158,6 +158,9 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
                 
                 results = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.LastName).ThenByDescending(p => p.FirstName));
                 results.Data.Should().BeEquivalentTo(expectedResults.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First));
+
+
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(10).AsQueryable(), pagingParams));
             }
         }
 

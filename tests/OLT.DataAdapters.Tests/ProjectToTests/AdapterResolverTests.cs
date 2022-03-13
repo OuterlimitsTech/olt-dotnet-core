@@ -61,16 +61,16 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
             using (var provider = BuildProvider())
             {
                 var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                var obj1Values = AdapterObject1.FakerList(3);
+                var obj1Values = AdapterObject1.FakerList(23);
 
                 var obj2ResultQueryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject1>(obj2ResultQueryable));
-
-                var obj2Result = obj2ResultQueryable.ToList();
-                obj2Result.Should().HaveCount(obj1Values.Count);
-                obj2Result.Select(s => s.Name.First).Should().BeEquivalentTo(obj1Values[0].FirstName, obj1Values[1].FirstName, obj1Values[2].FirstName);
-                obj2Result.Select(s => s.Name.Last).Should().BeEquivalentTo(obj1Values[0].LastName, obj1Values[1].LastName, obj1Values[2].LastName);
-
+                
+                var obj2Result = obj2ResultQueryable.ToList();                
+                obj2Result
+                    .Select(s => new { FirstName = s.Name.First, LastName = s.Name.Last })
+                    .Should()
+                    .BeEquivalentTo(obj1Values.OrderBy(p => p.LastName).ThenBy(p => p.FirstName), opt => opt.WithStrictOrdering());
             }
         }
 
@@ -112,9 +112,5 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
                 Assert.Throws<AggregateException>(() => adapterResolver.Map<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(3)));
             }
         }
-
-
-
-
     }
 }

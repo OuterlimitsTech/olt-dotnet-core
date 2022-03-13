@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+    <ProjectReference Include="..\OLT.Core.Services\OLT.Core.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -43,7 +43,7 @@ namespace OLT.Core
             return HasAutoMap<TSource, TDestination>() || base.CanProjectTo<TSource, TDestination>();
         }
 
-        protected override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltAdapter adapter, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = null)
+        protected override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltAdapter adapter)
         {
             if (HasAutoMap<TSource, TDestination>())
             {

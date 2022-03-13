@@ -4,13 +4,7 @@ using System.Linq;
 
 namespace OLT.Core
 {
-    public interface IOltAdapterMapConfig
-    {
-        string Name { get; }
-    }
-
-
-    public static class OltAdapterMapConfigs
+    public static class OltAdapterMapConfigs 
     {
         private static readonly List<IOltAdapterMapConfig> _mapConfigs = new List<IOltAdapterMapConfig>();
 
@@ -55,9 +49,9 @@ namespace OLT.Core
                 _mapConfigs.Add(afterMap);
             }
 
-            public static void Register<TSource, TDestination>(Func<IQueryable<TSource>, IQueryable<TSource>> orderBy)
+            public static void Register<TSource, TDestination>(Func<IQueryable<TSource>, IQueryable<TSource>> func)
             {
-                _mapConfigs.Add(new OltBeforeMapOrderBy<TSource, TDestination>(orderBy));
+                _mapConfigs.Add(new OltBeforeMapOrderBy<TSource, TDestination>(func));
             }
 
         }
@@ -69,13 +63,15 @@ namespace OLT.Core
                 _mapConfigs.Add(afterMap);
             }
 
-            public static void Register<TSource, TDestination>(Func<IQueryable<TDestination>, IQueryable<TDestination>> orderBy)
+            public static void Register<TSource, TDestination>(Func<IQueryable<TDestination>, IQueryable<TDestination>> func)
             {
-                _mapConfigs.Add(new OltAfterMapOrderBy<TSource, TDestination>(orderBy));
+                _mapConfigs.Add(new OltAfterMapOrderBy<TSource, TDestination>(func));
             }
 
         }
 
+
+    
     }
 
    

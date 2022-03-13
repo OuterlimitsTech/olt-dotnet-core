@@ -49,8 +49,8 @@ namespace OLT.Core
             return false;
         }
 
-        ///<inheritdoc/>
-        public virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source) //, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = null
+        
+        public virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source) 
         {
             var name = GetAdapterName<TSource, TDestination>();
             var adapter = GetAdapter(name, false);
@@ -58,12 +58,11 @@ namespace OLT.Core
         }
 
 
-        protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltAdapter adapter, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = null)
+        protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltAdapter adapter)
         {
             if (adapter is IOltAdapterQueryable<TSource, TDestination> queryableAdapter)
             {
                 source = ApplyBeforeMaps<TSource, TDestination>(source);
-                if (orderBy != null) orderBy(source);
                 return ApplyAfterMaps<TSource, TDestination>(queryableAdapter.Map(source));
             }
             throw new OltAdapterNotFoundException(GetAdapterName<TSource, TDestination>());
