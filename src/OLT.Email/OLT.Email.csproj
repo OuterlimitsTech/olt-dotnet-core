@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>SMTP builder with whitelist for non-production environments</Description>
+    <ProjectGuid>98759DA5-5EC5-4090-B8CE-BCE55737FE8F</ProjectGuid>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
   </ItemGroup>
-
 </Project>

@@ -1,13 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<Description>Contains common generic assets for OLT Packages</Description>
-		<ProjectGuid>51c74595-d676-464c-becd-395627521a65</ProjectGuid>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
-	</ItemGroup>
-
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Contains common generic assets for OLT Packages</Description>
+    <ProjectGuid>C67E4CE8-86F5-4A30-B5A1-F6057E11CB8A</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
+  </ItemGroup>
 </Project>
