@@ -169,7 +169,7 @@ namespace OLT.Core
             }
 
 
-            modelBuilder.EntitiesOfType<IOltEntityId>(builder =>
+            OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(modelBuilder, builder =>
             {
                 var prop = builder.Property<int>(nameof(IOltEntityId.Id));
                 if (prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(builder.Metadata.GetTableName(), builder.Metadata.GetSchema())).Equals("Id", StringComparison.OrdinalIgnoreCase))
@@ -278,9 +278,8 @@ namespace OLT.Core
                     }
                     catch (Exception ex)
                     {
-                        var detail = $"Entity Type: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}{Environment.NewLine}{ex}";
-                        Logger.LogCritical(detail);
-                        throw new OltException(detail);
+                        Logger.LogCritical(ex, "Entity Type: {EntityType} -> {PropertyName}", entityEntry.Entity.GetType().FullName, nullableStringField.PropertyName);
+                        throw;
                     }
                 }
             }
@@ -309,7 +308,7 @@ namespace OLT.Core
 
                 if (this.Getter == null) return null;
 
-                var sourceValue = this.Getter.Invoke(source.Entity, new object[] { }) as string;
+                var sourceValue = this.Getter.Invoke(source.Entity, Array.Empty<object>()) as string;
                 return sourceValue;
             }
 

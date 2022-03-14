@@ -15,10 +15,16 @@ namespace OLT.EF.Core.Tests
 
             services
                 .AddLogging(config => config.AddConsole())
-                .AddDbContextPool<UnitTestDatabaseContext>((serviceProvider, optionsBuilder) => 
+                .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) => 
                 {                    
-                    optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid().ToString()}");
+                    optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");
+                })
+                .AddDbContextPool<UnitTestAlternateContext>((serviceProvider, optionsBuilder) =>
+                {
+                    optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");
                 });
+
+
 
             services.AddScoped<IOltDbAuditUser, DbAuditUserService>();
             return services.BuildServiceProvider();

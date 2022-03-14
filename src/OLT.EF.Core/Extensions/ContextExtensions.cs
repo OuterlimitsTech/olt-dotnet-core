@@ -82,46 +82,6 @@ namespace OLT.Core
             return query;
         }
 
-        public static void SetSoftDeleteGlobalFilter(this ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyGlobalFilters<IOltEntityDeletable>(p => p.DeletedOn == null);
-        }
-
-
-        /// <summary>
-        /// <see href="https://davecallan.com/entity-framework-core-query-filters-multiple-entities"/>
-        /// </summary>
-        /// <example>
-        /// <code>
-        /// modelBuilder.HasQueryFilter(p => p.DeletedOn == null)
-        /// </code>
-        /// </example>
-        /// <typeparam name="TEntity"></typeparam>
-        /// <param name="modelBuilder"></param>
-        /// <param name="expression"></param>
-        public static void ApplyGlobalFilters<TEntity>(this ModelBuilder modelBuilder, Expression<Func<TEntity, bool>> expression)
-        {
-#pragma warning disable S125
-            modelBuilder.EntitiesOfType<TEntity>(builder =>
-            {
-                var clrType = builder.Metadata.ClrType;
-
-                        //TPH class?
-                        if (!builder.Metadata.GetDefaultTableName().Equals(builder.Metadata.GetTableName(), StringComparison.OrdinalIgnoreCase) && builder.Metadata.GetDiscriminatorPropertyName() != null)
-                {
-                            //Console.WriteLine($"GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorProperty()} of type {builder.Metadata.ClrType.FullName}");
-                            clrType = clrType.BaseType;
-                            //Console.WriteLine($"{builder.Metadata.GetTableName()} not equal to {builder.Metadata.GetDefaultTableName()} of type {builder.Metadata.ClrType.FullName}");
-                        }
-                var newParam = Expression.Parameter(clrType);
-                var newBody = ReplacingExpressionVisitor.Replace(expression.Parameters.Single(), newParam, expression.Body);
-                modelBuilder.Entity(clrType).HasQueryFilter(Expression.Lambda(newBody, newParam));
-
-            });
-#pragma warning restore S125
-
-        }
-
 
     }
 }

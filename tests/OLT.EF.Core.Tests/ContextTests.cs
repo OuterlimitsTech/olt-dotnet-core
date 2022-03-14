@@ -21,7 +21,7 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestDatabaseContext>();
+                var context = provider.GetService<UnitTestContext>();
 
                 var entity = PersonEntity.FakerEntity();
                 context.People.Add(entity);
@@ -37,15 +37,25 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestDatabaseContext>();
+                var context1 = provider.GetService<UnitTestContext>();
+                var context2 = provider.GetService<UnitTestAlternateContext>();
 
-                var entity = PersonEntity.FakerEntity();
-                entity.DeletedBy = Faker.Internet.Email();
-                entity.DeletedOn = System.DateTimeOffset.Now;
-                context.People.Add(entity);
-                context.SaveChanges();
-                var compare = context.People.FirstOrDefault(p => p.Id == entity.Id);
-                Assert.Null(compare);                
+                var entity1 = PersonEntity.FakerEntity();
+                entity1.DeletedBy = Faker.Internet.Email();
+                entity1.DeletedOn = System.DateTimeOffset.Now;
+
+                context1.People.Add(entity1);
+                context1.SaveChanges();
+                Assert.Null(context1.People.FirstOrDefault(p => p.Id == entity1.Id));
+
+
+                var entity2 = PersonEntity.FakerEntity();
+                entity2.DeletedBy = Faker.Internet.Email();
+                entity2.DeletedOn = System.DateTimeOffset.Now;
+                context2.People.Add(entity2);
+                context2.SaveChanges();                
+                Assert.NotNull(context2.People.FirstOrDefault(p => p.Id == entity2.Id));
+
             }
         }
 
@@ -58,7 +68,7 @@ namespace OLT.EF.Core.Tests
             {
                 var now = DateTimeOffset.UtcNow;
 
-                var context = provider.GetService<UnitTestDatabaseContext>();
+                var context = provider.GetService<UnitTestContext>();
                 var auditUser = provider.GetService<IOltDbAuditUser>();
                 Assert.Equal(OltEFCoreConstants.DefaultAnonymousUser, context.DefaultAnonymousUser);
                 Assert.Equal(auditUser.GetDbUsername(), context.AuditUser);

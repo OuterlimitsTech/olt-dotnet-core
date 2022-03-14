@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace OLT.EF.Core.Tests.Assets.Entites
 {
+
     public class UserEntity : OltEntityId, IOltEntityUniqueId
     {
         public Guid UniqueId { get; set; }

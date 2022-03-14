@@ -4,16 +4,16 @@ using OLT.EF.Core.Tests.Assets.Entites;
 
 namespace OLT.EF.Core.Tests.Assets
 {
-    public class UnitTestDatabaseContext : OltDbContext<UnitTestDatabaseContext>
+    public class UnitTestAlternateContext : OltDbContext<UnitTestAlternateContext>
     {
-        public UnitTestDatabaseContext(DbContextOptions<UnitTestDatabaseContext> options) : base(options)
+        public UnitTestAlternateContext(DbContextOptions<UnitTestAlternateContext> options) : base(options)
         {
         }
 
-        public override string DefaultSchema => "UnitTest";
-        public override bool DisableCascadeDeleteConvention => true;
+        public override string DefaultSchema => null;
+        public override bool DisableCascadeDeleteConvention => false;
         public override DefaultStringTypes DefaultStringType => DefaultStringTypes.NVarchar;
-        public override bool ApplyGlobalDeleteFilter => true;
+        public override bool ApplyGlobalDeleteFilter => false;
 
         public virtual DbSet<PersonEntity> People { get; set; }
         public virtual DbSet<UserEntity> Users { get; set; }
