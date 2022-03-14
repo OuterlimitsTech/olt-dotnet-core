@@ -17,46 +17,46 @@ namespace OLT.Core
         // EFCore.BulkExtensions
 
 
-        public static string GetTableName<TEntity>(this DbContext context) where TEntity : class
-        {
-            var entityType = context.Model.FindEntityType(typeof(TEntity));
+        //public static string GetTableName<TEntity>(this DbContext context) where TEntity : class
+        //{
+        //    var entityType = context.Model.FindEntityType(typeof(TEntity));
 
-            var schema = entityType.GetSchema();
-            var tableName = entityType.GetTableName();
-            return string.IsNullOrEmpty(schema) ? tableName : $"{schema}.{tableName}";
-        }
+        //    var schema = entityType.GetSchema();
+        //    var tableName = entityType.GetTableName();
+        //    return string.IsNullOrEmpty(schema) ? tableName : $"{schema}.{tableName}";
+        //}
 
-        public static IEnumerable<OltDbColumnInfo> GetColumns<TEntity>(this DbContext dbContext)
-            where TEntity : class
-        {
-            var cols = new List<OltDbColumnInfo>();
-            var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
+        //public static IEnumerable<OltDbColumnInfo> GetColumns<TEntity>(this DbContext dbContext)
+        //    where TEntity : class
+        //{
+        //    var cols = new List<OltDbColumnInfo>();
+        //    var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
 
-            // Table info 
-            var tableName = entityType.GetTableName();
-            var tableSchema = entityType.GetSchema();
+        //    // Table info 
+        //    var tableName = entityType.GetTableName();
+        //    var tableSchema = entityType.GetSchema();
 
-            // Column info 
-            foreach (var property in entityType.GetProperties())
-            {
-                var column = new OltDbColumnInfo
-                {
-                    Name = property.GetColumnName(StoreObjectIdentifier.Table(tableName, tableSchema)),
-                };
+        //    // Column info 
+        //    foreach (var property in entityType.GetProperties())
+        //    {
+        //        var column = new OltDbColumnInfo
+        //        {
+        //            Name = property.GetColumnName(StoreObjectIdentifier.Table(tableName, tableSchema)),
+        //        };
 
-                try
-                {
-                    column.Type = property.GetColumnType();
-                }
-                catch
-                {
-                    column.Type = property.GetTypeMapping().ClrType.Name;
-                }
-                cols.Add(column);
-            }
+        //        try
+        //        {
+        //            column.Type = property.GetColumnType();
+        //        }
+        //        catch
+        //        {
+        //            column.Type = property.GetTypeMapping().ClrType.Name;
+        //        }
+        //        cols.Add(column);
+        //    }
 
-            return cols;
-        }
+        //    return cols;
+        //}
 
         public static IQueryable<TEntity> InitializeQueryable<TEntity>(this IOltDbContext context)
             where TEntity : class, IOltEntity
@@ -106,25 +106,13 @@ namespace OLT.Core
             {
                 var clrType = builder.Metadata.ClrType;
 
-#if NET6_0_OR_GREATER
-                //TPH class?
-                if (!builder.Metadata.GetDefaultTableName().Equals(builder.Metadata.GetTableName(), StringComparison.OrdinalIgnoreCase) && builder.Metadata.GetDiscriminatorPropertyName() != null)
+                        //TPH class?
+                        if (!builder.Metadata.GetDefaultTableName().Equals(builder.Metadata.GetTableName(), StringComparison.OrdinalIgnoreCase) && builder.Metadata.GetDiscriminatorPropertyName() != null)
                 {
-                    //Console.WriteLine($"GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorProperty()} of type {builder.Metadata.ClrType.FullName}");
-                    clrType = clrType.BaseType;
-                    //Console.WriteLine($"{builder.Metadata.GetTableName()} not equal to {builder.Metadata.GetDefaultTableName()} of type {builder.Metadata.ClrType.FullName}");
-                }
-#else
-                //TPH class?
-                if (!builder.Metadata.GetDefaultTableName().Equals(builder.Metadata.GetTableName(), StringComparison.OrdinalIgnoreCase) &&
-                    builder.Metadata.GetDiscriminatorProperty()?.GetColumnName(StoreObjectIdentifier.Table(builder.Metadata.GetTableName(), builder.Metadata.GetSchema())) != null)
-                {
-
-                    //Console.WriteLine($"GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorProperty()} of type {builder.Metadata.ClrType.FullName}");
-                    clrType = clrType.BaseType;
-                    //Console.WriteLine($"{builder.Metadata.GetTableName()} not equal to {builder.Metadata.GetDefaultTableName()} of type {builder.Metadata.ClrType.FullName}");
-                }
-#endif
+                            //Console.WriteLine($"GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorProperty()} of type {builder.Metadata.ClrType.FullName}");
+                            clrType = clrType.BaseType;
+                            //Console.WriteLine($"{builder.Metadata.GetTableName()} not equal to {builder.Metadata.GetDefaultTableName()} of type {builder.Metadata.ClrType.FullName}");
+                        }
                 var newParam = Expression.Parameter(clrType);
                 var newBody = ReplacingExpressionVisitor.Replace(expression.Parameters.Single(), newParam, expression.Body);
                 modelBuilder.Entity(clrType).HasQueryFilter(Expression.Lambda(newBody, newParam));
@@ -132,7 +120,7 @@ namespace OLT.Core
             });
 #pragma warning restore S125
 
-        }        
+        }
 
 
     }

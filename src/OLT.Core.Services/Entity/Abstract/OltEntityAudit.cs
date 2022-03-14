@@ -6,7 +6,7 @@ namespace OLT.Core
     public abstract class OltEntityAudit : IOltEntityAudit
     {
        
-        public DateTimeOffset CreateDate { get; set; } = DateTimeOffset.Now;
+        public DateTimeOffset CreateDate { get; set; } = DateTimeOffset.UtcNow;
 
         [Required]
         [StringLength(100)]

@@ -14,8 +14,8 @@ namespace OLT.Core.Services.Tests
 
             var model = new EntityIdModel();
             Assert.Equal(0, model.Id);
-            Assert.True(model.CreateDate < DateTimeOffset.Now.AddSeconds(2));
-            Assert.True(model.CreateDate > DateTimeOffset.Now.AddSeconds(-2));
+            Assert.True(model.CreateDate < DateTimeOffset.UtcNow.AddSeconds(2));
+            Assert.True(model.CreateDate > DateTimeOffset.UtcNow.AddSeconds(-2));
             Assert.Null(model.CreateUser);
             Assert.Null(model.ModifyDate);
             Assert.Null(model.ModifyUser);
@@ -41,8 +41,8 @@ namespace OLT.Core.Services.Tests
             
             var model = new EntityIdDeletableModel();
             Assert.Equal(0, model.Id);
-            Assert.True(model.CreateDate < DateTimeOffset.Now.AddSeconds(2));
-            Assert.True(model.CreateDate > DateTimeOffset.Now.AddSeconds(-2));
+            Assert.True(model.CreateDate < DateTimeOffset.UtcNow.AddSeconds(2));
+            Assert.True(model.CreateDate > DateTimeOffset.UtcNow.AddSeconds(-2));
             Assert.Null(model.CreateUser);
             Assert.Null(model.ModifyDate);
             Assert.Null(model.ModifyUser);
@@ -53,7 +53,7 @@ namespace OLT.Core.Services.Tests
             model = EntityIdDeletableModel.FakerData();
             Assert.NotEqual(0, model.Id);
             Assert.NotEqual(DateTimeOffset.MinValue, model.CreateDate);
-            Assert.True(model.CreateDate < DateTimeOffset.Now);
+            Assert.True(model.CreateDate < DateTimeOffset.UtcNow);
             Assert.NotNull(model.CreateUser);
             Assert.NotNull(model.ModifyDate);
             Assert.NotNull(model.ModifyUser);
@@ -72,8 +72,8 @@ namespace OLT.Core.Services.Tests
         {
 
             var model = new EntityDeletableModel();
-            Assert.True(model.CreateDate < DateTimeOffset.Now.AddSeconds(2));
-            Assert.True(model.CreateDate > DateTimeOffset.Now.AddSeconds(-2));
+            Assert.True(model.CreateDate < DateTimeOffset.UtcNow.AddSeconds(2));
+            Assert.True(model.CreateDate > DateTimeOffset.UtcNow.AddSeconds(-2));
             Assert.Null(model.CreateUser);
             Assert.Null(model.ModifyDate);
             Assert.Null(model.ModifyUser);
@@ -83,7 +83,7 @@ namespace OLT.Core.Services.Tests
 
             model = EntityDeletableModel.FakerData();
             Assert.NotEqual(DateTimeOffset.MinValue, model.CreateDate);
-            Assert.True(model.CreateDate < DateTimeOffset.Now);
+            Assert.True(model.CreateDate < DateTimeOffset.UtcNow);
             Assert.NotNull(model.CreateUser);
             Assert.NotNull(model.ModifyDate);
             Assert.NotNull(model.ModifyUser);

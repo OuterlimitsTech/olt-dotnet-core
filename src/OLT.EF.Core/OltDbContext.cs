@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
+using OLT.Constants;
 
 namespace OLT.Core
 {
@@ -56,7 +57,7 @@ namespace OLT.Core
 
         public abstract string DefaultSchema { get; }
         public abstract bool DisableCascadeDeleteConvention { get; }
-        public virtual string DefaultAnonymousUser => "GUEST USER";
+        public virtual string DefaultAnonymousUser => OltEFCoreConstants.DefaultAnonymousUser;
         public abstract DefaultStringTypes DefaultStringType { get; }
         public virtual bool DisableAutomaticStringNullification => false;
         public abstract bool ApplyGlobalDeleteFilter { get; }
@@ -65,16 +66,11 @@ namespace OLT.Core
         {
             get
             {
-                if (DbAuditUser != null)
+                var userName = DbAuditUser?.GetDbUsername();
+                if (!string.IsNullOrWhiteSpace(userName))
                 {
-                    var userName = DbAuditUser.GetDbUsername();
-                    if (!string.IsNullOrWhiteSpace(userName))
-                    {
-                        return userName;
-                    }
-
+                    return userName;
                 }
-
                 return DefaultAnonymousUser;
             }
         }
@@ -216,15 +212,17 @@ namespace OLT.Core
         {
             if (entityEntry.Entity is IOltEntityAudit createModel)
             {
-                if (entityEntry.State == EntityState.Added)
-                {
-                    createModel.CreateUser ??= AuditUser;
-                    createModel.CreateDate = createModel.CreateDate == DateTimeOffset.MinValue ? DateTimeOffset.UtcNow : createModel.CreateDate;
+                var utcNow = DateTimeOffset.UtcNow;
 
+                if (entityEntry.State == EntityState.Added)
+                {                    
+                    createModel.CreateUser = AuditUser;
+                    createModel.CreateDate = utcNow;
                 }
 
                 createModel.ModifyUser = AuditUser;
-                createModel.ModifyDate = DateTimeOffset.UtcNow;
+                createModel.ModifyDate = utcNow;
+
             }
         }
 
