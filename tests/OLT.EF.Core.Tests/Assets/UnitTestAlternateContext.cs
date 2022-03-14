@@ -12,7 +12,7 @@ namespace OLT.EF.Core.Tests.Assets
 
         public override string DefaultSchema => null;
         public override bool DisableCascadeDeleteConvention => false;
-        public override DefaultStringTypes DefaultStringType => DefaultStringTypes.NVarchar;
+        public override OltContextStringTypes DefaultStringType => OltContextStringTypes.NVarchar;
         public override bool ApplyGlobalDeleteFilter => false;
 
         public virtual DbSet<PersonEntity> People { get; set; }

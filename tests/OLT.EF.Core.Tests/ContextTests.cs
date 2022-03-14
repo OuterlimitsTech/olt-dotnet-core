@@ -1,5 +1,6 @@
-using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OLT.Constants;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
@@ -8,29 +9,34 @@ using System;
 using System.Linq;
 using Xunit;
 
+
 namespace OLT.EF.Core.Tests
 {
 
     public class ContextTests : BaseUnitTests
     {
 
-
-
         [Fact]
-        public void AddTests()
+        public void ConfigTests()
         {
             using (var provider = BuildProvider())
             {
                 var context = provider.GetService<UnitTestContext>();
+                var altContext = provider.GetService<UnitTestAlternateContext>();
 
-                var entity = PersonEntity.FakerEntity();
-                context.People.Add(entity);
-                context.SaveChanges();
-                var compare = context.People.FirstOrDefault(p => p.Id == entity.Id);
-                compare.Should().BeEquivalentTo(entity);
+                Assert.Equal(OltContextStringTypes.Varchar, context.DefaultStringType);
+                Assert.Equal(OltContextStringTypes.NVarchar, altContext.DefaultStringType);
+
+                Assert.True(context.ApplyGlobalDeleteFilter);
+                Assert.False(altContext.ApplyGlobalDeleteFilter);
+
+                Assert.True(context.DisableCascadeDeleteConvention);
+                Assert.False(altContext.DisableCascadeDeleteConvention);
+
+                Assert.Equal("UnitTest", context.DefaultSchema);
+                Assert.Null(altContext.DefaultSchema);
             }
         }
-
 
         [Fact]
         public void ApplyGlobalDeleteFilterTests()
@@ -39,7 +45,7 @@ namespace OLT.EF.Core.Tests
             {
                 var context1 = provider.GetService<UnitTestContext>();
                 var context2 = provider.GetService<UnitTestAlternateContext>();
-
+                
                 var entity1 = PersonEntity.FakerEntity();
                 entity1.DeletedBy = Faker.Internet.Email();
                 entity1.DeletedOn = System.DateTimeOffset.Now;
@@ -59,6 +65,34 @@ namespace OLT.EF.Core.Tests
             }
         }
 
+        [Fact]
+        public void SortOrderTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var sortOrder = (short)Faker.RandomNumber.Next(1000, 1200);
+                var context = provider.GetService<UnitTestContext>();
+
+                var entityDefault = NoIdEntity.FakerEntity();
+                context.NoIdentifiers.Add(entityDefault);
+                context.SaveChanges();
+                Assert.Equal(OltCommonDefaults.SortOrder, entityDefault.SortOrder);  //Test default Sort Order
+
+
+                var entityNoDefault = NoIdEntity.FakerEntity();
+                entityNoDefault.SortOrder = sortOrder;
+                context.NoIdentifiers.Add(entityNoDefault);
+                context.SaveChanges();
+                Assert.NotEqual(OltCommonDefaults.SortOrder, entityNoDefault.SortOrder);
+                Assert.Equal(sortOrder, entityNoDefault.SortOrder);
+
+                var entityNegative = NoIdEntity.FakerEntity();
+                entityNegative.SortOrder = -1;
+                context.NoIdentifiers.Add(entityNegative);
+                context.SaveChanges();
+                Assert.Equal(OltCommonDefaults.SortOrder, entityNegative.SortOrder);
+            }
+        }
 
 
         [Fact]
@@ -111,6 +145,24 @@ namespace OLT.EF.Core.Tests
                 Assert.NotEqual(createDate, compare.ModifyDate);
                 Assert.NotEqual(createUser, compare.ModifyUser);
 
+            }
+
+
+            var services = new ServiceCollection();
+
+            services
+                .AddLogging(config => config.AddConsole())
+                .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
+                {
+                    optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");
+                });
+
+            services.AddScoped<IOltDbAuditUser, EmtpyDbAuditUserService>();
+
+            using (var provider = services.BuildServiceProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+                Assert.Equal(context.DefaultAnonymousUser, context.AuditUser);
             }
         }
     }

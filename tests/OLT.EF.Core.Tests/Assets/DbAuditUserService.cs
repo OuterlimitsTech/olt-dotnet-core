@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 
 namespace OLT.EF.Core.Tests.Assets
 {
+    public class EmtpyDbAuditUserService : IOltDbAuditUser
+    {
+        public string GetDbUsername()
+        {
+            return null;
+        }
+    }
 
     public class DbAuditUserService : IOltDbAuditUser
     {

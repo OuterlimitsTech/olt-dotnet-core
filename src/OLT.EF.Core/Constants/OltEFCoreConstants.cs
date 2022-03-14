@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Constants
 {
+
     public static class OltEFCoreConstants
     {
         public const string DefaultAnonymousUser = "GUEST USER";

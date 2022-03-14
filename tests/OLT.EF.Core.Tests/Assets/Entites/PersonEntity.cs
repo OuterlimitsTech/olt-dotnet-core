@@ -1,29 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OLT.Core;
+using OLT.EF.Core.Tests.Assets.Entites.Code;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.EF.Core.Tests.Assets.Entites
 {
+
     [Table("People")]
-    public class PersonEntity : OltEntityIdDeletable, IOltInsertingRecord, IOltUpdatingRecord, IOltDeletingRecord, IOltEntityUniqueId
+    public class PersonEntity : OltEntityIdDeletable, IOltInsertingRecord, IOltUpdatingRecord, IOltEntityUniqueId
     {
         public Guid UniqueId { get; set; }
 
-        [StringLength(100)]
+        [MaxLength(50)]
+        [Required]
         public string NameFirst { get; set; }
-        [StringLength(100)]
+        [MaxLength(10)]
         public string NameMiddle { get; set; }
-        [StringLength(100)]
+        [MaxLength(50)]
+        [Required]
         public string NameLast { get; set; }
 
-        [StringLength(20)]
+        [MaxLength(20)]
         public string ActionCode { get; set; }
 
-        [StringLength(20)]
+        [MaxLength(20)]
         [NotMapped]
         public string NoMapColumn { get; set; }
+
+
+        [MaxLength(20)]
+        [Unicode(true)]
+        public string UnicodeValue { get; set; }
+
+        public int? StatusTypeId { get; set; }
+        public StatusTypeCodeTableEntity StatusType { get; set; }
+
+        public List<AddressEntity> Addresses { get; set; } = new List<AddressEntity>();
 
         public void InsertingRecord(IOltDbContext db, EntityEntry entityEntry)
         {
@@ -34,13 +50,6 @@ namespace OLT.EF.Core.Tests.Assets.Entites
         {
             ActionCode = "Update";
         }
-
-        public void DeletingRecord(IOltDbContext db, EntityEntry entityEntry)
-        {
-            DeletedOn = DateTimeOffset.Now;
-            DeletedBy = db.AuditUser;
-        }
-
 
         public static PersonEntity FakerEntity()
         {

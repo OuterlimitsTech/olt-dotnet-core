@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace OLT.Core
 {
+
     public static class OltModelBuilderExtensions
     {
-        public static ModelBuilder EntitiesOfType<T>(this ModelBuilder modelBuilder,  Action<EntityTypeBuilder> buildAction) 
+
+        public static ModelBuilder EntitiesOfType<T>(this ModelBuilder modelBuilder, Action<EntityTypeBuilder> buildAction) 
         {
             return EntitiesOfType(modelBuilder, typeof(T), buildAction);
         }

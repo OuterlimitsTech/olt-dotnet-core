@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using OLT.Constants;
 
 namespace OLT.Core
 {
@@ -16,7 +17,7 @@ namespace OLT.Core
         protected virtual DateTimeOffset DefaultCreateDate => new DateTimeOffset(1980, 1, 1, 0, 0, 0, 0, DateTimeOffset.UtcNow.Offset);
         protected virtual string DefaultUsername => "SystemLoad";
 
-        protected virtual short GetEnumCodeSortOrder<TEnum>(TEnum item, short defaultValue = 9999)
+        protected virtual short GetEnumCodeSortOrder<TEnum>(TEnum item, short defaultValue = OltCommonDefaults.SortOrder)
             where TEnum : System.Enum
         {
             return OltAttributeExtensions.GetAttributeInstance<CodeAttribute, TEnum>(item)?.DefaultSort ?? defaultValue;
@@ -55,7 +56,7 @@ namespace OLT.Core
         protected virtual Type EnumType => typeof(TEnum);
         protected virtual Type UnderlyingType => Enum.GetUnderlyingType(EnumType);
         protected virtual int MinimumValue => 1;
-        protected virtual short DefaultSort => 9999;
+        protected virtual short DefaultSort => OltCommonDefaults.SortOrder;
 
         protected virtual void Map(TEntity entity, TEnum @enum)
         {

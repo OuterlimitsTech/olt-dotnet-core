@@ -46,19 +46,13 @@ namespace OLT.Core
         }
 
 
-        public enum DefaultStringTypes
-        {
-            NVarchar,
-            Varchar
-        }
-
         protected virtual IOltDbAuditUser DbAuditUser => _dbAuditUser ??= this.GetService<IOltDbAuditUser>();
         protected virtual ILogger<OltDbContext<TContext>> Logger => _logger ??= this.GetService<ILogger<OltDbContext<TContext>>>();
 
         public abstract string DefaultSchema { get; }
         public abstract bool DisableCascadeDeleteConvention { get; }
         public virtual string DefaultAnonymousUser => OltEFCoreConstants.DefaultAnonymousUser;
-        public abstract DefaultStringTypes DefaultStringType { get; }
+        public abstract OltContextStringTypes DefaultStringType { get; }
         public virtual bool DisableAutomaticStringNullification => false;
         public abstract bool ApplyGlobalDeleteFilter { get; }
 
@@ -77,7 +71,6 @@ namespace OLT.Core
 
         protected virtual void ProcessException(Exception exception)
         {
-            Logger.LogCritical("{exception}", exception);
             if (exception is DbUpdateException dbUpdateException)
             {
                 WriteExceptionEntries(dbUpdateException.Entries);
@@ -142,49 +135,27 @@ namespace OLT.Core
 
             if (DisableCascadeDeleteConvention)
             {
-                var cascadeFKs = modelBuilder.Model.GetEntityTypes()
-                    .SelectMany(t => t.GetForeignKeys())
-                    .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
-
-                foreach (var fk in cascadeFKs)
-                {
-                    fk.DeleteBehavior = DeleteBehavior.Restrict;
-                }
+                OltModelBuilderHelper.RestrictDeleteBehavior(modelBuilder);
             }
 
-            if (DefaultStringType == DefaultStringTypes.Varchar)
+            if (DefaultStringType == OltContextStringTypes.Varchar)
             {
-                foreach (var property in modelBuilder.Model.GetEntityTypes()
-                                    .SelectMany(t => t.GetProperties())
-                                    .Where(p => p.ClrType == typeof(string)).Where(property => property.IsUnicode().GetValueOrDefault(true)))
-                {
-                    property.SetIsUnicode(false);
-                }
+                OltModelBuilderHelper.DisableUnicodeProperties(modelBuilder);
             }
-
 
             if (!string.IsNullOrWhiteSpace(DefaultSchema))
             {
                 modelBuilder.HasDefaultSchema(DefaultSchema);  //Sets Schema for all tables, unless overridden
             }
 
-
-            OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(modelBuilder, builder =>
-            {
-                var prop = builder.Property<int>(nameof(IOltEntityId.Id));
-                if (prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(builder.Metadata.GetTableName(), builder.Metadata.GetSchema())).Equals("Id", StringComparison.OrdinalIgnoreCase))
-                {
-                    var columnName = $"{builder.Metadata.GetTableName()}Id";
-                    builder.Property<int>(nameof(IOltEntityId.Id)).HasColumnName(columnName);
-                }
-            });
+            OltModelBuilderHelper.EntityIdColumnName(modelBuilder);
 
 
             if (ApplyGlobalDeleteFilter)
             {
                 //To Bypass 
                 // https://docs.microsoft.com/en-us/ef/core/querying/filters#disabling-filters
-                modelBuilder.SetSoftDeleteGlobalFilter();
+                OltModelBuilderExtensions.SetSoftDeleteGlobalFilter(modelBuilder);                
             }
 
             base.OnModelCreating(modelBuilder);
@@ -235,10 +206,9 @@ namespace OLT.Core
 
             if (entityEntry.Entity is IOltEntitySortable sortOrder && sortOrder.SortOrder <= 0)
             {
-                sortOrder.SortOrder = 9999;
+                sortOrder.SortOrder = OltCommonDefaults.SortOrder;
             }
         }
-
 
         protected virtual void CallTriggers(EntityEntry entityEntry)
         {
@@ -253,10 +223,6 @@ namespace OLT.Core
                 (entityEntry.Entity as IOltUpdatingRecord)?.UpdatingRecord(this, entityEntry);
             }
 
-            if (entityEntry.State == EntityState.Deleted)
-            {
-                (entityEntry.Entity as IOltDeletingRecord)?.DeletingRecord(this, entityEntry);
-            }
         }
 
         protected virtual void CheckNullableStringFields(EntityEntry entityEntry)

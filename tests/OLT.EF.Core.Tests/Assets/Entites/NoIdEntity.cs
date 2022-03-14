@@ -21,8 +21,7 @@ namespace OLT.EF.Core.Tests.Assets.Entites
             return new NoIdEntity
             {
                 TableKey = $"Key_{Guid.NewGuid()}",
-                FirstName = Faker.Name.First(),
-                SortOrder = (short)Faker.RandomNumber.Next(3000, 4000),
+                FirstName = Faker.Name.First()                
             };
         }
     }
