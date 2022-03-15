@@ -8,9 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.EF.Core.Tests.Assets.Entites
-{
-
-    [Table("People")]
+{        
     public class PersonEntity : OltEntityIdDeletable, IOltInsertingRecord, IOltUpdatingRecord, IOltEntityUniqueId
     {
         public Guid UniqueId { get; set; }
@@ -30,6 +28,9 @@ namespace OLT.EF.Core.Tests.Assets.Entites
         [MaxLength(20)]
         [NotMapped]
         public string NoMapColumn { get; set; }
+
+        [Column("Effective", TypeName = "Date")]
+        public DateTime? EffectiveDate { get; set; }  //Used to Test GetColumns<> where the DB type is different from the ClrType
 
 
         public int? StatusTypeId { get; set; }

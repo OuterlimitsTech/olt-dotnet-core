@@ -245,7 +245,7 @@ namespace OLT.Core
                     catch (Exception ex)
                     {
                         Logger.LogCritical(ex, "Entity Type: {EntityType} -> {PropertyName}", entityEntry.Entity.GetType().FullName, nullableStringField.PropertyName);
-                        throw;
+                        throw new OltException($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
                     }
                 }
             }
@@ -314,7 +314,7 @@ namespace OLT.Core
                   .Where(p => p.PropertyType?.Name == _stringTypeName)    // Not really a "safe" comparison, but we go by typename rather than typeof to avoid language version issues.....
                   .ToList();
 
-            // None found?
+            // No string properties found found?
             if (stringProperties.Count == 0)
             {
                 // Critical section for thread-safe implementation....

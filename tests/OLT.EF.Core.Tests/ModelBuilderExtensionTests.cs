@@ -15,6 +15,7 @@ using Xunit;
 
 namespace OLT.EF.Core.Tests
 {
+
     public class ModelBuilderExtensionTests 
     {
         [Fact]

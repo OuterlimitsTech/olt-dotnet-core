@@ -22,12 +22,14 @@ namespace OLT.EF.Core.Tests.Assets
 
         public virtual DbSet<PersonEntity> People { get; set; }
         public virtual DbSet<AddressEntity> Addresses { get; set; }
-        public virtual DbSet<UserEntity> Users { get; set; }
-        public virtual DbSet<NoIdEntity> NoIdentifiers { get; set; }
+        public virtual DbSet<UserEntity> Users { get; set; }        
         public virtual DbSet<StatusTypeCodeTableEntity> StatusTypes { get; set; }
         public virtual DbSet<PersonTypeCodeTableEntity> PersonTypes { get; set; }
 
-
+        public virtual DbSet<NoIdEntity> NoIdentifiers { get; set; }
+        public virtual DbSet<NoStringEntity> NoStringEntities { get; set; }
+        public virtual DbSet<EmptyExceptionStringEntity> EmptyExceptionStringEntities { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PersonEntity>().Property(p => p.NameFirst).IsRequired().HasMaxLength(50);

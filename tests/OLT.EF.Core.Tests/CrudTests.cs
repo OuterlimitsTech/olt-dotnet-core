@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
 using System;
@@ -211,6 +212,50 @@ namespace OLT.EF.Core.Tests
                 }
 
  
+            }
+        }
+
+
+        [Fact]
+        public async Task NoStringEntityTests()
+        {
+            // GetNullableStringPropertyMetaData
+            using (var provider = BuildProvider())
+            {
+                var entity = NoStringEntity.FakerEntity();
+                var context = provider.GetService<UnitTestContext>();
+                await context.NoStringEntities.AddAsync(entity);
+                context.SaveChanges();
+                context.NoStringEntities.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
+
+
+                entity = NoStringEntity.FakerEntity();
+                await context.NoStringEntities.AddAsync(entity);
+                
+                await context.SaveChangesAsync();
+                context.NoStringEntities.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
+
+            }
+        }
+
+
+        [Fact]
+        public async Task EmptyExceptionStringTests()
+        {
+            // CheckNullableStringFields Exception Logic
+            using (var provider = BuildProvider())
+            {
+                var entity = EmptyExceptionStringEntity.FakerEntity();
+                var context = provider.GetService<UnitTestContext>();
+                await context.EmptyExceptionStringEntities.AddAsync(entity);
+                OltException exception = Assert.Throws<OltException>(() => context.SaveChanges()); 
+                Assert.Equal("CheckNullableStringFields: OLT.EF.Core.Tests.Assets.Entites.EmptyExceptionStringEntity -> Title", exception.Message);
+
+
+                entity = EmptyExceptionStringEntity.FakerEntity();
+                await context.EmptyExceptionStringEntities.AddAsync(entity);
+                var asyncException = await Assert.ThrowsAsync<OltException>(() => context.SaveChangesAsync());
+                Assert.Equal("CheckNullableStringFields: OLT.EF.Core.Tests.Assets.Entites.EmptyExceptionStringEntity -> Title", asyncException.Message);
             }
         }
 

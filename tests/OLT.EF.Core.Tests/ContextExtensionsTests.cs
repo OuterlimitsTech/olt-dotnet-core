@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
@@ -33,10 +35,10 @@ namespace OLT.EF.Core.Tests
                 var context = provider.GetService<UnitTestContext>();
                 
                 var columns = OltContextExtensions.GetColumns<PersonEntity>(context).ToList();
-                columns.ForEach(col =>
-                {                    
-                    //Logger.Debug(col.Name);
-                });
+                //columns.ForEach(col =>
+                //{                    
+                //    //Logger.Debug(col.Name);
+                //});
                 Assert.Collection(columns,
                     item => Assert.Equal(item.Name, expected),
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.ActionCode)}"),
@@ -44,6 +46,7 @@ namespace OLT.EF.Core.Tests
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.CreateUser)}"),
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.DeletedBy)}"),
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.DeletedOn)}"),
+                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.EffectiveDate)}"),
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.ModifyDate)}"),
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.ModifyUser)}"),
                     item => Assert.Equal(item.Name, $"{nameof(PersonEntity.NameFirst)}"),
@@ -55,6 +58,61 @@ namespace OLT.EF.Core.Tests
 
 
                 Assert.Throws<ArgumentNullException>("dbContext", () => OltContextExtensions.GetColumns<PersonEntity>(null));
+
+            }
+        }
+
+
+        [Fact]
+        public void InitializeQueryableWithQueryFilterTest()
+        {
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+                var entity = PersonEntity.FakerEntity();
+                entity.DeletedOn = DateTime.UtcNow;
+
+                context.People.Add(PersonEntity.FakerEntity());
+                context.People.Add(PersonEntity.FakerEntity());
+                context.People.Add(entity);
+                context.People.Add(PersonEntity.FakerEntity());
+                context.People.Add(PersonEntity.FakerEntity());
+
+                context.SaveChanges();
+                var list = context.People.IgnoreQueryFilters().ToList();
+                
+
+                OltContextExtensions.InitializeQueryable<PersonEntity>(context).Should().BeEquivalentTo(list);
+                OltContextExtensions.InitializeQueryable<PersonEntity>(context, false).Should().BeEquivalentTo(list.Where(p => p.DeletedOn == null));
+
+
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null));
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null, true));
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null, false));
+
+            }
+        }
+
+        [Fact]
+        public void InitializeQueryableWithoutQueryFilterTest()
+        {
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestAlternateContext>();
+                var entity = PersonEntity.FakerEntity();
+                entity.DeletedOn = DateTime.UtcNow;
+
+                context.People.Add(PersonEntity.FakerEntity());
+                context.People.Add(PersonEntity.FakerEntity());
+                context.People.Add(entity);
+                context.People.Add(PersonEntity.FakerEntity());
+                context.People.Add(PersonEntity.FakerEntity());
+
+                context.SaveChanges();
+                var list = context.People.ToList();
+
+                OltContextExtensions.InitializeQueryable<PersonEntity>(context).Should().BeEquivalentTo(list);
+                OltContextExtensions.InitializeQueryable<PersonEntity>(context, false).Should().BeEquivalentTo(list.Where(p => p.DeletedOn == null));
 
             }
         }

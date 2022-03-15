@@ -72,6 +72,11 @@ namespace OLT.Core
         public static IQueryable<TEntity> InitializeQueryable<TEntity>(this IOltDbContext context, bool includeDeleted)
             where TEntity : class, IOltEntity
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             var query = context.Set<TEntity>().AsQueryable();
             if (context.ApplyGlobalDeleteFilter)
             {

@@ -15,13 +15,12 @@ namespace OLT.EF.Core.Tests.Assets.Entites
 
         public short SortOrder { get; set; }
 
-
         public static NoIdEntity FakerEntity()
         {
             return new NoIdEntity
             {
                 TableKey = $"Key_{Guid.NewGuid()}",
-                FirstName = Faker.Name.First()                
+                FirstName = Faker.Name.First()
             };
         }
     }
