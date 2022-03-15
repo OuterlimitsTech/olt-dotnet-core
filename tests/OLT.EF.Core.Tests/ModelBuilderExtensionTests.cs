@@ -66,12 +66,17 @@ namespace OLT.EF.Core.Tests
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
+                    builder.Entity<CodeTableEntity>().HasDiscriminator();
 
                     OltModelBuilderExtensions.ApplyGlobalFilters<IOltEntityDeletable>(builder, p => p.DeletedBy == null);
 
+                    Assert.NotNull(builder.Entity<CodeTableEntity>().Metadata.GetQueryFilter());
+                    Assert.Null(builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter());
+
                     Assert.Contains("DeletedBy == null", builder.Entity<PersonEntity>().Metadata.GetQueryFilter().ToString());
-                    Assert.Contains("DeletedBy == null", builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter().ToString());
-                    Assert.Null(builder.Entity<CodeTableEntity>().Metadata.GetQueryFilter());
+                    Assert.Contains("DeletedBy == null", builder.Entity<CodeTableEntity>().Metadata.GetQueryFilter().ToString());
+                    
+                    
 
                     Expression<Func<IOltEntityDeletable, bool>> nullAction = null;
                     Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.ApplyGlobalFilters<IOltEntityDeletable>(null, p => p.DeletedBy == null));

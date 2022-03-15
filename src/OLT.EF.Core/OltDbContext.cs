@@ -60,7 +60,7 @@ namespace OLT.Core
         {
             get
             {
-                var userName = DbAuditUser?.GetDbUsername();
+                var userName = DbAuditUser.GetDbUsername();
                 if (!string.IsNullOrWhiteSpace(userName))
                 {
                     return userName;

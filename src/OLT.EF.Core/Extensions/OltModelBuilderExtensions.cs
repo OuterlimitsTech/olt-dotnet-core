@@ -77,7 +77,7 @@ namespace OLT.Core
             EntitiesOfType<TEntity>(modelBuilder, builder =>
             {
                 var clrType = builder.Metadata.ClrType;
-
+                
                 //TPH class?
                 if (!builder.Metadata.GetDefaultTableName().Equals(builder.Metadata.GetTableName(), StringComparison.OrdinalIgnoreCase) && builder.Metadata.GetDiscriminatorPropertyName() != null)
                 {

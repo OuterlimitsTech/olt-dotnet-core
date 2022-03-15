@@ -24,6 +24,7 @@ namespace OLT.EF.Core.Tests.Assets
         public virtual DbSet<UserEntity> Users { get; set; }
         public virtual DbSet<NoIdEntity> NoIdentifiers { get; set; }
         public virtual DbSet<StatusTypeCodeTableEntity> StatusTypes { get; set; }
+        public virtual DbSet<PersonTypeCodeTableEntity> PersonTypes { get; set; }
 
     }
 

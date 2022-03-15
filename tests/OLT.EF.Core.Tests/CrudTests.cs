@@ -46,11 +46,13 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var context = provider.GetService<UnitTestContext>();
+                var address = AddressEntity.FakerEntity();
 
                 var entity = await AddPerson(context);
                 context.People.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
 
                 entity.NameFirst = Faker.Name.First();
+                entity.Addresses.Add(address);
                 await context.SaveChangesAsync();
 
                 context.People.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
@@ -58,9 +60,11 @@ namespace OLT.EF.Core.Tests
 
 
                 entity.NameFirst = Faker.Lorem.GetFirstWord();
+                address.Street = Faker.Address.SecondaryAddress();  
                 context.SaveChanges();
                 context.People.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
 
+                
 
                 entity.NameMiddle = " ";
                 context.SaveChanges();
