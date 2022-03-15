@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets.Entites;
 using OLT.EF.Core.Tests.Assets.Entites.Code;
