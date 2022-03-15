@@ -35,7 +35,8 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
         public override void Configure(EntityTypeBuilder<UserEntity> builder)
         {
             Assert.Equal("EmailAddress", base.GetColumnName(builder.Property(p => p.Email).Metadata.PropertyInfo));
-
+            Assert.Null(base.GetColumnName(builder.Property(p => p.FirstName).Metadata.PropertyInfo));
+            
             builder.Property(c => c.LastName).IsRequired();
             base.Configure(builder);
 

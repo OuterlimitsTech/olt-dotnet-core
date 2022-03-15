@@ -8,6 +8,7 @@ using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
 using OLT.EF.Core.Tests.Assets.Entites.Code;
 using OLT.EF.Core.Tests.Assets.EntityTypeConfigurations;
+using OLT.EF.Core.Tests.Assets.EntityTypeConfigurations.InvalidTests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -99,5 +100,54 @@ namespace OLT.EF.Core.Tests
                 }
             }
         }
+
+
+
+        [Fact]
+        public void ExceptionMinValueTest()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
+                .BuildServiceProvider();
+
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                {
+                    var conventionSet = ConventionSet.CreateConventionSet(context);
+                    var builder = new ModelBuilder(conventionSet);
+                    var entityTypeBuilder = builder.Entity<UserType>();
+
+
+                    var config = new NegativeEnumConfiguration();
+                    var exception = Assert.Throws<OltException>(() => config.Configure(entityTypeBuilder));
+                    Assert.Equal($"Enum underlying value must be greater or equal to 1", exception.Message);
+                }
+            }
+        }
+
+        [Fact]
+        public void ExceptionLongEnumTest()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
+                .BuildServiceProvider();
+
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                {
+                    var conventionSet = ConventionSet.CreateConventionSet(context);
+                    var builder = new ModelBuilder(conventionSet);
+                    var entityTypeBuilder = builder.Entity<UserType>();
+
+
+                    var config = new LongEnumConfiguration();
+                    var exception = Assert.Throws<InvalidCastException>(() => config.Configure(entityTypeBuilder));
+                    Assert.Equal($"Type '{typeof(LongValueTypes).AssemblyQualifiedName}' must be of type uint, int", exception.Message);
+                }
+            }
+        }
+        
     }
 }
