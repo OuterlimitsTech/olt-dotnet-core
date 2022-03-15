@@ -14,8 +14,8 @@ namespace OLT.Core
         where TEntity : class, IOltEntity, new()
     {        
         public abstract void Configure(EntityTypeBuilder<TEntity> builder);
-        protected virtual DateTimeOffset DefaultCreateDate => new DateTimeOffset(1980, 1, 1, 0, 0, 0, 0, DateTimeOffset.UtcNow.Offset);
-        protected virtual string DefaultUsername => "SystemLoad";
+        protected virtual DateTimeOffset DefaultCreateDate => OltEFCoreConstants.DefaultSeedCreateDate;
+        protected virtual string DefaultUsername => OltEFCoreConstants.DefaultSeedUsername;
 
         protected virtual short GetEnumCodeSortOrder<TEnum>(TEnum item, short defaultValue = OltCommonDefaults.SortOrder)
             where TEnum : System.Enum
