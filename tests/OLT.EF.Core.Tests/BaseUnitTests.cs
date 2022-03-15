@@ -45,8 +45,5 @@ namespace OLT.EF.Core.Tests
             return services.BuildServiceProvider();
         }
 
-
-
-
     }
 }

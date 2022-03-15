@@ -45,7 +45,7 @@ namespace OLT.Core
 
             search = search.CleanForSearch();
 
-            if (!search.Contains(" "))
+            if (!search.Contains(' '))
             {
                 return FormatWordWildCard(search, wildCardType);
             }
