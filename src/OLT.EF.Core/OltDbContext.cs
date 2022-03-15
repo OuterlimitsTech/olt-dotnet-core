@@ -293,6 +293,8 @@ namespace OLT.Core
 
         #region [ GetNullableStringPropertyMetaData ]
 
+#pragma warning disable CA1822
+
         // Note - this looks in the thread-safe static cache to avoid the repetitive reflection.  Especially important since these things are
         // used in a VERY tight loop....
         private List<NullableStringPropertyMetaData> GetNullableStringPropertyMetaData(EntityEntry entry)
@@ -375,6 +377,8 @@ namespace OLT.Core
 
             return result;
         }
+
+#pragma warning restore CA1822
 
         #endregion
 
