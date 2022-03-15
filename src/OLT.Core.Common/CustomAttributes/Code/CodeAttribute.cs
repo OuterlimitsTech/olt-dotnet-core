@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OLT.Constants;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -8,7 +9,7 @@ namespace OLT.Core
     public class CodeAttribute : Attribute
     {
         public string Code { get; private set; }
-        public short DefaultSort { get; set; } = 9999;
+        public short DefaultSort { get; set; } = OltCommonDefaults.SortOrder;
 
         public CodeAttribute(string code)
         {
