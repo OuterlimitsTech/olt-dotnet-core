@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
+using OLT.EF.Core.Tests.Assets.Entites.Code;
 using OLT.EF.Core.Tests.Assets.EntityTypeConfigurations;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,33 @@ namespace OLT.EF.Core.Tests
                     config.Configure(entityTypeBuilder);
 
                     Assert.False(entityTypeBuilder.Property(p => p.LastName).Metadata.IsColumnNullable());
+
+                    config.Results.Should().HaveCount(2);
+
+                }
+            }
+        }
+
+
+        [Fact]
+        public void CodeValueTypeConfigurationEnumTest()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
+                .BuildServiceProvider();
+
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                {
+                    var conventionSet = ConventionSet.CreateConventionSet(context);
+                    var builder = new ModelBuilder(conventionSet);
+                    var entityTypeBuilder = builder.Entity<UserType>();
+
+
+                    var config = new UserTypeEntityTestEnumConfiguration();
+                    config.Configure(entityTypeBuilder);
+
 
                     config.Results.Should().HaveCount(2);
 

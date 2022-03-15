@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.EF.Core.Tests.Assets.Entites.Code
 {
-    public abstract class BaseCodeValueEntity : OltEntityIdDeletable, IOltEntityCodeValue
+    public abstract class BaseCodeValueEntity : OltEntityIdDeletable, IOltEntityCodeValue, IOltEntitySortable
     {
         [StringLength(50)]
         public virtual string Code { get; set; }
@@ -24,15 +24,5 @@ namespace OLT.EF.Core.Tests.Assets.Entites.Code
         {
             return GetType().Name;
         }
-    }
-
-    public class StatusTypeCodeTableEntity : CodeTableEntity
-    {
-        
-    }
-
-    public class PersonTypeCodeTableEntity : CodeTableEntity
-    {
-
     }
 }
