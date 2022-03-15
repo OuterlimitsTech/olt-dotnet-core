@@ -32,10 +32,6 @@ namespace OLT.EF.Core.Tests.Assets.Entites
         public string NoMapColumn { get; set; }
 
 
-        [MaxLength(20)]
-        [Unicode(true)]
-        public string UnicodeValue { get; set; }
-
         public int? StatusTypeId { get; set; }
         public StatusTypeCodeTableEntity StatusType { get; set; }
 
@@ -59,6 +55,18 @@ namespace OLT.EF.Core.Tests.Assets.Entites
                 NameMiddle = Faker.Name.Middle(),
                 NameLast = Faker.Name.Last(),
             };
+        }
+
+        public static List<PersonEntity> FakerList(int number)
+        {
+            var list = new List<PersonEntity>();
+
+            for (int i = 0; i < number; i++)
+            {
+                list.Add(FakerEntity());
+            }
+
+            return list;
         }
     }
 

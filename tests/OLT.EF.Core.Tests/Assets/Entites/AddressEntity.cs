@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.EF.Core.Tests.Assets.Entites
 {
+    [Table("Address")]
     public class AddressEntity : OltEntityId
     {
         [Column("AddressId")]

@@ -10,6 +10,7 @@ using Xunit;
 
 namespace OLT.EF.Core.Tests
 {
+
     public class CrudTests : BaseUnitTests
     {
         private async Task<PersonEntity> AddPerson(UnitTestContext context)
