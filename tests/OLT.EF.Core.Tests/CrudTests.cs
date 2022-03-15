@@ -75,9 +75,30 @@ namespace OLT.EF.Core.Tests
                 context.SaveChanges();
                 Assert.Null(context.People.FirstOrDefault(p => p.Id == entity.Id).NameMiddle); //Check to see if empty string is set to null
 
+
+
             }
         }
 
+        [Fact]
+        public async Task ExceptionTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+
+                var entity = await AddPerson(context);
+
+                entity.NameFirst = Faker.Lorem.Paragraph(20);  //overflow
+                Assert.Throws<DbUpdateException>(() => context.SaveChanges());                
+                await Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
+
+                entity.NameFirst = null;
+                Assert.Throws<Exception>(() => context.SaveChanges());
+                await Assert.ThrowsAsync<Exception>(() => context.SaveChangesAsync());
+            }
+
+        }
 
         [Fact]
         public async Task HardDeleteTests()
