@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
 {
+
     public class UserModelAdapter : OltAdapterPaged<UserEntity, UserModel>
     {
         public override void Map(UserEntity source, UserModel destination)

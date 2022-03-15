@@ -10,6 +10,7 @@ using Xunit;
 
 namespace OLT.EF.Core.Services.Tests
 {
+
     public class ContextServiceTests : BaseUnitTests
     {
 

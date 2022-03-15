@@ -39,8 +39,11 @@ namespace OLT.EF.Core.Services.Tests
                 .AddSingleton<IOltAdapterResolver, OltAdapterResolverAutoMapper>()
                 .AddScoped<IOltServiceManager, OltEfCoreServiceManager>()
                 .AddScoped<IContextService, ContextService>()
+                .AddScoped<IPersonService, PersonService>()
+                .AddScoped<IPersonUniqueIdService, PersonUniqueIdService>()
                 .AddSingleton<IOltAdapter, UserModelAdapter>()
                 .AddSingleton<IOltAdapter, UserDtoAdapter>()
+                .AddSingleton<IOltAdapter, PersonDtoAdapter>()                
                 .AddScoped<IOltDbAuditUser, DbAuditUserService>();
 
 

@@ -6,8 +6,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Entites
 {
-    public class PersonEntity : OltEntityIdDeletable
+    public class PersonEntity : OltEntityIdDeletable, IOltEntityUniqueId
     {
+        public Guid UniqueId { get; set; }
+
         [MaxLength(50)]
         [Required]
         public string NameFirst { get; set; }
@@ -21,11 +23,13 @@ namespace OLT.EF.Core.Services.Tests.Assets.Entites
 
 
         public List<AddressEntity> Addresses { get; set; } = new List<AddressEntity>();
+        
 
         public static PersonEntity FakerEntity()
         {
             return new PersonEntity
             {
+                UniqueId = Guid.NewGuid(),
                 NameFirst = Faker.Name.First(),
                 NameMiddle = Faker.Name.Middle(),
                 NameLast = Faker.Name.Last(),

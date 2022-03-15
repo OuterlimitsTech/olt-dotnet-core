@@ -34,5 +34,17 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models
 
             return mappingExpression;
         }
+
+
+        public static NameAutoMapperModel FakerEntity()
+        {
+            return new NameAutoMapperModel
+            {
+                First = Faker.Name.First(),
+                Middle = Faker.Name.Middle(),
+                Last = Faker.Name.Last(),
+            };
+        }
+
     }
 }
