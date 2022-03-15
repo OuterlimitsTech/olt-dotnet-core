@@ -18,15 +18,15 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var context = provider.GetService<UnitTestContext>();
-                await context.People.AddRangeAsync(PersonEntity.FakerList(135));
+                await context.People.AddRangeAsync(PersonEntity.FakerList(35));
                 await context.SaveChangesAsync();
 
                 var queryable = context.People.OrderBy(p => p.NameLast).ThenBy(p => p.NameFirst);
 
                 var @params = new OltPagingParams
                 {
-                    Page = Faker.RandomNumber.Next(1, 4),
-                    Size = Faker.RandomNumber.Next(10, 20)
+                    Page = 1,
+                    Size = 10
                 };
 
                 var paged = await OltEfCoreQueryableExtensions.ToPagedAsync(queryable, @params);
