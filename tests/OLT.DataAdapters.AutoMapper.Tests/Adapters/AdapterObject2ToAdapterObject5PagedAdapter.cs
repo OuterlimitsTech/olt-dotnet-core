@@ -28,7 +28,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
             });
         }
 
-        public override IQueryable<AdapterObject2> DefaultOrderBy(IQueryable<AdapterObject2> queryable)
+        public override IOrderedQueryable<AdapterObject2> DefaultOrderBy(IQueryable<AdapterObject2> queryable)
         {
             return queryable.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.ObjectId);
         }

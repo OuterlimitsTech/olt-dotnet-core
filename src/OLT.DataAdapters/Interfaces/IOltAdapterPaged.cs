@@ -5,6 +5,6 @@ namespace OLT.Core
 {
     public interface IOltAdapterPaged<TEntity, TDestination> : IOltAdapterQueryable<TEntity, TDestination>
     {
-        IQueryable<TEntity> DefaultOrderBy(IQueryable<TEntity> queryable);
+        IOrderedQueryable<TEntity> DefaultOrderBy(IQueryable<TEntity> queryable);
     }
 }

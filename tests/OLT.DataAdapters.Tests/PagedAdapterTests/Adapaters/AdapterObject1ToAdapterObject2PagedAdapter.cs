@@ -36,7 +36,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests.Adapters
             });
         }
 
-        public override IQueryable<AdapterObject1> DefaultOrderBy(IQueryable<AdapterObject1> queryable)
+        public override IOrderedQueryable<AdapterObject1> DefaultOrderBy(IQueryable<AdapterObject1> queryable)
         {
             return queryable.OrderBy(p => p.LastName).ThenBy(p => p.FirstName);
         }

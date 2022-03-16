@@ -121,23 +121,19 @@ namespace OLT.Core
         protected virtual IOltPaged<TModel> GetPaged<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
             where TModel : class, new()
         {
-            queryable = orderBy == null ? ServiceManager.AdapterResolver.ApplyDefaultOrderBy<TEntity, TModel>(queryable): orderBy(queryable);
-            var mapped = ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable);
-            return mapped.ToPaged(pagingParams);            
+            return MapPaged<TEntity, TModel>(queryable, pagingParams, orderBy);
         }
 
         public virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
             where TModel : class, new()
         {
-            return await GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams);
+            return await GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams, orderBy);
         }
 
         protected virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
             where TModel : class, new()
         {
-            queryable = orderBy == null ? ServiceManager.AdapterResolver.ApplyDefaultOrderBy<TEntity, TModel>(queryable) : orderBy(queryable);
-            var mapped = ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable);
-            return await mapped.ToPagedAsync(pagingParams);
+            return await MapPagedAsync<TEntity, TModel>(queryable, pagingParams, orderBy);
         }
 
         #endregion

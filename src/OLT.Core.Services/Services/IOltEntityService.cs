@@ -30,11 +30,8 @@ namespace OLT.Core
         Task<TModel> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
         Task<TModel> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
-        //IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams) where TModel : class, new();
         IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null) where TModel : class, new();
-
-        Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
-            where TModel : class, new();
+        Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)  where TModel : class, new();
 
         TModel Add<TModel>(TModel model) where TModel : class, new();
         List<TModel> Add<TModel>(List<TModel> list) where TModel : class, new();

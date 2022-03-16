@@ -9,7 +9,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
     {
         public PersonDtoAdapter()
         {
-            //OltAdapterMapConfigs.BeforeMap.Register<PersonEntity, PersonDto>(p => p.Include(i => i.Addresses));
+
         }
 
         public override void Map(PersonEntity source, PersonDto destination)
@@ -35,8 +35,6 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
 
         public override IQueryable<PersonDto> Map(IQueryable<PersonEntity> queryable)
         {
-            var test = queryable.Include(i => i.Addresses);
-
             return queryable.Select(entity => new PersonDto
             {
                 PersonId = entity.Id,
@@ -47,7 +45,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
             });
         }
 
-        public override IQueryable<PersonEntity> DefaultOrderBy(IQueryable<PersonEntity> queryable)
+        public override IOrderedQueryable<PersonEntity> DefaultOrderBy(IQueryable<PersonEntity> queryable)
         {
             return queryable.OrderBy(p => p.NameLast).ThenBy(p => p.NameFirst).ThenBy(p => p.Id);
         }

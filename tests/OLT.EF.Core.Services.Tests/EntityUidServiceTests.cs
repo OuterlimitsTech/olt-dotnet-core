@@ -263,49 +263,50 @@ namespace OLT.EF.Core.Services.Tests
             using (var provider = BuildProvider())
             {
                 var service = provider.GetService<IPersonUniqueIdService>();
-
+                var people = new List<PersonDto>();
                 for (var idx = 0; idx <= 115; idx++)
                 {
-                    service.Add(PersonAutoMapperModel.FakerEntity());
+                    people.Add(service.Add<PersonDto, PersonAutoMapperModel>(PersonAutoMapperModel.FakerEntity()));
                 }
                 var paged = await service.GetPagedAsync<PersonDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams);
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
+                paged.Should().BeEquivalentTo(people.OrderBy(p => p.Last).ThenBy(p => p.First).ThenBy(p => p.PersonId).AsQueryable().ToPaged(pagedParams), opt => opt.WithStrictOrdering());
             }
 
             using (var provider = BuildProvider())
             {
                 var service = provider.GetService<IPersonUniqueIdService>();
-
+                var people = new List<PersonDto>();
                 for (var idx = 0; idx <= 115; idx++)
                 {
-                    service.Add(PersonAutoMapperModel.FakerEntity());
+                    people.Add(service.Add<PersonDto, PersonAutoMapperModel>(PersonAutoMapperModel.FakerEntity()));
                 }
                 var paged = service.GetPaged<PersonDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams);
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
+                paged.Should().BeEquivalentTo(people.OrderBy(p => p.Last).ThenBy(p => p.First).ThenBy(p => p.PersonId).AsQueryable().ToPaged(pagedParams), opt => opt.WithStrictOrdering());
             }
 
             using (var provider = BuildProvider())
             {
                 var service = provider.GetService<IPersonUniqueIdService>();
-
+                var people = new List<PersonAutoMapperPagedDto>();
                 for (var idx = 0; idx <= 115; idx++)
                 {
-                    service.Add(PersonAutoMapperModel.FakerEntity());
-                }
-                var paged = await service.GetPagedAsync<PersonAutoMapperPagedDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams);
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
+                    people.Add(service.Add<PersonAutoMapperPagedDto, PersonAutoMapperModel>(PersonAutoMapperModel.FakerEntity()));
+                } 
+                var paged = await service.GetPagedAsync<PersonAutoMapperPagedDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams, orderBy => orderBy.OrderBy(p => p.NameFirst).ThenBy(p => p.NameLast).ThenBy(p => p.Id));
+                paged.Should().BeEquivalentTo(people.OrderBy(p => p.First).ThenBy(p => p.Last).ThenBy(p => p.PersonId).AsQueryable().ToPaged(pagedParams), opt => opt.WithStrictOrdering());
+                
             }
 
             using (var provider = BuildProvider())
             {
                 var service = provider.GetService<IPersonUniqueIdService>();
-
+                var people = new List<PersonAutoMapperPagedDto>();
                 for (var idx = 0; idx <= 115; idx++)
                 {
-                    service.Add(PersonAutoMapperModel.FakerEntity());
+                    people.Add(service.Add<PersonAutoMapperPagedDto, PersonAutoMapperModel>(PersonAutoMapperModel.FakerEntity()));
                 }
-                var paged = service.GetPaged<PersonAutoMapperPagedDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams);
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
+                var paged = service.GetPaged<PersonAutoMapperPagedDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams, orderBy => orderBy.OrderBy(p => p.NameFirst).ThenBy(p => p.NameLast).ThenBy(p => p.Id));
+                paged.Should().BeEquivalentTo(people.OrderBy(p => p.First).ThenBy(p => p.Last).ThenBy(p => p.PersonId).AsQueryable().ToPaged(pagedParams), opt => opt.WithStrictOrdering());
             }
         }
 

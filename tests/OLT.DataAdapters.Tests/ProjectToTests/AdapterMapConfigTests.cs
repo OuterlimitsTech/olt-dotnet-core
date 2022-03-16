@@ -72,6 +72,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
 
             try
             {
+                OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.Last));
                 OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), orderBy);
                 Assert.True(true);
             }
@@ -98,8 +99,8 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
 
             try
             {
+                OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.LastName));
                 OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), orderBy);
-                Assert.True(true);
             }
             catch
             {

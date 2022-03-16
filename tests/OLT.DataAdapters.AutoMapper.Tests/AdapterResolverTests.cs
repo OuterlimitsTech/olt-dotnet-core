@@ -76,15 +76,30 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 
                 var obj1Values = AdapterObject1.FakerList(23);
 
-                var obj2ResultQueryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
+                var obj2Queryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
 
-                var obj2Result = obj2ResultQueryable.ToList();
-                obj2Result
-                    .Select(s => new { ObjectId = s.ObjectId, FirstName = s.Name.First, LastName = s.Name.Last, })
+                var expected = obj1Values
+                    .Select(s => new AdapterObject2
+                    {
+                        ObjectId = s.ObjectId,
+                        Name = new OltPersonName
+                        {
+                            First = s.FirstName,
+                            Last = s.LastName,
+                        }
+                    }).ToList();
+
+                obj2Queryable
                     .Should()
-                    .BeEquivalentTo(obj1Values);                
+                    .BeEquivalentTo(expected.OrderBy(p => p.Name.First).ThenBy(p => p.Name.Last), opt => opt.WithStrictOrdering());
 
-                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject1, AdapterObject4>(AdapterObject1.FakerList(3).AsQueryable()));                
+
+                adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable(), configAction => { configAction.DisableBeforeMap = true; configAction.DisableAfterMap = true; })
+                    .Should()
+                    .BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
+
+
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject1, AdapterObject4>(AdapterObject1.FakerList(3).AsQueryable()));
             }
         }
 
@@ -105,9 +120,9 @@ namespace OLT.DataAdapters.AutoMapper.Tests
                             First = s.FirstName,                        
                             Last = s.LastName,
                         }
-                    })
-                    .OrderBy(p => p.Name.Last)
-                    .ThenBy(p => p.Name.First)
+                    })                    
+                    .OrderBy(p => p.Name.First)
+                    .ThenBy(p => p.Name.Last)
                     .ToList();
                     
 

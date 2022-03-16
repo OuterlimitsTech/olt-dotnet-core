@@ -7,6 +7,11 @@ namespace OLT.Core
         where TSource : class, new()
         where TDestination : class, new()
     {
-        public abstract IQueryable<TSource> DefaultOrderBy(IQueryable<TSource> queryable);
+        protected OltAdapterPaged()
+        {
+            OltAdapterExtensions.WithOrderBy(this, DefaultOrderBy);
+        }
+
+        public abstract IOrderedQueryable<TSource> DefaultOrderBy(IQueryable<TSource> queryable);
     }
 }

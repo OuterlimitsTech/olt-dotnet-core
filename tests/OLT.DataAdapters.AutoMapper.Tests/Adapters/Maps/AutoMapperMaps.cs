@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
 {
-    public class TestMaps : Profile
+    public class AutoMapperMaps : Profile
     {
-        public TestMaps()
+        public AutoMapperMaps()
         {
-            BuildMap(CreateMap<AdapterObject1, AdapterObject2>()).WithPaging(p => p.OrderBy(o => o.LastName).ThenBy(o => o.FirstName));            
+            BuildMap(CreateMap<AdapterObject1, AdapterObject2>()).WithOrderBy(p => p.OrderBy(o => o.FirstName).ThenBy(o => o.LastName));            
             BuildMap(CreateMap<AdapterObject1, OltPersonName>());
             BuildMap(CreateMap<AdapterObject3, OltPersonName>());
         }

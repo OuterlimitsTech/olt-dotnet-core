@@ -161,15 +161,28 @@ namespace OLT.Core
 
         #region [ Mapping ]
 
-        protected virtual IQueryable<TModel> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        protected virtual IOltPaged<TModel> MapPaged<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
             where TModel : class, new()
             where TEntity : class, IOltEntity
-
         {
             if (ServiceManager.AdapterResolver.CanProjectTo<TEntity, TModel>())
             {
                 queryable = orderBy == null ? ServiceManager.AdapterResolver.ApplyDefaultOrderBy<TEntity, TModel>(queryable) : orderBy(queryable);
-                return ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable);
+                var mapped = ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable, config => config.DisableBeforeMap = true);
+                return OltPagedExtensions.ToPaged(mapped, pagingParams);
+            }
+            throw new OltAdapterNotFoundException(OltAdapterExtensions.BuildAdapterName<TEntity, TModel>());
+        }
+
+        protected virtual async Task<IOltPaged<TModel>> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+            where TModel : class, new()
+            where TEntity : class, IOltEntity
+        {
+            if (ServiceManager.AdapterResolver.CanProjectTo<TEntity, TModel>())
+            {
+                queryable = orderBy == null ? ServiceManager.AdapterResolver.ApplyDefaultOrderBy<TEntity, TModel>(queryable) : orderBy(queryable);
+                var mapped = ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable, config => config.DisableBeforeMap = true);
+                return await OltEfCoreQueryableExtensions.ToPagedAsync(mapped, pagingParams);
             }
             throw new OltAdapterNotFoundException(OltAdapterExtensions.BuildAdapterName<TEntity, TModel>());
         }
@@ -177,7 +190,6 @@ namespace OLT.Core
         protected virtual IEnumerable<TModel> MapList<TEntity, TModel>(IQueryable<TEntity> queryable)
             where TModel : class, new()
             where TEntity : class, IOltEntity
-
         {
             if (ServiceManager.AdapterResolver.CanProjectTo<TEntity, TModel>())
             {

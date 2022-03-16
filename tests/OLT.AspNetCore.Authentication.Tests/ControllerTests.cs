@@ -24,15 +24,9 @@ namespace OLT.AspNetCore.Authentication.Tests
             var list = (await schemeProvider.GetAllSchemesAsync()).ToList();
             Assert.NotNull(list);
 
-            //var optionsSnapshot = services.GetService<IOptionsSnapshot<JwtBearerOptions>>();
-            //Assert.NotNull(optionsSnapshot);
-
 
             var scheme = await schemeProvider.GetDefaultAuthenticateSchemeAsync();
             Assert.NotNull(scheme);
-
-            //var schemeOptions = optionsSnapshot.Get(scheme.Name);
-            //Assert.NotNull(schemeOptions);
 
         }
 

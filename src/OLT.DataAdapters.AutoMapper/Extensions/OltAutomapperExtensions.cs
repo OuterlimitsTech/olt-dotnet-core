@@ -17,7 +17,7 @@ namespace OLT.Core
         /// <param name="func"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static IMappingExpression<TSource, TDestination> WithPaging<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
+        public static IMappingExpression<TSource, TDestination> WithOrderBy<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
             where TSource : class
         {            
             return BeforeMap(expression, func);
@@ -31,7 +31,7 @@ namespace OLT.Core
         /// <param name="expression"></param>
         /// <param name="func"></param>
         /// <returns></returns>
-        public static IMappingExpression<TSource, TDestination> WithPaging<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
+        public static IMappingExpression<TSource, TDestination> WithOrderBy<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
              where TSource : class
         {
             return AfterMap(expression, func);

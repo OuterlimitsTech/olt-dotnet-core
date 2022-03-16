@@ -208,17 +208,17 @@ namespace OLT.EF.Core.Services.Tests
                 var expected = service.GetAll<UserModel>(new OltSearcherGetAll<UserEntity>())
                     .OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.UserId)
                     .AsQueryable()
-                    .ToPaged(pagedParams); // list.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.UserId).AsQueryable().ToPaged(pagedParams);
+                    .ToPaged(pagedParams); 
 
                 var paged = await service.GetPagedAsync<UserModel>(new OltSearcherGetAll<UserEntity>(), pagedParams);
-                paged.Data.Should().BeEquivalentTo(expected.Data, opt => opt.WithoutStrictOrdering());
+                paged.Data.Should().BeEquivalentTo(expected.Data, opt => opt.WithStrictOrdering());
 
                 paged = service.GetPaged<UserModel>(new OltSearcherGetAll<UserEntity>(), pagedParams, null);
-                //paged.Should().BeEquivalentTo(expected);
+                paged.Should().BeEquivalentTo(expected);
 
 
                 paged = service.GetPaged<UserModel>(new OltSearcherGetAll<UserEntity>(), pagedParams, queryable => queryable.OrderBy(p => p.LastName).ThenBy(p => p.Id));
-                //paged.Should().BeEquivalentTo(list.AsQueryable().ToPaged(pagedParams, order => order.OrderBy(p => p.Name.Last).ThenBy(p => p.UserId)));
+                paged.Should().BeEquivalentTo(list.AsQueryable().ToPaged(pagedParams, order => order.OrderBy(p => p.Name.Last).ThenBy(p => p.UserId)), opt => opt.WithStrictOrdering());
 
 
             }

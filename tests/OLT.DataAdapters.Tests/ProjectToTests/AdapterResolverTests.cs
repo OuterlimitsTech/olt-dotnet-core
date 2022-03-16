@@ -65,12 +65,23 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
 
                 var obj2ResultQueryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject1>(obj2ResultQueryable));
+
+                var expected = obj1Values                    
+                    .Select(s => new AdapterObject2
+                    {
+                        Name = new OltPersonName
+                        {
+                            First = s.FirstName,
+                            Last = s.LastName,
+                        }
+                    }).ToList();
+
+                obj2ResultQueryable.Should().BeEquivalentTo(expected.OrderBy(p => p.Name.First).ThenBy(p => p.Name.Last), opt => opt.WithStrictOrdering());
+
                 
-                var obj2Result = obj2ResultQueryable.ToList();                
-                obj2Result
-                    .Select(s => new { FirstName = s.Name.First, LastName = s.Name.Last })
+                adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable(), configAction => { configAction.DisableBeforeMap = true; configAction.DisableAfterMap = true;  })
                     .Should()
-                    .BeEquivalentTo(obj1Values.OrderBy(p => p.LastName).ThenBy(p => p.FirstName), opt => opt.WithStrictOrdering());
+                    .BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
             }
         }
 

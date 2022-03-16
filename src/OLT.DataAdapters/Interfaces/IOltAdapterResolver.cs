@@ -10,9 +10,6 @@ namespace OLT.Core
 
         IOltAdapter<TSource, TDestination> GetAdapter<TSource, TDestination>(bool throwException = true);
 
-        //IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable);
-        //IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable);
-
 
         /// <summary>
         /// Checks for a <see cref="IQueryable" /> <see cref="IOltAdapter"/> or map
@@ -23,17 +20,16 @@ namespace OLT.Core
         bool CanProjectTo<TSource, TDestination>();
 
         /// <summary>
-        /// Applies <see cref="ApplyBeforeMaps"/>, <see cref="IOltAdapter"/> <see cref="IQueryable"/> Map, and <see cref="ApplyAfterMaps"/>
+        /// Maps using <see cref="IOltAdapter"/> of <see cref="IQueryable"/> 
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
         /// <param name="source"></param>
+        /// <param name="configAction"></param>
         /// <returns></returns>
         /// <exception cref="OltAdapterNotFoundException"></exception>
         /// <exception cref="OltException"></exception>
-        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source);
-
-        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, bool applyConfigMaps);
+        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction = null);
 
         bool CanMap<TSource, TDestination>();
         List<TDestination> Map<TSource, TDestination>(List<TSource> source);

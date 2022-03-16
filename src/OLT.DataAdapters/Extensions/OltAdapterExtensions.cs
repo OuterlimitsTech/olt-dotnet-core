@@ -21,7 +21,38 @@ namespace OLT.Core
             return $"{BuildAdapterName<TObj1, TObj2>()}_BeforeMap";
         }
 
-        public static IOltAdapter<TSource, TDestination> BeforeMap<TSource, TDestination>(this IOltAdapter<TSource, TDestination> adapter, IOltBeforeMap<TSource, TDestination> beforeMap)            
+        /// <summary>
+        /// Sets default OrderBy of <typeparamref name="TSource"/> for <seealso cref="IOltPaged"/> 
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="adapter"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool WithOrderBy<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
+            where TSource : class
+        {
+            return BeforeMap(adapter, func);
+           
+        }
+
+        /// <summary>
+        /// Sets default OrderBy of <typeparamref name="TDestination"/> for Paged Resultsets
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="adapter"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static bool WithOrderBy<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
+             where TSource : class
+        {
+            return AfterMap(adapter, func);            
+        }
+
+        public static bool BeforeMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, IOltBeforeMap<TSource, TDestination> beforeMap)            
         {
             if (adapter == null)
             {
@@ -32,11 +63,10 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(beforeMap));
             }
 
-            OltAdapterMapConfigs.BeforeMap.Register(beforeMap, false);
-            return adapter;
+            return OltAdapterMapConfigs.BeforeMap.Register(beforeMap, false);
         }
 
-        public static IOltAdapter<TSource, TDestination> BeforeMap<TSource, TDestination>(this IOltAdapter<TSource, TDestination> adapter, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
+        public static bool BeforeMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
         {
             if (adapter == null)
             {
@@ -47,11 +77,10 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(func));
             }
 
-            OltAdapterMapConfigs.BeforeMap.Register<TSource, TDestination>(func, false);
-            return adapter;
+            return OltAdapterMapConfigs.BeforeMap.Register<TSource, TDestination>(func, false);            
         }
 
-        public static IOltAdapterQueryable<TSource, TDestination> AfterMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, IOltAfterMap<TSource, TDestination> afterMap)
+        public static bool AfterMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, IOltAfterMap<TSource, TDestination> afterMap)
             where TSource : class
         {
             if (adapter == null)
@@ -63,11 +92,10 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(afterMap));
             }
 
-            OltAdapterMapConfigs.AfterMap.Register(afterMap, false);
-            return adapter;
+            return OltAdapterMapConfigs.AfterMap.Register(afterMap, false);
         }
 
-        public static IOltAdapterQueryable<TSource, TDestination> AfterMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
+        public static bool AfterMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
         {
             if (adapter == null)
             {
@@ -78,8 +106,7 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(func));
             }
 
-            OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func, false);
-            return adapter;
+            return OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func, false);
         }
     }
 }

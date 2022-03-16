@@ -8,8 +8,6 @@ namespace OLT.Core
     public static class OltAdapterMapConfigs 
     {       
 
-        //public static bool ExceptionsEnabled = false;
-
         public static class BeforeMap
         {
             private static readonly ConcurrentDictionary<string, IOltAdapterMapConfig> _mapConfigs = new ConcurrentDictionary<string, IOltAdapterMapConfig>();

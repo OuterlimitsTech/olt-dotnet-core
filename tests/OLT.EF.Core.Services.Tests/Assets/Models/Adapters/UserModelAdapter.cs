@@ -46,9 +46,9 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
             });
         }
 
-        public override IQueryable<UserEntity> DefaultOrderBy(IQueryable<UserEntity> queryable)
+        public override IOrderedQueryable<UserEntity> DefaultOrderBy(IQueryable<UserEntity> queryable)
         {
-            return queryable.OrderBy(p => p.LastName).ThenBy(p => p.FirstName).ThenBy(p => p.Id);
+            return queryable.OrderBy(p => p.LastName).ThenBy(p => p.FirstName).ThenBy(p => p.Id);            
         }
     }
 }

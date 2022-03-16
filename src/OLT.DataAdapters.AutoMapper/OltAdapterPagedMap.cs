@@ -17,7 +17,7 @@ namespace OLT.Core
         {            
             var mapping = CreateMap<TEntity, TModel>();
             BuildMap(mapping);
-            OltAutomapperExtensions.WithPaging(mapping, DefaultOrderBy);
+            OltAutomapperExtensions.WithOrderBy(mapping, DefaultOrderBy);
         }
 
         public abstract void BuildMap(IMappingExpression<TEntity, TModel> mappingExpression);
