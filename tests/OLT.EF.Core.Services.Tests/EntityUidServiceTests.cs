@@ -12,7 +12,7 @@ using Xunit;
 
 namespace OLT.EF.Core.Services.Tests
 {
-    public class EntityIdServiceTests : BaseUnitTests
+    public class EntityUidServiceTests : BaseUnitTests
     {
 
         [Fact]
@@ -20,7 +20,7 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = PersonAutoMapperModel.FakerEntity();
                 var result = await service.AddAsync(model);
@@ -33,7 +33,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = PersonAutoMapperModel.FakerEntity();
                 var result = service.Add(model);
@@ -52,7 +52,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var list = new List<PersonAutoMapperModel>
                 {
@@ -79,7 +79,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var list = new List<PersonAutoMapperModel>
                 {
@@ -102,7 +102,7 @@ namespace OLT.EF.Core.Services.Tests
 
                 (await service.AddAsync<PersonDto, PersonAutoMapperModel>(list)).Should().BeEquivalentTo(dtoList, opt => opt.Excluding(t => t.PersonId));
                 (await service.AddAsync<PersonDto, PersonAutoMapperModel>(list.ToArray())).Should().BeEquivalentTo(dtoList, opt => opt.Excluding(t => t.PersonId));
-            } 
+            }
         }
 
 
@@ -111,41 +111,41 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var addModel = PersonDto.FakerEntity();
                 var model = service.Add(addModel);
                 model.First = Faker.Name.First();
-                var updated = service.Update<PersonAutoMapperModel, PersonDto>(model.PersonId.GetValueOrDefault(), model);
+                var updated = service.Update<PersonAutoMapperModel, PersonDto>(model.UniqueId.GetValueOrDefault(), model);
                 Assert.Equal(model.First, updated.Name.First);
                 Assert.NotEqual(addModel.First, updated.Name.First);
 
                 model.First = Faker.Name.First();
-                var dto = service.Update(model.PersonId.GetValueOrDefault(), model);
+                var dto = service.Update(model.UniqueId.GetValueOrDefault(), model);
                 Assert.Equal(model.First, dto.First);
 
                 model.First = Faker.Name.First();
-                dto = service.Update(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
+                dto = service.Update(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault()), model);
                 Assert.Equal(model.First, dto.First);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var addModel = PersonDto.FakerEntity();
                 var model = service.Add(addModel);
                 model.First = Faker.Name.First();
-                var updated = await service.UpdateAsync<PersonAutoMapperModel, PersonDto>(model.PersonId.GetValueOrDefault(), model);
+                var updated = await service.UpdateAsync<PersonAutoMapperModel, PersonDto>(model.UniqueId.GetValueOrDefault(), model);
                 Assert.Equal(model.First, updated.Name.First);
                 Assert.NotEqual(addModel.First, updated.Name.First);
 
                 model.First = Faker.Name.First();
-                var dto = await service.UpdateAsync(model.PersonId.GetValueOrDefault(), model);
+                var dto = await service.UpdateAsync(model.UniqueId.GetValueOrDefault(), model);
                 Assert.Equal(model.First, dto.First);
 
                 model.First = Faker.Name.First();
-                dto = await service.UpdateAsync(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
+                dto = await service.UpdateAsync(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault()), model);
                 Assert.Equal(model.First, dto.First);
             }
         }
@@ -155,32 +155,32 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = await service.AddAsync(PersonDto.FakerEntity());
-                Assert.True(await service.SoftDeleteAsync(model.PersonId.Value));
-                Assert.False(await service.SoftDeleteAsync(-1000));
+                Assert.True(await service.SoftDeleteAsync(model.UniqueId.Value));
+                Assert.False(await service.SoftDeleteAsync(Guid.NewGuid()));
                 model = service.Add(PersonDto.FakerEntity());
-                Assert.True(await service.SoftDeleteAsync(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
+                Assert.True(await service.SoftDeleteAsync(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
                 Assert.False(await service.SoftDeleteAsync(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
 
-                Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
-                Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value, false)));
+                Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
+                Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value, false)));
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = service.Add(PersonDto.FakerEntity());
-                Assert.True(service.SoftDelete(model.PersonId.Value));
-                Assert.False(service.SoftDelete(-1000));
+                Assert.True(service.SoftDelete(model.UniqueId.Value));
+                Assert.False(service.SoftDelete(Guid.NewGuid()));
                 model = service.Add(PersonDto.FakerEntity());
-                Assert.True(service.SoftDelete(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
+                Assert.True(service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
                 Assert.False(service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
 
-                Assert.NotNull(service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
-                Assert.Null(service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value, false)));
+                Assert.NotNull(service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
+                Assert.Null(service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value, false)));
             }
         }
 
@@ -189,19 +189,19 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var expected = service.Add(PersonDto.FakerEntity());
-                var subject = await service.GetAsync<PersonDto>(expected.PersonId.GetValueOrDefault());
+                var subject = await service.GetAsync<PersonDto>(expected.UniqueId.GetValueOrDefault());
                 subject.Should().BeEquivalentTo(expected);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var expected = service.Add(PersonDto.FakerEntity());
-                var subject = service.Get<PersonDto>(expected.PersonId.GetValueOrDefault());
+                var subject = service.Get<PersonDto>(expected.UniqueId.GetValueOrDefault());
                 subject.Should().BeEquivalentTo(expected);
             }
 
@@ -212,21 +212,21 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var expected = new List<PersonAutoMapperModel>();
-                var filterIds = new List<int>();
+                var filterIds = new List<Guid>();
                 for (var idx = 0; idx <= 5; idx++)
                 {
                     var model = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
                     expected.Add(model);
-                    filterIds.Add(model.PersonId.GetValueOrDefault());
+                    filterIds.Add(model.UniqueId.GetValueOrDefault());
                 }
 
                 var records = await service.GetAllAsync<PersonAutoMapperModel>(new OltSearcherGetAll<PersonEntity>());
 
                 records
-                    .Where(p => filterIds.Contains(p.PersonId.GetValueOrDefault()))
+                    .Where(p => filterIds.Contains(p.UniqueId.GetValueOrDefault()))
                     .OrderBy(p => p.PersonId)
                     .Should()
                     .BeEquivalentTo(expected.OrderBy(p => p.PersonId));
@@ -234,24 +234,24 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var expected = new List<PersonAutoMapperModel>();
-                var filterIds = new List<int>();
+                var filterIds = new List<Guid>();
                 for (var idx = 0; idx <= 5; idx++)
                 {
                     var model = service.Add(PersonAutoMapperModel.FakerEntity());
                     expected.Add(model);
-                    filterIds.Add(model.PersonId.GetValueOrDefault());
+                    filterIds.Add(model.UniqueId.GetValueOrDefault());
                 }
                 service.GetAll<PersonAutoMapperModel>(new OltSearcherGetAll<PersonEntity>())
-                    .Where(p => filterIds.Contains(p.PersonId.GetValueOrDefault()))
+                    .Where(p => filterIds.Contains(p.UniqueId.GetValueOrDefault()))
                     .OrderBy(p => p.PersonId)
                     .Should()
                     .BeEquivalentTo(expected.OrderBy(p => p.PersonId));
-             
+
             }
-        
+
 
         }
 
@@ -262,31 +262,31 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
-                
+                var service = provider.GetService<IPersonUniqueIdService>();
+
                 for (var idx = 0; idx <= 115; idx++)
                 {
                     service.Add(PersonAutoMapperModel.FakerEntity());
-                }                
+                }
                 var paged = await service.GetPagedAsync<PersonDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams);
                 Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 for (var idx = 0; idx <= 115; idx++)
                 {
                     service.Add(PersonAutoMapperModel.FakerEntity());
                 }
                 var paged = service.GetPaged<PersonDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams);
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);            
+                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 for (var idx = 0; idx <= 115; idx++)
                 {
@@ -298,7 +298,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 for (var idx = 0; idx <= 115; idx++)
                 {
@@ -314,43 +314,43 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                var result = await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault()));
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                var result = await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(newDto.UniqueId.GetValueOrDefault()));
+                Assert.Equal(newDto.UniqueId, result?.UniqueId);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = service.Add(PersonAutoMapperModel.FakerEntity());
-                var result = service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault()));
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                var result = service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(newDto.UniqueId.GetValueOrDefault()));
+                Assert.Equal(newDto.UniqueId, result?.UniqueId);
             }
 
 
             // ***************** Deleted Records ******************
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                await service.SoftDeleteAsync(newDto.PersonId.GetValueOrDefault());
-                var result = await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault()));
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                await service.SoftDeleteAsync(newDto.UniqueId.GetValueOrDefault());
+                var result = await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(newDto.UniqueId.GetValueOrDefault()));
+                Assert.Equal(newDto.UniqueId, result?.UniqueId);
             }
 
-            
+
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = service.Add(PersonAutoMapperModel.FakerEntity());
-                service.SoftDelete(newDto.PersonId.GetValueOrDefault());
-                var result = service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault()));
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                service.SoftDelete(newDto.UniqueId.GetValueOrDefault());
+                var result = service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(newDto.UniqueId.GetValueOrDefault()));
+                Assert.Equal(newDto.UniqueId, result?.UniqueId);
             }
 
 
@@ -363,22 +363,22 @@ namespace OLT.EF.Core.Services.Tests
             // ***************** Exclude Deleted Records ******************
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                service.SoftDelete(newDto.PersonId.GetValueOrDefault());
-                var result = service.GetAll<PersonDto>(new OltSearcherGetAll<PersonEntity>()).FirstOrDefault(p => p.PersonId == newDto.PersonId);
+                service.SoftDelete(newDto.UniqueId.GetValueOrDefault());
+                var result = service.GetAll<PersonDto>(new OltSearcherGetAll<PersonEntity>()).FirstOrDefault(p => p.UniqueId == newDto.UniqueId);
                 Assert.Null(result);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                await service.SoftDeleteAsync(newDto.PersonId.GetValueOrDefault());
+                await service.SoftDeleteAsync(newDto.UniqueId.GetValueOrDefault());
                 var results = await service.GetAllAsync<PersonDto>(new OltSearcherGetAll<PersonEntity>());
-                var result = results.FirstOrDefault(p => p.PersonId == newDto.PersonId);
+                var result = results.FirstOrDefault(p => p.UniqueId == newDto.UniqueId);
                 Assert.Null(result);
             }
 
@@ -386,23 +386,23 @@ namespace OLT.EF.Core.Services.Tests
             // ***************** Include Deleted Records ******************
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                await service.SoftDeleteAsync(newDto.PersonId.GetValueOrDefault());
+                await service.SoftDeleteAsync(newDto.UniqueId.GetValueOrDefault());
                 var results = await service.GetAllAsync<PersonDto>(new OltSearcherGetAll<PersonEntity>(true));
-                var result = results.FirstOrDefault(p => p.PersonId == newDto.PersonId);
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                var result = results.FirstOrDefault(p => p.UniqueId == newDto.UniqueId);
+                Assert.Equal(newDto.UniqueId, result?.UniqueId);
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                service.SoftDelete(newDto.PersonId.GetValueOrDefault());
-                var result = service.GetAll<PersonDto>(new OltSearcherGetAll<PersonEntity>(true)).FirstOrDefault(p => p.PersonId == newDto.PersonId);
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                service.SoftDelete(newDto.UniqueId.GetValueOrDefault());
+                var result = service.GetAll<PersonDto>(new OltSearcherGetAll<PersonEntity>(true)).FirstOrDefault(p => p.UniqueId == newDto.UniqueId);
+                Assert.Equal(newDto.UniqueId, result?.UniqueId);
             }
         }
 
@@ -413,18 +413,18 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var person = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                Assert.Equal(1, await service.CountAsync(new OltSearcherGetById<PersonEntity>(person.PersonId.Value)));
+                Assert.Equal(1, await service.CountAsync(new OltSearcherGetByUid<PersonEntity>(person.UniqueId.Value)));
             }
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var person = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
-                Assert.Equal(1, service.Count(new OltSearcherGetById<PersonEntity>(person.PersonId.Value)));
+                Assert.Equal(1, service.Count(new OltSearcherGetByUid<PersonEntity>(person.UniqueId.Value)));
             }
         }
 
@@ -435,7 +435,7 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = PersonAutoMapperModel.FakerEntity();
                 await service.AddAsync(model);
@@ -445,7 +445,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = PersonAutoMapperModel.FakerEntity();
                 await service.AddAsync(model);
@@ -457,7 +457,7 @@ namespace OLT.EF.Core.Services.Tests
             // Delete
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IPersonService>();
+                var service = provider.GetService<IPersonUniqueIdService>();
 
                 var model = PersonAutoMapperModel.FakerEntity();
                 await service.AddAsync(model);
@@ -468,5 +468,8 @@ namespace OLT.EF.Core.Services.Tests
             }
 
         }
+
+
+
     }
 }

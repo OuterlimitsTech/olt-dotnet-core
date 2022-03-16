@@ -15,9 +15,6 @@ namespace OLT.EF.Core.Services.Tests
 
     public abstract class BaseUnitTests
     {
-        
-
-     
 
         protected ServiceProvider BuildProvider()
         {
@@ -41,6 +38,7 @@ namespace OLT.EF.Core.Services.Tests
                 .AddScoped<IContextService, ContextService>()
                 .AddScoped<IPersonService, PersonService>()
                 .AddScoped<IPersonUniqueIdService, PersonUniqueIdService>()
+                .AddScoped<IUserService, UserService>() 
                 .AddSingleton<IOltAdapter, UserModelAdapter>()
                 .AddSingleton<IOltAdapter, UserDtoAdapter>()
                 .AddSingleton<IOltAdapter, PersonDtoAdapter>()                

@@ -1,19 +1,20 @@
 ﻿using OLT.Core;
 using OLT.EF.Core.Services.Tests.Assets.Entites;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Services
 {
-
-    public class PersonService : OltEntityIdService<UnitTestContext, PersonEntity>, IPersonService
+    public class UserService : OltEntityService<UnitTestContext, UserEntity>, IUserService
     {
-        public PersonService(
+        public UserService(
             IOltServiceManager serviceManager,
             UnitTestContext context) : base(serviceManager, context)
         {
+        }
+
+        public IQueryable<UserEntity> GetRepository()
+        {
+            return Repository;
         }
     }
 }
