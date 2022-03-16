@@ -14,11 +14,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
 #pragma warning restore CS0618 // Type or member is obsolete
     {
 
-        //public InvalidMap()
-        //{
-        //    BuildMap(CreateMap<AdapterObject8, AdapterObject9>());
-        //}
-
+       
         public override void BuildMap(IMappingExpression<AdapterObject8, AdapterObject9> mappingExpression)
         {
             mappingExpression
@@ -28,9 +24,9 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
                 ;
         }
 
-        public override IQueryable<AdapterObject8> DefaultOrderBy(IQueryable<AdapterObject8> queryable)
+        public override IOrderedQueryable<AdapterObject8> DefaultOrderBy(IQueryable<AdapterObject8> queryable)
         {
-            return queryable.OrderBy(p => p.Street);
+            return queryable.OrderBy(p => p.Street);            
         }
     }
 }

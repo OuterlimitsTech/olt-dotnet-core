@@ -161,6 +161,19 @@ namespace OLT.Core
 
         #region [ Mapping ]
 
+        protected virtual IQueryable<TModel> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+            where TModel : class, new()
+            where TEntity : class, IOltEntity
+
+        {
+            if (ServiceManager.AdapterResolver.CanProjectTo<TEntity, TModel>())
+            {
+                queryable = orderBy == null ? ServiceManager.AdapterResolver.ApplyDefaultOrderBy<TEntity, TModel>(queryable) : orderBy(queryable);
+                return ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable);
+            }
+            throw new OltAdapterNotFoundException(OltAdapterExtensions.BuildAdapterName<TEntity, TModel>());
+        }
+
         protected virtual IEnumerable<TModel> MapList<TEntity, TModel>(IQueryable<TEntity> queryable)
             where TModel : class, new()
             where TEntity : class, IOltEntity
@@ -170,9 +183,8 @@ namespace OLT.Core
             {
                 return ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable).ToList();
             }
-
-            var entities = ServiceManager.AdapterResolver.ApplyBeforeMaps<TEntity, TModel>(queryable).ToList();
-            return ServiceManager.AdapterResolver.Map<TEntity, TModel>(entities);
+            var list = queryable.ToList();
+            return ServiceManager.AdapterResolver.Map<TEntity, TModel>(list);
         }
 
         protected virtual async Task<IEnumerable<TModel>> MapListAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
@@ -184,8 +196,8 @@ namespace OLT.Core
                 return await ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable).ToListAsync();
             }
 
-            var entities = await ServiceManager.AdapterResolver.ApplyBeforeMaps<TEntity, TModel>(queryable).ToListAsync();
-            return ServiceManager.AdapterResolver.Map<TEntity, TModel>(entities);
+            var list = await queryable.ToListAsync();
+            return ServiceManager.AdapterResolver.Map<TEntity, TModel>(list);
         }
 
         protected virtual TModel MapFirst<TEntity, TModel>(IQueryable<TEntity> queryable)
@@ -198,7 +210,7 @@ namespace OLT.Core
             }
 
             var model = new TModel();
-            var entity = ServiceManager.AdapterResolver.ApplyBeforeMaps<TEntity, TModel>(queryable).FirstOrDefault();
+            var entity = queryable.FirstOrDefault();
             return ServiceManager.AdapterResolver.Map(entity, model);
         }
 
@@ -212,7 +224,7 @@ namespace OLT.Core
             }
 
             var model = new TModel();
-            var entity = await ServiceManager.AdapterResolver.ApplyBeforeMaps<TEntity, TModel>(queryable).FirstOrDefaultAsync();
+            var entity = await queryable.FirstOrDefaultAsync();
             return ServiceManager.AdapterResolver.Map(entity, model);
         }
 

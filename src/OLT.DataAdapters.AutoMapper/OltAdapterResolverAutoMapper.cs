@@ -64,59 +64,45 @@ namespace OLT.Core
 
         #region [ Paged ]
 
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams)
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                var mapAdapter = GetPagedAdapterMap<TSource, TDestination>(true);
-                Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = orderByQueryable => orderByQueryable.OrderBy(null, mapAdapter.DefaultOrderBy);
-                return this.ProjectTo<TSource, TDestination>(source, pagingParams, orderBy);
-            }
-
-            return base.ProjectTo<TSource, TDestination>(source, pagingParams);
-        }
-
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy)
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                try
-                {
-                    return ApplyAfterMaps<TSource, TDestination>(source.OrderBy(null, orderBy).ProjectTo<TDestination>(Mapper.ConfigurationProvider)).ToPaged(pagingParams);
-                }
-                catch (Exception ex)
-                {
-                    throw BuildException<TSource, TDestination>(ex);
-                }
-            }
-            return base.ProjectTo<TSource, TDestination>(source, pagingParams, orderBy);
-        }
+        //[Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
+        //public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = null)
+        //{
+        //    if (HasAutoMap<TSource, TDestination>())
+        //    {
+        //        try
+        //        {
+        //            return ApplyAfterMaps<TSource, TDestination>(source.OrderBy(null, orderBy).ProjectTo<TDestination>(Mapper.ConfigurationProvider)).ToPaged(pagingParams);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw BuildException<TSource, TDestination>(ex);
+        //        }
+        //    }
+        //    return base.ProjectTo<TSource, TDestination>(source, pagingParams, orderBy);
+        //}
 
 
-        [Obsolete("Move to BeforeMap or AfterMap")]
-        public override bool CanMapPaged<TSource, TDestination>()
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                return GetPagedAdapterMap<TSource, TDestination>(false) != null;
-            }
-            return base.CanMapPaged<TSource, TDestination>();
-        }
+        //public override bool CanMapPaged<TSource, TDestination>()
+        //{
+        //    if (HasAutoMap<TSource, TDestination>())
+        //    {
+        //        return GetPagedAdapterMap<TSource, TDestination>(false) != null;
+        //    }
+        //    return base.CanMapPaged<TSource, TDestination>();
+        //}
 
 
-        protected virtual IOltAdapterPagedMap<TSource, TDestination> GetPagedAdapterMap<TSource, TDestination>(bool throwException)
-        {
-            var adapterName = GetAdapterName<TSource, TDestination>();
-            var adapter = GetAdapter(adapterName, false);
-            var mapAdapter = adapter as IOltAdapterPagedMap<TSource, TDestination>;
-            if (mapAdapter == null && throwException)
-            {
-                throw new OltAdapterNotFoundException($"{adapterName} Paged");
-            }
-            return mapAdapter;
-        }
+        //protected virtual IOltAdapterPagedMap<TSource, TDestination> GetPagedAdapterMap<TSource, TDestination>(bool throwException)
+        //{
+        //    var adapterName = GetAdapterName<TSource, TDestination>();
+        //    var adapter = GetAdapter(adapterName, false);
+        //    var mapAdapter = adapter as IOltAdapterPagedMap<TSource, TDestination>;
+        //    if (mapAdapter == null && throwException)
+        //    {
+        //        throw new OltAdapterNotFoundException($"{adapterName} Paged");
+        //    }
+        //    return mapAdapter;
+        //}
 
   
         #endregion

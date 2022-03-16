@@ -24,7 +24,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 
             IMappingExpression<AdapterObject4, AdapterObject5> expression = null;
             IOltBeforeMap<AdapterObject4, AdapterObject5> beforeMap = null;
-            Func<IQueryable<AdapterObject4>, IQueryable<AdapterObject4>> func = null;
+            Func<IQueryable<AdapterObject4>, IOrderedQueryable<AdapterObject4>> func = null;
 
             Assert.Throws<ArgumentNullException>(nameof(beforeMap), () => OltAutomapperExtensions.BeforeMap(maps.BeforeMapExpression, beforeMap));
             Assert.Throws<ArgumentNullException>(nameof(func), () => OltAutomapperExtensions.BeforeMap(maps.BeforeMapExpression, func));
@@ -54,7 +54,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 
             IMappingExpression<AdapterObject5, AdapterObject1> expression = null;
             IOltAfterMap<AdapterObject5, AdapterObject1> afterMap = null;
-            Func<IQueryable<AdapterObject1>, IQueryable<AdapterObject1>> func = null;
+            Func<IQueryable<AdapterObject1>, IOrderedQueryable<AdapterObject1>> func = null;
 
             Assert.Throws<ArgumentNullException>(nameof(afterMap), () => OltAutomapperExtensions.AfterMap(maps.AfterMapExpression, afterMap));
             Assert.Throws<ArgumentNullException>(nameof(func), () => OltAutomapperExtensions.AfterMap(maps.AfterMapExpression, func));

@@ -23,7 +23,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
                 .ForMember(f => f.Name, opt => opt.MapFrom(t => t.Name));            
         }
 
-        public override IQueryable<AdapterObject2> DefaultOrderBy(IQueryable<AdapterObject2> queryable)
+        public override IOrderedQueryable<AdapterObject2> DefaultOrderBy(IQueryable<AdapterObject2> queryable)
         {
             return queryable.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.ObjectId);
         }
@@ -37,52 +37,5 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
                 ;
         }
 
-    }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-    public class AdapterObject2ToAdapterObject5PagedAdapter : OltAdapterPaged<AdapterObject2, AdapterObject5>
-#pragma warning restore CS0618 // Type or member is obsolete
-    {
-        public override void Map(AdapterObject2 source, AdapterObject5 destination)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Map(AdapterObject5 source, AdapterObject2 destination)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        //public override void Map(AdapterObject5 source, AdapterObject2 destination)
-        //{
-        //    destination.Name = new OltPersonName
-        //    {
-        //        First = source.First,
-        //        Last = source.Last,
-        //    };
-        //}
-
-        //public override void Map(AdapterObject2 source, AdapterObject5 destination)
-        //{
-        //    destination.First = source.Name.First;
-        //    destination.Last = source.Name.Last;
-        //}
-
-        public override IQueryable<AdapterObject5> Map(IQueryable<AdapterObject2> queryable)
-        {
-            return queryable.Select(entity => new AdapterObject5
-            {
-                ObjectId = entity.ObjectId,
-                First = entity.Name.First, 
-                Last = entity.Name.Last,
-            });
-        }
-
-        public override IQueryable<AdapterObject2> DefaultOrderBy(IQueryable<AdapterObject2> queryable)
-        {
-            return queryable.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.ObjectId);
-        }
-
-  
     }
 }

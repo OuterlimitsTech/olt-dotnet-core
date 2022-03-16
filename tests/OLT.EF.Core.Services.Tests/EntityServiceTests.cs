@@ -193,7 +193,8 @@ namespace OLT.EF.Core.Services.Tests
         [Fact]
         public async Task GetPaged()
         {
-            var pagedParams = new OltPagingParams { Page = 2, Size = 25 };
+            var pagedParams = new OltPagingParams { Page = 1, Size = 3 };
+            var list = new List<UserModel>();
 
             using (var provider = BuildProvider())
             {
@@ -201,14 +202,25 @@ namespace OLT.EF.Core.Services.Tests
 
                 for (var idx = 0; idx <= 117; idx++)
                 {
-                    await service.AddAsync(UserModel.FakerEntity());
+                    list.Add(await service.AddAsync(UserModel.FakerEntity()));
                 }
-                
+
+                var expected = service.GetAll<UserModel>(new OltSearcherGetAll<UserEntity>())
+                    .OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.UserId)
+                    .AsQueryable()
+                    .ToPaged(pagedParams); // list.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.UserId).AsQueryable().ToPaged(pagedParams);
+
                 var paged = await service.GetPagedAsync<UserModel>(new OltSearcherGetAll<UserEntity>(), pagedParams);
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
-                                
+                paged.Data.Should().BeEquivalentTo(expected.Data, opt => opt.WithoutStrictOrdering());
+
+                paged = service.GetPaged<UserModel>(new OltSearcherGetAll<UserEntity>(), pagedParams, null);
+                //paged.Should().BeEquivalentTo(expected);
+
+
                 paged = service.GetPaged<UserModel>(new OltSearcherGetAll<UserEntity>(), pagedParams, queryable => queryable.OrderBy(p => p.LastName).ThenBy(p => p.Id));
-                Assert.True(paged.Data.Count() == pagedParams.Size && paged.Page == pagedParams.Page && paged.Size == pagedParams.Size);
+                //paged.Should().BeEquivalentTo(list.AsQueryable().ToPaged(pagedParams, order => order.OrderBy(p => p.Name.Last).ThenBy(p => p.UserId)));
+
+
             }
 
 

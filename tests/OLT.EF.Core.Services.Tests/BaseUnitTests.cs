@@ -21,7 +21,7 @@ namespace OLT.EF.Core.Services.Tests
             var services = new ServiceCollection();
 
             services
-                .AddLogging(config => config.AddConsole())                
+                .AddLogging(config => config.AddConsole())
                 .AddAutoMapper(this.GetType().Assembly)
                 .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
                 {

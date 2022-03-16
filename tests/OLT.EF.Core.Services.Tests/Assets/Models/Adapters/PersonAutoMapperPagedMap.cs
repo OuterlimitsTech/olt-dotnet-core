@@ -12,7 +12,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
             PersonAutoMapperPagedDto.BuildMap(mappingExpression);
         }
 
-        public override IQueryable<PersonEntity> DefaultOrderBy(IQueryable<PersonEntity> queryable)
+        public override IOrderedQueryable<PersonEntity> DefaultOrderBy(IQueryable<PersonEntity> queryable)
         {
             return queryable.OrderBy(p => p.NameLast).ThenBy(p => p.NameFirst).ThenBy(p => p.Id);
         }

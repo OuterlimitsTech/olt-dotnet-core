@@ -6,11 +6,20 @@ namespace OLT.Core
 {
     public interface IOltAdapterResolver : IOltInjectableSingleton
     {
+        IQueryable<TSource> ApplyDefaultOrderBy<TSource, TDestination>(IQueryable<TSource> queryable);
+
         IOltAdapter<TSource, TDestination> GetAdapter<TSource, TDestination>(bool throwException = true);
 
-        IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable);
-        IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable);
+        //IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable);
+        //IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable);
 
+
+        /// <summary>
+        /// Checks for a <see cref="IQueryable" /> <see cref="IOltAdapter"/> or map
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <returns></returns>
         bool CanProjectTo<TSource, TDestination>();
 
         /// <summary>
@@ -24,14 +33,7 @@ namespace OLT.Core
         /// <exception cref="OltException"></exception>
         IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source);
 
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams) where TSource : class;
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy) where TSource : class;
-
-        [Obsolete("Move to BeforeMap or AfterMap")]
-        bool CanMapPaged<TSource, TDestination>();
-
+        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, bool applyConfigMaps);
 
         bool CanMap<TSource, TDestination>();
         List<TDestination> Map<TSource, TDestination>(List<TSource> source);

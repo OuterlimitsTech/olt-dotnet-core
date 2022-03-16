@@ -56,21 +56,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
             }
         }
 
-        [Fact]
-        [Obsolete("Legacy Paged Process")]
-        public void CanMapPagedTests()
-        {
-            using (var provider = BuildProvider())
-            {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                Assert.True(adapterResolver.CanMapPaged<AdapterObject1, AdapterObject2>());
-                Assert.False(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject1>());
-                Assert.False(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject3>());
-                Assert.False(adapterResolver.CanMapPaged<AdapterObject3, AdapterObject2>());
-                Assert.False(adapterResolver.CanMapPaged<AdapterObject1, AdapterObject3>());
-                Assert.False(adapterResolver.CanMapPaged<AdapterObject3, AdapterObject1>());
-            }
-        }
+       
 
         [Fact]
         public void CanProjectToTests()
@@ -139,32 +125,48 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
             }
         }
 
-        [Fact]
-        [Obsolete("Legacy Paged Process")]
-        public void LegacyPagedTests()
-        {
-            using (var provider = BuildProvider())
-            {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
+        //[Fact]
+        //[Obsolete("Legacy Paged Process")]
+        //public void CanMapPagedTests()
+        //{
+        //    using (var provider = BuildProvider())
+        //    {
+        //        var adapterResolver = provider.GetService<IOltAdapterResolver>();
+        //        Assert.True(adapterResolver.CanMapPaged<AdapterObject1, AdapterObject2>());
+        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject1>());
+        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject3>());
+        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject3, AdapterObject2>());
+        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject1, AdapterObject3>());
+        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject3, AdapterObject1>());
+        //    }
+        //}
 
-                var obj1Values = AdapterObject1.FakerList(10);
-                var queryable = obj1Values.AsQueryable();
+        //[Fact]
+        //[Obsolete("Legacy Paged Process")]
+        //public void LegacyPagedTests()
+        //{
+        //    using (var provider = BuildProvider())
+        //    {
+        //        var adapterResolver = provider.GetService<IOltAdapterResolver>();
+        //        var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
 
-                var expectedResults = obj1Values.Select(s => new AdapterObject2 { Name = new OltPersonName { First = s.FirstName, Last = s.LastName } });
+        //        var obj1Values = AdapterObject1.FakerList(10);
+        //        var queryable = obj1Values.AsQueryable();
 
-                var results = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(queryable, pagingParams);
-                results.Data.Should().BeEquivalentTo(expectedResults.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First));
+        //        var expectedResults = obj1Values.Select(s => new AdapterObject2 { Name = new OltPersonName { First = s.FirstName, Last = s.LastName } });
+
+        //        var results = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(queryable, pagingParams);
+        //        results.Data.Should().BeEquivalentTo(expectedResults.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First));
 
 
-                results = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.LastName).ThenByDescending(p => p.FirstName));
-                results.Data.Should().BeEquivalentTo(expectedResults.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First));
+        //        results = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.LastName).ThenByDescending(p => p.FirstName));
+        //        results.Data.Should().BeEquivalentTo(expectedResults.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First));
 
 
-                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(10).AsQueryable(), pagingParams));
-                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject3, AdapterObject5>(AdapterObject3.FakerList(10).AsQueryable(), pagingParams));
-            }
-        }
+        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(10).AsQueryable(), pagingParams));
+        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject3, AdapterObject5>(AdapterObject3.FakerList(10).AsQueryable(), pagingParams));
+        //    }
+        //}
 
         [Fact]
         public void PagedTests()

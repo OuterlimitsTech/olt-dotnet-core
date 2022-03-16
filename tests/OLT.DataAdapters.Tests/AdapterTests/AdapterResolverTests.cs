@@ -39,28 +39,28 @@ namespace OLT.DataAdapters.Tests.AdapterTests
             }
         }
 
-        [Fact]
-        public void GetAdapterNameTests()
-        {
-            using (var provider = BuildProvider())
-            {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                Assert.Equal($"{typeof(AdapterObject1).FullName}->{typeof(AdapterObject2).FullName}", adapterResolver.GetAdapter<AdapterObject1, AdapterObject2>().Name);
-                Assert.Equal(OltAdapterExtensions.BuildAdapterName<AdapterObject1, AdapterObject2>(), adapterResolver.GetAdapter<AdapterObject1, AdapterObject2>().Name);
-                Assert.NotEqual($"{typeof(AdapterObject2)}->{typeof(AdapterObject1).FullName}", adapterResolver.GetAdapter<AdapterObject1, AdapterObject2>().Name);
+        //[Fact]
+        //public void GetAdapterNameTests()
+        //{
+        //    using (var provider = BuildProvider())
+        //    {
+        //        var adapterResolver = provider.GetService<IOltAdapterResolver>();
+        //        Assert.Equal($"{typeof(AdapterObject1).FullName}->{typeof(AdapterObject2).FullName}", adapterResolver.GetAdapter<AdapterObject1, AdapterObject2>().Name);
+        //        Assert.Equal(OltAdapterExtensions.BuildAdapterName<AdapterObject1, AdapterObject2>(), adapterResolver.GetAdapter<AdapterObject1, AdapterObject2>().Name);
+        //        Assert.NotEqual($"{typeof(AdapterObject2)}->{typeof(AdapterObject1).FullName}", adapterResolver.GetAdapter<AdapterObject1, AdapterObject2>().Name);
 
 
-                var beforeMap = new OltBeforeMapOrderBy<AdapterObject1, AdapterObject2>(p => p.OrderBy(t => t.FirstName));
-                Assert.Equal($"{typeof(AdapterObject1).FullName}->{typeof(AdapterObject2).FullName}_BeforeMap", beforeMap.Name);
-                Assert.Equal(OltAdapterExtensions.BuildBeforeMapName<AdapterObject1, AdapterObject2>(), beforeMap.Name);
+        //        var beforeMap = new OltBeforeMapOrderBy<AdapterObject1, AdapterObject2>(p => p.OrderBy(t => t.FirstName));
+        //        Assert.Equal($"{typeof(AdapterObject1).FullName}->{typeof(AdapterObject2).FullName}_BeforeMap", beforeMap.Name);
+        //        Assert.Equal(OltAdapterExtensions.BuildBeforeMapName<AdapterObject1, AdapterObject2>(), beforeMap.Name);
 
 
-                var afterMap = new OltAfterMapOrderBy<AdapterObject1, AdapterObject2>(p => p.OrderBy(t => t.Name.First));
-                Assert.Equal($"{typeof(AdapterObject1).FullName}->{typeof(AdapterObject2).FullName}_AfterMap", afterMap.Name);
-                Assert.Equal(OltAdapterExtensions.BuildAfterMapName<AdapterObject1, AdapterObject2>(), afterMap.Name);
+        //        var afterMap = new OltAfterMapOrderBy<AdapterObject1, AdapterObject2>(p => p.OrderBy(t => t.Name.First));
+        //        Assert.Equal($"{typeof(AdapterObject1).FullName}->{typeof(AdapterObject2).FullName}_AfterMap", afterMap.Name);
+        //        Assert.Equal(OltAdapterExtensions.BuildAfterMapName<AdapterObject1, AdapterObject2>(), afterMap.Name);
 
-            }
-        }
+        //    }
+        //}
 
         [Fact]
         public void CanMapTests()

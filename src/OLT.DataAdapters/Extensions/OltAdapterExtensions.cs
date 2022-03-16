@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace OLT.Core
 {
+
     public static class OltAdapterExtensions
     {
         public static string BuildAdapterName<TObj1, TObj2>()
@@ -31,11 +32,11 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(beforeMap));
             }
 
-            OltAdapterMapConfigs.BeforeMap.Register(beforeMap);
+            OltAdapterMapConfigs.BeforeMap.Register(beforeMap, false);
             return adapter;
         }
 
-        public static IOltAdapter<TSource, TDestination> BeforeMap<TSource, TDestination>(this IOltAdapter<TSource, TDestination> adapter, Func<IQueryable<TSource>, IQueryable<TSource>> func)
+        public static IOltAdapter<TSource, TDestination> BeforeMap<TSource, TDestination>(this IOltAdapter<TSource, TDestination> adapter, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
         {
             if (adapter == null)
             {
@@ -46,7 +47,7 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(func));
             }
 
-            OltAdapterMapConfigs.BeforeMap.Register<TSource, TDestination>(func);
+            OltAdapterMapConfigs.BeforeMap.Register<TSource, TDestination>(func, false);
             return adapter;
         }
 
@@ -62,11 +63,11 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(afterMap));
             }
 
-            OltAdapterMapConfigs.AfterMap.Register(afterMap);
+            OltAdapterMapConfigs.AfterMap.Register(afterMap, false);
             return adapter;
         }
 
-        public static IOltAdapterQueryable<TSource, TDestination> AfterMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TDestination>, IQueryable<TDestination>> func)
+        public static IOltAdapterQueryable<TSource, TDestination> AfterMap<TSource, TDestination>(this IOltAdapterQueryable<TSource, TDestination> adapter, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
         {
             if (adapter == null)
             {
@@ -77,7 +78,7 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(func));
             }
 
-            OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func);
+            OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func, false);
             return adapter;
         }
     }
