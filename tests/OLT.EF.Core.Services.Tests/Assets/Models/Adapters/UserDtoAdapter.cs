@@ -8,6 +8,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
         public override void Map(UserEntity source, UserDto destination)
         {
             destination.UserId = source.Id;
+            destination.UserGuid = source.UniqueId;
             destination.First = source.FirstName;
             destination.Middle = source.MiddleName;
             destination.Last = source.LastName;
@@ -17,6 +18,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
 
         public override void Map(UserDto source, UserEntity destination)
         {
+            destination.UniqueId = source.UserGuid;
             destination.FirstName = source.First;
             destination.MiddleName = source.Middle;
             destination.LastName = source.Last;

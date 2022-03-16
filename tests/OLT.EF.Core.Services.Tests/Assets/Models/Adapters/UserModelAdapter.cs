@@ -14,6 +14,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
         public override void Map(UserEntity source, UserModel destination)
         {
             destination.UserId = source.Id;
+            destination.UserGuid = source.UniqueId;
             destination.Name.First = source.FirstName;
             destination.Name.Middle = source.MiddleName;
             destination.Name.Last = source.LastName;
@@ -22,6 +23,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
 
         public override void Map(UserModel source, UserEntity destination)
         {
+            destination.UniqueId = source.UserGuid;
             destination.FirstName = source.Name.First;
             destination.MiddleName = source.Name.Middle;
             destination.LastName = source.Name.Last;
@@ -33,6 +35,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
             return queryable.Select(entity => new UserModel
             {
                 UserId = entity.Id,
+                UserGuid = entity.UniqueId,
                 Name = new NameAutoMapperModel
                 {
                     First = entity.FirstName,

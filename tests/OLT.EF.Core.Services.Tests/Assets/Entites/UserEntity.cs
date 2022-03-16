@@ -1,10 +1,12 @@
 ﻿using OLT.Core;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Entites
 {
-    public class UserEntity : OltEntityId
+    public class UserEntity : OltEntityId, IOltEntityUniqueId
     {
+        public Guid UniqueId { get; set; }
 
         [StringLength(100)]
         public string FirstName { get; set; }
@@ -14,7 +16,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Entites
         public string LastName { get; set; }
         [StringLength(50)]
         public string NameSuffix { get; set; }
-
+        
 
         public static UserEntity FakerEntity()
         {
