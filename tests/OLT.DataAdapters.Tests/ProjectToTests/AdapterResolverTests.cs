@@ -64,7 +64,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
                 var obj1Values = AdapterObject1.FakerList(23);
 
                 var obj2ResultQueryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
-                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject1>(obj2ResultQueryable));
+                Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject1>(AdapterObject2.FakerList(5).AsQueryable()));
 
                 var expected = obj1Values                    
                     .Select(s => new AdapterObject2
@@ -79,7 +79,8 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
                 obj2ResultQueryable.Should().BeEquivalentTo(expected.OrderBy(p => p.Name.First).ThenBy(p => p.Name.Last), opt => opt.WithStrictOrdering());
 
                 
-                adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable(), configAction => { configAction.DisableBeforeMap = true; configAction.DisableAfterMap = true;  })
+                adapterResolver
+                    .ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable(), configAction => { configAction.DisableBeforeMap = true; configAction.DisableAfterMap = true;  })
                     .Should()
                     .BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
             }

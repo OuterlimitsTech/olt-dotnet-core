@@ -38,7 +38,7 @@ namespace OLT.Core
 
                 if (throwException)
                 {
-                    throw new OltAdapterMapConfigExists<TSource, TDestination>(configMap);
+                    throw new OltAdapterMapConfigExistsException<TSource, TDestination>(configMap);
                 }
 
                 return false;   
@@ -82,7 +82,7 @@ namespace OLT.Core
 
                 if (throwException)
                 {
-                    throw new OltAdapterMapConfigExists<TSource, TDestination>(configMap);
+                    throw new OltAdapterMapConfigExistsException<TSource, TDestination>(configMap);
                 }
 
                 return false;                

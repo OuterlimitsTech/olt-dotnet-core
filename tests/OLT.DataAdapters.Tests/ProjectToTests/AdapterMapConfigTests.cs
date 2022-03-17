@@ -23,7 +23,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
 
             var orderByFunc = new OltBeforeMapOrderBy<AdapterObject3, AdapterObject4>(e => e.OrderBy(p => p.First).ThenByDescending(p => p.Last));
             Assert.True(OltAdapterMapConfigs.BeforeMap.Register<AdapterObject3, AdapterObject4>(orderByFunc, false));
-            Assert.Throws<OltAdapterMapConfigExists<AdapterObject3, AdapterObject4>>(() => OltAdapterMapConfigs.BeforeMap.Register<AdapterObject3, AdapterObject4>(new AdapterObject3ToAdapterObject4BeforeMap(), true));
+            Assert.Throws<OltAdapterMapConfigExistsException<AdapterObject3, AdapterObject4>>(() => OltAdapterMapConfigs.BeforeMap.Register<AdapterObject3, AdapterObject4>(new AdapterObject3ToAdapterObject4BeforeMap(), true));
 
             var query = OltAdapterMapConfigs.BeforeMap.Apply<AdapterObject3, AdapterObject4>(list.AsQueryable());
 
@@ -43,7 +43,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
 
             var orderByAfterMap = new OltAfterMapOrderBy<AdapterObject3, AdapterObject5>(e => e.OrderBy(p => p.LastName).ThenByDescending(p => p.FirstName));
             Assert.True(OltAdapterMapConfigs.AfterMap.Register<AdapterObject3, AdapterObject5>(orderByAfterMap, false));
-            Assert.Throws<OltAdapterMapConfigExists<AdapterObject3, AdapterObject5>>(() => OltAdapterMapConfigs.AfterMap.Register<AdapterObject3, AdapterObject5>(new AdapterObject3ToAdapterObject5AfterMap(), true));
+            Assert.Throws<OltAdapterMapConfigExistsException<AdapterObject3, AdapterObject5>>(() => OltAdapterMapConfigs.AfterMap.Register<AdapterObject3, AdapterObject5>(new AdapterObject3ToAdapterObject5AfterMap(), true));
 
             var query = OltAdapterMapConfigs.BeforeMap.Apply<AdapterObject3, AdapterObject1>(list.AsQueryable());
             query.Should().BeEquivalentTo(list);

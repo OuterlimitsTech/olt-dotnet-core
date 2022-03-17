@@ -71,13 +71,12 @@ namespace OLT.Core
 
         protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction, IOltAdapter adapter)
         {
-            var config = new OltAdapterActionConfig();
-            configAction?.Invoke(config);
-
-            source = config.DisableBeforeMap ? source :  ApplyBeforeMaps<TSource, TDestination>(source);
-
             if (adapter is IOltAdapterQueryable<TSource, TDestination> queryableAdapter)
-            {                
+            {
+                var config = new OltAdapterActionConfig();
+                configAction?.Invoke(config);
+
+                source = config.DisableBeforeMap ? source : ApplyBeforeMaps<TSource, TDestination>(source);
                 var mapped = queryableAdapter.Map(source);
                 return config.DisableAfterMap ? mapped : ApplyAfterMaps<TSource, TDestination>(mapped);
             }

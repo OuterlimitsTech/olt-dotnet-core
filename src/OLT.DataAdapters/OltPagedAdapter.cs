@@ -9,7 +9,7 @@ namespace OLT.Core
     {
         protected OltAdapterPaged()
         {
-            OltAdapterExtensions.WithOrderBy(this, DefaultOrderBy);
+            this.WithOrderBy(DefaultOrderBy);
         }
 
         public abstract IOrderedQueryable<TSource> DefaultOrderBy(IQueryable<TSource> queryable);

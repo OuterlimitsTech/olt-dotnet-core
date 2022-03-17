@@ -83,6 +83,32 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
                 var adapterResolver = provider.GetService<IOltAdapterResolver>();
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(3).AsQueryable()));
 
+                var obj1Values = AdapterObject1.FakerList(5).AsQueryable();
+                var obj2ResultQueryable = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable());
+
+                var expected = obj1Values
+                .Select(s => new AdapterObject2
+                {
+                    Name = new OltPersonName
+                    {
+                        First = s.FirstName,
+                        Last = s.LastName,
+                    }
+                }).ToList();
+
+
+                var results = obj2ResultQueryable.ToList();
+                var expected2 = expected.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ToList();
+
+                results.Should().BeEquivalentTo(expected2, opt => opt.WithStrictOrdering());
+
+
+                adapterResolver
+                    .ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable(), configAction => { configAction.DisableBeforeMap = true; configAction.DisableAfterMap = true; })
+                    .Should()
+                    .BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
+
+
                 try
                 {
                     adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(AdapterObject1.FakerList(3).AsQueryable());
