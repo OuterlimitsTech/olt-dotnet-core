@@ -1,4 +1,5 @@
 ﻿using OLT.Core;
+using OLT.DataAdapters.Tests.AdapterTests.Models;
 using OLT.DataAdapters.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace OLT.DataAdapters.Tests.AdapterTests
 {
-    public class AdapterObject1ToAdapterObject2Adapter : OltAdapter<AdapterObject1, AdapterObject2>
+    public class AdapterObject1ToAdapterObject2Adapter : OltAdapter<BasicAdapterObject1, BasicAdapterObject2>
     {
-        public override void Map(AdapterObject1 source, AdapterObject2 destination)
+        public override void Map(BasicAdapterObject1 source, BasicAdapterObject2 destination)
         {
             destination.Name = new OltPersonName
             {
@@ -19,7 +20,7 @@ namespace OLT.DataAdapters.Tests.AdapterTests
             };
         }
 
-        public override void Map(AdapterObject2 source, AdapterObject1 destination)
+        public override void Map(BasicAdapterObject2 source, BasicAdapterObject1 destination)
         {
             destination.FirstName = source.Name.First;
             destination.LastName = source.Name.Last;

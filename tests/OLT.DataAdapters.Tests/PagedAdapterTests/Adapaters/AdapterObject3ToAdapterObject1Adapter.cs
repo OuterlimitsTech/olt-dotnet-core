@@ -1,28 +1,27 @@
 ﻿using OLT.Core;
 using OLT.DataAdapters.Tests.Assets.Models;
+using OLT.DataAdapters.Tests.PagedAdapterTests.Models;
 using System.Linq;
 
 namespace OLT.DataAdapters.Tests.PagedAdapterTests.Adapters
 {
-    public class AdapterObject3ToAdapterObject1Adapter : OltAdapter<AdapterObject3, AdapterObject1>, IOltAdapterQueryable<AdapterObject3, AdapterObject1>
+    public class AdapterObject3ToAdapterObject1Adapter : OltAdapter<PagedAdapterObject3, PagedAdapterObject1>, IOltAdapterQueryable<PagedAdapterObject3, PagedAdapterObject1>
     {
-
-        public override void Map(AdapterObject1 source, AdapterObject3 destination)
-        {
-            destination.First = source.FirstName;
-            destination.Last = source.LastName;
-
-        }
-
-        public override void Map(AdapterObject3 source, AdapterObject1 destination)
+        public override void Map(PagedAdapterObject3 source, PagedAdapterObject1 destination)
         {
             destination.FirstName = source.First;
             destination.LastName = source.Last;
         }
 
-        public IQueryable<AdapterObject1> Map(IQueryable<AdapterObject3> queryable)
+        public override void Map(PagedAdapterObject1 source, PagedAdapterObject3 destination)
         {
-            return queryable.Select(entity => new AdapterObject1 { FirstName = entity.First, LastName = entity.Last });
+            destination.First = source.FirstName;
+            destination.Last = source.LastName;
+        }
+
+        public IQueryable<PagedAdapterObject1> Map(IQueryable<PagedAdapterObject3> queryable)
+        {
+            return queryable.Select(entity => new PagedAdapterObject1 { FirstName = entity.First, LastName = entity.Last });
         }
     }
 }

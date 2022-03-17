@@ -27,7 +27,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
                 Assert.Null(adapterResolver.GetAdapter<AdapterObject2, AdapterObject1>(false));
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.GetAdapter<AdapterObject2, AdapterObject1>(true));
 
-                Assert.Null(adapterResolver.GetAdapter<AdapterObject3, AdapterObject2>(false)); ;
+                Assert.Null(adapterResolver.GetAdapter<AdapterObject3, AdapterObject2>(false)); 
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.GetAdapter<AdapterObject3, AdapterObject2>(true));
 
             }
@@ -141,10 +141,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             using (var provider = BuildProvider())
             {
                 var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
-
                 var obj1Values = AdapterObject1.FakerList(56);
-
                 var obj2Result = adapterResolver.ApplyDefaultOrderBy<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable()).ToList();
                 obj2Result.Should().BeEquivalentTo(obj1Values.OrderBy(p => p.FirstName).ThenBy(p => p.LastName), opt => opt.WithStrictOrdering());
             }
@@ -221,55 +218,5 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             }
         }
 
-        //[Fact]
-        //[Obsolete("Legacy Paged Process")]
-        //public void CanMapPagedTests()
-        //{
-        //    using (var provider = BuildProvider())
-        //    {
-        //        var adapterResolver = provider.GetService<IOltAdapterResolver>();
-        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject1, AdapterObject2>());
-        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject3>());
-        //        Assert.True(adapterResolver.CanMapPaged<AdapterObject2, AdapterObject4>());
-        //        Assert.False(adapterResolver.CanMapPaged<AdapterObject4, AdapterObject2>());
-        //    }
-        //}
-
-
-        //[Fact]
-        //[Obsolete("Legacy Paged Process")]
-        //public void LegacyPagedTests()
-        //{
-        //    using (var provider = BuildProvider())
-        //    {
-        //        var adapterResolver = provider.GetService<IOltAdapterResolver>();
-        //        var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
-
-        //        var obj2Values = AdapterObject2.FakerList(10);
-        //        var queryable = obj2Values.AsQueryable();
-
-        //        var expectedResults = obj2Values.Select(s => new AdapterObject4 { ObjectId = s.ObjectId, Name = new OltPersonName { First = s.Name.First, Last = s.Name.Last } });
-
-        //        var results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject4>(queryable, pagingParams);
-        //        results.Data.Should().BeEquivalentTo(expectedResults.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.ObjectId));
-
-
-        //        results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject4>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
-        //        results.Data.Should().BeEquivalentTo(expectedResults.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
-
-        //        var expectedObj5Results = obj2Values.Select(s => new AdapterObject5 { ObjectId = s.ObjectId, First = s.Name.First, Last = s.Name.Last });
-        //        var obj5Results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject5>(queryable, pagingParams);
-        //        obj5Results.Data.Should().BeEquivalentTo(expectedObj5Results.OrderBy(p => p.Last).ThenBy(p => p.First).ThenBy(p => p.ObjectId));
-
-
-        //        obj5Results = adapterResolver.ProjectTo<AdapterObject2, AdapterObject5>(queryable, pagingParams, orderBy => orderBy.OrderByDescending(p => p.Name.Last).ThenByDescending(p => p.Name.First).ThenBy(p => p.ObjectId));
-        //        obj5Results.Data.Should().BeEquivalentTo(expectedObj5Results.OrderByDescending(p => p.Last).ThenByDescending(p => p.First).ThenBy(p => p.ObjectId));
-
-
-        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject2, AdapterObject3>(AdapterObject2.FakerList(10).AsQueryable(), pagingParams));
-        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject3, AdapterObject5>(AdapterObject3.FakerList(10).AsQueryable(), pagingParams));
-        //        Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(AdapterObject1.FakerList(10).AsQueryable(), pagingParams));  //Has Map, but not paged
-        //    }
-        //}
     }
 }

@@ -1,23 +1,23 @@
 ﻿using OLT.Core;
-using OLT.DataAdapters.Tests.Assets.Models;
+using OLT.DataAdapters.Tests.ProjectToTests.Models;
 using System;
 using System.Linq;
 
 namespace OLT.DataAdapters.Tests.ProjectToTests.Adapters
 {
-    public class AdapterObject3ToAdapterObject6QueryableAdapter : OltAdapter<AdapterObject3, AdapterObject6>, IOltAdapterQueryable<AdapterObject3, AdapterObject6>
+    public class AdapterObject3ToAdapterObject6QueryableAdapter : OltAdapter<QueryableAdapterObject3, QueryableAdapterObject6>, IOltAdapterQueryable<QueryableAdapterObject3, QueryableAdapterObject6>
     {
-        public override void Map(AdapterObject3 source, AdapterObject6 destination)
+        public override void Map(QueryableAdapterObject3 source, QueryableAdapterObject6 destination)
         {
             throw new NotImplementedException();
         }
 
-        public override void Map(AdapterObject6 source, AdapterObject3 destination)
+        public override void Map(QueryableAdapterObject6 source, QueryableAdapterObject3 destination)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<AdapterObject6> Map(IQueryable<AdapterObject3> queryable)
+        public IQueryable<QueryableAdapterObject6> Map(IQueryable<QueryableAdapterObject3> queryable)
         {
             throw new NotImplementedException();
         }
