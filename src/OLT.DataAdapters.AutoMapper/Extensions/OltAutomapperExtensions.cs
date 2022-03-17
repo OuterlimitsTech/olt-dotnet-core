@@ -19,8 +19,18 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static IMappingExpression<TSource, TDestination> WithOrderBy<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
             where TSource : class
-        {            
-            return BeforeMap(expression, func);
+        {
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            OltAdapterMapConfigs.BeforeMap.Register<TSource, TDestination>(func, false);
+            return expression;
         }
 
         /// <summary>
@@ -34,7 +44,17 @@ namespace OLT.Core
         public static IMappingExpression<TSource, TDestination> WithOrderBy<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
              where TSource : class
         {
-            return AfterMap(expression, func);
+            if (expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func, false);
+            return expression;
         }
 
         public static IMappingExpression<TSource, TDestination> BeforeMap<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, IOltBeforeMap<TSource, TDestination> beforeMap)
@@ -53,22 +73,6 @@ namespace OLT.Core
             return expression;
         }
 
-        public static IMappingExpression<TSource, TDestination> BeforeMap<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-            if (func == null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
-
-            OltAdapterMapConfigs.BeforeMap.Register<TSource, TDestination>(func, false);
-            return expression;
-        }
-
-
         public static IMappingExpression<TSource, TDestination> AfterMap<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, IOltAfterMap<TSource, TDestination> afterMap)
             where TSource : class
         {
@@ -85,19 +89,5 @@ namespace OLT.Core
             return expression;
         }
 
-        public static IMappingExpression<TSource, TDestination> AfterMap<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-            if (func == null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
-
-            OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func, false);
-            return expression;
-        }
     }
 }

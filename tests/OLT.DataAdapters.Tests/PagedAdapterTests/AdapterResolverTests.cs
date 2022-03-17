@@ -96,6 +96,21 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         }
 
         [Fact]
+        public void ApplyDefaultOrderByTest()
+        {
+            using (var provider = BuildProvider())
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
+
+                var obj1Values = AdapterObject1.FakerList(56);
+
+                var obj2Result = adapterResolver.ApplyDefaultOrderBy<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable()).ToList();
+                obj2Result.Should().BeEquivalentTo(obj1Values.OrderBy(p => p.LastName).ThenBy(p => p.FirstName), opt => opt.WithStrictOrdering());
+            }
+        }
+
+        [Fact]
         public void MapTests()
         {
             using (var provider = BuildProvider())

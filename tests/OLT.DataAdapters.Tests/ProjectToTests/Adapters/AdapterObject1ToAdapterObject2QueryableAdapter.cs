@@ -12,7 +12,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests.Adapters
     {
         public AdapterObject1ToAdapterObject2QueryableAdapter()
         {
-            this.BeforeMap(p => p.OrderBy(o => o.FirstName).ThenBy(o => o.LastName));
+            this.WithOrderBy(p => p.OrderBy(o => o.FirstName).ThenBy(o => o.LastName));
         }
 
         public override void Map(AdapterObject1 source, AdapterObject2 destination)

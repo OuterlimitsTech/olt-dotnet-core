@@ -113,25 +113,40 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 
                 var obj1Values = AdapterObject1.FakerList(56);
                 var expected = obj1Values.Select(s => new AdapterObject2
+                {
+                    ObjectId = s.ObjectId,
+                    Name = new OltPersonName
                     {
-                        ObjectId = s.ObjectId,
-                        Name = new OltPersonName
-                        {
-                            First = s.FirstName,                        
-                            Last = s.LastName,
-                        }
-                    })                    
+                        First = s.FirstName,
+                        Last = s.LastName,
+                    }
+                })
                     .OrderBy(p => p.Name.First)
                     .ThenBy(p => p.Name.Last)
                     .ToList();
-                    
+
 
                 var obj2Result = adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable()).ToList();
-                obj2Result.Should().BeEquivalentTo(expected, opt => opt.WithoutStrictOrdering());
+                obj2Result.Should().BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
 
                 var paged = obj2Result.AsQueryable().ToPaged(pagingParams);
                 var expectedPaged = expected.AsQueryable().ToPaged(pagingParams);
                 paged.Should().BeEquivalentTo(expectedPaged, opt => opt.WithStrictOrdering());
+            }
+        }
+
+        [Fact]
+        public void ApplyDefaultOrderByTest()
+        {
+            using (var provider = BuildProvider())
+            {
+                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var pagingParams = new OltPagingParams { Page = 1, Size = 25 };
+
+                var obj1Values = AdapterObject1.FakerList(56);
+
+                var obj2Result = adapterResolver.ApplyDefaultOrderBy<AdapterObject1, AdapterObject2>(obj1Values.AsQueryable()).ToList();
+                obj2Result.Should().BeEquivalentTo(obj1Values.OrderBy(p => p.FirstName).ThenBy(p => p.LastName), opt => opt.WithStrictOrdering());
             }
         }
 
