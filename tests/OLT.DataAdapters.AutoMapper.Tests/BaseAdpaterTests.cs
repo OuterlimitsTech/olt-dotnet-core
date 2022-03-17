@@ -8,7 +8,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 {
     public abstract class BaseAdpaterTests
     {
-        private List<Profile> DefaultMaps = new List<Profile> { new TestMaps(), new AdapterObject4PagedMap() };
+        private readonly List<Profile> DefaultMaps = new List<Profile> { new AutoMapperMaps(), new AdapterObject4PagedMap() };
 
         protected void RegisterMaps(IServiceCollection services, List<Profile> maps)
         {

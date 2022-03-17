@@ -1,16 +1,15 @@
 ﻿using OLT.Core;
+using OLT.DataAdapters.Tests.Assets.Models;
 using System.Collections.Generic;
 
-namespace OLT.DataAdapters.Tests.Assets.Models
+namespace OLT.DataAdapters.Tests.ProjectToTests.Models
 {
-
-    public class AdapterObject2
+    public class QueryableAdapterObject2 : BaseAdapterObject2
     {
-        public OltPersonName Name { get; set; }
 
-        public static AdapterObject2 FakerData()
+        public static QueryableAdapterObject2 FakerData()
         {
-            var result = new AdapterObject2
+            var result = new QueryableAdapterObject2
             {
                 Name = new OltPersonName
                 {
@@ -23,9 +22,9 @@ namespace OLT.DataAdapters.Tests.Assets.Models
             return result;
         }
 
-        public static List<AdapterObject2> FakerList(int number)
+        public static List<QueryableAdapterObject2> FakerList(int number)
         {
-            var list = new List<AdapterObject2>();
+            var list = new List<QueryableAdapterObject2>();
             for (int i = 0; i < number; i++)
             {
                 var item = FakerData();
@@ -34,4 +33,5 @@ namespace OLT.DataAdapters.Tests.Assets.Models
             return list;
         }
     }
+
 }

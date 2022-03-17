@@ -1,8 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OLT.Core;
 using OLT.DataAdapters.Tests.Assets.Models;
 using OLT.DataAdapters.Tests.ProjectToTests.Adapters;
+using OLT.DataAdapters.Tests.ProjectToTests.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         protected ServiceProvider BuildProvider()
         {
             var services = new ServiceCollection();
+            services.AddLogging(config => config.AddConsole());
             services.AddSingleton<IOltAdapterResolver, OltAdapterResolver>();
             services.AddSingleton<IOltAdapter, AdapterObject1ToAdapterObject2QueryableAdapter>();
             services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject3QueryableAdapter>();
@@ -34,11 +37,11 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
                 var adapterResolver = provider.GetService<IOltAdapterResolver>();
                 var adapter = new AdapterObject1ToAdapterObject2QueryableAdapter();
 
-                Assert.Throws<NotImplementedException>(() => adapter.Map(AdapterObject1.FakerData(), new AdapterObject2()));
-                Assert.Throws<NotImplementedException>(() => adapterResolver.Map<AdapterObject1, AdapterObject2>(AdapterObject1.FakerData(), new AdapterObject2()));
+                Assert.Throws<NotImplementedException>(() => adapter.Map(QueryableAdapterObject1.FakerData(), new QueryableAdapterObject2()));
+                Assert.Throws<NotImplementedException>(() => adapterResolver.Map<QueryableAdapterObject1, QueryableAdapterObject2>(QueryableAdapterObject1.FakerData(), new QueryableAdapterObject2()));
 
-                Assert.Throws<NotImplementedException>(() => adapter.Map(AdapterObject2.FakerData(), new AdapterObject1()));
-                Assert.Throws<NotImplementedException>(() => adapterResolver.Map<AdapterObject2, AdapterObject1>(AdapterObject2.FakerData(), new AdapterObject1()));
+                Assert.Throws<NotImplementedException>(() => adapter.Map(QueryableAdapterObject2.FakerData(), new QueryableAdapterObject1()));
+                Assert.Throws<NotImplementedException>(() => adapterResolver.Map<QueryableAdapterObject2, QueryableAdapterObject1>(QueryableAdapterObject2.FakerData(), new QueryableAdapterObject1()));
             }
         }
 
@@ -50,10 +53,10 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
             {
                 var adapterResolver = provider.GetService<IOltAdapterResolver>();
                 var adapter = new AdapterObject1ToAdapterObject2QueryableAdapter();
-                var queryableObj1 = AdapterObject1.FakerList(3).AsQueryable();
+                var queryableObj1 = QueryableAdapterObject1.FakerList(3).AsQueryable();
 
                 var obj2Result = adapter.Map(queryableObj1).ToList(); 
-                adapterResolver.ProjectTo<AdapterObject1, AdapterObject2>(queryableObj1).Should().BeEquivalentTo(obj2Result);
+                adapterResolver.ProjectTo<QueryableAdapterObject1, QueryableAdapterObject2>(queryableObj1).Should().BeEquivalentTo(obj2Result);
 
             }
         }

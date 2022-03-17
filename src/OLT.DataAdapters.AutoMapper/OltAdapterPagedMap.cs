@@ -17,11 +17,11 @@ namespace OLT.Core
         {            
             var mapping = CreateMap<TEntity, TModel>();
             BuildMap(mapping);
-            mapping.BeforeMap(new OltBeforeMapOrderBy<TEntity, TModel>(DefaultOrderBy));
+            OltAutomapperExtensions.WithOrderBy(mapping, DefaultOrderBy);
         }
 
         public abstract void BuildMap(IMappingExpression<TEntity, TModel> mappingExpression);
-        public abstract IQueryable<TEntity> DefaultOrderBy(IQueryable<TEntity> queryable);
+        public abstract IOrderedQueryable<TEntity> DefaultOrderBy(IQueryable<TEntity> queryable);
 
         #region [ Dispose ]
 

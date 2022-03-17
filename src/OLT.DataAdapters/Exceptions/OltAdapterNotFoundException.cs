@@ -4,6 +4,7 @@ using System.Security.Permissions;
 
 namespace OLT.Core
 {
+
     [Serializable]
     public class OltAdapterNotFoundException : OltException
     {

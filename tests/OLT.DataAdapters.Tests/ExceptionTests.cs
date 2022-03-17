@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.DataAdapters.Tests.Assets.Models;
+using OLT.DataAdapters.Tests.ProjectToTests.Models;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Xunit;
@@ -27,13 +28,13 @@ namespace OLT.DataAdapters.Tests
             Assert.Equal($"Adapter Not Found {DefaultMessage}", ex.Message);
             var result = ToSerialize(ex);
             Assert.Equal(ex.Message, result.Message);
-        }
+        }   
 
         [Fact]
         public void AdapterNotFoundExceptionTyped()
         {
-            var ex = new OltAdapterNotFoundException<AdapterObject1, AdapterObject2>();
-            Assert.Equal($"Adapter Not Found {typeof(AdapterObject1).FullName} -> {typeof(AdapterObject2).FullName}", ex.Message);
+            var ex = new OltAdapterNotFoundException<QueryableAdapterObject1, QueryableAdapterObject2>();
+            Assert.Equal($"Adapter Not Found {typeof(QueryableAdapterObject1).FullName} -> {typeof(QueryableAdapterObject2).FullName}", ex.Message);
             var result = ToSerialize(ex);
             Assert.Equal(ex.Message, result.Message);
         }

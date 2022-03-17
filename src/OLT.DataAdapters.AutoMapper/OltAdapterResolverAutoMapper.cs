@@ -43,83 +43,30 @@ namespace OLT.Core
             return HasAutoMap<TSource, TDestination>() || base.CanProjectTo<TSource, TDestination>();
         }
 
-        public override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source)
+        public override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction = null)
         {
+
             if (HasAutoMap<TSource, TDestination>())
             {
+                var config = new OltAdapterActionConfig();
+                configAction?.Invoke(config);
+
                 try
                 {
-                    source = ApplyBeforeMaps<TSource, TDestination>(source);
-                    return ApplyAfterMaps<TSource, TDestination>(source.ProjectTo<TDestination>(Mapper.ConfigurationProvider));
+                    source = config.DisableBeforeMap ? source : ApplyBeforeMaps<TSource, TDestination>(source);
+                    var mapped = source.ProjectTo<TDestination>(Mapper.ConfigurationProvider);
+                    return config.DisableAfterMap ? mapped : ApplyAfterMaps<TSource, TDestination>(mapped);
                 }
                 catch (Exception ex)
                 {
                     throw BuildException<TSource, TDestination>(ex);
                 }
             }
-            return base.ProjectTo<TSource, TDestination>(source);
+            return base.ProjectTo<TSource, TDestination>(source, configAction);
         }
 
         #endregion
 
-        #region [ Paged ]
-
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams)
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                var mapAdapter = GetPagedAdapterMap<TSource, TDestination>(true);
-                Func<IQueryable<TSource>, IQueryable<TSource>> orderBy = orderByQueryable => orderByQueryable.OrderBy(null, mapAdapter.DefaultOrderBy);
-                return this.ProjectTo<TSource, TDestination>(source, pagingParams, orderBy);
-            }
-
-            return base.ProjectTo<TSource, TDestination>(source, pagingParams);
-        }
-
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        public override IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy)
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                try
-                {
-                    return ApplyAfterMaps<TSource, TDestination>(source.OrderBy(null, orderBy).ProjectTo<TDestination>(Mapper.ConfigurationProvider)).ToPaged(pagingParams);
-                }
-                catch (Exception ex)
-                {
-                    throw BuildException<TSource, TDestination>(ex);
-                }
-            }
-            return base.ProjectTo<TSource, TDestination>(source, pagingParams, orderBy);
-        }
-
-
-        [Obsolete("Move to BeforeMap or AfterMap")]
-        public override bool CanMapPaged<TSource, TDestination>()
-        {
-            if (HasAutoMap<TSource, TDestination>())
-            {
-                return GetPagedAdapterMap<TSource, TDestination>(false) != null;
-            }
-            return base.CanMapPaged<TSource, TDestination>();
-        }
-
-
-        protected virtual IOltAdapterPagedMap<TSource, TDestination> GetPagedAdapterMap<TSource, TDestination>(bool throwException)
-        {
-            var adapterName = GetAdapterName<TSource, TDestination>();
-            var adapter = GetAdapter(adapterName, false);
-            var mapAdapter = adapter as IOltAdapterPagedMap<TSource, TDestination>;
-            if (mapAdapter == null && throwException)
-            {
-                throw new OltAdapterNotFoundException($"{adapterName} Paged");
-            }
-            return mapAdapter;
-        }
-
-  
-        #endregion
 
         #region [ Maps ]
 

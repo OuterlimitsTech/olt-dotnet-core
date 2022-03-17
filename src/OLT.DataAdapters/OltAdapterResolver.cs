@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
+
     public class OltAdapterResolver : OltDisposable, IOltAdapterResolver
     {
 
@@ -21,22 +22,34 @@ namespace OLT.Core
             return OltAdapterExtensions.BuildAdapterName<TSource, TDestination>();
         }
 
-        #region [ Before & After Maps ]
-
-        public virtual IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable)
+        public IQueryable<TSource> ApplyDefaultOrderBy<TSource, TDestination>(IQueryable<TSource> queryable)
         {
-            return OltAdapterMapConfigs.ApplyBeforeMaps<TSource, TDestination>(queryable);
+            var pagedAdapter = GetPagedAdapter<TSource, TDestination>();
+            if (pagedAdapter != null)
+            {
+                return pagedAdapter.DefaultOrderBy(queryable);
+            }
+            return ApplyBeforeMaps<TSource, TDestination>(queryable);
         }
 
-        public virtual IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable)
+
+        #region [ Before & After Maps ]
+                
+        protected virtual IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable)
         {
-            return OltAdapterMapConfigs.ApplyAfterMaps<TSource, TDestination>(queryable);
+            return OltAdapterMapConfigs.BeforeMap.Apply<TSource, TDestination>(queryable);
+        }
+
+        protected virtual IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable)
+        {
+            return OltAdapterMapConfigs.AfterMap.Apply<TSource, TDestination>(queryable);
         }
 
         #endregion
 
 
         #region [ ProjectTo ]
+
 
         public virtual bool CanProjectTo<TSource, TDestination>()
         {
@@ -49,57 +62,37 @@ namespace OLT.Core
             return false;
         }
 
-        
-        public virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source) 
+        public virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction = null)
         {
             var name = GetAdapterName<TSource, TDestination>();
             var adapter = GetAdapter(name, false);
-            return ProjectTo<TSource, TDestination>(source, adapter);
+            return ProjectTo<TSource, TDestination>(source, configAction, adapter);
         }
 
-
-        protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltAdapter adapter)
+        protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction, IOltAdapter adapter)
         {
             if (adapter is IOltAdapterQueryable<TSource, TDestination> queryableAdapter)
             {
-                source = ApplyBeforeMaps<TSource, TDestination>(source);
-                return ApplyAfterMaps<TSource, TDestination>(queryableAdapter.Map(source));
+                var config = new OltAdapterActionConfig();
+                configAction?.Invoke(config);
+
+                source = config.DisableBeforeMap ? source : ApplyBeforeMaps<TSource, TDestination>(source);
+                var mapped = queryableAdapter.Map(source);
+                return config.DisableAfterMap ? mapped : ApplyAfterMaps<TSource, TDestination>(mapped);
             }
+
             throw new OltAdapterNotFoundException(GetAdapterName<TSource, TDestination>());
         }
 
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        public virtual IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams)
-            where TSource : class
-        {
-            var adapter = GetPagedAdapter<TSource, TDestination>(true);
-            return adapter.Map(source, pagingParams);
-        }
+        #endregion
 
-        [Obsolete("Move to Extension with BeforeMap or AfterMap for DefaultOrderBy")]
-        public virtual IOltPaged<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, IOltPagingParams pagingParams, Func<IQueryable<TSource>, IQueryable<TSource>> orderBy) 
-            where TSource : class
-        {
-            var adapter = GetPagedAdapter<TSource, TDestination>(true);
-            return adapter.Map(source, pagingParams, orderBy);
-        }
+        #region [ Paged ]
 
-        [Obsolete("Move to BeforeMap or AfterMap")]
-        public virtual bool CanMapPaged<TSource, TDestination>()
-        {
-            return GetPagedAdapter<TSource, TDestination>(false) != null;
-        }
-
-        [Obsolete("Move to BeforeMap or AfterMap")]
-        protected virtual IOltAdapterPaged<TSource, TDestination> GetPagedAdapter<TSource, TDestination>(bool throwException = true)
+        protected virtual IOltAdapterPaged<TSource, TDestination> GetPagedAdapter<TSource, TDestination>()
         {
             var adapterName = GetAdapterName<TSource, TDestination>();
-            var adapter = GetAdapter(adapterName, throwException);
+            var adapter = GetAdapter(adapterName, false);
             var pagedAdapter = adapter as IOltAdapterPaged<TSource, TDestination>;
-            if (pagedAdapter == null && throwException)
-            {
-                throw new OltAdapterNotFoundException($"{adapterName} Paged");
-            }
             return pagedAdapter;
         }
 
@@ -153,6 +146,8 @@ namespace OLT.Core
             }
             return adapter;
         }
+
+
 
 
         #endregion

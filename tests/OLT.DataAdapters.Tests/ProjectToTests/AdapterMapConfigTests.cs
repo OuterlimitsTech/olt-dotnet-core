@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.DataAdapters.Tests.Assets.Models;
 using OLT.DataAdapters.Tests.ProjectToTests.Adapters;
+using OLT.DataAdapters.Tests.ProjectToTests.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +19,20 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         [Fact]
         public void BeforeMapTests()
         {
-            const string value = "S";
-            var list = AdapterObject3.FakerList(300);
+            var list = QueryableAdapterObject3.FakerList(300);
 
-            OltAdapterMapConfigs.BeforeMap.Register<AdapterObject3, AdapterObject4>(new AdapterObject3ToAdapterObject4BeforeMap(value));
-            OltAdapterMapConfigs.BeforeMap.Register<AdapterObject3, AdapterObject4>(new OltBeforeMapOrderBy<AdapterObject3, AdapterObject4>(e => e.OrderBy(p => p.First).ThenByDescending(p => p.Last)));
 
-            var query = OltAdapterMapConfigs.ApplyBeforeMaps<AdapterObject3, AdapterObject4>(list.AsQueryable());
+            var orderByFunc = new OltBeforeMapOrderBy<QueryableAdapterObject3, QueryableAdapterObject4>(e => e.OrderBy(p => p.First).ThenByDescending(p => p.Last));
+            Assert.True(OltAdapterMapConfigs.BeforeMap.Register<QueryableAdapterObject3, QueryableAdapterObject4>(orderByFunc, false));
+            Assert.Throws<OltAdapterMapConfigExistsException<QueryableAdapterObject3, QueryableAdapterObject4>>(() => OltAdapterMapConfigs.BeforeMap.Register<QueryableAdapterObject3, QueryableAdapterObject4>(new AdapterObject3ToAdapterObject4BeforeMap(), true));
 
-            query.Should().BeEquivalentTo(list.OrderBy(p => p.First).ThenByDescending(p => p.Last).Where(p => p.Last.Contains(value)), opt => opt.WithStrictOrdering());
+            var query = OltAdapterMapConfigs.BeforeMap.Apply<QueryableAdapterObject3, QueryableAdapterObject4>(list.AsQueryable());
 
-            var mapped = query.Select(s => new AdapterObject4 { First = s.First, Last = s.Last }).ToList();
-            var results = OltAdapterMapConfigs.ApplyAfterMaps<AdapterObject3, AdapterObject4>(mapped.AsQueryable()).ToList();
-            var expected = mapped.OrderBy(p => p.First).ThenByDescending(p => p.Last).Where(p => p.Last.Contains(value));
+            query.Should().BeEquivalentTo(list.OrderBy(p => p.First).ThenByDescending(p => p.Last), opt => opt.WithStrictOrdering());
+
+            var mapped = query.Select(s => new QueryableAdapterObject4 { First = s.First, Last = s.Last }).ToList();
+            var results = OltAdapterMapConfigs.AfterMap.Apply<QueryableAdapterObject3, QueryableAdapterObject4>(mapped.AsQueryable()).ToList();
+            var expected = mapped.OrderBy(p => p.First).ThenByDescending(p => p.Last).ToList();
 
             results.Should().BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
         }
@@ -38,19 +40,19 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         [Fact]
         public void AfterMapTests()
         {
-            const string value = "A";
-            var list = AdapterObject3.FakerList(300);
+            var list = QueryableAdapterObject3.FakerList(300);
 
-            OltAdapterMapConfigs.AfterMap.Register<AdapterObject3, AdapterObject5>(new AdapterObject3ToAdapterObject5AfterMap(value));
-            OltAdapterMapConfigs.AfterMap.Register<AdapterObject3, AdapterObject5>(new OltAfterMapOrderBy<AdapterObject3, AdapterObject5>(e => e.OrderBy(p => p.LastName).ThenByDescending(p => p.FirstName)));
+            var orderByAfterMap = new OltAfterMapOrderBy<QueryableAdapterObject3, QueryableAdapterObject5>(e => e.OrderBy(p => p.LastName).ThenByDescending(p => p.FirstName));
+            Assert.True(OltAdapterMapConfigs.AfterMap.Register<QueryableAdapterObject3, QueryableAdapterObject5>(orderByAfterMap, false));
+            Assert.Throws<OltAdapterMapConfigExistsException<QueryableAdapterObject3, QueryableAdapterObject5>>(() => OltAdapterMapConfigs.AfterMap.Register<QueryableAdapterObject3, QueryableAdapterObject5>(new AdapterObject3ToAdapterObject5AfterMap(), true));
 
-            var query = OltAdapterMapConfigs.ApplyBeforeMaps<AdapterObject3, AdapterObject1>(list.AsQueryable());
+            var query = OltAdapterMapConfigs.BeforeMap.Apply<QueryableAdapterObject3, QueryableAdapterObject1>(list.AsQueryable());
             query.Should().BeEquivalentTo(list);
 
-            var mapped = query.Select(s => new AdapterObject5 { FirstName = s.First, LastName = s.Last }).ToList();
-            var results = OltAdapterMapConfigs.ApplyAfterMaps<AdapterObject3, AdapterObject5>(mapped.AsQueryable()).ToList();
+            var mapped = query.Select(s => new QueryableAdapterObject5 { FirstName = s.First, LastName = s.Last }).ToList();
+            var results = OltAdapterMapConfigs.AfterMap.Apply<QueryableAdapterObject3, QueryableAdapterObject5>(mapped.AsQueryable()).ToList();
 
-            var expected = mapped.OrderBy(p => p.LastName).ThenByDescending(p => p.FirstName).Where(p => p.FirstName.Contains(value));
+            var expected = mapped.OrderBy(p => p.LastName).ThenByDescending(p => p.FirstName).ToList();
             results.Should().BeEquivalentTo(expected, opt => opt.WithStrictOrdering());
         }
 
@@ -58,20 +60,20 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         public void BeforeMapExtensionTests()
         {
             AdapterObject3ToAdapterObject6QueryableAdapter adapter = null;
-            IOltBeforeMap<AdapterObject3, AdapterObject6> beforeMap = null;
-            Func<IQueryable<AdapterObject3>, IQueryable<AdapterObject3>> func = null;
+            IOltBeforeMap<QueryableAdapterObject3, QueryableAdapterObject6> beforeMap = null;
+            Func<IQueryable<QueryableAdapterObject3>, IOrderedQueryable<QueryableAdapterObject3>> func = null;
 
             Assert.Throws<ArgumentNullException>(nameof(beforeMap), () => OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), beforeMap));
-            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));
+            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));            
 
-            var orderBy = new OltBeforeMapOrderBy<AdapterObject3, AdapterObject6>(p => p.OrderBy(t => t.First));
+            var orderBy = new OltBeforeMapOrderBy<QueryableAdapterObject3, QueryableAdapterObject6>(p => p.OrderBy(t => t.First));
 
-            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.BeforeMap(adapter, p => p.OrderBy(p => p.Last)));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.WithOrderBy(adapter, p => p.OrderBy(p => p.Last)));
             Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.BeforeMap(adapter, orderBy));
 
             try
             {
-                OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.Last));
+                OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.Last));
                 OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), orderBy);
                 Assert.True(true);
             }
@@ -85,22 +87,21 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         public void AfterMapExtensionTests()
         {
             AdapterObject3ToAdapterObject6QueryableAdapter adapter = null;
-            IOltAfterMap<AdapterObject3, AdapterObject6> afterMap = null;
-            Func<IQueryable<AdapterObject6>, IQueryable<AdapterObject6>> func = null;
+            IOltAfterMap<QueryableAdapterObject3, QueryableAdapterObject6> afterMap = null;
+            Func<IQueryable<QueryableAdapterObject6>, IOrderedQueryable<QueryableAdapterObject6>> func = null;
 
             Assert.Throws<ArgumentNullException>(nameof(afterMap), () => OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), afterMap));
-            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));
+            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));
 
-            var orderBy = new OltAfterMapOrderBy<AdapterObject3, AdapterObject6>(p => p.OrderBy(t => t.FirstName));
+            var orderBy = new OltAfterMapOrderBy<QueryableAdapterObject3, QueryableAdapterObject6>(p => p.OrderBy(t => t.FirstName));
 
-            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.AfterMap(adapter, p => p.OrderBy(p => p.LastName)));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.WithOrderBy(adapter, p => p.OrderBy(p => p.LastName)));
             Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.AfterMap(adapter, orderBy));
 
             try
             {
-                OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.LastName));
+                OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), p => p.OrderBy(p => p.LastName));
                 OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), orderBy);
-                Assert.True(true);
             }
             catch
             {

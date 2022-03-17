@@ -1,71 +1,96 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OLT.Core
 {
     public static class OltAdapterMapConfigs 
-    {
-        private static readonly List<IOltAdapterMapConfig> _mapConfigs = new List<IOltAdapterMapConfig>();
-
-
-        public static IQueryable<TSource> ApplyBeforeMaps<TSource, TDestination>(IQueryable<TSource> queryable)
-        {
-            var name = OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>();
-            _mapConfigs.Where(p => p.Name == name)
-                .ToList()
-                .ForEach(item =>
-                {
-                    if (item is IOltBeforeMap<TSource, TDestination> beforeMap)
-                    {
-                        queryable = beforeMap.BeforeMap(queryable);
-                    }
-                });
-
-            return queryable;
-        }
-
-
-        public static IQueryable<TDestination> ApplyAfterMaps<TSource, TDestination>(IQueryable<TDestination> queryable)
-        {
-            var name = OltAdapterExtensions.BuildAfterMapName<TSource, TDestination>();
-            _mapConfigs.Where(p => p.Name == name)
-                .ToList()
-                .ForEach(item =>
-                {
-                    if (item is IOltAfterMap<TSource, TDestination> afterMap)
-                    {
-                        queryable = afterMap.AfterMap(queryable);
-                    }
-                });
-
-            return queryable;
-        }
+    {       
 
         public static class BeforeMap
         {
-            public static void Register<TSource, TDestination>(IOltBeforeMap<TSource, TDestination> afterMap)
+            private static readonly ConcurrentDictionary<string, IOltAdapterMapConfig> _mapConfigs = new ConcurrentDictionary<string, IOltAdapterMapConfig>();
+                        
+            public static bool IsRegistered<TSource, TDestination>()
             {
-                _mapConfigs.Add(afterMap);
+                var name = OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>();
+                return _mapConfigs.ContainsKey(name);
             }
 
-            public static void Register<TSource, TDestination>(Func<IQueryable<TSource>, IQueryable<TSource>> func)
+            public static IQueryable<TSource> Apply<TSource, TDestination>(IQueryable<TSource> queryable)
             {
-                _mapConfigs.Add(new OltBeforeMapOrderBy<TSource, TDestination>(func));
+                if (IsRegistered<TSource, TDestination>())
+                {
+                    var name = OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>();
+                    queryable = (_mapConfigs[name] as IOltBeforeMap<TSource, TDestination>).BeforeMap(queryable);
+                }
+                return queryable;
             }
+
+            public static bool Register<TSource, TDestination>(IOltBeforeMap<TSource, TDestination> configMap, bool throwException)
+            {
+                var name = OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>();
+                if (!_mapConfigs.ContainsKey(name))
+                {
+                    return _mapConfigs.TryAdd(name, configMap);                    
+                }
+
+                if (throwException)
+                {
+                    throw new OltAdapterMapConfigExistsException<TSource, TDestination>(configMap);
+                }
+
+                return false;   
+            }
+
+            public static bool Register<TSource, TDestination>(Func<IQueryable<TSource>, IOrderedQueryable<TSource>> func, bool throwException)
+            {
+                return Register(new OltBeforeMapOrderBy<TSource, TDestination>(func), throwException);
+            }           
+
 
         }
 
         public static class AfterMap
         {
-            public static void Register<TSource, TDestination>(IOltAfterMap<TSource, TDestination> afterMap)
+            private static readonly ConcurrentDictionary<string, IOltAdapterMapConfig> _mapConfigs = new ConcurrentDictionary<string, IOltAdapterMapConfig>();
+
+            public static bool IsRegistered<TSource, TDestination>()
             {
-                _mapConfigs.Add(afterMap);
+                var name = OltAdapterExtensions.BuildAfterMapName<TSource, TDestination>();
+                return _mapConfigs.ContainsKey(name);
             }
 
-            public static void Register<TSource, TDestination>(Func<IQueryable<TDestination>, IQueryable<TDestination>> func)
+            public static IQueryable<TDestination> Apply<TSource, TDestination>(IQueryable<TDestination> queryable)
+            {                
+                if (IsRegistered<TSource, TDestination>())
+                {
+                    var name = OltAdapterExtensions.BuildAfterMapName<TSource, TDestination>();
+                    queryable = (_mapConfigs[name] as IOltAfterMap<TSource, TDestination>).AfterMap(queryable);
+                }                
+                return queryable;
+            }
+
+            public static bool Register<TSource, TDestination>(IOltAfterMap<TSource, TDestination> configMap, bool throwException)
             {
-                _mapConfigs.Add(new OltAfterMapOrderBy<TSource, TDestination>(func));
+                var name = OltAdapterExtensions.BuildAfterMapName<TSource, TDestination>();
+                if (!_mapConfigs.ContainsKey(name))
+                {
+                    return _mapConfigs.TryAdd(name, configMap);
+                }
+
+                if (throwException)
+                {
+                    throw new OltAdapterMapConfigExistsException<TSource, TDestination>(configMap);
+                }
+
+                return false;                
+            }
+
+            public static bool Register<TSource, TDestination>(Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func, bool throwException)
+            {
+                return Register(new OltAfterMapOrderBy<TSource, TDestination>(func), throwException);
             }
 
         }
