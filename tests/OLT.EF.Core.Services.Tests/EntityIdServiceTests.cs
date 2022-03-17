@@ -306,10 +306,19 @@ namespace OLT.EF.Core.Services.Tests
                     people.Add(service.Add<PersonAutoMapperPagedDto, PersonAutoMapperModel>(PersonAutoMapperModel.FakerEntity()));
                 }
                 var paged = service.GetPaged<PersonAutoMapperPagedDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams, orderBy => orderBy.OrderBy(p => p.NameFirst).ThenBy(p => p.NameLast).ThenBy(p => p.Id));
-                paged.Should().BeEquivalentTo(people.OrderBy(p => p.First).ThenBy(p => p.Last).ThenBy(p => p.PersonId).AsQueryable().ToPaged(pagedParams), opt => opt.WithStrictOrdering());
+                paged.Should().BeEquivalentTo(people.OrderBy(p => p.First).ThenBy(p => p.Last).ThenBy(p => p.PersonId).AsQueryable().ToPaged(pagedParams), opt => opt.WithStrictOrdering());                
             }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonUniqueIdService>();
+                Assert.Throws<OltAdapterNotFoundException>(() => service.GetPaged<UserDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams, orderBy => orderBy.OrderBy(p => p.NameFirst).ThenBy(p => p.NameLast).ThenBy(p => p.Id)));
+                await Assert.ThrowsAsync<OltAdapterNotFoundException>(() => service.GetPagedAsync<UserDto>(new OltSearcherGetAll<PersonEntity>(), pagedParams, orderBy => orderBy.OrderBy(p => p.NameFirst).ThenBy(p => p.NameLast).ThenBy(p => p.Id)));
+            }
+
+
         }
-        
+
 
         [Fact]
         public async Task GetByIdSearcher()
