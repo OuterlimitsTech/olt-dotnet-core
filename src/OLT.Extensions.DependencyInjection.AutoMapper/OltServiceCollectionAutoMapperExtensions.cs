@@ -16,6 +16,11 @@ namespace OLT.Core
 
         public static IServiceCollection AddOltInjectionAutoMapper(this IServiceCollection services, Assembly includeAssemblyScan)
         {
+            if (includeAssemblyScan == null)
+            {
+                throw new ArgumentNullException(nameof(includeAssemblyScan));
+            }
+
             return services.AddOltInjectionAutoMapper(new List<Assembly> { includeAssemblyScan });
         }
 

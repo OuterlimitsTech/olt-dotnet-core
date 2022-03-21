@@ -17,10 +17,10 @@ namespace OLT.Extensions.DependencyInjection.AutoMapper.Tests
             List<Assembly> nullList = null;
 
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null));
-            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullRef));
+            Assert.Throws<ArgumentNullException>("includeAssemblyScan", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullRef));
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullList));
 
-            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, nullRef));
+            Assert.Throws<ArgumentNullException>("includeAssemblyScan", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, nullRef));
 
             try
             {
