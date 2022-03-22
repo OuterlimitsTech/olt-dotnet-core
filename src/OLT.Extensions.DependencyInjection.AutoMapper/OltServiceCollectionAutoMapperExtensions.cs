@@ -11,7 +11,7 @@ namespace OLT.Core
     {
         public static IServiceCollection AddOltInjectionAutoMapper(this IServiceCollection services)
         {
-            return services.AddOltInjectionAutoMapper(new List<Assembly>());
+            return AddOltInjectionAutoMapper(services, new List<Assembly>(), null);
         }
 
         public static IServiceCollection AddOltInjectionAutoMapper(this IServiceCollection services, Assembly includeAssemblyScan)
@@ -21,12 +21,12 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(includeAssemblyScan));
             }
 
-            return services.AddOltInjectionAutoMapper(new List<Assembly> { includeAssemblyScan });
+            return AddOltInjectionAutoMapper(services, new List<Assembly> { includeAssemblyScan }, null);
         }
 
         public static IServiceCollection AddOltInjectionAutoMapper(this IServiceCollection services,  List<Assembly> includeAssembliesScan)
         {
-            return services.AddOltInjectionAutoMapper(includeAssembliesScan, null);
+            return AddOltInjectionAutoMapper(services, includeAssembliesScan, null);
         }
 
         public static IServiceCollection AddOltInjectionAutoMapper(this IServiceCollection services, List<Assembly> includeAssembliesScan, Action<IMapperConfigurationExpression> configAction, ServiceLifetime serviceLifetime = ServiceLifetime.Transient)
