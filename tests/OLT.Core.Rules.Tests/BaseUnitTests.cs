@@ -11,6 +11,7 @@ namespace OLT.Core.Rules.Tests
             var services = new ServiceCollection();
             services.AddScoped<IOltRule, TestRuleFailure>();
             services.AddScoped<IOltRule, TestRule>();
+            services.AddScoped<IOltRule, TestRuleValid>();
             services.AddScoped<IOltRule, TestRuleMulipleInterface>();
             services.AddScoped<IOltRuleManager, OltRuleManager>();
 

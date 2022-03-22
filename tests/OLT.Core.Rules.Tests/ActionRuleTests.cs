@@ -16,7 +16,7 @@ namespace OLT.Core.Rules.Tests
             {
                 var ruleManager = provider.GetService<IOltRuleManager>();
                 var rules = ruleManager.GetRules<ITestRule>();
-                Assert.Equal(3, rules.Count);
+                Assert.Equal(4, rules.Count);
             }
         }
 
@@ -30,9 +30,8 @@ namespace OLT.Core.Rules.Tests
                 var ruleManager = provider.GetService<IOltRuleManager>();
                 var rule = ruleManager.GetRule<ITestRuleSimpleRequest>();
                 Assert.True(rule.Execute(new SimpleRequest { ValueRequest = Faker.Name.First() }).Success);
+                Assert.Null(rule.Execute(new SimpleRequest { ValueRequest = Faker.Name.First() }) as IOltResultValidation);
                 Assert.Throws<OltRuleException>(() => rule.Execute(new SimpleRequest()));
-
-                Assert.Equal(3, ruleManager.GetRules<ITestRule>().Count);
             }
         }
 
@@ -66,27 +65,17 @@ namespace OLT.Core.Rules.Tests
             }            
         }
 
-        //[Fact]
-        //public void Failure()
-        //{
-        //    var result = UnitTestHelper.AddPerson(_personService, UnitTestHelper.CreateTestAutoMapperModel());
-        //    var rule = ruleManager.GetRule<DoSomethingRuleFailure>();
-        //    Assert.Throws<OltRuleException>(() => rule.Execute(new DoSomethingPersonRuleRequest(result)));
-        //}
+        [Fact]
+        public void ResultValid()
+        {
+            using (var provider = BuildProvider())
+            {
+                var ruleManager = provider.GetService<IOltRuleManager>();
+                var rule = ruleManager.GetRule<TestRuleValid>();
+                Assert.NotNull(rule.Execute(new SimpleRequest { ValueRequest = Faker.Name.First() }) as IOltResultValidation);
+            }
+        }
 
-        //[Fact]
-        //public void ValidationInvalid()
-        //{
-        //    var rule = ruleManager.GetRule<DoSomethingRuleIntValue>();
-        //    Assert.True(rule.Validate(new DoSomethingRuleIntRequest(_context, 5)).Invalid);
-        //}
 
-        //[Fact]
-        //public void ValidationInvalidMessages()
-        //{
-        //    var rule = ruleManager.GetRule<DoSomethingRuleIntValue>();
-        //    var result = rule.Validate(new DoSomethingRuleIntRequest(_context, 5));
-        //    Assert.True(result.Results.Any());
-        //}
     }
 }
