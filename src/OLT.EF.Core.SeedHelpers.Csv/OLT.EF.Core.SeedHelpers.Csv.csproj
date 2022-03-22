@@ -15,12 +15,4 @@
     <ProjectReference Include="..\OLT.EF.Core\OLT.EF.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
-  </ItemGroup>
-
-
 </Project>
