@@ -28,6 +28,7 @@ namespace OLT.Core.Services.Tests
         [InlineData(OltEntityMaintainable.NotSet, AttributeTest.Value2)]
         [InlineData(OltEntityMaintainable.Yes, AttributeTest.Value3)]
         [InlineData(OltEntityMaintainable.NotSet, AttributeTest.Value4)]
+        [InlineData(OltEntityMaintainable.NotSet, null)]
         public void CreateTests(OltEntityMaintainable expected, AttributeTest? value)
         {
             Assert.Equal(expected, OltMaintainableAttributeExtensions.GetMaintainable(value)?.Create);
@@ -39,6 +40,7 @@ namespace OLT.Core.Services.Tests
         [InlineData(OltEntityMaintainable.NotSet, AttributeTest.Value2)]
         [InlineData(OltEntityMaintainable.No, AttributeTest.Value3)]
         [InlineData(OltEntityMaintainable.Yes, AttributeTest.Value4)]
+        [InlineData(OltEntityMaintainable.NotSet, null)]
         public void UpdateTests(OltEntityMaintainable expected, AttributeTest? value)
         {
             Assert.Equal(expected, OltMaintainableAttributeExtensions.GetMaintainable(value)?.Update);
@@ -49,6 +51,7 @@ namespace OLT.Core.Services.Tests
         [InlineData(OltEntityMaintainable.NotSet, AttributeTest.Value2)]
         [InlineData(OltEntityMaintainable.NotSet, AttributeTest.Value3)]
         [InlineData(OltEntityMaintainable.Yes, AttributeTest.Value4)]
+        [InlineData(OltEntityMaintainable.NotSet, null)]
         public void DeleteTests(OltEntityMaintainable expected, AttributeTest? value)
         {
             Assert.Equal(expected, OltMaintainableAttributeExtensions.GetMaintainable(value)?.Delete);

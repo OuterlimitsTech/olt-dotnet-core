@@ -18,18 +18,6 @@ namespace OLT.Core
             return OltAttributeExtensions.GetAttributeInstance<MaintainableAttribute>(@enum) ?? new MaintainableAttribute();
         }
 
-        /////// <summary>
-        /////// Returns <see cref="MaintainableAttribute"/> attribute
-        /////// </summary>
-        /////// <typeparam name="TEnum"></typeparam>
-        /////// <param name="enum"></param>
-        /////// <returns></returns>
-        ////public static MaintainableAttribute GetMaintainable<TEnum>(this TEnum @enum) where TEnum : System.Enum
-        ////{
-        ////    return OltAttributeExtensions.GetAttributeInstance<MaintainableAttribute, TEnum>(@enum) ?? new MaintainableAttribute();
-        ////}
-
-
         /// <summary>
         /// Sets the <see cref="IOltEntityMaintainable"/> fields using <see cref="MaintainableAttribute"/> attribute        
         /// </summary>
