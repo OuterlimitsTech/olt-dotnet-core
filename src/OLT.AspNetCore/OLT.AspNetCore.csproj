@@ -9,10 +9,8 @@
 
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-		<PackageReference Include="Scrutor" Version="4.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -20,6 +18,5 @@
 	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
 	  <ProjectReference Include="..\OLT.Extensions.DependencyInjection\OLT.Extensions.DependencyInjection.csproj" />
 	</ItemGroup>
-
 
 </Project>
