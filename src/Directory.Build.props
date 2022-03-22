@@ -42,6 +42,7 @@
     <NoWarn>$(NoWarn);S110</NoWarn>
     <NoWarn>$(NoWarn);S2436</NoWarn>
     <NoWarn>$(NoWarn);S5332</NoWarn>
+    <NoWarn>$(NoWarn);S3925</NoWarn>
   </PropertyGroup>
 
 </Project>
