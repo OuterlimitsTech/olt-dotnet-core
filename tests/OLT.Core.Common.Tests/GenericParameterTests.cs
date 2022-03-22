@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using OLT.Core.Common.Tests.Assets;
 using System.Collections.Generic;
 using Xunit;
 
