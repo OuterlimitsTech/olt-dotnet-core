@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
-    public static partial class OltServiceCollectionExtensions
+    public static class OltServiceCollectionAspnetCoreExtensions
     {
 
         /// <summary>
@@ -33,6 +33,10 @@ namespace OLT.Core
         /// <returns></returns>
         public static IServiceCollection AddOltAspNetCore<TSettings>(this IServiceCollection services, TSettings settings, Assembly baseAssembly, Action<IMvcBuilder> action = null) where TSettings : OltAspNetAppSettings
         {
+            if (baseAssembly == null)
+            {
+                throw new ArgumentNullException(nameof(baseAssembly));
+            }
             return services.AddOltAspNetCore(settings, new List<Assembly>() { baseAssembly }, action);
         }
 
@@ -56,6 +60,11 @@ namespace OLT.Core
             if (settings == null)
             {
                 throw new ArgumentNullException(nameof(settings));
+            }
+
+            if (baseAssemblies == null)
+            {
+                baseAssemblies = new List<Assembly>();
             }
 
             baseAssemblies.Add(Assembly.GetEntryAssembly());

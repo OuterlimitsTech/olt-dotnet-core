@@ -9,7 +9,6 @@ using Xunit;
 
 namespace OLT.AspNetCore.Tests
 {
-
     public class BaseControllerTests
     {
         [Fact]
@@ -20,7 +19,6 @@ namespace OLT.AspNetCore.Tests
                 var response = await testServer.CreateRequest("/api").SendAsync("GET");
                 Assert.Equal(HttpStatusCode.OK, response.StatusCode);
             }
-
         }
 
         [Fact]

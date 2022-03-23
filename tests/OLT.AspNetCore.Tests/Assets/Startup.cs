@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OLT.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,11 @@ namespace OLT.AspNetCore.Tests.Assets
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddScoped<IOltIdentity, TestIdentity>().AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
+            services                
+                .AddSingleton<IOltHostService, OltHostAspNetCoreService>()
+                .AddScoped<IOltIdentity, OltIdentityAspNetCore>()
+                .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>())
+                .AddHttpContextAccessor();
 
             services.AddRouting();
             services.AddControllers();
@@ -31,7 +36,6 @@ namespace OLT.AspNetCore.Tests.Assets
 
         public void Configure(IApplicationBuilder app)
         {
-            //app.UseAuthentication();
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
