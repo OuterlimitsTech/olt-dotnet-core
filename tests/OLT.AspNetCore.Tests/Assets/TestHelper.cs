@@ -19,6 +19,7 @@ namespace OLT.AspNetCore.Tests.Assets
                         .AddJsonFile("appsettings.json", true, false)
                         .AddEnvironmentVariables();
                 })
+                .UseWebRoot(AppContext.BaseDirectory)
                 .UseStartup<T>();
 
             return webBuilder;

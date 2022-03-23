@@ -35,7 +35,7 @@ namespace OLT.AspNetCore.Tests.Assets
 
 
         public void Configure(IApplicationBuilder app)
-        {
+        {            
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

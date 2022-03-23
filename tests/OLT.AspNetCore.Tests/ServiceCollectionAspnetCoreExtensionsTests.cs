@@ -4,6 +4,7 @@ using OLT.AspNetCore.Tests.Assets;
 using OLT.Core;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -22,7 +23,10 @@ namespace OLT.AspNetCore.Tests
             {
                 var hostService = testServer.Services.GetService<IOltHostService>();
                 Assert.NotNull(hostService);
+                var result = hostService.ResolveRelativePath("~/test");
+                Assert.Equal(Path.Combine(AppContext.BaseDirectory, "test"), result);
                 Assert.Equal("OLT.AspNetCore.Tests", hostService.ApplicationName);
+                Assert.Equal("Production", hostService.EnvironmentName);                
             }
         }
 

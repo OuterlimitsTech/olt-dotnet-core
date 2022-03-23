@@ -23,6 +23,7 @@ namespace OLT.AspNetCore.Tests
             {
                         new object[] { new OltAspNetHostingOptions { PathBase = "/test", UseHsts = true, DisableHttpsRedirect = false, ShowExceptionDetails = true } },
                         new object[] { new OltAspNetHostingOptions { PathBase = "", UseHsts = true, DisableHttpsRedirect = false, ShowExceptionDetails = false } },
+                        new object[] { new OltAspNetHostingOptions { PathBase = " ", UseHsts = true, DisableHttpsRedirect = false, ShowExceptionDetails = true } },
                         new object[] { new OltAspNetHostingOptions { PathBase = null, UseHsts = false, DisableHttpsRedirect = true, ShowExceptionDetails = false } },
             };
 

@@ -37,19 +37,14 @@ namespace OLT.AspNetCore.Tests
 
             using (var testServer = new TestServer(TestHelper.WebHostBuilder<Startup>()))
             {
-                var value = new OltErrorHttp
-                {
-                    Message = Faker.Name.First()
-                };
-
-                var request = testServer.CreateRequest($"/api/bad-request?value={value.Message}");
+                var request = testServer.CreateRequest($"/api/throw-error");
                 var response = await request.SendAsync("GET");
-                Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+                Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
 
                 var body = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<OltErrorHttp>(body);
-                result.Should().BeEquivalentTo(value);
+                Assert.Equal("", body);
             }
+
         }
 
         [Fact]
