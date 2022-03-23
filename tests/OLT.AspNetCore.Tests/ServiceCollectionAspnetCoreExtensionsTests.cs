@@ -11,7 +11,8 @@ using Xunit;
 
 namespace OLT.AspNetCore.Tests
 {
-    public class ServiceCollectionTests
+
+    public class ServiceCollectionAspnetCoreExtensionsTests
     {
 
         [Fact]

@@ -18,6 +18,16 @@ namespace OLT.Core
         /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddCors(this IServiceCollection services, List<Assembly> assembliesToScan)
         {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (assembliesToScan == null)
+            {
+                throw new ArgumentNullException(nameof(assembliesToScan));
+            }
+
             assembliesToScan
                 .GetAllReferencedAssemblies()
                 .GetAllImplements<IOltAspNetCoreCorsPolicy>()
@@ -36,6 +46,16 @@ namespace OLT.Core
         /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddCors(this IServiceCollection services, IOltAspNetCoreCorsPolicy policy)
         {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (policy == null)
+            {
+                throw new ArgumentNullException(nameof(policy));
+            }
+
             return policy.AddCors(services);
         }
 
@@ -49,7 +69,16 @@ namespace OLT.Core
         public static IApplicationBuilder UseCors<TOptions>(this IApplicationBuilder app, TOptions options)
             where TOptions : IOltOptionsAspNetHosting
         {
-            return options.CorsPolicyName.IsNotEmpty() ? app.UseCors(options.CorsPolicyName) : app;
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+            return string.IsNullOrWhiteSpace(options.CorsPolicyName) ? app : app.UseCors(options.CorsPolicyName);
         }
     }
 }

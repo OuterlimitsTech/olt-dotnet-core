@@ -15,7 +15,7 @@ namespace OLT.Core
         public IServiceCollection AddCors(IServiceCollection services)
         {
 
-            return services; //Do Nothing
+            return services.AddCors(o => o.AddPolicy(PolicyName, builder => {  }));
         }
     }
 }

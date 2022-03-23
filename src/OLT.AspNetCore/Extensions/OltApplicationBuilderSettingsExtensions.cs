@@ -34,19 +34,6 @@ namespace OLT.Core
             return options.ShowExceptionDetails ? app.UseDeveloperExceptionPage() : app;
         }
 
-        /// <summary>
-        /// Registers middleware <seealso cref="DeveloperExceptionPageExtensions"/> using <seealso cref="IOltOptionsAspNetHosting.ShowExceptionDetails"/> 
-        /// </summary>
-        /// <typeparam name="TOptions"></typeparam>
-        /// <param name="app"><seealso cref="IApplicationBuilder"/></param>
-        /// <param name="options"><seealso cref="IOltOptionsAspNetHosting"/></param>
-        /// <param name="pageOptions"><seealso cref="DeveloperExceptionPageOptions"/></param>
-        /// <returns><seealso cref="IApplicationBuilder"/></returns>
-        public static IApplicationBuilder UseDeveloperExceptionPage<TOptions>(this IApplicationBuilder app, TOptions options, DeveloperExceptionPageOptions pageOptions)
-            where TOptions : IOltOptionsAspNetHosting
-        {
-            return options.ShowExceptionDetails ? app.UseDeveloperExceptionPage(pageOptions) : app;
-        }
 
         /// <summary>
         /// Registers middleware <seealso cref="HstsBuilderExtensions"/> using <seealso cref="IOltOptionsAspNetHosting.UseHsts"/> 
