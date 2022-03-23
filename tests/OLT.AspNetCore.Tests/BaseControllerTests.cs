@@ -9,6 +9,7 @@ using Xunit;
 
 namespace OLT.AspNetCore.Tests
 {
+
     public class BaseControllerTests
     {
         [Fact]
