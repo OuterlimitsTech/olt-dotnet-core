@@ -15,51 +15,42 @@ namespace OLT.Core
         /// Build Default AspNetCore Service and configures Dependency Injection
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="settings"></param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore<TSettings>(this IServiceCollection services, TSettings settings, Action<IMvcBuilder> action = null) where TSettings : OltAspNetAppSettings
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Action<IMvcBuilder> action = null)
         {
-            return services.AddOltAspNetCore(settings, new List<Assembly>(), action);
+            return AddOltAspNetCore(services, new List<Assembly>(), action);
         }
 
         /// <summary>
         /// Build Default AspNetCore Service and configures Dependency Injection
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="settings"></param>
         /// <param name="baseAssembly">Assembly to include in scan for interfaces</param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore<TSettings>(this IServiceCollection services, TSettings settings, Assembly baseAssembly, Action<IMvcBuilder> action = null) where TSettings : OltAspNetAppSettings
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder> action = null)
         {
             if (baseAssembly == null)
             {
                 throw new ArgumentNullException(nameof(baseAssembly));
             }
-            return services.AddOltAspNetCore(settings, new List<Assembly>() { baseAssembly }, action);
+            return AddOltAspNetCore(services, new List<Assembly>() { baseAssembly }, action);
         }
 
         /// <summary>
         /// Build Default AspNetCore Service and configures Dependency Injection
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="settings"></param>
         /// <param name="baseAssemblies">List of assemblies to include in scan for interfaces</param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore<TSettings>(this IServiceCollection services, TSettings settings, List<Assembly> baseAssemblies, Action<IMvcBuilder> action = null)
-            where TSettings : IOltOptionsAspNet
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, Action<IMvcBuilder> action = null)
         {
 
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
-            }
-
-            if (settings == null)
-            {
-                throw new ArgumentNullException(nameof(settings));
             }
 
             if (baseAssemblies == null)
@@ -91,36 +82,33 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TOptions"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="options"><seealso cref="IOltOptionsApiVersion"/></param>
+        /// <param name="options"><seealso cref="OltOptionsApiVersion"/></param>
         /// <param name="setupVersioningAction"><seealso cref="ApiVersioningOptions"/></param>
         /// <param name="setupExplorerAction"><seealso cref="ApiExplorerOptions"/></param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
-        public static IServiceCollection AddApiVersioning<TOptions>(this IServiceCollection services, TOptions options, Action<ApiVersioningOptions> setupVersioningAction = null, Action<ApiExplorerOptions> setupExplorerAction = null)
-            where TOptions : IOltOptionsApiVersion
+        public static IServiceCollection AddApiVersioning(this IServiceCollection services, OltOptionsApiVersion options, Action<ApiVersioningOptions> setupVersioningAction = null, Action<ApiExplorerOptions> setupExplorerAction = null)
         {
-            if (options.Enabled)
-            {
-                return services
-                    .AddApiVersioning(opt =>
+            
+
+            
+            return services
+                .AddApiVersioning(opt =>
+                {
+                    opt.ApiVersionReader = ApiVersionReader.Combine(new MediaTypeApiVersionReader(options.Parameter.MediaType), new QueryStringApiVersionReader(options.Parameter.Query));
+                    opt.AssumeDefaultVersionWhenUnspecified = options.AssumeDefaultVersionWhenUnspecified;
+                    opt.DefaultApiVersion = new ApiVersion(1, 0);
+                    opt.ReportApiVersions = true;
+                    setupVersioningAction?.Invoke(opt);
+                })
+                .AddVersionedApiExplorer(
+                    opt =>
                     {
-                        opt.ApiVersionReader = new QueryStringApiVersionReader(options.ApiQueryParameterName);
-                        opt.AssumeDefaultVersionWhenUnspecified = options.AssumeDefaultVersionWhenUnspecified;
-                        opt.DefaultApiVersion = new ApiVersion(1, 0);
-                        opt.ReportApiVersions = true;
-                        setupVersioningAction?.Invoke(opt);
-                    })
-                    .AddVersionedApiExplorer(
-                        opt =>
-                        {
                             //The format of the version added to the route URL  
                             opt.GroupNameFormat = "'v'VVV";
                             //Tells swagger to replace the version in the controller route  
                             opt.SubstituteApiVersionInUrl = true;
-                            setupExplorerAction?.Invoke(opt);
-                        });
-            }
-
-            return services;
+                        setupExplorerAction?.Invoke(opt);
+                    });
         }
 
 

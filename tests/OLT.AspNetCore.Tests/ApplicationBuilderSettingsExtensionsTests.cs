@@ -55,8 +55,6 @@ namespace OLT.AspNetCore.Tests
                         OltApplicationBuilderSettingsExtensions.UseHttpsRedirection(app, options);
                         app.UseRouting();
                         app.UseEndpoints(endpoints => endpoints.MapControllers());
-                        var xyz = app.Build();
-                        var test = 1234;
                     });
                 })
                 .StartAsync();

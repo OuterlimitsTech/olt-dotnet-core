@@ -25,9 +25,9 @@ namespace OLT.Core
             return new OltInternalServerErrorObjectResult();
         }
         [NonAction]
-        public virtual OltInternalServerErrorObjectResult InternalServerError(object value)
+        public virtual OltInternalServerErrorObjectResult InternalServerError(string message)
         {
-            return new OltInternalServerErrorObjectResult(value);
+            return new OltInternalServerErrorObjectResult(message);
         }
     }
 }

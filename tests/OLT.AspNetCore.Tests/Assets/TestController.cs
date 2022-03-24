@@ -20,6 +20,12 @@ namespace OLT.AspNetCore.Tests.Assets
             return Ok(result);
         }
 
+        [HttpPost, Route("")]
+        public ActionResult Post(OltErrorHttp data)
+        {
+            return Ok(data);
+        }
+
         [HttpGet, Route("throw-error")]
         public ActionResult TestInternalServerError(string value)
         {

@@ -23,12 +23,13 @@ namespace OLT.AspNetCore.Tests.Assets
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services                
-                .AddSingleton<IOltHostService, OltHostAspNetCoreService>()
-                .AddScoped<IOltIdentity, OltIdentityAspNetCore>()
-                .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>())
-                .AddHttpContextAccessor();
+            //services                
+            //    .AddSingleton<IOltHostService, OltHostAspNetCoreService>()
+            //    .AddScoped<IOltIdentity, OltIdentityAspNetCore>()
+            //    .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>())
+            //    .AddHttpContextAccessor();
 
+            services.AddOltAspNetCore();
             services.AddRouting();
             services.AddControllers();
         }

@@ -17,7 +17,7 @@ namespace OLT.Core
         public static IApplicationBuilder UsePathBase<TOptions>(this IApplicationBuilder app, TOptions options)
             where TOptions : IOltOptionsAspNetHosting
         {
-            return options.PathBase.IsNotEmpty() ? app.UsePathBase(options.PathBase) : app;
+            return string.IsNullOrWhiteSpace(options.PathBase) ?  app : app.UsePathBase(options.PathBase);
         }
 
 

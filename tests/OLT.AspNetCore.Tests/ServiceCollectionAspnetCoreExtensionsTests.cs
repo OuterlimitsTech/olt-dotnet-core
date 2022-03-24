@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.AspNetCore.Tests.Assets;
+using OLT.Constants;
 using OLT.Core;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace OLT.AspNetCore.Tests
 
     public class ServiceCollectionAspnetCoreExtensionsTests
     {
+        private static string RunEnvironment => Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") ?? "Production";
 
         [Fact]
         public void HostServiceTests()
@@ -26,7 +28,7 @@ namespace OLT.AspNetCore.Tests
                 var result = hostService.ResolveRelativePath("~/test");
                 Assert.Equal(Path.Combine(AppContext.BaseDirectory, "test"), result);
                 Assert.Equal("OLT.AspNetCore.Tests", hostService.ApplicationName);
-                Assert.Equal("Production", hostService.EnvironmentName);                
+                Assert.Equal(RunEnvironment, hostService.EnvironmentName);                
             }
         }
 
@@ -38,6 +40,9 @@ namespace OLT.AspNetCore.Tests
                 var identity = testServer.Services.GetService<IOltIdentity>();
                 Assert.NotNull(identity);
                 Assert.True(identity.IsAnonymous);
+                var dbAuditUser = testServer.Services.GetService<IOltDbAuditUser>();
+                Assert.NotNull(dbAuditUser);
+                Assert.Null(dbAuditUser.GetDbUsername());                
             }
         }
 
@@ -45,27 +50,26 @@ namespace OLT.AspNetCore.Tests
         public void ArgumentExceptions()
         {
             var services = new ServiceCollection();
-            OltAspNetAppSettings nullSettings = null;
             Action<IMvcBuilder> nullAction = null;
             Assembly nullAssembly = null;
             List<Assembly> nullAssemblies = null;
             List<Assembly> baseAssemblies = new List<Assembly> { this.GetType().Assembly };
 
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, new OltAspNetAppSettings(), nullAction));
-            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullSettings, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, nullAction));
+            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAction));
 
 
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, new OltAspNetAppSettings(), this.GetType().Assembly, nullAction));
-            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullSettings, this.GetType().Assembly, nullAction));
-            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, new OltAspNetAppSettings(), nullAssembly, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, this.GetType().Assembly, nullAction));
+            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services,  this.GetType().Assembly, nullAction));
+            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssembly, nullAction));
 
 
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, new OltAspNetAppSettings(), baseAssemblies, nullAction));
-            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullSettings, baseAssemblies, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, baseAssemblies, nullAction));
+            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, baseAssemblies, nullAction));
             
             try
             {
-                OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, new OltAspNetAppSettings(), nullAssemblies, nullAction);
+                OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssemblies, nullAction);
                 Assert.True(true);
             }
             catch (Exception)
@@ -75,13 +79,44 @@ namespace OLT.AspNetCore.Tests
 
             try
             {
-                OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, new OltAspNetAppSettings(), baseAssemblies, action => action.AddControllersAsServices());
+                OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, baseAssemblies, action => action.AddControllersAsServices());
                 Assert.True(true);
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        [Fact]
+        public void OptionsApiVersionTests()
+        { 
+
+            Assert.Equal("api-version", OltAspNetCoreDefaults.ApiVersion.ParameterName.Query);
+            Assert.Equal("v", OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType);
+            Assert.Equal("x-api-version", OltAspNetCoreDefaults.ApiVersion.ParameterName.Header);
+
+
+            var model = new OltOptionsApiVersion();
+            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Query, model.Parameter.Query);
+            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType, model.Parameter.MediaType);
+            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Header, model.Parameter.Header);
+            Assert.True(model.AssumeDefaultVersionWhenUnspecified);
+
+            model.AssumeDefaultVersionWhenUnspecified = false;
+
+            var version = Faker.Internet.UserName();
+            model.Parameter.Query = version;
+            model.Parameter.MediaType = version;
+            model.Parameter.Header = version;
+
+            Assert.Equal(version, model.Parameter.Query);
+            Assert.Equal(version, model.Parameter.MediaType);
+            Assert.Equal(version, model.Parameter.Header);
+            Assert.False(model.AssumeDefaultVersionWhenUnspecified);
+
+
+
         }
     }
 }
