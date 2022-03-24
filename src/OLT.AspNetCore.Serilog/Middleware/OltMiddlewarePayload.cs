@@ -50,7 +50,7 @@ namespace OLT.Logging.Serilog
                 {
                     ErrorUid = uid,
                     Message = validationException.Message,
-                    Errors = validationException.Results.Select(s => s.Message)
+                    Errors = validationException.Results.Select(s => s.Message).ToList()
                 };
                 context.Response.ContentType = ContentType;
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;

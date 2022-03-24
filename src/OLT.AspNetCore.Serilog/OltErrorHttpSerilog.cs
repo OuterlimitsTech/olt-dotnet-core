@@ -12,7 +12,7 @@ namespace OLT.Logging.Serilog
 
         public string Message { get; set; }
 
-        public IEnumerable<string> Errors { get; set; } = new List<string>();
+        public List<string> Errors { get; set; } = new List<string>();
 
         public string ToJson()
         {

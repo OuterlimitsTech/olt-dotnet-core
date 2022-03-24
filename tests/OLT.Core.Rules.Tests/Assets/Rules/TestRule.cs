@@ -2,10 +2,10 @@
 
 namespace OLT.Core.Rules.Tests.Assets.Rules
 {
-    public class TestRule : OltRuleAction<SimpleRequest>, ITestRule
+    public class TestRule : OltRuleAction<SimpleRequest>, ITestRuleSimpleRequest
     {
 
-        public override IOltResult Execute(SimpleRequest request)
+        public override IOltRuleResult Execute(SimpleRequest request)
         {
             return Success;
         }

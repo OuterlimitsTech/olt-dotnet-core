@@ -1,8 +1,10 @@
-﻿namespace OLT.Core
+﻿using OLT.Constants;
+
+namespace OLT.Core
 {
     public static class OltRuleResultHelper
     {
-        public static IOltResult Success => new OltResultSuccess();
-        public static IOltResultValidation Valid => new OltResultValid();
+        public static IOltRuleResult Success => new OltRuleResultValid();
+        public static IOltRuleResult Invalid => new OltRuleResultInvalid(new OltValidationError(OltRuleDefaults.InvalidMessage));
     }
 }

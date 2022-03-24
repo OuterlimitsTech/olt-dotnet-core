@@ -29,7 +29,11 @@ namespace OLT.Core
             where TEntity : class, IOltEntityMaintainable
             where TEnum : System.Enum
         {
-            GetMaintainable(@enum).SetEntityValues(entity);
+            var value = GetMaintainable(@enum);            
+            entity.MaintAdd = value.ToBool(value.Create);            
+            entity.MaintUpdate = value.ToBool(value.Update);
+            entity.MaintDelete = value.ToBool(value.Delete);
         }
+
     }
 }

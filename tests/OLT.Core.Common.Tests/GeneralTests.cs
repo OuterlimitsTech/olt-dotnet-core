@@ -71,10 +71,6 @@ namespace OLT.Core.Common.Tests
         {
             Assert.True(new OltResultSuccess().Success);
 
-            var resultValid = new OltResultValid();
-            Assert.True(resultValid.Success);
-            Assert.False(resultValid.Invalid);
-            Assert.Empty(resultValid.Results);
 
             Assert.Throws<System.ArgumentNullException>(() => new OltResultValidation(NullString));
             Assert.Throws<System.ArgumentNullException>(() => new OltResultValidation(EmptyString));

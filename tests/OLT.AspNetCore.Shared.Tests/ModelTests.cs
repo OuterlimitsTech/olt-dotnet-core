@@ -43,30 +43,6 @@ namespace OLT.AspNetCore.Shared.Tests
 
         }
 
-        [Fact]
-        public void OptionsApiVersionTests()
-        {
 
-            Assert.Equal("api-version", OltAspNetDefaults.ApiQueryParameterName);
-
-            var model = new OltOptionsApiVersion();
-            Assert.NotNull(model as IOltOptionsApiVersion);
-            Assert.Equal(OltAspNetDefaults.ApiQueryParameterName, model.ApiQueryParameterName);
-            Assert.True(model.Enabled);
-            Assert.True(model.AssumeDefaultVersionWhenUnspecified);
-
-            model.AssumeDefaultVersionWhenUnspecified = false;
-            model.Enabled = false;
-            
-            var version = Faker.Internet.UserName();
-            model.ApiQueryParameterName = version;
-
-            Assert.Equal(version, model.ApiQueryParameterName);
-            Assert.False(model.Enabled);
-            Assert.False(model.AssumeDefaultVersionWhenUnspecified);
-
-
-
-        }
     }
 }

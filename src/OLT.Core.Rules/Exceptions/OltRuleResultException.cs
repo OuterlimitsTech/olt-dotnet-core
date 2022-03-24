@@ -5,13 +5,13 @@ using System.Security.Permissions;
 
 namespace OLT.Core
 {
-     public class OltRuleException : OltException
+    public class OltRuleException : OltException
     {
 
-        public OltRuleException(string errorMessage) : base(errorMessage)
+        public OltRuleException(string errorMessage, Exception ex = null) : base(errorMessage, ex)
         {
-            
+
         }
-        
+
     }
 }

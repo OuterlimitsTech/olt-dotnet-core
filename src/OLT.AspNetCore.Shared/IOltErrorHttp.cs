@@ -7,7 +7,6 @@ namespace OLT.Core
     public interface IOltErrorHttp
     {
         string Message { get; }
-        IEnumerable<string> Errors { get; }
-        string ToJson();
+        List<string> Errors { get; }
     }
 }
