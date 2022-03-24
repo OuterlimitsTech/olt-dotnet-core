@@ -83,19 +83,26 @@ namespace OLT.Core
         /// </summary>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="options"><seealso cref="OltOptionsApiVersion"/></param>
-        /// <param name="setupVersioningAction"><seealso cref="ApiVersioningOptions"/></param>
-        /// <param name="setupExplorerAction"><seealso cref="ApiExplorerOptions"/></param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
-        public static IServiceCollection AddApiVersioning(this IServiceCollection services, OltOptionsApiVersion options, Action<ApiVersioningOptions> setupVersioningAction = null, Action<ApiExplorerOptions> setupExplorerAction = null)
-        {   
+        public static IServiceCollection AddApiVersioning(this IServiceCollection services, OltOptionsApiVersion options)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
             return services
                 .AddApiVersioning(opt =>
                 {
                     opt.ApiVersionReader = ApiVersionReader.Combine(options.Parameter.BuildReaders());
                     opt.AssumeDefaultVersionWhenUnspecified = options.AssumeDefaultVersion;
                     opt.DefaultApiVersion = options.DefaultVersion;
-                    opt.ReportApiVersions = options.ReportVersions;
-                    setupVersioningAction?.Invoke(opt);
+                    opt.ReportApiVersions = options.ReportVersions;                    
                 })
                 .AddVersionedApiExplorer(opt =>
                 {
@@ -103,7 +110,6 @@ namespace OLT.Core
                     opt.GroupNameFormat = "'v'VVV";
                     //Tells swagger to replace the version in the controller route  
                     opt.SubstituteApiVersionInUrl = true;
-                    setupExplorerAction?.Invoke(opt);
                 });
         }        
     }

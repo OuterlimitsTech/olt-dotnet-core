@@ -55,16 +55,20 @@ namespace OLT.AspNetCore.Tests
         public void ToOltGenericParameter()
         {
             var username = Faker.Internet.UserName();
+            var username2 = Faker.Internet.UserName();
             var email = Faker.Internet.Email();
+            var email2 = Faker.Internet.Email();
             var userId = Faker.RandomNumber.Next();
 
             var formRequest = new Dictionary<string, StringValues>
             {
-                { "email", email }
+                { "email", email },
+                { "email2", email2 },
             };
             var queryRequest = new Dictionary<string, StringValues>
             {
-                { "username", username }
+                { "username", username },
+                { "username2", username2 }
             };
 
             var formCollection = new FormCollection(formRequest);
@@ -73,6 +77,7 @@ namespace OLT.AspNetCore.Tests
             var query = new QueryFeature(queryCollection);
             var routeValues = new RouteValuesFeature();
             routeValues.RouteValues.Add("userId", userId.ToString());
+            routeValues.RouteValues.Add("userId2", null);
 
             var features = new FeatureCollection();
             features.Set<IQueryFeature>(query);
@@ -83,7 +88,25 @@ namespace OLT.AspNetCore.Tests
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
 
-            results.Values.Should().ContainValues(username, email, userId.ToString());
+            results.Values.Should().ContainValues(username, username2, email, email2, userId.ToString());
+        }
+
+        [Fact]
+        public void ToOltGenericParameterEmpty()
+        {
+            OltHttpRequestExtensions.ToOltGenericParameter(new DefaultHttpContext().Request).Values.Should().BeEmpty();
+
+            var formCollection = new FormCollection(new Dictionary<string, StringValues>());
+            var form = new FormFeature(formCollection);
+            var formFeatures = new FeatureCollection();
+            formFeatures.Set<IFormFeature>(form);
+            OltHttpRequestExtensions.ToOltGenericParameter(new DefaultHttpContext(formFeatures).Request).Values.Should().BeEmpty();
+
+
+            var routeValues = new RouteValuesFeature();
+            var routeFeatures = new FeatureCollection();
+            routeFeatures.Set<IRouteValuesFeature>(routeValues);
+            OltHttpRequestExtensions.ToOltGenericParameter(new DefaultHttpContext(routeFeatures).Request).Values.Should().BeEmpty();
         }
 
         [Fact]

@@ -35,18 +35,12 @@ namespace OLT.AspNetCore.Tests
                     var response = await client.GetAsync("/api/permissions-test");
                     Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
                 }
-
-                using (var client = testServer.CreateClient())
-                {
-                    client.DefaultRequestHeaders.Add("X-API-Key", "XYZ");
-                    var response = await client.GetAsync("/api/permissions-test");
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                }
             }
+
         }
 
         [Fact]
-        public void WithInvalidRole()
+        public async Task WithInvalidRole()
         {
             var actionFilter = new RequirePermissionAttribute(SecurityPermissions.ReadOnly);
             var filters = new List<IFilterMetadata>();
@@ -57,10 +51,20 @@ namespace OLT.AspNetCore.Tests
             var authorizationFilterContext = new AuthorizationFilterContext(actionContext, filters);
             actionFilter.OnAuthorization(authorizationFilterContext);
             Assert.NotNull(authorizationFilterContext.Result as UnauthorizedResult);
+
+            using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupWithAuth>()))
+            {
+                using (var client = testServer.CreateClient())
+                {
+                    client.DefaultRequestHeaders.Add("X-API-Key", "123");
+                    var response = await client.GetAsync("/api/permissions-test");
+                    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+                }
+            }
         }
 
         [Fact]
-        public void WithValidRole()
+        public async Task WithValidRole()
         {
             var actionFilter = new RequirePermissionAttribute(SecurityPermissions.ReadOnly);
             var filters = new List<IFilterMetadata>();
@@ -71,6 +75,17 @@ namespace OLT.AspNetCore.Tests
             var authorizationFilterContext = new AuthorizationFilterContext(actionContext, filters);
             actionFilter.OnAuthorization(authorizationFilterContext);
             Assert.Null(authorizationFilterContext.Result);
+
+
+            using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupWithAuth>()))
+            {
+                using (var client = testServer.CreateClient())
+                {
+                    client.DefaultRequestHeaders.Add("X-API-Key", "XYZ");
+                    var response = await client.GetAsync("/api/permissions-test");
+                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                }
+            }
         }
 
      
