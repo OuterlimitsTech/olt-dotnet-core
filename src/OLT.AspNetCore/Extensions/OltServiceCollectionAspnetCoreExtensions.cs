@@ -70,7 +70,8 @@ namespace OLT.Core
                 .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>())
                 .AddHttpContextAccessor();
 
-            action?.Invoke(services.AddControllers());
+            var mvcBuilder = services.AddControllers();
+            action?.Invoke(mvcBuilder);
 
             return services;
         }
@@ -80,7 +81,6 @@ namespace OLT.Core
         /// <summary>
         /// Adds API version as query string and defaults to 1.0 if not present
         /// </summary>
-        /// <typeparam name="TOptions"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="options"><seealso cref="OltOptionsApiVersion"/></param>
         /// <param name="setupVersioningAction"><seealso cref="ApiVersioningOptions"/></param>

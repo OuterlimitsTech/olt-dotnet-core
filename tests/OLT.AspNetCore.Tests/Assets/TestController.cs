@@ -12,12 +12,7 @@ namespace OLT.AspNetCore.Tests.Assets
         [HttpGet, Route("")]
         public ActionResult Get()
         {
-            var result = new
-            {
-                id = 1,
-            };
-
-            return Ok(result);
+            return Ok(new { id = Faker.RandomNumber.Next() });
         }
 
         [HttpPost, Route("")]
@@ -45,6 +40,13 @@ namespace OLT.AspNetCore.Tests.Assets
                 return BadRequest();
             }
             return BadRequest(value);
+        }
+
+        [HttpGet, Route("permissions-test")]
+        [RequirePermission(SecurityPermissions.UpdateData)]
+        public ActionResult PermissionRequired()
+        {
+            return Ok(new { id = Faker.RandomNumber.Next() });
         }
     }
 }

@@ -87,36 +87,6 @@ namespace OLT.AspNetCore.Tests
             }
         }
 
-        [Fact]
-        public void OptionsApiVersionTests()
-        { 
-
-            Assert.Equal("api-version", OltAspNetCoreDefaults.ApiVersion.ParameterName.Query);
-            Assert.Equal("v", OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType);
-            Assert.Equal("x-api-version", OltAspNetCoreDefaults.ApiVersion.ParameterName.Header);
-
-
-            var model = new OltOptionsApiVersion();
-            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Query, model.Parameter.Query);
-            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType, model.Parameter.MediaType);
-            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Header, model.Parameter.Header);            ;
-            Assert.True(model.AssumeDefaultVersion);
-            model.DefaultVersion.Should().BeEquivalentTo(ApiVersion.Default);
-
-            model.AssumeDefaultVersion = false;
-
-            var version = Faker.Internet.UserName();
-            model.Parameter.Query = version;
-            model.Parameter.MediaType = version;
-            model.Parameter.Header = version;
-
-            Assert.Equal(version, model.Parameter.Query);
-            Assert.Equal(version, model.Parameter.MediaType);
-            Assert.Equal(version, model.Parameter.Header);
-            Assert.False(model.AssumeDefaultVersion);
-
-
-
-        }
+      
     }
 }

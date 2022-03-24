@@ -13,7 +13,7 @@ namespace OLT.Core
             _httpContext = httpContext;
         }
 
-        public override ClaimsPrincipal Identity => _httpContext?.HttpContext?.User;
+        public override ClaimsPrincipal Identity => _httpContext.HttpContext?.User;
 
 
     }

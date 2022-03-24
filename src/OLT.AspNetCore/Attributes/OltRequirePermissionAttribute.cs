@@ -17,27 +17,14 @@ namespace OLT.Core
 
         public virtual void OnAuthorization(AuthorizationFilterContext context)
         {
-            var principal = context.HttpContext.User;
-
-            if (principal?.Identity == null || !principal.Identity.IsAuthenticated)
-            {
-                context.Result = new UnauthorizedResult();
-                return;
+            if (context.HttpContext.User.Identity.IsAuthenticated)
+            {        
+                if (context.HttpContext.User.FindAll(ClaimTypes.Role).Any(p => RoleClaims.Contains(p.Value))) //has permission
+                {
+                    return;
+                }
             }
-
-
-            var userName = principal.FindFirst(ClaimTypes.Name)?.Value;
-
-            var roles = principal.FindAll(ClaimTypes.Role);
-            var hasPermission = roles.Any(p => RoleClaims.Contains(p.Value));
-
-            if (userName.IsNotEmpty() && hasPermission)
-            {
-                return;
-            }
-
             context.Result = new UnauthorizedResult();
-
         }
 
     }

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AspNetCore.Authentication.ApiKey;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,25 +23,64 @@ namespace OLT.AspNetCore.Tests.Assets
         protected IConfiguration Configuration { get; }
 
 
-        public void ConfigureServices(IServiceCollection services)
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            //services                
-            //    .AddSingleton<IOltHostService, OltHostAspNetCoreService>()
-            //    .AddScoped<IOltIdentity, OltIdentityAspNetCore>()
-            //    .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>())
-            //    .AddHttpContextAccessor();
-
             services.AddOltAspNetCore();
-            services.AddRouting();
-            services.AddControllers();
+            services.AddRouting();            
         }
 
 
-        public void Configure(IApplicationBuilder app)
+        public virtual void Configure(IApplicationBuilder app)
         {            
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
+
+    }
+
+
+    public class StartupWithAuth : Startup
+    {
+        public StartupWithAuth(IConfiguration configuration) : base(configuration)
+        {
+        }
+
+
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+            services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
+                .AddApiKeyInHeaderOrQueryParams(options =>
+                {
+                    options.Realm = "Unit Test";
+                    options.KeyName = "X-API-Key";
+                    options.Events = new ApiKeyEvents
+                    {
+                        OnValidateKey = context => {
+                            if (context.ApiKey.Equals("XYZ"))
+                            {
+                                context.ValidationSucceeded(new List<Claim> {  new Claim(ClaimTypes.Role, SecurityPermissions.UpdateData.GetCodeEnum() )});
+                            }
+                            else
+                            {
+                                context.ValidationFailed();
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+            
+        }
+
+
+        public override void Configure(IApplicationBuilder app)
+        {
+            app.UseRouting();
+            app.UseAuthentication();            
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
+        } 
 
     }
 }
