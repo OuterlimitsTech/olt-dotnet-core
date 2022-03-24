@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.TestHost;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.AspNetCore.Tests.Assets;
 using OLT.Constants;
@@ -56,16 +58,13 @@ namespace OLT.AspNetCore.Tests
             List<Assembly> baseAssemblies = new List<Assembly> { this.GetType().Assembly };
 
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, nullAction));
-            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAction));
-
+            
 
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, this.GetType().Assembly, nullAction));
-            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services,  this.GetType().Assembly, nullAction));
             Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssembly, nullAction));
 
 
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, baseAssemblies, nullAction));
-            Assert.Throws<ArgumentNullException>("settings", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, baseAssemblies, nullAction));
             
             try
             {
@@ -100,10 +99,11 @@ namespace OLT.AspNetCore.Tests
             var model = new OltOptionsApiVersion();
             Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Query, model.Parameter.Query);
             Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType, model.Parameter.MediaType);
-            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Header, model.Parameter.Header);
-            Assert.True(model.AssumeDefaultVersionWhenUnspecified);
+            Assert.Equal(OltAspNetCoreDefaults.ApiVersion.ParameterName.Header, model.Parameter.Header);            ;
+            Assert.True(model.AssumeDefaultVersion);
+            model.DefaultVersion.Should().BeEquivalentTo(ApiVersion.Default);
 
-            model.AssumeDefaultVersionWhenUnspecified = false;
+            model.AssumeDefaultVersion = false;
 
             var version = Faker.Internet.UserName();
             model.Parameter.Query = version;
@@ -113,7 +113,7 @@ namespace OLT.AspNetCore.Tests
             Assert.Equal(version, model.Parameter.Query);
             Assert.Equal(version, model.Parameter.MediaType);
             Assert.Equal(version, model.Parameter.Header);
-            Assert.False(model.AssumeDefaultVersionWhenUnspecified);
+            Assert.False(model.AssumeDefaultVersion);
 
 
 
