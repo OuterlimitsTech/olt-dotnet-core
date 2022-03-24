@@ -87,32 +87,24 @@ namespace OLT.Core
         /// <param name="setupExplorerAction"><seealso cref="ApiExplorerOptions"/></param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddApiVersioning(this IServiceCollection services, OltOptionsApiVersion options, Action<ApiVersioningOptions> setupVersioningAction = null, Action<ApiExplorerOptions> setupExplorerAction = null)
-        {
-            
-
-            
+        {   
             return services
                 .AddApiVersioning(opt =>
                 {
-                    opt.ApiVersionReader = ApiVersionReader.Combine(new MediaTypeApiVersionReader(options.Parameter.MediaType), new QueryStringApiVersionReader(options.Parameter.Query));
-                    opt.AssumeDefaultVersionWhenUnspecified = options.AssumeDefaultVersionWhenUnspecified;
-                    opt.DefaultApiVersion = new ApiVersion(1, 0);
-                    opt.ReportApiVersions = true;
+                    opt.ApiVersionReader = ApiVersionReader.Combine(options.Parameter.BuildReaders());
+                    opt.AssumeDefaultVersionWhenUnspecified = options.AssumeDefaultVersion;
+                    opt.DefaultApiVersion = options.DefaultVersion;
+                    opt.ReportApiVersions = options.ReportVersions;
                     setupVersioningAction?.Invoke(opt);
                 })
-                .AddVersionedApiExplorer(
-                    opt =>
-                    {
-                            //The format of the version added to the route URL  
-                            opt.GroupNameFormat = "'v'VVV";
-                            //Tells swagger to replace the version in the controller route  
-                            opt.SubstituteApiVersionInUrl = true;
-                        setupExplorerAction?.Invoke(opt);
-                    });
-        }
-
-
-
-        
+                .AddVersionedApiExplorer(opt =>
+                {
+                    //The format of the version added to the route URL  
+                    opt.GroupNameFormat = "'v'VVV";
+                    //Tells swagger to replace the version in the controller route  
+                    opt.SubstituteApiVersionInUrl = true;
+                    setupExplorerAction?.Invoke(opt);
+                });
+        }        
     }
 }

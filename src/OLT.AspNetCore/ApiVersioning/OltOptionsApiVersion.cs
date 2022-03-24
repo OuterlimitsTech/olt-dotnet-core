@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Versioning;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using OLT.Constants;
 using System.Collections.Generic;
 
@@ -13,9 +14,25 @@ namespace OLT.Core
         /// <remarks>
         /// Default true
         /// </remarks>
-        public bool AssumeDefaultVersionWhenUnspecified { get; set; } = true;
+        public virtual bool AssumeDefaultVersion { get; set; } = true;
 
-        public OltOptionsApiVersionParameter Parameter { get; set; } = new OltOptionsApiVersionParameter();
+        /// <summary>
+        /// Get/Set Default Version Number if Unspecified 
+        /// </summary>
+        /// <remarks>
+        /// Default is <see cref="ApiVersion.Default"/>
+        /// </remarks>
+        public virtual ApiVersion DefaultVersion { get; set; } = ApiVersion.Default;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// Default is true
+        /// </remarks>
+        public bool ReportVersions { get; set; } = true;
+
+        public virtual OltOptionsApiVersionParameter Parameter { get; set; } = new OltOptionsApiVersionParameter();
 
     }
 
@@ -28,7 +45,7 @@ namespace OLT.Core
         /// <remarks>
         /// Default <see cref="OltAspNetCoreDefaults.ApiVersion.ParameterName.Query"/>
         /// </remarks>
-        public string Query { get; set; } = OltAspNetCoreDefaults.ApiVersion.ParameterName.Query;
+        public virtual string Query { get; set; } = OltAspNetCoreDefaults.ApiVersion.ParameterName.Query;
 
         /// <summary>
         /// Reads the API Version from media type <see cref="MediaTypeApiVersionReader"/>
@@ -36,7 +53,7 @@ namespace OLT.Core
         /// <remarks>
         /// Default <see cref="OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType"/>
         /// </remarks>
-        public string MediaType { get; set; } = OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType;
+        public virtual string MediaType { get; set; } = OltAspNetCoreDefaults.ApiVersion.ParameterName.MediaType;
 
         /// <summary>
         /// Reads the API Version from media type <see cref="MediaTypeApiVersionReader"/>
@@ -44,14 +61,43 @@ namespace OLT.Core
         /// <remarks>
         /// Default <see cref="OltAspNetCoreDefaults.ApiVersion.ParameterName.Header"/>
         /// </remarks>
-        public string Header { get; set; } = OltAspNetCoreDefaults.ApiVersion.ParameterName.Header;
+        public virtual string Header { get; set; } = OltAspNetCoreDefaults.ApiVersion.ParameterName.Header;
 
 
 
-        public List<IApiVersionReader> BuildReaders()
+        public virtual List<IApiVersionReader> BuildReaders()
         {
             var readers = new List<IApiVersionReader>();
-            return  readers;
+            if (!string.IsNullOrWhiteSpace(Query))
+            {
+                readers.Add(new QueryStringApiVersionReader(Query));
+            }
+            else
+            {
+                readers.Add(new QueryStringApiVersionReader());
+            }
+
+            if (!string.IsNullOrWhiteSpace(MediaType))
+            {
+                readers.Add(new MediaTypeApiVersionReader(MediaType));
+            }
+            else
+            {
+                readers.Add(new MediaTypeApiVersionReader());
+            }
+
+            if (!string.IsNullOrWhiteSpace(Header))
+            {
+                readers.Add(new HeaderApiVersionReader(Header));
+            }
+            else
+            {
+                readers.Add(new HeaderApiVersionReader(OltAspNetCoreDefaults.ApiVersion.ParameterName.Header));
+            }
+
+            readers.Add(new UrlSegmentApiVersionReader());
+
+            return readers;
         }
 
 
