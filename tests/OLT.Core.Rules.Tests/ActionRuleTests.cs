@@ -10,28 +10,28 @@ namespace OLT.Core.Rules.Tests
     {
 
         [Fact]
-        public void GetRules()
+        public void RusultTests()
+        {
+            var resultValid = new OltRuleResultValid();
+            Assert.True(resultValid.Success);
+            Assert.False(resultValid.Invalid);
+            Assert.Empty(resultValid.Results);
+
+            var resultInValid = new OltRuleResultInvalid(new OltValidationError(Faker.Lorem.Paragraph()));
+            Assert.False(resultInValid.Success);
+            Assert.True(resultInValid.Invalid);
+            Assert.Empty(resultInValid.Results);
+
+        }
+
+        [Fact]
+        public void GetTestRules()
         {
             using (var provider = BuildProvider())
             {
                 var ruleManager = provider.GetService<IOltRuleManager>();
                 var rules = ruleManager.GetRules<ITestRule>();
-                Assert.Equal(4, rules.Count);
-            }
-        }
-
-
-
-        [Fact]
-        public void GetByInterface()
-        {
-            using (var provider = BuildProvider())
-            {
-                var ruleManager = provider.GetService<IOltRuleManager>();
-                var rule = ruleManager.GetRule<ITestRuleSimpleRequest>();
-                Assert.True(rule.Execute(new SimpleRequest { ValueRequest = Faker.Name.First() }).Success);
-                Assert.Null(rule.Execute(new SimpleRequest { ValueRequest = Faker.Name.First() }) as IOltResultValidation);
-                Assert.Throws<OltRuleException>(() => rule.Execute(new SimpleRequest()));
+                Assert.Equal(6, rules.Count);
             }
         }
 
@@ -49,6 +49,9 @@ namespace OLT.Core.Rules.Tests
                 Assert.Throws<OltRuleException>(() => rule.Execute(new SimpleModelRequest(new RequestModel())));
 
                 Assert.Single(ruleManager.GetRules<TestRuleMulipleInterface>());
+
+                Assert.Throws<OltRuleException>(() => ruleManager.GetRule<TestRuleMulipleInterface>().Execute(new SimpleModelRequest(new RequestModel())));
+                Assert.Throws<OltRuleException>(() => ruleManager.GetRule<TestRuleMulipleInterface>().Execute(new SimpleModelRequest(new RequestModel())));
             }
 
         }
