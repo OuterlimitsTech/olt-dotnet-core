@@ -6,11 +6,11 @@ using System;
 
 namespace OLT.Extensions.Configuration.Tests
 {
-    public class UnitTests
+    public class ConnectionStringTests
     {
         readonly string name = "DBConnection";
 
-        public UnitTests()
+        public ConnectionStringTests()
         {
             Environment.SetEnvironmentVariable($"ConnectionStrings__{name}", "Value3");
         }
