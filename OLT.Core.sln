@@ -181,6 +181,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Tests", "tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Configuration.Azure.AppConfig", "src\OLT.Extensions.Configuration.Azure.AppConfig\OLT.Extensions.Configuration.Azure.AppConfig.csproj", "{BCC320B4-3E58-4C33-B22F-EFEAA620F546}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Extensions.Configuration.Amazon.SystemManager", "src\OLT.Extensions.Configuration.Amazon.SystemManager\OLT.Extensions.Configuration.Amazon.SystemManager.csproj", "{9E34CBA8-A23B-4B07-BADE-8E97BE3FD6BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -423,6 +425,10 @@ Global
 		{BCC320B4-3E58-4C33-B22F-EFEAA620F546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCC320B4-3E58-4C33-B22F-EFEAA620F546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCC320B4-3E58-4C33-B22F-EFEAA620F546}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E34CBA8-A23B-4B07-BADE-8E97BE3FD6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E34CBA8-A23B-4B07-BADE-8E97BE3FD6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E34CBA8-A23B-4B07-BADE-8E97BE3FD6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E34CBA8-A23B-4B07-BADE-8E97BE3FD6BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -502,6 +508,7 @@ Global
 		{F7464890-EF2E-48CF-9EA0-3FED39757135} = {64D25B40-3F90-45D2-B35B-DB9379965BBC}
 		{0702BD9A-4F7E-4017-9C02-47037B0818F0} = {64D25B40-3F90-45D2-B35B-DB9379965BBC}
 		{BCC320B4-3E58-4C33-B22F-EFEAA620F546} = {286D6206-6E71-4414-AA18-DA8F4BB3C1C0}
+		{9E34CBA8-A23B-4B07-BADE-8E97BE3FD6BB} = {286D6206-6E71-4414-AA18-DA8F4BB3C1C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B70EDC-6E19-4295-BFA0-9474A97DF56F}
