@@ -58,7 +58,12 @@ namespace OLT.Core
                 baseAssemblies = new List<Assembly>();
             }
 
-            baseAssemblies.Add(Assembly.GetEntryAssembly());
+            var entryAssembly = Assembly.GetEntryAssembly();
+            if (entryAssembly != null)
+            {
+                baseAssemblies.Add(entryAssembly);
+            }
+            
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
 
             services

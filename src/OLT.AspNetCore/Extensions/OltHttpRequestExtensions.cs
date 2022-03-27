@@ -26,6 +26,11 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(request));
             }
 
+            return await GetRawBodyStringInternalAsync(request, encoding);
+        }
+
+        private static async Task<string> GetRawBodyStringInternalAsync(this HttpRequest request, Encoding? encoding = null)
+        {
             encoding ??= Encoding.UTF8;
             using StreamReader reader = new StreamReader(request.Body, encoding);
             return await reader.ReadToEndAsync();
@@ -42,6 +47,11 @@ namespace OLT.Core
             {
                 throw new ArgumentNullException(nameof(request));
             }
+            return await GetRawBodyBytesInternalAsync(request);
+        }
+
+        private static async Task<byte[]> GetRawBodyBytesInternalAsync(this HttpRequest request)
+        {
             await using var ms = new MemoryStream(2048);
             await request.Body.CopyToAsync(ms);
             return ms.ToArray();
