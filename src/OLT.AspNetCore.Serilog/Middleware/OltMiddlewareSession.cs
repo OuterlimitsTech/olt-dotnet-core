@@ -11,7 +11,7 @@ namespace OLT.Logging.Serilog
     {
         private readonly IOltIdentity _identity;
 
-        public OltMiddlewareSession(IOltIdentity identity)
+        public OltMiddlewareSession(IOltIdentity identity = null)
         {
             _identity = identity;
         }

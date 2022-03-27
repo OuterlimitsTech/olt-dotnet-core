@@ -17,7 +17,7 @@ namespace OLT.Core
         /// <param name="services"></param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Action<IMvcBuilder> action = null)
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Action<IMvcBuilder>? action = null)
         {
             return AddOltAspNetCore(services, new List<Assembly>(), action);
         }
@@ -29,7 +29,7 @@ namespace OLT.Core
         /// <param name="baseAssembly">Assembly to include in scan for interfaces</param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder> action = null)
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder>? action = null)
         {
             if (baseAssembly == null)
             {
@@ -45,7 +45,7 @@ namespace OLT.Core
         /// <param name="baseAssemblies">List of assemblies to include in scan for interfaces</param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, Action<IMvcBuilder> action = null)
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, Action<IMvcBuilder>? action = null)
         {
 
             if (services == null)

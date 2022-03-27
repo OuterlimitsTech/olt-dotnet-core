@@ -19,7 +19,7 @@ namespace OLT.Core
         /// <param name="request">Request instance to apply to</param>
         /// <param name="encoding">Optional - Encoding, defaults to UTF8</param>
         /// <returns></returns>
-        public static async Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding encoding = null)
+        public static async Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding? encoding = null)
         {
             encoding ??= Encoding.UTF8;
 
@@ -41,11 +41,20 @@ namespace OLT.Core
 
         public static OltGenericParameter ToOltGenericParameter(this HttpRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             var dictionaries = new List<Dictionary<string, StringValues>>();
 
             try
             {
-                dictionaries.Add(request.RouteValues?.ToDictionary(k => k.Key, v => new StringValues(v.Value?.ToString())));
+                var values = request.RouteValues?.ToDictionary(k => k.Key, v => new StringValues(v.Value?.ToString()));
+                if (values != null)
+                {
+                    dictionaries.Add(values);
+                }                
             }
             catch
             {
@@ -54,7 +63,11 @@ namespace OLT.Core
 
             try
             {
-                dictionaries.Add(request.Query?.ToDictionary(k => k.Key, v => v.Value));
+                var values = request.Query?.ToDictionary(k => k.Key, v => v.Value);
+                if (values != null)
+                {
+                    dictionaries.Add(values);
+                }                
             }
             catch
             {
@@ -63,7 +76,12 @@ namespace OLT.Core
 
             try
             {
-                dictionaries.Add(request.Form?.ToDictionary(k => k.Key, v => v.Value));
+                var values = request.Form?.ToDictionary(k => k.Key, v => v.Value);
+                if (values != null)
+                {
+                    dictionaries.Add(values);
+                }
+                
             }
             catch
             {

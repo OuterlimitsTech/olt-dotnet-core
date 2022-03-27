@@ -14,8 +14,8 @@ namespace OLT.Extensions.DependencyInjection.Tests
         public void ExceptionTest()
         {
             var services = new ServiceCollection();
-            Assembly nullRef = null;
-            List<Assembly> nullList = null;
+            Assembly? nullRef = null;
+            List<Assembly>? nullList = null;
 
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionExtensions.AddOltInjection(null));
             Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionExtensions.AddOltInjection(null, nullRef));
