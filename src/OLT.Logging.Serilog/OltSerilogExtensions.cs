@@ -36,10 +36,12 @@ namespace OLT.Logging.Serilog
         }
 
 
+
         /// <summary>
-        /// Enrich log the Environment Name <see cref="OltSerilogConstants.Properties.Environment"/> and <see cref="OltSerilogConstants.Properties.DebuggerAttached"/>
+        /// Writes <see cref="OltNgxLoggerMessageJson"/> to log
         /// </summary>
-        /// <returns>Configuration object allowing method chaining.</returns>
+        /// <param name="logger"></param>
+        /// <param name="model"></param>
         public static void Write(this ILogger logger, OltNgxLoggerMessageJson model)
         {
             var level = model.Level?.ToLogLevel() ?? LogEventLevel.Information;
