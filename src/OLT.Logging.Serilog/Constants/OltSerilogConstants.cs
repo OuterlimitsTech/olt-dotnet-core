@@ -65,7 +65,7 @@ namespace OLT.Constants
 
             public static class NgxMessage
             {
-                public const string Template = "ngx-message: {ngx-message}";                
+                public const string Template = "ngx-message: {ngx-message}";
             }
         }
 
