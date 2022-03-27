@@ -15,21 +15,6 @@ namespace System
     /// </summary>
     public static class OltStringExtensions
     {
-        public static string ToStringValueType(this object value)
-        {
-            if (value is DateTime)
-            {
-                return ((DateTime)value).ToString("o");
-            }
-
-            if (value is bool)
-            {
-                return ((bool)value) ? "true" : "false";
-            }
-
-            return value?.ToString();
-        }
-
         public static byte[] ToBytes<T>(this string value) where T : System.Text.Encoding, new()
         {
             if (value == null) throw new ArgumentNullException(nameof(value));

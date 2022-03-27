@@ -139,7 +139,8 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
         [InlineData(OltNgxLoggerLevel.Error, LogEventLevel.Error)]
         [InlineData(OltNgxLoggerLevel.Fatal, LogEventLevel.Fatal)]
         [InlineData(OltNgxLoggerLevel.Off, LogEventLevel.Information)]
-        public async Task ForContextTests(OltNgxLoggerLevel level, LogEventLevel expected)
+        [InlineData(null, LogEventLevel.Information)]
+        public async Task ForContextTests(OltNgxLoggerLevel? level, LogEventLevel expected)
         {
             var model = await FromJsonFile();
 
