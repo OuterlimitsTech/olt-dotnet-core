@@ -33,27 +33,6 @@ namespace OLT.Logging.Serilog
             return ToException().Message;
         }
 
-
-        public Dictionary<string, string> ToDictionary()
-        {
-            var dictionaries = new List<Dictionary<string, string>>();
-
-            var root = OltNgxHelpers.ConvertToDictionary(this, "ngx-message");
-            root.Keys.Where(p => p.Contains("Additional")).ToList().ForEach(key => root.Remove(key));
-            dictionaries.Add(root);
-
-            var idx = 0;
-            Additional.SelectMany(s => s).ToList().ForEach(detail =>
-            {
-                dictionaries.Add(detail.ToDictionary(idx));
-                idx++;
-            });
-
-            return dictionaries
-                .SelectMany(dict => dict)
-                .ToLookup(pair => pair.Key, pair => pair.Value)
-                .ToDictionary(group => group.Key, group => group.First());
-        }
         public virtual Exception ToException()
         {
             var detail = Additional.FirstOrDefault()?.FirstOrDefault();

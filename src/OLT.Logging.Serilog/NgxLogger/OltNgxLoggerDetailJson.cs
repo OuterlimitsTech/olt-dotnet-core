@@ -24,11 +24,6 @@ namespace OLT.Logging.Serilog
         public virtual string Message { get; set; }
         public virtual List<OltNgxLoggerStackJson> Stack { get; set; }
 
-        public Dictionary<string, string> ToDictionary(int idx)
-        {
-            return OltNgxHelpers.ConvertToDictionary(this, $"ngx-detail[{idx}]");            
-        }
-
         public Exception ToException()
         {
             var ex = new Exception(Message)
