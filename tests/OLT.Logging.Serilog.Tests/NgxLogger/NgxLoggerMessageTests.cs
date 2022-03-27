@@ -10,8 +10,11 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using OLT.Core;
 using Xunit;
 using Xunit.Abstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Logging.Serilog.Tests.NgxLogger
 {
@@ -155,7 +158,6 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             {
                 logger.Write(model);
 
-                var xyz = TestCorrelator.GetLogEventsFromCurrentContext().First();
                 TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.MessageTemplate.Text.Should().Be(OltSerilogConstants.Templates.NgxMessage.Template);
                 TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.Level.Should().Be(expected);
                 var props = TestCorrelator.GetLogEventsFromCurrentContext().First().Properties;
@@ -169,6 +171,20 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 else
                 {
                     TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.Exception.Should().BeNull();
+                }
+            }
+
+
+            // Test MS Logging Now
+            var services = new ServiceCollection().AddLogging(config => config.AddConsole());
+
+            using (var scope = services.BuildServiceProvider().CreateScope())
+            {
+                using (var loggerFactory = scope.ServiceProvider.GetService<ILoggerFactory>())
+                {
+                    var msLogger = loggerFactory.CreateLogger<NgxLoggerMessageTests>();
+                    msLogger.Write(model);
+                    msLogger.Should().NotBeNull();  //I can only validate that it did not throw an error
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using Serilog.Events;
+﻿using Microsoft.Extensions.Logging;
+using Serilog.Events;
 using Xunit;
 
 namespace OLT.Logging.Serilog.Tests.NgxLogger
@@ -16,14 +17,36 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
         [InlineData(OltNgxLoggerLevel.Off, LogEventLevel.Information)]
         public void ToLogLevelTest(OltNgxLoggerLevel value, LogEventLevel expected)
         {
-            Assert.Equal(expected, OltNgxLoggerExtensions.ToLogLevel(value));
+            Assert.Equal(expected, OltNgxLoggerExtensions.ToSerilogLogLevel(value));
         }
 
         [Fact]
         public void TestDefault()
         {
             var invalidValue = (OltNgxLoggerLevel)1000;
-            Assert.Equal(LogEventLevel.Information, OltNgxLoggerExtensions.ToLogLevel(invalidValue));
+            Assert.Equal(LogEventLevel.Information, OltNgxLoggerExtensions.ToSerilogLogLevel(invalidValue));
+        }
+
+
+        [Theory]
+        [InlineData(OltNgxLoggerLevel.Trace, LogLevel.Trace)]
+        [InlineData(OltNgxLoggerLevel.Debug, LogLevel.Debug)]
+        [InlineData(OltNgxLoggerLevel.Information, LogLevel.Information)]
+        [InlineData(OltNgxLoggerLevel.Log, LogLevel.Information)]
+        [InlineData(OltNgxLoggerLevel.Warning, LogLevel.Warning)]
+        [InlineData(OltNgxLoggerLevel.Error, LogLevel.Error)]
+        [InlineData(OltNgxLoggerLevel.Fatal, LogLevel.Critical)]
+        [InlineData(OltNgxLoggerLevel.Off, LogLevel.Information)]
+        public void ToMsLogLevelTest(OltNgxLoggerLevel value, LogLevel expected)
+        {
+            Assert.Equal(expected, OltNgxLoggerExtensions.ToMicrosoftLogLevel(value));
+        }
+
+        [Fact]
+        public void TestMsDefault()
+        {
+            var invalidValue = (OltNgxLoggerLevel)1000;
+            Assert.Equal(LogLevel.Information, OltNgxLoggerExtensions.ToMicrosoftLogLevel(invalidValue));
         }
     }
 }

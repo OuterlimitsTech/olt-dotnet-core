@@ -1,12 +1,14 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using OLT.Constants;
+using OLT.Logging.Serilog;
 using OLT.Logging.Serilog.Enricher;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
 
-namespace OLT.Logging.Serilog
+namespace OLT.Core
 {
     public static class OltSerilogExtensions
     {
@@ -42,9 +44,9 @@ namespace OLT.Logging.Serilog
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="model"></param>
-        public static void Write(this ILogger logger, OltNgxLoggerMessageJson model)
+        public static void Write(this Serilog.ILogger logger, OltNgxLoggerMessageJson model)
         {
-            var level = model.Level?.ToLogLevel() ?? LogEventLevel.Information;
+            var level = model.Level?.ToSerilogLogLevel() ?? LogEventLevel.Information;
 
             if (level == LogEventLevel.Error)
             {
@@ -66,6 +68,29 @@ namespace OLT.Logging.Serilog
             logger
                 .ForContext(OltSerilogConstants.Properties.NgxMessage.MessageAsJson, model, destructureObjects: true)
                 .Write(level, OltSerilogConstants.Templates.NgxMessage.Template, model.FormatMessage());            
+        }
+
+        /// <summary>
+        /// Writes <see cref="OltNgxLoggerMessageJson"/> to log
+        /// </summary>
+        /// <param name="msLogger"></param>
+        /// <param name="model"></param>
+        public static void Write(this Microsoft.Extensions.Logging.ILogger msLogger, OltNgxLoggerMessageJson model)
+        {
+            var level = model.Level?.ToMicrosoftLogLevel() ?? LogLevel.Information;
+            if (level == LogLevel.Error)
+            {
+                msLogger.LogError(model.ToException(), "ngx-message: {ngx-message}", model.FormatMessage());
+                return;
+            }
+
+            if (level == LogLevel.Critical)
+            {
+                msLogger.LogCritical(model.ToException(), "ngx-message: {ngx-message}", model.FormatMessage());
+                return;
+            }
+
+            msLogger.Log(level, "ngx-message: {ngx-message}", model.FormatMessage());
         }
     }
 }

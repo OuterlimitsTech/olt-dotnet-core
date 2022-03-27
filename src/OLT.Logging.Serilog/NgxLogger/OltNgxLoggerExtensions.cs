@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Logging;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace OLT.Logging.Serilog
         /// </summary>
         /// <param name="ngxLoggerLevel"></param>
         /// <returns></returns>
-        public static LogEventLevel ToLogLevel(this OltNgxLoggerLevel ngxLoggerLevel)
+        public static LogEventLevel ToSerilogLogLevel(this OltNgxLoggerLevel ngxLoggerLevel)
         {
             switch (ngxLoggerLevel)
             {
@@ -35,6 +36,36 @@ namespace OLT.Logging.Serilog
                     return LogEventLevel.Information;
                 default:
                     return LogEventLevel.Information;
+            }
+        }
+
+        /// <summary>
+        /// Converts ngx-logger <see href="https://www.npmjs.com/package/ngx-logger"/> log level to <see cref="LogLevel"/>
+        /// </summary>
+        /// <param name="ngxLoggerLevel"></param>
+        /// <returns></returns>
+        public static LogLevel ToMicrosoftLogLevel(this OltNgxLoggerLevel ngxLoggerLevel)
+        {
+            switch (ngxLoggerLevel)
+            {
+                case OltNgxLoggerLevel.Trace:
+                    return LogLevel.Trace;
+                case OltNgxLoggerLevel.Debug:
+                    return LogLevel.Debug;
+                case OltNgxLoggerLevel.Information:
+                    return LogLevel.Information;
+                case OltNgxLoggerLevel.Log:
+                    return LogLevel.Information;
+                case OltNgxLoggerLevel.Warning:
+                    return LogLevel.Warning;
+                case OltNgxLoggerLevel.Error:
+                    return LogLevel.Error;
+                case OltNgxLoggerLevel.Fatal:
+                    return LogLevel.Critical;
+                case OltNgxLoggerLevel.Off:
+                    return LogLevel.Information;
+                default:
+                    return LogLevel.Information;
             }
         }
 
