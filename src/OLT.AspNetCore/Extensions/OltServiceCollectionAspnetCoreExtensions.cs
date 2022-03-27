@@ -62,8 +62,7 @@ namespace OLT.Core
             if (entryAssembly != null)
             {
                 baseAssemblies.Add(entryAssembly);
-            }
-            
+            }            
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
 
             services
