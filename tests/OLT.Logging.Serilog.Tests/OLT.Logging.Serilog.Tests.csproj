@@ -30,4 +30,10 @@
 		<ProjectReference Include="..\..\src\OLT.Logging.Serilog\OLT.Logging.Serilog.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="NgxLogger\ngx-sample.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 </Project>

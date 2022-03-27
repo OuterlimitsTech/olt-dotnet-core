@@ -1,8 +1,8 @@
 ﻿using OLT.Constants;
 using OLT.Logging.Serilog;
+using Serilog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OLT.Logging.Serilog
 {
@@ -13,19 +13,21 @@ namespace OLT.Logging.Serilog
     /// Child JSON model array for <see cref="OltNgxLoggerMessageJson.Additional"/>
     /// </remarks>
     public class OltNgxLoggerDetailJson
-    {
-
-        
+    {        
         public virtual string Name { get; set; }
         public virtual string AppId { get; set; }
         public virtual string User { get; set; }
         public virtual long? Time { get; set; }
         public virtual string Id { get; set; }
         public virtual string Url { get; set; }
-        public virtual object Status { get; set; }
+        public virtual int? Status { get; set; }
         public virtual string Message { get; set; }
         public virtual List<OltNgxLoggerStackJson> Stack { get; set; }
 
+        public Dictionary<string, string> ToDictionary(int idx)
+        {
+            return OltNgxHelpers.ConvertToDictionary(this, $"ngx-detail[{idx}]");            
+        }
 
         public Exception ToException()
         {
@@ -57,4 +59,6 @@ namespace OLT.Logging.Serilog
             return ex;
         }
     }
+
+
 }

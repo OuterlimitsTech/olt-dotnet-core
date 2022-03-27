@@ -1,7 +1,7 @@
 ﻿namespace OLT.Logging.Serilog
 {
     /// <summary>
-    /// ngx-logger <see href="https://www.npmjs.com/package/ngx-logger"/> Log Levels
+    /// ngx-logger <see href="https://github.com/dbfannin/ngx-logger/blob/master/src/lib/types/logger-level.enum.ts"/> Log Levels
     /// </summary>
     public enum OltNgxLoggerLevel
     {

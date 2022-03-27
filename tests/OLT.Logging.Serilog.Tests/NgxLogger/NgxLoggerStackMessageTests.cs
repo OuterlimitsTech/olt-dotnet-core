@@ -18,7 +18,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             expected.Append($"FunctionName: {model.FunctionName}{Environment.NewLine}");
             expected.Append($"Source: {model.Source}");
 
-            Assert.Equal(expected.ToString(), model.ToString());            
+            Assert.Equal(expected.ToString(), model.FormatStack());            
 
         }
     }

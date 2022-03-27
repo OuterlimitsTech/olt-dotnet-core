@@ -29,6 +29,11 @@ namespace OLT.Constants
                 public const string ResponseBody = "ResponseBody";
                 public const string RequestUri = "RequestUri";
             }
+
+            public static class NgxMessage
+            {
+                public const string MessageAsJson = "ngx-message-json";
+            }
         }
 
 
@@ -56,6 +61,11 @@ namespace OLT.Constants
 
                 public const string DefaultSubject =
                     "APPLICATION {Level} on {Application} {Environment} Environment occurred at {Timestamp}";
+            }
+
+            public static class NgxMessage
+            {
+                public const string Template = "ngx-message: {ngx-message}";                
             }
         }
 

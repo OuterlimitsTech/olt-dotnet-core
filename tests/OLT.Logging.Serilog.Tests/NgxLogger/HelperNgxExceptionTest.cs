@@ -24,6 +24,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 NgxTestHelper.FakerStackJson(12),
             };
 
+            var status = Faker.RandomNumber.Next(200, 600);
 
             Result = new Dictionary<string, string>
             {
@@ -32,7 +33,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 { "User", Faker.Internet.UserName() },
                 { "Time", UnixTime.HasValue ? DateTimeOffset.FromUnixTimeMilliseconds(UnixTime.Value).ToString(OltSerilogConstants.FormatString.ISO8601) : null },
                 { "Url", Faker.Internet.Url() },
-                { "Status", Faker.RandomNumber.Next(200, 600).ToString() },
+                { "Status", status.ToString() },
                 { "Stack", Stack.FormatStack() }
             };
 
@@ -42,7 +43,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 AppId = Result["AppId"],
                 Message = Faker.Lorem.Sentence(),
                 Name = Result["Name"],
-                Status = Result["Status"],
+                Status = status,
                 Time = UnixTime,
                 Url = Result["Url"],
                 User = Result["User"],
@@ -70,7 +71,8 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 Message = Faker.Lorem.Sentence(),
                 Timestamp = Timestamp,
                 FileName = Faker.Lorem.GetFirstWord(),
-                LineNumber = Faker.RandomNumber.Next(1000, 4000).ToString(),
+                LineNumber = Faker.RandomNumber.Next(1000, 4000),
+                ColumnNumber = Faker.RandomNumber.Next(7000, 56000),
             };
 
             msg.Level = level ?? msg.Level;
@@ -88,8 +90,9 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
             Result.Add("Username", msg.GetUsername());
             Result.Add("Level", msg.Level?.ToString());
-            Result.Add("LineNumber", msg.LineNumber);
             Result.Add("FileName", msg.FileName);
+            Result.Add("LineNumber", msg.LineNumber.ToString());
+            Result.Add("ColumnNumber", msg.ColumnNumber.ToString());            
             Result.Add("Timestamp", msg.Timestamp?.ToString(OltSerilogConstants.FormatString.ISO8601));
 
             return msg;

@@ -21,8 +21,12 @@ namespace OLT.Core
         /// <returns></returns>
         public static async Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding? encoding = null)
         {
-            encoding ??= Encoding.UTF8;
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
 
+            encoding ??= Encoding.UTF8;
             using StreamReader reader = new StreamReader(request.Body, encoding);
             return await reader.ReadToEndAsync();
         }
@@ -34,11 +38,24 @@ namespace OLT.Core
         /// <returns></returns>
         public static async Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
         {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
             await using var ms = new MemoryStream(2048);
             await request.Body.CopyToAsync(ms);
             return ms.ToArray();
         }
 
+        /// <summary>
+        /// Parses <see cref="RouteValueDictionary"/>, <see cref="IQueryCollection" />, and <see cref="IFormCollection"/> to <see cref="Dictionary{TKey, TValue}"/>
+        /// </summary>
+        /// <remarks>
+        /// Duplicate keys will be merged into a single <see cref="StringValues"/>
+        /// </remarks>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this HttpRequest request)
         {
             if (request == null)
@@ -67,7 +84,7 @@ namespace OLT.Core
                 if (values != null)
                 {
                     dictionaries.Add(values);
-                }                
+                }
             }
             catch
             {
@@ -81,7 +98,7 @@ namespace OLT.Core
                 {
                     dictionaries.Add(values);
                 }
-                
+
             }
             catch
             {
@@ -93,18 +110,51 @@ namespace OLT.Core
             return new OltGenericParameter(merged);
         }
 
+        /// <summary>
+        /// Parses <see cref="RouteValueDictionary"/> to <see cref="Dictionary{TKey, TValue}"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this RouteValueDictionary value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
             return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value?.ToString()));
         }
 
+        /// <summary>
+        /// Parses <see cref="IQueryCollection"/> to <see cref="Dictionary{TKey, TValue}"/>
+        /// </summary>
+        /// <remarks>
+        /// Duplicate keys will be merged into a single <see cref="StringValues"/>
+        /// </remarks>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this IQueryCollection value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
             return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value.ToString()));
         }
 
+        /// <summary>
+        /// Parses <see cref="IFormCollection"/> to <see cref="Dictionary{TKey, TValue}"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this IFormCollection value)
         {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
             return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value.ToString()));
         }
 
