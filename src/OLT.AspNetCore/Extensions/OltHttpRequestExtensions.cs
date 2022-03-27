@@ -19,14 +19,14 @@ namespace OLT.Core
         /// <param name="request">Request instance to apply to</param>
         /// <param name="encoding">Optional - Encoding, defaults to UTF8</param>
         /// <returns></returns>
-        public static async Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding? encoding = null)
+        public static Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding? encoding = null)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
 
-            return await GetRawBodyStringInternalAsync(request, encoding);
+            return GetRawBodyStringInternalAsync(request, encoding);
         }
 
         private static async Task<string> GetRawBodyStringInternalAsync(this HttpRequest request, Encoding? encoding = null)
@@ -41,13 +41,13 @@ namespace OLT.Core
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
+        public static Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
         {
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
             }
-            return await GetRawBodyBytesInternalAsync(request);
+            return GetRawBodyBytesInternalAsync(request);
         }
 
         private static async Task<byte[]> GetRawBodyBytesInternalAsync(this HttpRequest request)
