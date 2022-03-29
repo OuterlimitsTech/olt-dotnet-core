@@ -10,6 +10,7 @@ using Serilog.Events;
 
 namespace OLT.Core
 {
+    
     public static class OltSerilogExtensions
     {
 
