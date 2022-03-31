@@ -1,9 +1,10 @@
-﻿using OLT.Constants;
+﻿using System;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.Generic;
 using System.Data;
+using OLT.Constants;
 
 namespace OLT.Core
 {
@@ -13,18 +14,25 @@ namespace OLT.Core
 
         public static LoggerConfiguration WithOltMSSqlServer(this LoggerConfiguration loggerConfiguration, string connectionString, MSSqlServerSinkOptions options = null, ColumnOptions columnOptions = null, LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information)
         {
+            if (loggerConfiguration == null)
+            {
+                throw new ArgumentNullException(nameof(loggerConfiguration));
+            }
+
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                options = options ?? DefaultSinkOptions;
-                columnOptions = columnOptions ?? DefaultColumnOptions;
-
-                loggerConfiguration
-                    .WriteTo.MSSqlServer(
-                        connectionString,
-                        restrictedToMinimumLevel: restrictedToMinimumLevel,
-                        sinkOptions: options,
-                        columnOptions: columnOptions);
+                throw new ArgumentException(nameof(connectionString));
             }
+
+            options = options ?? DefaultSinkOptions;
+            columnOptions = columnOptions ?? DefaultColumnOptions;
+
+            loggerConfiguration
+                .WriteTo.MSSqlServer(
+                    connectionString,
+                    restrictedToMinimumLevel: restrictedToMinimumLevel,
+                    sinkOptions: options,
+                    columnOptions: columnOptions);
 
             return loggerConfiguration;
         }
@@ -35,8 +43,8 @@ namespace OLT.Core
             {
                 return new MSSqlServerSinkOptions
                 {
-                    TableName = "Log",
-                    SchemaName = "dbo",
+                    TableName = OltSerilogMsSqlConstants.Table.Name,
+                    SchemaName = OltSerilogMsSqlConstants.Table.Schema,
                     AutoCreateSqlTable = true,
                 };
             }
@@ -49,30 +57,30 @@ namespace OLT.Core
                 var additionalColumns = new List<SqlColumn>
                 {
                     new SqlColumn
-                        {ColumnName = "Application", PropertyName = "Application", DataType = SqlDbType.NVarChar, DataLength = 100},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.Application, PropertyName = OltSerilogConstants.Properties.Application, DataType = SqlDbType.NVarChar, DataLength = 100},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogConstants.Properties.EventType, PropertyName = OltSerilogConstants.Properties.EventType, DataType = SqlDbType.NVarChar, DataLength = 20},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.EventType, PropertyName = OltSerilogConstants.Properties.EventType, DataType = SqlDbType.NVarChar, DataLength = 20},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogConstants.Properties.UserPrincipalName, DataType = SqlDbType.NVarChar, DataLength = 25},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.UserPrincipalName, DataType = SqlDbType.NVarChar, DataLength = 25},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogConstants.Properties.Username, DataType = SqlDbType.NVarChar, DataLength = 255},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.Username, DataType = SqlDbType.NVarChar, DataLength = 255},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogConstants.Properties.DbUsername, DataType = SqlDbType.NVarChar, DataLength = 100},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.DbUsername, DataType = SqlDbType.NVarChar, DataLength = 100},
 
                     new SqlColumn
-                        {ColumnName = "RequestPath", DataType = SqlDbType.NVarChar, DataLength = -1},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.RequestPath, DataType = SqlDbType.NVarChar, DataLength = -1},
 
                     new SqlColumn
-                        {ColumnName = "Source", DataType = SqlDbType.NVarChar, DataLength = 50},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.Source, DataType = SqlDbType.NVarChar, DataLength = 50},
                 };
 
                 return new ColumnOptions
                 {
-                    Id = { ColumnName = "LogId" },
+                    Id = { ColumnName = OltSerilogMsSqlConstants.ColumnNames.Id },
                     TimeStamp = { DataType = SqlDbType.DateTimeOffset },
                     AdditionalColumns = additionalColumns
                 };

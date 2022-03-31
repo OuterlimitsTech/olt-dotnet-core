@@ -19,6 +19,7 @@ namespace OLT.Constants
             public const string EventType = "OltEventType";
             public const string Environment = "Environment";
             public const string DebuggerAttached = "DebuggerAttached";
+            public const string Application = "Application";
 
             public static class AspNetCore
             {

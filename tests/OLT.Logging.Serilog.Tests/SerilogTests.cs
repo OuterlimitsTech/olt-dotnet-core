@@ -13,6 +13,7 @@ using OLT.Core;
 
 namespace OLT.Logging.Serilog.Tests
 {
+
     public class SerilogTests
     {
         private readonly ITestOutputHelper _output;
