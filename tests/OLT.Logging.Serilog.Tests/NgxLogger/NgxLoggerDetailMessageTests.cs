@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace OLT.Logging.Serilog.Tests.NgxLogger
@@ -9,7 +8,6 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
     public class NgxLoggerDetailMessageTests
     {
-
         [Fact]
         public void ToExceptionTests()
         {
@@ -33,12 +31,13 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             model.Stack.Add(NgxTestHelper.FakerStackJson(5));
             model.Stack.Add(NgxTestHelper.FakerStackJson(15));
             model.Stack.Add(NgxTestHelper.FakerStackJson(25));
+            
 
-            var stack = model.Stack.Select(s => $"{s}{Environment.NewLine}").ToList();
+            var stack = model.Stack.Select(s => $"{OltNgxLoggerExtensions.FormatStack(s)}{Environment.NewLine}").ToList();
             var expected = string.Join($"----------------------------{Environment.NewLine}", stack);
-            exception = model.ToException();
 
-            Assert.Equal(expected, exception.Data["Stack"]);
+            exception = model.ToException();
+            Assert.Equal(expected, exception.Data["Stack"]); 
         }
 
         [Theory]

@@ -1,16 +1,36 @@
-﻿using System;
-using System.Collections;
+﻿using FluentAssertions;
+using OLT.Constants;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.TestCorrelator;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using OLT.Core;
 using Xunit;
+using Xunit.Abstractions;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Logging.Serilog.Tests.NgxLogger
 {
 
     public class NgxLoggerMessageTests
     {
+        private readonly ITestOutputHelper _output;
+
+        public NgxLoggerMessageTests(ITestOutputHelper output)
+        {
+            _output = output;
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.TestCorrelator()
+                .CreateLogger();
+        }
+
 
         [Theory]
         [MemberData(nameof(NgxLoggerMessageData))]
@@ -45,8 +65,9 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                     item => Assert.Equal(data.Result["Stack"], item.Value),
                     item => Assert.Equal(data.Result["Username"], item.Value),
                     item => Assert.Equal(data.Result["Level"], item.Value),
-                    item => Assert.Equal(data.Result["LineNumber"], item.Value),
                     item => Assert.Equal(data.Result["FileName"], item.Value),
+                    item => Assert.Equal(data.Result["LineNumber"], item.Value),
+                    item => Assert.Equal(data.Result["ColumnNumber"], item.Value),                    
                     item => Assert.Equal(data.Result["Timestamp"], item.Value)
                 );
 
@@ -57,8 +78,9 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             Assert.Collection(dict,
                 item => Assert.Equal(data.Result["Username"], item.Value),
                 item => Assert.Equal(data.Result["Level"], item.Value),
-                item => Assert.Equal(data.Result["LineNumber"], item.Value),
                 item => Assert.Equal(data.Result["FileName"], item.Value),
+                item => Assert.Equal(data.Result["LineNumber"], item.Value),
+                item => Assert.Equal(data.Result["ColumnNumber"], item.Value),                
                 item => Assert.Equal(data.Result["Timestamp"], item.Value)
             );
 
@@ -88,5 +110,85 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
          };
 
+
+        private async Task<OltNgxLoggerMessageJson> FromJsonFile()
+        {
+            string fileName = "ngx-sample.json";
+            var filePath = Path.Combine(AppContext.BaseDirectory, "NgxLogger", fileName);
+
+            OltNgxLoggerMessageJson result;
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+
+            using (FileStream openStream = File.OpenRead(filePath))
+            {
+                result = await JsonSerializer.DeserializeAsync<OltNgxLoggerMessageJson>(openStream, options);
+            }
+
+            return result;
+        }
+
+
+        [Theory]
+        [InlineData(OltNgxLoggerLevel.Trace, LogEventLevel.Verbose)]
+        [InlineData(OltNgxLoggerLevel.Debug, LogEventLevel.Debug)]
+        [InlineData(OltNgxLoggerLevel.Information, LogEventLevel.Information)]
+        [InlineData(OltNgxLoggerLevel.Log, LogEventLevel.Information)]
+        [InlineData(OltNgxLoggerLevel.Warning, LogEventLevel.Warning)]
+        [InlineData(OltNgxLoggerLevel.Error, LogEventLevel.Error)]
+        [InlineData(OltNgxLoggerLevel.Fatal, LogEventLevel.Fatal)]
+        [InlineData(OltNgxLoggerLevel.Off, LogEventLevel.Information)]
+        [InlineData(null, LogEventLevel.Information)]
+        public async Task ForContextTests(OltNgxLoggerLevel? level, LogEventLevel expected)
+        {
+            var model = await FromJsonFile();
+
+            model.Level = level;
+
+            using (TestCorrelator.CreateContext())
+            using (var logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.TestOutput(_output)
+                .WriteTo.Sink(new TestCorrelatorSink())
+                .CreateLogger())
+            {
+                logger.Write(model);
+
+                TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.MessageTemplate.Text.Should().Be(OltSerilogConstants.Templates.NgxMessage.Template);
+                TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.Level.Should().Be(expected);
+                var props = TestCorrelator.GetLogEventsFromCurrentContext().First().Properties;
+                props.Count.Should().Be(1);
+                props.Should().ContainKey(OltSerilogConstants.Properties.NgxMessage.MessageAsJson);                
+
+                if (model.IsError)
+                {
+                    TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.Exception.Should().NotBeNull();
+                }
+                else
+                {
+                    TestCorrelator.GetLogEventsFromCurrentContext().Should().ContainSingle().Which.Exception.Should().BeNull();
+                }
+            }
+
+
+            // Test MS Logging Now
+            var services = new ServiceCollection().AddLogging(config => config.AddConsole());
+
+            using (var scope = services.BuildServiceProvider().CreateScope())
+            {
+                using (var loggerFactory = scope.ServiceProvider.GetService<ILoggerFactory>())
+                {
+                    var msLogger = loggerFactory.CreateLogger<NgxLoggerMessageTests>();
+                    msLogger.Write(model);
+                    msLogger.Should().NotBeNull();  //I can only validate that it did not throw an error
+                }
+            }
+
+        }
     }
+
 }

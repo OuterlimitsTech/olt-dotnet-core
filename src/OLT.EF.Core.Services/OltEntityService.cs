@@ -321,12 +321,22 @@ namespace OLT.Core
 
         public virtual int Count(IOltSearcher<TEntity> searcher)
         {
-            return GetQueryable(searcher).Count();
+            return Count(GetQueryable(searcher));
+        }
+
+        public int Count(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Count(this.GetQueryable().Where(predicate));
         }
 
         public virtual async Task<int> CountAsync(IOltSearcher<TEntity> searcher)
         {
-            return await GetQueryable(searcher).CountAsync();
+            return await CountAsync(GetQueryable(searcher));
+        }
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await CountAsync(this.GetQueryable().Where(predicate));
         }
 
         #endregion

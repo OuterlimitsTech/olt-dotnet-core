@@ -17,7 +17,7 @@ namespace OLT.Core
 
         public virtual void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (context.HttpContext.User.Identity.IsAuthenticated && context.HttpContext.User.FindAll(ClaimTypes.Role).Any(p => RoleClaims.Contains(p.Value)))
+            if (context.HttpContext.User.Identity?.IsAuthenticated == true && context.HttpContext.User.FindAll(ClaimTypes.Role).Any(p => RoleClaims.Contains(p.Value)))
             {
                 return;
             }

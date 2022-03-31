@@ -428,6 +428,7 @@ namespace OLT.EF.Core.Services.Tests
 
                 var person = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
                 Assert.Equal(1, await service.CountAsync(new OltSearcherGetById<PersonEntity>(person.PersonId.Value)));
+                Assert.Equal(1, await service.CountAsync(p => p.Id == person.PersonId.Value));
             }
 
             using (var provider = BuildProvider())
@@ -436,6 +437,7 @@ namespace OLT.EF.Core.Services.Tests
 
                 var person = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
                 Assert.Equal(1, service.Count(new OltSearcherGetById<PersonEntity>(person.PersonId.Value)));
+                Assert.Equal(1, service.Count(p => p.Id == person.PersonId.Value));
             }
         }
 

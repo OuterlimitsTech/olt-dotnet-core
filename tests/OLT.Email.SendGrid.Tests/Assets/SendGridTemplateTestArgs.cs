@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 namespace OLT.Email.SendGrid.Tests.Assets
 {
     public class SendGridTemplateTestArgs : OltTemplateArgs<SendGridTemplateTestArgs>
-    {
-        public IOltEmailTemplateId TemplateValue => base.Template;
+    {        
+        public string TemplateIdValue => base.TemplateId;
+        public object TemplateDataValue => base.TemplateData;
         public string ApiKeyValue => base.ApiKey;
         public Dictionary<string, string> CustomArgsValue => base.CustomArgs;
         public int? UnsubscribeGroupIdValue => base.UnsubscribeGroupId;

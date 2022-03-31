@@ -9,9 +9,11 @@ using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 using OLT.Constants;
+using OLT.Core;
 
 namespace OLT.Logging.Serilog.Tests
 {
+
     public class SerilogTests
     {
         private readonly ITestOutputHelper _output;

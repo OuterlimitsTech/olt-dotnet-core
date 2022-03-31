@@ -159,6 +159,22 @@ namespace OLT.Core
 
         #endregion
 
+        #region [ Count ]
+
+        protected virtual int Count<TEntity>(IQueryable<TEntity> queryable)
+            where TEntity : class, IOltEntity
+        {
+            return queryable.Count();
+        }
+
+        protected virtual async Task<int> CountAsync<TEntity>(IQueryable<TEntity> queryable)
+            where TEntity : class, IOltEntity
+        {
+            return await queryable.CountAsync();
+        }
+
+        #endregion
+
         #region [ Mapping ]
 
         protected virtual IOltPaged<TModel> MapPaged<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)

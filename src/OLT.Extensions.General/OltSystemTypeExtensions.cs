@@ -1,12 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace System
 {
     public static class OltSystemTypeExtensions
     {
-        /// 
-
         /// <summary>
         /// Determines if a type implements the <typeparamref name="TInterface"/> interface.        
         /// </summary>

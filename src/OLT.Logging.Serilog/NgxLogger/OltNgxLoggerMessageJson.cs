@@ -1,4 +1,7 @@
 ﻿using OLT.Constants;
+using Serilog;
+using Serilog.Core;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +16,11 @@ namespace OLT.Logging.Serilog
     {
         public virtual string Message { get; set; }
         public virtual List<List<OltNgxLoggerDetailJson>> Additional { get; set; } = new List<List<OltNgxLoggerDetailJson>>();
-        public virtual OltNgxLoggerLevel? Level { get; set; } 
+        public virtual OltNgxLoggerLevel? Level { get; set; }
         public virtual DateTimeOffset? Timestamp { get; set; }
         public virtual string FileName { get; set; }
-        public virtual string LineNumber { get; set; }
+        public virtual int? LineNumber { get; set; }
+        public virtual int? ColumnNumber { get; set; }
         public virtual bool IsError => Level.GetValueOrDefault(OltNgxLoggerLevel.Information) == OltNgxLoggerLevel.Fatal || Level.GetValueOrDefault(OltNgxLoggerLevel.Information) == OltNgxLoggerLevel.Error;
 
         public virtual string GetUsername()
@@ -35,10 +39,15 @@ namespace OLT.Logging.Serilog
             var ex = detail != null ? detail.ToException() : new Exception(Message);
             ex.Data.Add("Username", GetUsername());
             ex.Data.Add("Level", Level?.ToString());
-            ex.Data.Add("LineNumber", LineNumber);
             ex.Data.Add("FileName", FileName);
+            ex.Data.Add("LineNumber", LineNumber);
+            ex.Data.Add("ColumnNumber", ColumnNumber);            
             ex.Data.Add("Timestamp", Timestamp?.ToString(OltSerilogConstants.FormatString.ISO8601));
             return ex;
         }
+
+        
     }
+
+
 }

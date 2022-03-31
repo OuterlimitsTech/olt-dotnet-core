@@ -13,10 +13,38 @@ namespace OLT.Email.SendGrid
     public abstract class OltTemplateArgs<T> : OltEnableSandboxArgs<T>
         where T : OltTemplateArgs<T>
     {
-        protected IOltEmailTemplateId Template { get; set; }
+        protected string TemplateId { get; set; }   
+        protected object TemplateData { get; set; }
 
         protected OltTemplateArgs()
         {
+        }
+
+        /// <summary>
+        /// Send Grid TemplateId
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public T WithTemplate(string templateId, object templateData)
+        {
+            if (templateId == null)
+            {
+                throw new ArgumentNullException(nameof(templateId));
+            }
+
+            this.TemplateId = templateId;
+            this.TemplateData = templateData;
+            return (T)this;
+        }
+
+        /// <summary>
+        /// Send Grid TemplateId
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public T WithTemplate(string templateId)
+        {
+            return this.WithTemplate(templateId, null);
         }
 
         /// <summary>
@@ -26,14 +54,17 @@ namespace OLT.Email.SendGrid
         /// <exception cref="ArgumentNullException"></exception>
         public T WithTemplate(IOltEmailTemplateId template)
         {
-            this.Template = template ?? throw new ArgumentNullException(nameof(template));            
-            return (T)this;
+            if (template == null)
+            {
+                throw new ArgumentNullException(nameof(template));
+            }
+            return this.WithTemplate(template.TemplateId, template.GetTemplateData());
         }
 
         public override List<string> ValidationErrors()
         {
             var errors = base.ValidationErrors();
-            if (string.IsNullOrWhiteSpace(Template?.TemplateId))
+            if (string.IsNullOrWhiteSpace(TemplateId))
             {
                 errors.Add(OltArgErrorsSendGrid.TemplateId);
             }
@@ -44,7 +75,7 @@ namespace OLT.Email.SendGrid
         {
             var msg = new SendGridMessage();
             msg.SetFrom(new EmailAddress(From.Email, From.Name));
-            msg.SetTemplateId(Template.TemplateId);
+            msg.SetTemplateId(TemplateId);
 
             msg.SetClickTracking(ClickTracking, ClickTracking);
 
@@ -53,10 +84,9 @@ namespace OLT.Email.SendGrid
                 msg.SetAsm(UnsubscribeGroupId.Value);
             }
 
-            var templateData = Template.GetTemplateData();
-            if (templateData != null)
+            if (TemplateData != null)
             {
-                msg.SetTemplateData(templateData);
+                msg.SetTemplateData(TemplateData);
             }
 
             if (CustomArgs.Count > 0)

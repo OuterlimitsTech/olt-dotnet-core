@@ -12,15 +12,10 @@ namespace OLT.Logging.Serilog
     /// </remarks>
     public class OltNgxLoggerStackJson
     {
-        public virtual int ColumnNumber { get; set; }
-        public virtual int LineNumber { get; set; }
+        public virtual int? ColumnNumber { get; set; }
+        public virtual int? LineNumber { get; set; }
         public virtual string FileName { get; set; }
         public virtual string FunctionName { get; set; }
         public virtual string Source { get; set; }
-
-        public override string ToString()
-        {           
-            return OltNgxLoggerExtensions.FormatStack(this);
-        }
     }
 }

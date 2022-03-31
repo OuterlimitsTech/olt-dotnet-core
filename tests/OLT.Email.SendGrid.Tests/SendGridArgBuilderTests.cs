@@ -22,7 +22,8 @@ namespace OLT.Email.SendGrid.Tests
             args = args.WithApiKey(value);
             Assert.Equal(value, args.ApiKeyValue);
             Assert.Empty(args.CustomArgsValue);
-            Assert.Null(args.TemplateValue);
+            Assert.Null(args.TemplateIdValue);
+            Assert.Null(args.TemplateDataValue);
             Assert.Null(args.UnsubscribeGroupIdValue);
             Assert.True(args.ClickTrackingValue);
 
@@ -37,7 +38,8 @@ namespace OLT.Email.SendGrid.Tests
             var template = FakeJsonEmailTemplate.FakerData(2, 2);
 
             args = args.WithTemplate(template);
-            args.TemplateValue.Should().BeEquivalentTo(template);
+            args.TemplateIdValue.Should().BeEquivalentTo(template.TemplateId);
+            args.TemplateDataValue.Should().BeEquivalentTo(template.TemplateData);
             Assert.Empty(args.CustomArgsValue);
             Assert.Null(args.ApiKeyValue);
             Assert.Null(args.UnsubscribeGroupIdValue);
@@ -67,7 +69,8 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Null(args.UnsubscribeGroupIdValue);
             Assert.True(args.ClickTrackingValue);
             Assert.False(args.SandboxModeValue);
-            Assert.Null(args.TemplateValue);
+            Assert.Null(args.TemplateIdValue);
+            Assert.Null(args.TemplateDataValue);
 
             var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltEmailErrors.Recipients, OltEmailErrors.From, OltArgErrorsSendGrid.ApiKey, OltArgErrorsSendGrid.TemplateId);
@@ -84,7 +87,8 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Null(args.UnsubscribeGroupIdValue);
             Assert.True(args.ClickTrackingValue);
             Assert.True(args.SandboxModeValue);
-            Assert.Null(args.TemplateValue);
+            Assert.Null(args.TemplateIdValue);
+            Assert.Null(args.TemplateDataValue);
 
             var errors = args.ValidationErrors();
             errors.Should().BeEquivalentTo(OltEmailErrors.Recipients, OltEmailErrors.From, OltArgErrorsSendGrid.ApiKey, OltArgErrorsSendGrid.TemplateId);
@@ -101,7 +105,8 @@ namespace OLT.Email.SendGrid.Tests
             args = args.WithUnsubscribeGroupId(value);
             Assert.Null(args.ApiKeyValue);
             Assert.Empty(args.CustomArgsValue);
-            Assert.Null(args.TemplateValue);
+            Assert.Null(args.TemplateIdValue);
+            Assert.Null(args.TemplateDataValue);
             Assert.Equal(value, args.UnsubscribeGroupIdValue);
             Assert.False(args.SandboxModeValue);
             Assert.True(args.ClickTrackingValue);
@@ -118,7 +123,8 @@ namespace OLT.Email.SendGrid.Tests
             args = args.WithoutClickTracking();
             Assert.Null(args.ApiKeyValue);
             Assert.Empty(args.CustomArgsValue);
-            Assert.Null(args.TemplateValue);
+            Assert.Null(args.TemplateIdValue);
+            Assert.Null(args.TemplateDataValue);
             Assert.False(args.ClickTrackingValue);
             Assert.False(args.SandboxModeValue);
             Assert.Null(args.UnsubscribeGroupIdValue);
@@ -131,7 +137,8 @@ namespace OLT.Email.SendGrid.Tests
         [Fact]
         public void TemplateErrors()
         {
-
+            IOltEmailTemplateId template = null;
+            string templateId = null;
             var args = new SendGridTemplateTestArgs();
 
             args.Invoking(args => args.DoValidation()).Should().Throw<OltSendGridValidationException>().WithMessage(OltSendGridValidationException.DefaultMessage);
@@ -155,7 +162,9 @@ namespace OLT.Email.SendGrid.Tests
             errors.Should().BeEquivalentTo(compareErrors);
 
             args.Invoking(args => args.WithApiKey(null)).Should().Throw<ArgumentNullException>();
-            args.Invoking(args => args.WithTemplate(null)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithTemplate(template)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithTemplate(templateId)).Should().Throw<ArgumentNullException>();
+            args.Invoking(args => args.WithTemplate(templateId, null)).Should().Throw<ArgumentNullException>();
             args.Invoking(args => args.WithUnsubscribeGroupId(0)).Should().Throw<ArgumentOutOfRangeException>();
             args.Invoking(args => args.WithUnsubscribeGroupId(-1)).Should().Throw<ArgumentOutOfRangeException>();
             args.Invoking(args => args.WithCustomArg(null, null)).Should().Throw<ArgumentNullException>();

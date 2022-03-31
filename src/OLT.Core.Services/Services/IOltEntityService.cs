@@ -69,6 +69,8 @@ namespace OLT.Core
         Task<bool> SoftDeleteAsync(IOltSearcher<TEntity> searcher);
 
         int Count(IOltSearcher<TEntity> searcher);
+        int Count(Expression<Func<TEntity, bool>> predicate);
         Task<int> CountAsync(IOltSearcher<TEntity> searcher);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

@@ -19,6 +19,7 @@ namespace OLT.Constants
             public const string EventType = "OltEventType";
             public const string Environment = "Environment";
             public const string DebuggerAttached = "DebuggerAttached";
+            public const string Application = "Application";
 
             public static class AspNetCore
             {
@@ -28,6 +29,11 @@ namespace OLT.Constants
                 public const string RequestBody = "RequestBody";
                 public const string ResponseBody = "ResponseBody";
                 public const string RequestUri = "RequestUri";
+            }
+
+            public static class NgxMessage
+            {
+                public const string MessageAsJson = "ngx-message-json";
             }
         }
 
@@ -56,6 +62,11 @@ namespace OLT.Constants
 
                 public const string DefaultSubject =
                     "APPLICATION {Level} on {Application} {Environment} Environment occurred at {Timestamp}";
+            }
+
+            public static class NgxMessage
+            {
+                public const string Template = "ngx-message: {ngx-message}";
             }
         }
 
