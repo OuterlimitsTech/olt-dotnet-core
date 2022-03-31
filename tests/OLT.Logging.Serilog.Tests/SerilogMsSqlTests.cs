@@ -31,10 +31,10 @@ namespace OLT.Logging.Serilog.Tests
             Assert.Equal(OltSerilogMsSqlConstants.ColumnNames.Id, result.Id.ColumnName);
             Assert.Equal(SqlDbType.DateTimeOffset, result.TimeStamp.DataType);
 
-            Assert.Equal(OltSerilogConstants.Properties.EventType, OltSerilogMsSqlConstants.ColumnNames.EventType);
-            Assert.Equal(OltSerilogConstants.Properties.UserPrincipalName, OltSerilogMsSqlConstants.ColumnNames.UserPrincipalName);
-            Assert.Equal(OltSerilogConstants.Properties.Username, OltSerilogMsSqlConstants.ColumnNames.Username);
-            Assert.Equal(OltSerilogConstants.Properties.DbUsername, OltSerilogMsSqlConstants.ColumnNames.DbUsername);
+            Assert.Equal("OltEventType", OltSerilogMsSqlConstants.ColumnNames.EventType);
+            Assert.Equal("UserPrincipalName", OltSerilogMsSqlConstants.ColumnNames.UserPrincipalName);
+            Assert.Equal("Username", OltSerilogMsSqlConstants.ColumnNames.Username);
+            Assert.Equal("DbUsername", OltSerilogMsSqlConstants.ColumnNames.DbUsername);
 
         }
 
