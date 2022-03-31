@@ -30,6 +30,12 @@ namespace OLT.Logging.Serilog.Tests
 
             Assert.Equal(OltSerilogMsSqlConstants.ColumnNames.Id, result.Id.ColumnName);
             Assert.Equal(SqlDbType.DateTimeOffset, result.TimeStamp.DataType);
+
+            Assert.Equal(OltSerilogConstants.Properties.EventType, OltSerilogMsSqlConstants.ColumnNames.EventType);
+            Assert.Equal(OltSerilogConstants.Properties.UserPrincipalName, OltSerilogMsSqlConstants.ColumnNames.UserPrincipalName);
+            Assert.Equal(OltSerilogConstants.Properties.Username, OltSerilogMsSqlConstants.ColumnNames.Username);
+            Assert.Equal(OltSerilogConstants.Properties.DbUsername, OltSerilogMsSqlConstants.ColumnNames.DbUsername);
+
         }
 
         [Fact]
@@ -39,6 +45,7 @@ namespace OLT.Logging.Serilog.Tests
             Assert.Equal(OltSerilogMsSqlConstants.Table.Name, result.TableName);
             Assert.Equal(OltSerilogMsSqlConstants.Table.Schema, result.SchemaName);            
         }
+
 
 
         [Fact]
