@@ -18,13 +18,6 @@ namespace OLT.Constants
             public const string Application = "Application";
             public const string RequestPath = "RequestPath";
             public const string Source = "Source";
-
-
-            public const string EventType = OltSerilogConstants.Properties.EventType;
-            public const string UserPrincipalName = OltSerilogConstants.Properties.UserPrincipalName;            
-            public const string Username = OltSerilogConstants.Properties.Username;
-            public const string DbUsername = OltSerilogConstants.Properties.DbUsername;
-
         }
 
     }

@@ -22,19 +22,14 @@ namespace OLT.Logging.Serilog.Tests
                 e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.Application,
                 e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.RequestPath,
                 e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.Source,
-                e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.EventType,
-                e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.UserPrincipalName,
-                e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.Username,
-                e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.DbUsername
+                e => e.ColumnName == OltSerilogConstants.Properties.EventType,
+                e => e.ColumnName == OltSerilogConstants.Properties.UserPrincipalName,
+                e => e.ColumnName == OltSerilogConstants.Properties.Username,
+                e => e.ColumnName == OltSerilogConstants.Properties.DbUsername
                 );
 
             Assert.Equal(OltSerilogMsSqlConstants.ColumnNames.Id, result.Id.ColumnName);
             Assert.Equal(SqlDbType.DateTimeOffset, result.TimeStamp.DataType);
-
-            Assert.Equal("OltEventType", OltSerilogMsSqlConstants.ColumnNames.EventType);
-            Assert.Equal("UserPrincipalName", OltSerilogMsSqlConstants.ColumnNames.UserPrincipalName);
-            Assert.Equal("Username", OltSerilogMsSqlConstants.ColumnNames.Username);
-            Assert.Equal("DbUsername", OltSerilogMsSqlConstants.ColumnNames.DbUsername);
 
         }
 
