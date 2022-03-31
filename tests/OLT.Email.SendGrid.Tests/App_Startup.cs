@@ -47,6 +47,7 @@ namespace OLT.Email.SendGrid.Tests
                 opt.From = new OltEmailAddress(configuration.GetValue<string>("SMTP_FROM_ADDRESS") ?? Environment.GetEnvironmentVariable("SMTP_FROM_ADDRESS"), "OLT Unit Test");
                 opt.TemplateIdJson = configuration.GetValue<string>("SENDGRID_TMPL_JSON") ?? Environment.GetEnvironmentVariable("SENDGRID_TMPL_JSON");
                 opt.TemplateIdTag = configuration.GetValue<string>("SENDGRID_TMPL_TAG") ?? Environment.GetEnvironmentVariable("SENDGRID_TMPL_TAG");
+                opt.TemplateIdNoData = configuration.GetValue<string>("SENDGRID_TMPL_NODATA") ?? Environment.GetEnvironmentVariable("SENDGRID_TMPL_NODATA");
                 opt.ToEmail =  configuration.GetValue<string>("SMTP_TO_ADDRESS") ?? Environment.GetEnvironmentVariable("SMTP_TO_ADDRESS");
                 opt.UnsubscribeGroupId = envGroupId;
                 opt.Production = false;

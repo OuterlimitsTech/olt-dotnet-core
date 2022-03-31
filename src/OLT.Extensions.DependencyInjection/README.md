@@ -32,8 +32,17 @@ services.AddOltInjection(this.GetType().Assembly);  //Adds assembly to scan list
 ## Specify a list of Assembies
 
 ```csharp
-var list = new List<Assembly>();
-list.Add(this.GetType().Assembly);
-list.Add(Assembly.GetAssembly(typeof(MyClassHere)));
-services.AddOltInjection(list);  //Adds list of assemblies to scan list
+var assembliesToScan = new List<Assembly>
+{
+    Assembly.GetEntryAssembly(),
+    Assembly.GetExecutingAssembly()
+};
+
+assembliesToScan.Add(this.GetType().Assembly);
+assembliesToScan.Add(Assembly.GetAssembly(typeof(MyClassHere)));
+
+assembliesToScan.AddRange(Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "OLT.App.*.dll").Select(assembly => Assembly.Load(AssemblyName.GetAssemblyName(assembly))));
+assembliesToScan.AddRange(Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "MyApp*.dll").Select(assembly => Assembly.Load(AssemblyName.GetAssemblyName(assembly))));
+
+services.AddOltInjection(assembliesToScan);  //Adds list of assemblies to scan list
 ```

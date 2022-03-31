@@ -53,6 +53,66 @@ namespace OLT.Email.SendGrid.Tests
                 .SendAsync();
 
             Assert.True(resultAsync.Success);
+
+            template.TemplateData.Build.Version = $"{_prodConfig.RunNumber}.Manually (with JSON Data)";
+
+            var whitelist = new OltEmailConfigurationWhitelist 
+            {
+                Email = new List<string> { _prodConfig.ToEmail },
+                Domain = new List<string> { Faker.Internet.DomainName() },
+            };
+
+            var recipients = new OltEmailRecipients 
+            { 
+                To = new List<IOltEmailAddress> 
+                { 
+                    new OltEmailAddress 
+                    { 
+                        Name = Faker.Name.FullName(),
+                        Email = _prodConfig.ToEmail 
+                    } 
+                },
+                CarbonCopy = new List<IOltEmailAddress> 
+                {
+                    new OltEmailAddress
+                    {
+                        Name = Faker.Name.FullName(),
+                        Email = Faker.Internet.Email()
+                    }
+                }
+            };
+
+            var client = new OltSendGridClient()
+                .WithFromEmail(_prodConfig.From)
+                .WithApiKey(_prodConfig.ApiKey)
+                .WithWhitelist(whitelist)
+                .WithTemplate(template.TemplateId, template.GetTemplateData())
+                .WithRecipients(recipients)
+                .WithCustomArg("email_uid", uid)
+                .WithCustomArg("some_internal_id", Faker.Identification.UkNhsNumber())
+                //false will only send to whitelist domains or email address
+                //true will ignore whitelist and send all emails.
+                //typically controlled via config/environment variable
+                .EnableProductionEnvironment(false);
+
+            resultAsync = await client.SendAsync();
+
+            Assert.True(resultAsync.Success);
+                        
+
+            client = new OltSendGridClient()
+                .WithFromEmail(_prodConfig.From)
+                .WithApiKey(_prodConfig.ApiKey)
+                .WithWhitelist(whitelist)
+                .WithTemplate(_prodConfig.TemplateIdNoData)
+                .WithRecipients(recipients)
+                .WithCustomArg("email_uid", uid)
+                .WithCustomArg("some_internal_id", Faker.Identification.UkNhsNumber())
+                .EnableProductionEnvironment(false);
+
+            resultAsync = await client.SendAsync();
+
+            Assert.True(resultAsync.Success);
         }
 
         [Fact]
