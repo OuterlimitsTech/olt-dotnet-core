@@ -22,7 +22,6 @@ namespace OLT.Core.Searchers.Tests
         {
             get
             {
-      
                 var now = DateTimeOffset.Now;
 
                 var results = new TheoryData<FakeEntitySearcher, OltDateRange, DateTimeOffset>();
