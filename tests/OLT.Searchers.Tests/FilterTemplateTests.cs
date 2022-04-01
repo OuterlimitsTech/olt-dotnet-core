@@ -121,6 +121,7 @@ namespace OLT.Searchers.Tests
             var ranges = TestHelper.DateRangeList();
             var template = new OltFilterTemplateDateRange(key, label, ranges.Last().Value, ranges, hidden);
             var filter = new OltFilterDateRange<FakeEntity>(template, new FakeEntityDateRangeSearcher());
+            template.ValueList.Should().BeEquivalentTo(ranges);
             Assert.Equal(ranges.Last()?.Value, template.Value);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.DateRange, key, label, hidden, true);
             Assert.True(template.Parse(null));
