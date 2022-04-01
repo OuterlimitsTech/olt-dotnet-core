@@ -26,7 +26,7 @@ namespace OLT.Core.Searchers.Tests
 
                 var results = new TheoryData<FakeEntitySearcher, OltDateRange, DateTimeOffset>();
                 results.Add(new FakeEntitySearcher(), new OltDateRange(), DateTimeOffset.MinValue.AddSeconds(1));
-                results.Add(new FakeEntitySearcher(now, now.AddDays(3).Midnight()), new OltDateRange(now.Midnight(), now.AddDays(3)), now.AddDays(3).AddSeconds(1));
+                results.Add(new FakeEntitySearcher(now.Midnight(), now.Midnight().AddDays(3)), new OltDateRange(now.Midnight(), now.Midnight().AddDays(3)), now.Midnight().AddDays(3).AddSeconds(1));
                 results.Add(new FakeEntitySearcher(new OltDateRange(now, now.AddDays(4))), new OltDateRange(now, now.AddDays(4)), now.AddDays(4).AddSeconds(1));
                 results.Add(new FakeEntitySearcher(OltDateRange.Today), OltDateRange.Today, OltDateRange.Today.End.AddSeconds(1));
                 return results;
