@@ -11,24 +11,24 @@ namespace OLT.Core.Searchers.Tests
     {
         [Theory]
         [MemberData(nameof(Data))]
-        public void SearcherTests(FakeEntitySearcher searcher, OltDateRange expected, DateTimeOffset expectedQueryEnd)
+        public void SearcherTests(FakeEntityDateRangeSearcher searcher, OltDateRange expected, DateTimeOffset expectedQueryEnd)
         {
             searcher.Value.Should().BeEquivalentTo(expected);
             Assert.Equal(expectedQueryEnd, searcher.QueryEndValue);            
         }
 
 
-        public static TheoryData<FakeEntitySearcher, OltDateRange, DateTimeOffset> Data
+        public static TheoryData<FakeEntityDateRangeSearcher, OltDateRange, DateTimeOffset> Data
         {
             get
             {
                 var now = DateTimeOffset.Now;
 
-                var results = new TheoryData<FakeEntitySearcher, OltDateRange, DateTimeOffset>();
-                results.Add(new FakeEntitySearcher(), new OltDateRange(), DateTimeOffset.MinValue.AddSeconds(1));
-                results.Add(new FakeEntitySearcher(now.Midnight(), now.Midnight().AddDays(3)), new OltDateRange(now.Midnight(), now.Midnight().AddDays(3)), now.Midnight().AddDays(3).AddSeconds(1));
-                results.Add(new FakeEntitySearcher(new OltDateRange(now, now.AddDays(4))), new OltDateRange(now, now.AddDays(4)), now.AddDays(4).AddSeconds(1));
-                results.Add(new FakeEntitySearcher(OltDateRange.Today), OltDateRange.Today, OltDateRange.Today.End.AddSeconds(1));
+                var results = new TheoryData<FakeEntityDateRangeSearcher, OltDateRange, DateTimeOffset>();
+                results.Add(new FakeEntityDateRangeSearcher(), new OltDateRange(), DateTimeOffset.MinValue.AddSeconds(1));
+                results.Add(new FakeEntityDateRangeSearcher(now.Midnight(), now.Midnight().AddDays(3)), new OltDateRange(now.Midnight(), now.Midnight().AddDays(3)), now.Midnight().AddDays(3).AddSeconds(1));
+                results.Add(new FakeEntityDateRangeSearcher(new OltDateRange(now, now.AddDays(4))), new OltDateRange(now, now.AddDays(4)), now.AddDays(4).AddSeconds(1));
+                results.Add(new FakeEntityDateRangeSearcher(OltDateRange.Today), OltDateRange.Today, OltDateRange.Today.End.AddSeconds(1));
                 return results;
             }
         }

@@ -12,12 +12,5 @@
 	  <ProjectReference Include="..\OLT.Core.Services\OLT.Core.Services.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <None Update="README.md">
-	    <PackagePath></PackagePath>
-	    <Pack>True</Pack>
-	  </None>
-	</ItemGroup>
-
 	
 </Project>
