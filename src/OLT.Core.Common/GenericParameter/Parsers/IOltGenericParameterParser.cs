@@ -12,8 +12,4 @@
         TValueType Value { get; }
     }
 
-    //public interface IOltGenericParameterParserWithDefault<out TValueType> : IOltGenericParameterParser<TValueType>
-    //{
-    //    TValueType DefaultValue { get; }
-    //}
 }
