@@ -35,6 +35,8 @@
 | [OLT.Extensions.DependencyInjection.AutoMapper](./src/OLT.Extensions.DependencyInjection.AutoMapper/)         | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.DependencyInjection.AutoMapper)](https://www.nuget.org/packages/OLT.Extensions.DependencyInjection.AutoMapper)         |
 | [OLT.Extensions.General](./src/OLT.Extensions.General/)                                                       | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.General)](https://www.nuget.org/packages/OLT.Extensions.General)                                                       |
 | [OLT.Logging.Serilog](./src/OLT.Logging.Serilog/)                                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.Logging.Serilog)](https://www.nuget.org/packages/OLT.Logging.Serilog)                                                             |
+| [OLT.Logging.Serilog.MSSqlServer](./src/OLT.Logging.Serilog.MSSqlServer/)                                     | [![Nuget](https://img.shields.io/nuget/v/OLT.Logging.Serilog.MSSqlServer)](https://www.nuget.org/packages/OLT.Logging.Serilog.MSSqlServer)                                     |
+| [OLT.Searchers.DateRange](./src/OLT.Searchers.DateRange/)                                                     | [![Nuget](https://img.shields.io/nuget/v/OLT.Searchers.DateRange)](https://www.nuget.org/packages/OLT.Searchers.DateRange)                                                     |
 
 ---
 
