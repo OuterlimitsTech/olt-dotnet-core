@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentDateTimeOffset;
 using OLT.Constants;
 using OLT.Core;
 using OLT.Core.Searchers.Tests.Assets;
@@ -29,6 +30,12 @@ namespace OLT.Searchers.Tests
             template.ValueList.Should().BeEquivalentTo(listValues);
             Assert.Null(template.Value);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.SelectList, key, label, hidden, false);
+            Assert.False(template.Parse(null));
+            Assert.Null(template.Formatted());
+
+            Assert.True(template.Parse(TestHelper.BuildGenericParameter(key, listValues[6])));
+            Assert.Equal(listValues[6].Value, template.Value);
+            Assert.Equal(listValues[6].Label, template.Formatted());
         }
 
         [Theory]
@@ -45,6 +52,13 @@ namespace OLT.Searchers.Tests
             template.ValueList.Should().BeEquivalentTo(listValues);            
             Assert.Equal(listValues.Last()?.Value, template.Value);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.SelectList, key, label, hidden, true);
+            Assert.True(template.Parse(null));
+            Assert.Equal(listValues.Last().Label, template.Formatted());
+
+
+            Assert.True(template.Parse(TestHelper.BuildGenericParameter(key, listValues[4])));
+            Assert.Equal(listValues[4].Value, template.Value);
+            Assert.Equal(listValues[4].Label, template.Formatted());
         }
 
         [Theory]
@@ -57,10 +71,22 @@ namespace OLT.Searchers.Tests
             var label = $"label_{random}";
             var listValues = TestHelper.ValueList(10);
             var template = new OltFilterTemplateMultiSelectList(key, label, listValues, hidden);
+
             var filter = new OltFilterMultiSelect<FakeEntity>(template, p => p.SelectValue);
             template.ValueList.Should().BeEquivalentTo(listValues);
             Assert.Null(template.Value);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.MultiSelectList, key, label, hidden, false);
+
+            Assert.False(template.Parse(null));
+            Assert.Null(template.Formatted());
+
+            var expected = new List<OltValueListItem<int>> { listValues[1], listValues[4], listValues[7] };
+            Assert.True(template.Parse(TestHelper.BuildGenericParameter(key, expected)));
+            template.Value.Should().BeEquivalentTo(expected.Select(s => s.Value));
+
+           
+            var expectedString = string.Join(",", expected.Select(s => s.Label));
+            Assert.Equal(expectedString, template.Formatted());
         }
 
         [Theory]
@@ -75,6 +101,13 @@ namespace OLT.Searchers.Tests
             var filter = new OltFilterString<FakeEntity>(template, new OltEntityExpressionStringStartsWith<FakeEntity>(p => p.FirstName)); 
             Assert.Null(template.Value);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.String, key, label, hidden, false);
+            Assert.False(template.Parse(null));
+            Assert.Null(template.Formatted());
+
+            var expected = Faker.Name.First();
+            Assert.True(template.Parse(TestHelper.BuildGenericParameter(key, expected)));
+            template.Value.Should().BeEquivalentTo(expected);
+            template.Formatted().Should().BeEquivalentTo(expected);
         }
 
         [Theory]
@@ -90,6 +123,19 @@ namespace OLT.Searchers.Tests
             var filter = new OltFilterDateRange<FakeEntity>(template, new FakeEntityDateRangeSearcher());
             Assert.Equal(ranges.Last()?.Value, template.Value);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.DateRange, key, label, hidden, true);
+            Assert.True(template.Parse(null));
+
+            var expectedFormat = $"{ranges.Last().Value?.Start.LocalDateTime:M/d/yyyy} to {ranges.Last().Value?.End.LocalDateTime:M/d/yyyy}";
+            Assert.Equal(expectedFormat, template.Formatted());
+
+            var selected = ranges[2].Value;
+            Assert.True(template.Parse(TestHelper.BuildGenericParameter(key, selected)));
+            Assert.Equal(selected.Start.Midnight(), template.Value.Start);
+            Assert.Equal(selected.End.Midnight(), template.Value.End);
+
+            expectedFormat = $"{selected.Start.Midnight().LocalDateTime:M/d/yyyy} to {selected.End.Midnight().LocalDateTime:M/d/yyyy}";
+            Assert.Equal(expectedFormat, template.Formatted());
+
         }
 
         private void GeneralTemplateTests(IOltGenericFilterTemplate filter, IOltFilterTemplate filterTemplate, string templateName, string key, string label, bool hidden, bool hasValue)

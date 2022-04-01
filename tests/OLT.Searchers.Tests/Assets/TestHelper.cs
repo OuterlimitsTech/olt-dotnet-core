@@ -1,4 +1,5 @@
-﻿using OLT.Core;
+﻿using FluentDateTimeOffset;
+using OLT.Core;
 using OLT.Core.Searchers.Tests.Assets;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,34 @@ namespace OLT.Searchers.Tests.Assets
 {
     public static class TestHelper
     {
+        public static OltGenericParameter BuildGenericParameter(string key, OltDateRange value)
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add($"{key}-start", value.Start.Midnight().ToString());
+            dict.Add($"{key}-end", value.End.Midnight().ToString());
+            return new OltGenericParameter(dict);
+        }
+
+        public static OltGenericParameter BuildGenericParameter(string key, OltValueListItem<int> item)
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add(key, item.Value.ToString());
+            return new OltGenericParameter(dict);
+        }
+
+        public static OltGenericParameter BuildGenericParameter(string key, List<OltValueListItem<int>> list)
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add(key, string.Join(",", list.Select(s => s.Value)));
+            return new OltGenericParameter(dict);
+        }
+
+        public static OltGenericParameter BuildGenericParameter<T>(string key, T value)
+        {
+            var dict = new Dictionary<string, string>();
+            dict.Add(key, value.ToString());
+            return new OltGenericParameter(dict);
+        }
 
         public static List<OltValueListItem<int>> ValueList(int number)
         {

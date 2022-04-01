@@ -13,6 +13,6 @@
         public virtual bool Hidden { get; }
         public abstract string TemplateName { get; }
 
-        public new abstract string ToString();
+        public abstract string Formatted();
     }
 }

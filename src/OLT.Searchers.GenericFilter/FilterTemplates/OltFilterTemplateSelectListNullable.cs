@@ -22,14 +22,14 @@ namespace OLT.Core
 
         public override bool Parse(IOltGenericParameter parameters)
         {
-            var val = parameters.GetValue(Key, int.MinValue);
+            var val = parameters?.GetValue(Key, int.MinValue);
             Value = val > int.MinValue ? val : new int?();
             return HasValue;
         }
 
-        public override string ToString()
+        public override string Formatted()
         {
-            return Value?.ToString();
+            return Value == null ? null : ValueList.FirstOrDefault(p => p.Value == Value.Value)?.Label;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace OLT.Core
             return HasValue;
         }
 
-        public override string ToString()
+        public override string Formatted()
         {
             return Value;
         }

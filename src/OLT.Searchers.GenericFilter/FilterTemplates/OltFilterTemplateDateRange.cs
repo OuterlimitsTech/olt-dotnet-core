@@ -47,7 +47,7 @@ namespace OLT.Core
             return true;
         }
 
-        public override string ToString()
+        public override string Formatted()
         {
             return $"{Value?.Start.LocalDateTime:M/d/yyyy} to {Value?.End.LocalDateTime:M/d/yyyy}";
         }

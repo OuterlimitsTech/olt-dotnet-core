@@ -36,9 +36,9 @@ namespace OLT.Core
             return HasValue;
         }
 
-        public override string ToString()
+        public override string Formatted()
         {
-            return string.Concat(",", ValueList.Where(item => Value.Contains(item.Value)).Select(s => s.Label));
+            return Value == null ? null : string.Join(",", ValueList.Where(item => Value.Contains(item.Value)).Select(s => s.Label));
         }
     }
 }

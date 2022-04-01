@@ -4,7 +4,7 @@
     {
         string Label { get; }
         bool Hidden { get; }
-        string ToString();
+        string Formatted();
     }
 
     public interface IOltFilterTemplate<out TValueType> : IOltFilterTemplate

@@ -28,14 +28,11 @@ namespace OLT.Core
 
         public override bool Parse(IOltGenericParameter parameters)
         {
-            if (parameters != null)
+            var val = parameters?.GetValue(Key, int.MinValue);
+            if (val.HasValue && val > int.MinValue)
             {
-                var val = parameters.GetValue(Key, int.MinValue);
-                if (val > int.MinValue)
-                {
-                    Value = val;
-                    return true;
-                }
+                Value = val.Value;
+                return true;
             }
 
             Value = _defaultValue.Value;
@@ -43,7 +40,7 @@ namespace OLT.Core
 
         }
 
-        public override string ToString()
+        public override string Formatted()
         {
             return ValueList.FirstOrDefault(p => p.Value == Value)?.Label ?? ValueList.FirstOrDefault(p => p.Value == _defaultValue.Value)?.Label; 
         }
