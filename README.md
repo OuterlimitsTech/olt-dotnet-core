@@ -37,6 +37,7 @@
 | [OLT.Logging.Serilog](./src/OLT.Logging.Serilog/)                                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.Logging.Serilog)](https://www.nuget.org/packages/OLT.Logging.Serilog)                                                             |
 | [OLT.Logging.Serilog.MSSqlServer](./src/OLT.Logging.Serilog.MSSqlServer/)                                     | [![Nuget](https://img.shields.io/nuget/v/OLT.Logging.Serilog.MSSqlServer)](https://www.nuget.org/packages/OLT.Logging.Serilog.MSSqlServer)                                     |
 | [OLT.Searchers.DateRange](./src/OLT.Searchers.DateRange/)                                                     | [![Nuget](https://img.shields.io/nuget/v/OLT.Searchers.DateRange)](https://www.nuget.org/packages/OLT.Searchers.DateRange)                                                     |
+| [OLT.Searchers.GenericFilter](./src/OLT.Searchers.GenericFilter/)                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.Searchers.GenericFilter)](https://www.nuget.org/packages/OLT.Searchers.GenericFilter)                                             |
 
 ---
 
