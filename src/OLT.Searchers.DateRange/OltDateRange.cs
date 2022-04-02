@@ -21,19 +21,13 @@ namespace OLT.Core
         public DateTimeOffset Start { get; set; }
         public DateTimeOffset End { get; set; }
 
-        public string ToString(string format)
-        {
-            return $"{Start.ToLocalTime().ToString(format)} to {End.ToLocalTime().ToString(format)}";
-        }
-
-        private static DateTimeOffset ToEnd(DateTimeOffset value) => value.NextDay().AddMilliseconds(-1);
 
         public static OltDateRange Today
         {
             get
             {
                 var seed = DateTimeOffset.Now.Midnight();
-                return new OltDateRange(seed, ToEnd(seed));
+                return new OltDateRange(seed, seed.EndOfDay());
             }
         }
 
@@ -42,16 +36,26 @@ namespace OLT.Core
             get
             {
                 var seed = DateTimeOffset.Now.PreviousDay().Midnight();
-                return new OltDateRange(seed, ToEnd(seed));
+                return new OltDateRange(seed, seed.EndOfDay());
             }
         }
 
+
+        public static OltDateRange Tomorrow
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.NextDay().Midnight();
+                return new OltDateRange(seed, seed.EndOfDay());
+            }
+        }
+        
         public static OltDateRange Last7Days
         {
             get
             {
                 var seed = DateTimeOffset.Now.Midnight();
-                return new OltDateRange(7.Days().Ago().Midnight(), ToEnd(seed));
+                return new OltDateRange(7.Days().Ago().Midnight(), seed.EndOfDay());
             }
         }
 
@@ -60,7 +64,7 @@ namespace OLT.Core
             get
             {
                 var seed = DateTimeOffset.Now.Midnight();
-                return new OltDateRange(seed, ToEnd(7.Days().FromNow().Midnight()));
+                return new OltDateRange(seed, 7.Days().FromNow().EndOfDay());
             }
         }
 
@@ -68,8 +72,8 @@ namespace OLT.Core
         {
             get
             {
-                var seed = DateTimeOffset.Now.FirstDayOfMonth().Midnight();
-                return new OltDateRange(seed, ToEnd(seed.LastDayOfMonth()));
+                var seed = DateTimeOffset.Now;
+                return new OltDateRange(seed.FirstDayOfMonth().Midnight(), seed.LastDayOfMonth().EndOfDay());
             }
         }
 
@@ -77,18 +81,26 @@ namespace OLT.Core
         {
             get
             {
-                var seed = DateTimeOffset.Now.PreviousMonth().FirstDayOfMonth().Midnight();
-                return new OltDateRange(seed, ToEnd(seed.LastDayOfMonth()));
+                var seed = DateTimeOffset.Now.PreviousMonth();
+                return new OltDateRange(seed.FirstDayOfMonth().Midnight(), seed.LastDayOfMonth().EndOfDay());
             }
         }
 
+        public static OltDateRange NextMonth
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.NextMonth();
+                return new OltDateRange(seed.FirstDayOfMonth().Midnight(), seed.LastDayOfMonth().EndOfDay());
+            }
+        }
 
         public static OltDateRange MonthToDate
         {
             get
             {
-                var seed = DateTimeOffset.Now.Midnight();
-                return new OltDateRange(seed.FirstDayOfMonth(), ToEnd(seed));
+                var seed = DateTimeOffset.Now;
+                return new OltDateRange(seed.FirstDayOfMonth().Midnight(), seed.EndOfDay());
             }
         }
 
@@ -96,8 +108,8 @@ namespace OLT.Core
         {
             get
             {
-                var seed = DateTimeOffset.Now.FirstDayOfWeek().Midnight();
-                return new OltDateRange(seed, ToEnd(seed.LastDayOfWeek()));
+                var seed = DateTimeOffset.Now;
+                return new OltDateRange(seed.FirstDayOfWeek().Midnight(), seed.LastDayOfWeek().EndOfDay());
             }
         }
 
@@ -105,11 +117,56 @@ namespace OLT.Core
         {
             get
             {
-                var seed = DateTimeOffset.Now.FirstDayOfWeek().Midnight() + 1.Weeks();
-                return new OltDateRange(seed, ToEnd(seed.LastDayOfWeek()));
+                var seed = DateTimeOffset.Now + 1.Weeks();
+                return new OltDateRange(seed.FirstDayOfWeek().Midnight(), seed.LastDayOfWeek().EndOfDay());
             }
         }
 
-        //TODO: QuarterToDate, PreviousQuarter, YTD, LastYear, NextMonth, ThisYear, Tomorrow
+        public static OltDateRange YearToDate
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now;
+                return new OltDateRange(seed.FirstDayOfYear().Midnight(), seed.EndOfDay());
+            }
+        }
+
+        public static OltDateRange ThisYear
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now;
+                return new OltDateRange(seed.FirstDayOfYear().Midnight(), seed.LastDayOfYear().EndOfDay());
+            }
+        }
+
+        public static OltDateRange LastYear
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.PreviousYear();
+                return new OltDateRange(seed.FirstDayOfYear().Midnight(), seed.LastDayOfYear().EndOfDay());
+            }
+        }
+
+        public static OltDateRange QuarterToDate
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now;
+                return new OltDateRange(seed.FirstDayOfQuarter().Midnight(), seed.EndOfDay());
+            }
+        }
+
+        public static OltDateRange PreviousQuarter
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.AddMonths(-3);
+                return new OltDateRange(seed.FirstDayOfQuarter().Midnight(), seed.LastDayOfQuarter().EndOfDay());
+            }
+        }
+
+        
     }
 }

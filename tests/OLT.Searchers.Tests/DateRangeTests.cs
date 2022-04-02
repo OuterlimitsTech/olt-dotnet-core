@@ -1,46 +1,48 @@
 using FluentAssertions;
 using FluentDate;
 using FluentDateTimeOffset;
+using OLT.Core;
 using System;
 using Xunit;
 
-namespace OLT.Core.Searchers.Tests
+namespace OLT.Searchers.Tests
 {
     public class DateRangeTests
     {
         [Theory]
         [MemberData(nameof(Data))]
-        public void ModelTests(OltDateRange value, DateTimeOffset expectedStart, DateTimeOffset expectedEnd)
-        {            
-            value.Should().BeEquivalentTo(new OltDateRange(expectedStart, expectedEnd));
-            var formatString = "u";
-            value.ToString(formatString).Should().BeEquivalentTo($"{expectedStart.ToLocalTime().ToString(formatString)} to {expectedEnd.ToLocalTime().ToString(formatString)}");
+        public void ModelTests(string label, OltDateRange value, DateTimeOffset expectedStart, DateTimeOffset expectedEnd)
+        {
+            value.Should().BeEquivalentTo(new OltDateRange(expectedStart, expectedEnd), label);
         }
 
 
-        public static TheoryData<OltDateRange, DateTimeOffset, DateTimeOffset> Data
+        public static TheoryData<string, OltDateRange, DateTimeOffset, DateTimeOffset> Data
         {
             get
             {
-                DateTimeOffset ToEndValue(DateTimeOffset value)
-                {
-                    return value.Midnight().AddDays(1).AddMilliseconds(-1);
-                }
 
                 var now = DateTimeOffset.Now;
 
-                var results = new TheoryData<OltDateRange, DateTimeOffset, DateTimeOffset>();
-                results.Add(new OltDateRange(), DateTimeOffset.MinValue, DateTimeOffset.MinValue);
-                results.Add(new OltDateRange(now.AddDays(-5).AddHours(-5), now.AddDays(10)), now.AddDays(-5).AddHours(-5), now.AddDays(10));
-                results.Add(OltDateRange.Today, DateTimeOffset.Now.Midnight(), ToEndValue(DateTimeOffset.Now));
-                results.Add(OltDateRange.Yesterday, DateTimeOffset.Now.PreviousDay().Midnight(), ToEndValue(DateTimeOffset.Now.PreviousDay()));
-                results.Add(OltDateRange.Last7Days, DateTimeOffset.Now.AddDays(-7).Midnight(), ToEndValue(DateTimeOffset.Now));
-                results.Add(OltDateRange.Next7Days, DateTimeOffset.Now.Midnight(), ToEndValue(DateTimeOffset.Now.AddDays(7)));
-                results.Add(OltDateRange.ThisMonth, DateTimeOffset.Now.FirstDayOfMonth().Midnight(), ToEndValue(DateTimeOffset.Now.LastDayOfMonth()));
-                results.Add(OltDateRange.LastMonth, DateTimeOffset.Now.PreviousMonth().FirstDayOfMonth().Midnight(), ToEndValue(DateTimeOffset.Now.PreviousMonth().LastDayOfMonth()));
-                results.Add(OltDateRange.MonthToDate, DateTimeOffset.Now.FirstDayOfMonth().Midnight(), ToEndValue(DateTimeOffset.Now));
-                results.Add(OltDateRange.ThisWeek, DateTimeOffset.Now.FirstDayOfWeek().Midnight(), ToEndValue(DateTimeOffset.Now.LastDayOfWeek()));
-                results.Add(OltDateRange.NextWeek, DateTimeOffset.Now.FirstDayOfWeek().AddDays(7).Midnight(), ToEndValue(DateTimeOffset.Now.FirstDayOfWeek().AddDays(7).LastDayOfWeek()));
+                var results = new TheoryData<string, OltDateRange, DateTimeOffset, DateTimeOffset>();
+                results.Add("1", new OltDateRange(), DateTimeOffset.MinValue, DateTimeOffset.MinValue);
+                results.Add("2", new OltDateRange(now.AddDays(-5).AddHours(-5), now.AddDays(10)), now.AddDays(-5).AddHours(-5), now.AddDays(10));
+                results.Add("Today", OltDateRange.Today, DateTimeOffset.Now.Midnight(), DateTimeOffset.Now.EndOfDay());
+                results.Add("Yesterday", OltDateRange.Yesterday, DateTimeOffset.Now.AddDays(-1).Midnight(), DateTimeOffset.Now.AddDays(-1).EndOfDay());
+                results.Add("Tomorrow", OltDateRange.Tomorrow, DateTimeOffset.Now.AddDays(1).Midnight(), DateTimeOffset.Now.AddDays(1).EndOfDay());
+                results.Add("Last7Days", OltDateRange.Last7Days, DateTimeOffset.Now.AddDays(-7).Midnight(), DateTimeOffset.Now.EndOfDay());
+                results.Add("Next7Days", OltDateRange.Next7Days, DateTimeOffset.Now.Midnight(), DateTimeOffset.Now.AddDays(7).EndOfDay());
+                results.Add("ThisMonth", OltDateRange.ThisMonth, DateTimeOffset.Now.FirstDayOfMonth().Midnight(), DateTimeOffset.Now.LastDayOfMonth().EndOfDay());
+                results.Add("LastMonth", OltDateRange.LastMonth, DateTimeOffset.Now.AddMonths(-1).FirstDayOfMonth().Midnight(), DateTimeOffset.Now.AddMonths(-1).LastDayOfMonth().EndOfDay());
+                results.Add("NextMonth", OltDateRange.NextMonth, DateTimeOffset.Now.AddMonths(1).FirstDayOfMonth().Midnight(), DateTimeOffset.Now.AddMonths(1).LastDayOfMonth().EndOfDay());
+                results.Add("MonthToDate", OltDateRange.MonthToDate, DateTimeOffset.Now.FirstDayOfMonth().Midnight(), DateTimeOffset.Now.EndOfDay());
+                results.Add("ThisWeek", OltDateRange.ThisWeek, DateTimeOffset.Now.FirstDayOfWeek().Midnight(), DateTimeOffset.Now.LastDayOfWeek().EndOfDay());
+                results.Add("NextWeek", OltDateRange.NextWeek, DateTimeOffset.Now.FirstDayOfWeek().AddDays(7).Midnight(), DateTimeOffset.Now.FirstDayOfWeek().AddDays(7).LastDayOfWeek().EndOfDay());
+                results.Add("YearToDate", OltDateRange.YearToDate, DateTimeOffset.Now.FirstDayOfYear().Midnight(), DateTimeOffset.Now.EndOfDay());
+                results.Add("ThisYear", OltDateRange.ThisYear, DateTimeOffset.Now.FirstDayOfYear().Midnight(), DateTimeOffset.Now.LastDayOfYear().EndOfDay());
+                results.Add("LastYear", OltDateRange.LastYear, DateTimeOffset.Now.AddYears(-1).FirstDayOfYear().Midnight(), DateTimeOffset.Now.AddYears(-1).LastDayOfYear().EndOfDay());
+                results.Add("QuarterToDate", OltDateRange.QuarterToDate, DateTimeOffset.Now.FirstDayOfQuarter().Midnight(), DateTimeOffset.Now.EndOfDay());
+                results.Add("PreviousQuarter", OltDateRange.PreviousQuarter, DateTimeOffset.Now.AddMonths(-3).FirstDayOfQuarter().Midnight(), DateTimeOffset.Now.AddMonths(-3).LastDayOfQuarter().EndOfDay());
 
                 return results;
             }

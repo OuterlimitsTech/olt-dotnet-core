@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <!--<Nullable>enable</Nullable>-->
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.Searchers.DateRange\OLT.Searchers.DateRange.csproj" />
+    <ProjectReference Include="..\..\src\OLT.Searchers.GenericFilter\OLT.Searchers.GenericFilter.csproj" />
   </ItemGroup>
 
 </Project>
