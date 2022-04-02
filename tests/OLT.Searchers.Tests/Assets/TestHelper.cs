@@ -1,6 +1,5 @@
 ﻿using FluentDateTimeOffset;
 using OLT.Core;
-using OLT.Core.Searchers.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;

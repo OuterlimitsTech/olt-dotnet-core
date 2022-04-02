@@ -1,11 +1,10 @@
 ﻿using FluentAssertions;
 using OLT.Constants;
 using OLT.Core;
-using OLT.Core.Searchers.Tests.Assets;
 using OLT.Searchers.Tests.Assets;
 using Xunit;
 
-namespace OLT.Searchers.Tests
+namespace OLT.Searchers.Tests.FilterTests
 {
     public class StringFilterTests : BaseFilterTests
     {

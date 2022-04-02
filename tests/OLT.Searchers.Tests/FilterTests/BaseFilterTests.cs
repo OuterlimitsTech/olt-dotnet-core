@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace OLT.Searchers.Tests
+namespace OLT.Searchers.Tests.FilterTests
 {
     public abstract class BaseFilterTests
     {

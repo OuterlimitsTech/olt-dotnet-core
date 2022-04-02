@@ -1,23 +1,24 @@
-﻿using System;
+﻿using OLT.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Core.Searchers.Tests.Assets
+namespace OLT.Searchers.Tests.Assets
 {
     public class FakeEntityDateRangeSearcher : OltSearcherDateRange<FakeEntity>
     {
-        public FakeEntityDateRangeSearcher() : base() 
-        { 
+        public FakeEntityDateRangeSearcher() : base()
+        {
         }
 
-        public FakeEntityDateRangeSearcher(OltDateRange value) : base(value) 
-        { 
+        public FakeEntityDateRangeSearcher(OltDateRange value) : base(value)
+        {
         }
 
-        public FakeEntityDateRangeSearcher(DateTimeOffset start, DateTimeOffset end) : base(start, end) 
-        { 
+        public FakeEntityDateRangeSearcher(DateTimeOffset start, DateTimeOffset end) : base(start, end)
+        {
         }
 
 

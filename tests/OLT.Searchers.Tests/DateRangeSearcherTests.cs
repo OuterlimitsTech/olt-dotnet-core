@@ -1,11 +1,12 @@
 ﻿using FluentAssertions;
 using FluentDateTimeOffset;
-using OLT.Core.Searchers.Tests.Assets;
+using OLT.Core;
+using OLT.Searchers.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace OLT.Core.Searchers.Tests
+namespace OLT.Searchers.Tests
 {
     public class DateRangeSearcherTests
     {
@@ -14,7 +15,7 @@ namespace OLT.Core.Searchers.Tests
         public void SearcherTests(FakeEntityDateRangeSearcher searcher, OltDateRange expected, DateTimeOffset expectedQueryEnd)
         {
             searcher.Value.Should().BeEquivalentTo(expected);
-            Assert.Equal(expectedQueryEnd, searcher.QueryEndValue);            
+            Assert.Equal(expectedQueryEnd, searcher.QueryEndValue);
         }
 
 

@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using OLT.Core;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace OLT.Core.Searchers.Tests.Assets
+namespace OLT.Searchers.Tests.Assets
 {
     public class FakeEntityGenericFilterSearcher : OltGenericFilterSearcher<FakeEntity>
     {

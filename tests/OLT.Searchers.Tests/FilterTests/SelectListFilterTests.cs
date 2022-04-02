@@ -1,12 +1,11 @@
 ﻿using FluentAssertions;
 using OLT.Constants;
 using OLT.Core;
-using OLT.Core.Searchers.Tests.Assets;
 using OLT.Searchers.Tests.Assets;
 using System.Linq;
 using Xunit;
 
-namespace OLT.Searchers.Tests
+namespace OLT.Searchers.Tests.FilterTests
 {
 
     public class SelectListFilterTests : BaseFilterTests
@@ -22,7 +21,7 @@ namespace OLT.Searchers.Tests
             var listValues = TestHelper.ValueList(10);
             var template = new OltFilterTemplateSelectList(key, label, listValues.Last(), listValues, hidden);
             var filter = new OltFilterSelect<FakeEntity>(template, p => p.SelectValue);
-            template.ValueList.Should().BeEquivalentTo(listValues);            
+            template.ValueList.Should().BeEquivalentTo(listValues);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.SelectList, key, label, hidden, true);
         }
 
@@ -71,12 +70,12 @@ namespace OLT.Searchers.Tests
             template.Parse(TestHelper.BuildGenericParameter(key, Faker.RandomNumber.Next(100, 150)));
             Assert.Equal(listValues.Last().Label, template.Formatted());
 
-            
+
             var nonListDefaultValue = new OltValueListItem<int> { Label = Faker.Name.First(), Value = Faker.RandomNumber.Next(70, 80) };
             template = new OltFilterTemplateSelectList(key, label, nonListDefaultValue, listValues);
 
             template.Parse(TestHelper.BuildGenericParameter(key, Faker.RandomNumber.Next(100, 150)));
-            
+
             Assert.Null(template.Formatted());
 
         }

@@ -1,17 +1,18 @@
 using FluentAssertions;
 using FluentDate;
 using FluentDateTimeOffset;
+using OLT.Core;
 using System;
 using Xunit;
 
-namespace OLT.Core.Searchers.Tests
+namespace OLT.Searchers.Tests
 {
     public class DateRangeTests
     {
         [Theory]
         [MemberData(nameof(Data))]
         public void ModelTests(string label, OltDateRange value, DateTimeOffset expectedStart, DateTimeOffset expectedEnd)
-        {            
+        {
             value.Should().BeEquivalentTo(new OltDateRange(expectedStart, expectedEnd), label);
         }
 
@@ -42,7 +43,7 @@ namespace OLT.Core.Searchers.Tests
                 results.Add("LastYear", OltDateRange.LastYear, DateTimeOffset.Now.AddYears(-1).FirstDayOfYear().Midnight(), DateTimeOffset.Now.AddYears(-1).LastDayOfYear().EndOfDay());
                 results.Add("QuarterToDate", OltDateRange.QuarterToDate, DateTimeOffset.Now.FirstDayOfQuarter().Midnight(), DateTimeOffset.Now.EndOfDay());
                 results.Add("PreviousQuarter", OltDateRange.PreviousQuarter, DateTimeOffset.Now.AddMonths(-3).FirstDayOfQuarter().Midnight(), DateTimeOffset.Now.AddMonths(-3).LastDayOfQuarter().EndOfDay());
-                
+
                 return results;
             }
         }

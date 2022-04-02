@@ -1,15 +1,14 @@
 ﻿using FluentAssertions;
 using OLT.Constants;
 using OLT.Core;
-using OLT.Core.Searchers.Tests.Assets;
 using OLT.Searchers.Tests.Assets;
 using Xunit;
 
-namespace OLT.Searchers.Tests
+namespace OLT.Searchers.Tests.FilterTests
 {
-    public class SelectListNullableTests : BaseFilterTests
+    public class SelectListNullableFilterTests : BaseFilterTests
     {
-        
+
         [Theory]
         [InlineData(true)]
         [InlineData(false)]
@@ -21,7 +20,7 @@ namespace OLT.Searchers.Tests
             var listValues = TestHelper.ValueList(10);
             var template = new OltFilterTemplateSelectListNullable(key, label, listValues, hidden);
             var filter = new OltFilterSelectOptional<FakeEntity>(template, p => p.SelectValue);
-            template.ValueList.Should().BeEquivalentTo(listValues);            
+            template.ValueList.Should().BeEquivalentTo(listValues);
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.SelectList, key, label, hidden, false);
         }
 
@@ -56,7 +55,7 @@ namespace OLT.Searchers.Tests
             var key = $"key_{random}";
             var label = $"label_{random}";
             var listValues = TestHelper.ValueList(10);
-            var template = new OltFilterTemplateSelectListNullable(key, label,  listValues);
+            var template = new OltFilterTemplateSelectListNullable(key, label, listValues);
 
 
             Assert.Null(template.Formatted());

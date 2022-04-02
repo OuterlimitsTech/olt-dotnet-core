@@ -1,13 +1,12 @@
 ﻿using FluentAssertions;
 using OLT.Constants;
 using OLT.Core;
-using OLT.Core.Searchers.Tests.Assets;
 using OLT.Searchers.Tests.Assets;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace OLT.Searchers.Tests
+namespace OLT.Searchers.Tests.FilterTests
 {
     public class MultiSelectFilterTests : BaseFilterTests
     {
@@ -38,7 +37,7 @@ namespace OLT.Searchers.Tests
             var key = $"key_{random}";
             var label = $"label_{random}";
             var listValues = TestHelper.ValueList(10);
-            var template = new OltFilterTemplateMultiSelectList(key, label,  listValues);
+            var template = new OltFilterTemplateMultiSelectList(key, label, listValues);
 
             Assert.Null(template.Value);
             Assert.False(template.Parse(null));

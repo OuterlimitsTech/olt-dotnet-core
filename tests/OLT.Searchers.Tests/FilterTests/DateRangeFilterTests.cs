@@ -2,12 +2,11 @@
 using FluentDateTimeOffset;
 using OLT.Constants;
 using OLT.Core;
-using OLT.Core.Searchers.Tests.Assets;
 using OLT.Searchers.Tests.Assets;
 using System.Linq;
 using Xunit;
 
-namespace OLT.Searchers.Tests
+namespace OLT.Searchers.Tests.FilterTests
 {
     public class DateRangeFilterTests : BaseFilterTests
     {
@@ -24,7 +23,7 @@ namespace OLT.Searchers.Tests
             var template = new OltFilterTemplateDateRange(key, label, ranges.Last().Value, ranges, hidden);
             var filter = new OltFilterDateRange<FakeEntity>(template, new FakeEntityDateRangeSearcher());
             template.ValueList.Should().BeEquivalentTo(ranges);
-            
+
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.DateRange, key, label, hidden, true);
 
         }
@@ -86,7 +85,7 @@ namespace OLT.Searchers.Tests
             template.Parse(TestHelper.BuildGenericParameter(key, selected));
             expectedFormat = $"{selected.Start.Midnight().LocalDateTime:M/d/yyyy} to {selected.End.Midnight().LocalDateTime:M/d/yyyy}";
             Assert.Equal(expectedFormat, template.Formatted());
-                       
+
 
             template.Value = null;
             Assert.Equal(" to ", template.Formatted());
