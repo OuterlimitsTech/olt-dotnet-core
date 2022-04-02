@@ -7,7 +7,7 @@ using Xunit;
 
 namespace OLT.Searchers.Tests
 {
-    public class StringTests : BaseFilterTests
+    public class StringFilterTests : BaseFilterTests
     {
         [Theory]
         [InlineData(true, "Test", "Test", true)]

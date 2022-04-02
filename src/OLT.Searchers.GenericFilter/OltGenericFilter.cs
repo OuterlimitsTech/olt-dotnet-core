@@ -2,21 +2,6 @@
 
 namespace OLT.Core
 {
-    public abstract class OltGenericFilter<TValueType> : IOltGenericFilter
-    {        
-
-        protected OltGenericFilter(IOltGenericParameterParser<TValueType> parser)
-        {
-            Parser = parser;
-        }
-
-        protected virtual IOltGenericParameterParser<TValueType> Parser { get; }
-
-        public bool HasValue(IOltGenericParameter parameters)
-        {
-            return Parser.Parse(parameters);
-        }
-    }
 
     public abstract class OltGenericFilter<TEntity, TValueType> : IOltGenericFilter<TEntity>
         where TEntity : class, IOltEntity

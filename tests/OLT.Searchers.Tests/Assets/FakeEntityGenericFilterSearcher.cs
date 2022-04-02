@@ -5,7 +5,7 @@ namespace OLT.Core.Searchers.Tests.Assets
 {
     public class FakeEntityGenericFilterSearcher : OltGenericFilterSearcher<FakeEntity>
     {
-        protected FakeEntityGenericFilterSearcher(IOltGenericParameter parameters, List<IOltGenericFilter<FakeEntity>> filters) : base(parameters, filters)
+        public FakeEntityGenericFilterSearcher(IOltGenericParameter parameters, List<IOltGenericFilter<FakeEntity>> filters) : base(parameters, filters)
         {
         }
 
