@@ -16,8 +16,8 @@ namespace OLT.Core
             bool hidden = false) : base(key, label, hidden)
         {
             ValueList = valueList.ToList();
-            _defaultValue = defaultValue;
-            Value = _defaultValue.Value;
+            _defaultValue = defaultValue;            
+            Value = _defaultValue.Value;           
         }
 
         

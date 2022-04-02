@@ -21,7 +21,7 @@ namespace OLT.Core
         }
 
         public override string TemplateName => OltGenericParameterTemplates.DateRange;
-        public override bool HasValue => Value != null && Value.End > Value.Start;
+        public override bool HasValue => Value != null;
         public virtual List<IOltValueListItem<OltDateRange>> ValueList { get; }
 
 

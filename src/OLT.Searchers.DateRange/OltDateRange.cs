@@ -21,10 +21,6 @@ namespace OLT.Core
         public DateTimeOffset Start { get; set; }
         public DateTimeOffset End { get; set; }
 
-        public string ToString(string format)
-        {
-            return $"{Start.ToLocalTime().ToString(format)} to {End.ToLocalTime().ToString(format)}";
-        }
 
         private static DateTimeOffset ToEnd(DateTimeOffset value) => value.NextDay().AddMilliseconds(-1);
 
@@ -110,6 +106,33 @@ namespace OLT.Core
             }
         }
 
-        //TODO: QuarterToDate, PreviousQuarter, YTD, LastYear, NextMonth, ThisYear, Tomorrow
+        public static OltDateRange YearToDate
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.FirstDayOfYear().Midnight();
+                return new OltDateRange(seed, DateTimeOffset.Now);
+            }
+        }
+
+        public static OltDateRange ThisYear
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.FirstDayOfYear().Midnight();
+                return new OltDateRange(seed, seed.LastDayOfYear().EndOfDay());
+            }
+        }
+
+        public static OltDateRange LastYear
+        {
+            get
+            {
+                var seed = DateTimeOffset.Now.AddYears(-1).FirstDayOfYear().Midnight();
+                return new OltDateRange(seed, ToEnd(seed.LastDayOfYear().EndOfDay()));
+            }
+        }
+
+        //TODO: QuarterToDate, PreviousQuarter, NextMonth, ThisYear, Tomorrow
     }
 }

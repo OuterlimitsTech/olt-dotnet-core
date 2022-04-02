@@ -36,16 +36,16 @@ namespace OLT.Searchers.Tests.Assets
         public static OltGenericParameter BuildGenericParameter<T>(string key, T value)
         {
             var dict = new Dictionary<string, string>();
-            dict.Add(key, value.ToString());
+            dict.Add(key, value?.ToString());
             return new OltGenericParameter(dict);
         }
 
         public static List<OltValueListItem<int>> ValueList(int number)
         {
             var result = new List<OltValueListItem<int>>();
-            for (int i = 0; i < number; i++)
+            for (int i = 1; i <= number; i++)
             {
-                result.Add(new OltValueListItem<int> { Label = Faker.Name.First(), Value = Faker.RandomNumber.Next() });
+                result.Add(new OltValueListItem<int> { Label = Faker.Name.First(), Value = i });
             }
             return result;
         }
