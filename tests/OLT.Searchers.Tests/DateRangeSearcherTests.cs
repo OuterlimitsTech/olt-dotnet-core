@@ -14,7 +14,7 @@ namespace OLT.Searchers.Tests
         [MemberData(nameof(Data))]
         public void SearcherTests(FakeEntityDateRangeSearcher searcher, OltDateRange expected, DateTimeOffset expectedQueryEnd)
         {
-            searcher.Value.Should().BeEquivalentTo(expected);
+            searcher.Value.Should().BeEquivalentTo(expected, opt => opt.Excluding(o => o.Label));
             Assert.Equal(expectedQueryEnd, searcher.QueryEndValue);
         }
 

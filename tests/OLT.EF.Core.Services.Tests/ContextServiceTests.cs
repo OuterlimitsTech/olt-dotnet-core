@@ -60,6 +60,7 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.True(service.GetPeopleOrdered(new OltSearcherGetAll<PersonEntity>(false)).Any());
                 Assert.True(service.GetPeopleOrdered(new OltSearcherGetAll<PersonEntity>(true)).Any());
                 Assert.True(service.GetPeopleOrdered(new OltSearcherGetAll<PersonEntity>(true), new OltSearcherGetById<PersonEntity>(personEntity.Id)).Any());
+                Assert.NotNull(service.GetDtoUser(new OltSearcherGetById<UserEntity>(userEntity.Id)));
                 Assert.NotNull(service.GetDtoUser(userEntity.Id));
             }
         }
@@ -80,6 +81,7 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.True((await service.GetAllUsersSearcherAsync()).Any());
                 Assert.True((await service.GetAllDtoUsersAsync()).Any());
                 Assert.True((await service.GetAllDtoUsersSearcherAsync()).Any());
+                Assert.NotNull(await service.GetDtoUserAsync(new OltSearcherGetById<UserEntity>(userEntity.Id)));
                 Assert.NotNull(await service.GetDtoUserAsync(userEntity.Id));
             }
         }
@@ -126,6 +128,7 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.Null(service.GetNonDeleted().FirstOrDefault(p => p.Id == personEntity.Id));
 
                 var userEntity = service.CreateUser();
+                Assert.Equal(userEntity.Id, (await service.GetDtoUserAsync(new OltSearcherGetById<UserEntity>(userEntity.Id)))?.UserId);
                 Assert.Equal(userEntity.Id, (await service.GetDtoUserAsync(userEntity.Id))?.UserId);
                 await Assert.ThrowsAsync<InvalidCastException>(() => service.DeleteAsync<UserEntity>(userEntity.Id));
             }
