@@ -2,12 +2,11 @@
 
 namespace OLT.Core
 {
-
-    public abstract class OltGenericFilter<TEntity, TValueType> : IOltGenericFilter<TEntity>
+    public class OltGenericFilter<TEntity, TValueType> : IOltGenericFilter<TEntity>
         where TEntity : class, IOltEntity
     { 
 
-        protected OltGenericFilter(IOltGenericParameterParser<TValueType> parser, IOltEntityQueryBuilder<TEntity, TValueType> queryBuilder)
+        public OltGenericFilter(IOltGenericParameterParser<TValueType> parser, IOltEntityQueryBuilder<TEntity, TValueType> queryBuilder)
         {
             Parser = parser;
             QueryBuilder = queryBuilder;

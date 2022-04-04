@@ -37,6 +37,8 @@ namespace OLT.EF.Core.Services.Tests.Assets.Services
         Task<List<UserModel>> GetAllUsersSearcherAsync();
 
         UserDto GetDtoUser(int id);
+        UserDto GetDtoUser(IOltSearcher<UserEntity> searcher);
+        Task<UserDto> GetDtoUserAsync(IOltSearcher<UserEntity> searcher);
         Task<UserDto> GetDtoUserAsync(int id);
 
         List<UserDto> GetAllDtoUsers();
@@ -93,7 +95,12 @@ namespace OLT.EF.Core.Services.Tests.Assets.Services
         public async Task<List<UserModel>> GetAllUsersOrderedAsync() => (await GetAllAsync<UserEntity, UserModel>(new OltSearcherGetAll<UserEntity>(), p => p.OrderBy(t => t.LastName).ThenBy(t => t.FirstName))).ToList();
         public async Task<List<UserModel>> GetAllUsersAsync() => (await GetAllAsync<UserEntity, UserModel>(Context.Users)).ToList();
         public async Task<List<UserModel>> GetAllUsersSearcherAsync() => (await GetAllAsync<UserEntity, UserModel>(new OltSearcherGetAll<UserEntity>())).ToList();
+
+
+        public UserDto GetDtoUser(IOltSearcher<UserEntity> searcher) => Get<UserEntity, UserDto>(searcher);
         public UserDto GetDtoUser(int id) => Get<UserEntity, UserDto>(Context.Users.Where(p => p.Id == id));
+
+        public async Task<UserDto> GetDtoUserAsync(IOltSearcher<UserEntity> searcher) => await GetAsync<UserEntity, UserDto>(searcher);
         public async Task<UserDto> GetDtoUserAsync(int id) => await GetAsync<UserEntity, UserDto>(Context.Users.Where(p => p.Id == id));
 
         public List<UserDto> GetAllDtoUsers() => GetAll<UserEntity, UserDto>(new OltSearcherGetAll<UserEntity>()).ToList();

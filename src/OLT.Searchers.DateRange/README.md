@@ -30,9 +30,15 @@ searcher = new MyEntitySearcher(OltDateRange.Last7Days);
 searcher = new MyEntitySearcher(OltDateRange.Next7Days);
 searcher = new MyEntitySearcher(OltDateRange.ThisMonth);
 searcher = new MyEntitySearcher(OltDateRange.LastMonth);
+searcher = new MyEntitySearcher(OltDateRange.NextMonth);
 searcher = new MyEntitySearcher(OltDateRange.MonthToDate);
 searcher = new MyEntitySearcher(OltDateRange.ThisWeek);
 searcher = new MyEntitySearcher(OltDateRange.NextWeek);
+searcher = new MyEntitySearcher(OltDateRange.QuarterToDate);
+searcher = new MyEntitySearcher(OltDateRange.PreviousQuarter);
+searcher = new MyEntitySearcher(OltDateRange.ThisYear);
+searcher = new MyEntitySearcher(OltDateRange.LastYear);
+searcher = new MyEntitySearcher(OltDateRange.YearToDate);
 
 //Midnight() is an extension provided by FluentDateTime.  See The package for all the extensions
 searcher = new MyEntitySearcher(DateTimeOffset.Now.Midnight(), DateTimeOffset.Now.AddDays(3).Midnight());
