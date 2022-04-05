@@ -1,9 +1,9 @@
 <Project>
-  <!-- <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <SonarQubeExclude>true</SonarQubeExclude>
     <IsPackable>false</IsPackable>
-  </PropertyGroup> -->
+  </PropertyGroup>
 
   <!-- <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.6.0" />
