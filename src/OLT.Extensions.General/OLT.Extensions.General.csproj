@@ -4,4 +4,7 @@
     <Description>General Extensions</Description>
     <ProjectGuid>545BCC71-DBCB-4943-8E23-6C82A16B624B</ProjectGuid>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+  </ItemGroup>
 </Project>
