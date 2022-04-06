@@ -9,7 +9,7 @@ namespace OLT.Core
     public static class OltAutomapperExtensions 
     {
         /// <summary>
-        /// Sets default OrderBy of  <typeparamref name="TSource"/> for <seealso cref="IOltPaged"/> 
+        /// Sets default OrderBy of <typeparamref name="TSource"/> for <seealso cref="IOltPaged"/>
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
@@ -33,30 +33,16 @@ namespace OLT.Core
             return expression;
         }
 
+
         /// <summary>
-        /// Sets default OrderBy of  <typeparamref name="TDestination"/> for Paged Resultsets
+        /// Registers a Before Map <typeparamref name="TSource"/> for Mapping Expression for <see cref="IQueryable"/> ProjectTo
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TDestination"></typeparam>
         /// <param name="expression"></param>
-        /// <param name="func"></param>
+        /// <param name="beforeMap"></param>
         /// <returns></returns>
-        public static IMappingExpression<TSource, TDestination> WithOrderBy<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, Func<IQueryable<TDestination>, IOrderedQueryable<TDestination>> func)
-             where TSource : class
-        {
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
-            if (func == null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
-
-            OltAdapterMapConfigs.AfterMap.Register<TSource, TDestination>(func, false);
-            return expression;
-        }
-
+        /// <exception cref="ArgumentNullException"></exception>
         public static IMappingExpression<TSource, TDestination> BeforeMap<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, IOltBeforeMap<TSource, TDestination> beforeMap)
             where TSource : class
         {
@@ -73,6 +59,15 @@ namespace OLT.Core
             return expression;
         }
 
+        /// <summary>
+        /// Registers a After Map <typeparamref name="TSource"/> for Mapping Expression for <see cref="IQueryable"/> ProjectTo
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="expression"></param>
+        /// <param name="afterMap"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static IMappingExpression<TSource, TDestination> AfterMap<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression, IOltAfterMap<TSource, TDestination> afterMap)
             where TSource : class
         {
