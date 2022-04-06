@@ -57,16 +57,16 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             Func<IQueryable<AdapterObject1>, IOrderedQueryable<AdapterObject1>> func = null;
 
             Assert.Throws<ArgumentNullException>(nameof(afterMap), () => OltAutomapperExtensions.AfterMap(maps.AfterMapExpression, afterMap));
-            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAutomapperExtensions.WithOrderBy(maps.AfterMapExpression, func));
+            //Assert.Throws<ArgumentNullException>(nameof(func), () => OltAutomapperExtensions.WithOrderBy(maps.AfterMapExpression, func));
 
             var orderBy = new OltAfterMapOrderBy<AdapterObject5, AdapterObject1>(p => p.OrderBy(t => t.FirstName));
 
-            Assert.Throws<ArgumentNullException>(nameof(expression), () => OltAutomapperExtensions.WithOrderBy(expression, p => p.OrderBy(p => p.LastName)));
+            //Assert.Throws<ArgumentNullException>(nameof(expression), () => OltAutomapperExtensions.WithOrderBy(expression, p => p.OrderBy(p => p.LastName)));
             Assert.Throws<ArgumentNullException>(nameof(expression), () => OltAutomapperExtensions.AfterMap(expression, orderBy));
 
             try
             {
-                OltAutomapperExtensions.WithOrderBy(maps.AfterMapExpression, p => p.OrderBy(p => p.LastName));
+                //OltAutomapperExtensions.WithOrderBy(maps.AfterMapExpression, p => p.OrderBy(p => p.LastName));
                 OltAutomapperExtensions.AfterMap(maps.AfterMapExpression, orderBy);
                 Assert.True(true);
             }

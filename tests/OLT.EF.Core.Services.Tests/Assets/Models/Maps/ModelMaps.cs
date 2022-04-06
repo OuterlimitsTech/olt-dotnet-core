@@ -9,8 +9,8 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Maps
     {
         public ModelMaps()
         {
-            PersonAutoMapperModel.BuildMap(CreateMap<PersonEntity, PersonAutoMapperModel>()).WithOrderBy(p => p.OrderBy(o => o.Name.Last).ThenBy(o => o.Name.First));
-            NameAutoMapperModel.BuildMap(CreateMap<PersonEntity, NameAutoMapperModel>()).WithOrderBy(p => p.OrderBy(o => o.Last).ThenBy(o => o.First));
+            PersonAutoMapperModel.BuildMap(CreateMap<PersonEntity, PersonAutoMapperModel>()).WithOrderBy(p => p.OrderBy(o => o.NameLast).ThenBy(o => o.NameFirst));
+            NameAutoMapperModel.BuildMap(CreateMap<PersonEntity, NameAutoMapperModel>()).WithOrderBy(p => p.OrderBy(o => o.NameLast).ThenBy(o => o.NameFirst));
             NameAutoMapperModel.BuildMap(CreateMap<UserEntity, NameAutoMapperModel>()).AfterMap(new NameAutoMapperModelAfterMap());
         }
     }

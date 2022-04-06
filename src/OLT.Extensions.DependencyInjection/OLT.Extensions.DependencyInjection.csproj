@@ -8,11 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="Scrutor" Version="4.0.0" />		
+		<PackageReference Include="Scrutor" Version="4.1.0" />		
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Services\OLT.Core.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
