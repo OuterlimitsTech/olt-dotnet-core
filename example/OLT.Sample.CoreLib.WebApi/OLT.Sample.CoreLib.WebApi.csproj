@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c8b4baea-3c81-48ed-a8ff-221f3b3d6187</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OLT.AspNetCore.Authentication.ApiKey\OLT.AspNetCore.Authentication.ApiKey.csproj" />
+    <ProjectReference Include="..\..\src\OLT.AspNetCore.Authentication.JwtBearer\OLT.AspNetCore.Authentication.JwtBearer.csproj" />
+    <ProjectReference Include="..\..\src\OLT.AspNetCore.Serilog\OLT.AspNetCore.Serilog.csproj" />
+    <ProjectReference Include="..\..\src\OLT.AspNetCore\OLT.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
