@@ -44,6 +44,31 @@ namespace OLT.Core.Rules.Tests
                     Assert.True(result.Success);
                 }
             }
+
+
+            using (var provider = BuildProvider2())
+            {
+                var rule = new Test2RuleBuilder();
+                rule.WithService(provider.GetService<ITestRuleService>());
+                using (var tran = new MockTran())
+                {
+                    await Assert.ThrowsAsync<OltRuleMissingParameterException<TestParameter>>(() => rule.ExecuteAsync(tran));                    
+                }
+            }
+
+            using (var provider = BuildProvider2())
+            {
+                var rule = new Test2RuleBuilder();
+                rule.WithService(provider.GetService<ITestRuleService>()).WithParameter(new TestParameter());
+                using (var tran = new MockTran())
+                {
+                    var result = await rule.ExecuteAsync(tran);
+                    Assert.True(result.Success);
+                }
+            }
         }
+
+
+
     }
 }
