@@ -3,8 +3,7 @@ on:
   push:
     branches:
       - master
-      # - release/**
-      # - feature/**
+
   workflow_dispatch:
     branches:
       - master
