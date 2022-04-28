@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace OLT.Core
 {
-    public abstract class OltRuleBuilderWithParameter<T> : OltRuleBuilder 
+    public abstract class OltRuleBuilderWithParameter<T> : OltRuleBuilderBase
         where T : OltRuleBuilderWithParameter<T>
     {
         private readonly Dictionary<string, object> _values = new Dictionary<string, object>();

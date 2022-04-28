@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-    public abstract class OltRuleBuilder : OltRule, IOltRuleBuilder
+    public abstract class OltRuleBuilderBase : OltRule, IOltRuleBuilder
     {
         protected string SavePointName => this.GetType().Name.Left(32); //Max Length of DB Transaction SavePoint is 32 characters
 
@@ -64,18 +64,8 @@ namespace OLT.Core
         }
     }
 
-    public abstract class OltRuleBuilder<T> : OltRuleBuilderWithService<T>  
-        where T : OltRuleBuilder<T>
-    {
-        private readonly Dictionary<string, IOltRule> _services = new Dictionary<string, IOltRule>();
 
-        public T RunRule<TRule>(TRule rule) where TRule : class, IOltRule
-        {
-            if (!_services.ContainsKey(rule.RuleName))
-            {
-                _services.Add(rule.RuleName, rule);
-            }
-            return (T)this;
-        }
+    public abstract class OltRuleBuilder : OltRuleBuilderWithService<OltRuleBuilder>
+    {
     }
 }

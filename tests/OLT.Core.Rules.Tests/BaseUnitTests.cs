@@ -32,14 +32,14 @@ namespace OLT.Core.Rules.Tests
             //.AddLogging(config => config.AddConsole())
             //.AddAutoMapper(this.GetType().Assembly)
 
-            services
-                .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
-                {
-                    optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");
-                    optionsBuilder.EnableSensitiveDataLogging();
-                    optionsBuilder.EnableDetailedErrors();
+            //services
+            //    .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
+            //    {
+            //        optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");
+            //        optionsBuilder.EnableSensitiveDataLogging();
+            //        optionsBuilder.EnableDetailedErrors();
 
-                });
+            //    });
 
             services.AddScoped<IOltServiceManager, TestRuleServiceManager>();
             services.AddScoped<ITestRuleService, TestRuleService>();

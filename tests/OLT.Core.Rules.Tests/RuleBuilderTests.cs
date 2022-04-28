@@ -48,8 +48,7 @@ namespace OLT.Core.Rules.Tests
 
             using (var provider = BuildProvider2())
             {
-                var rule = new Test2RuleBuilder();
-                rule.WithService(provider.GetService<ITestRuleService>());
+                var rule = new Test2RuleBuilder();                
                 using (var tran = new MockTran())
                 {
                     await Assert.ThrowsAsync<OltRuleMissingParameterException<TestParameter>>(() => rule.ExecuteAsync(tran));                    
@@ -59,7 +58,7 @@ namespace OLT.Core.Rules.Tests
             using (var provider = BuildProvider2())
             {
                 var rule = new Test2RuleBuilder();
-                rule.WithService(provider.GetService<ITestRuleService>()).WithParameter(new TestParameter());
+                rule.WithParameter(new TestParameter());
                 using (var tran = new MockTran())
                 {
                     var result = await rule.ExecuteAsync(tran);

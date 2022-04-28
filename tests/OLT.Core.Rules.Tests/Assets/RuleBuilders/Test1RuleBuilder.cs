@@ -2,7 +2,7 @@
 
 namespace OLT.Core.Rules.Tests.Assets.RuleBuilders
 {
-    public class Test1RuleBuilder : OltRuleBuilder<Test1RuleBuilder>
+    public class Test1RuleBuilder : OltRuleBuilder
     {
         public override bool RequiresDbTransaction => true;
 
