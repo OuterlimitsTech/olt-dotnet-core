@@ -12,6 +12,5 @@ namespace OLT.Core
         {
 
         }
-
     }
 }

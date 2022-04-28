@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public interface IOltRule
     {

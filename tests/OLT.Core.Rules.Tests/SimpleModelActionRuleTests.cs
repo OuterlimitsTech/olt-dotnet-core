@@ -6,6 +6,7 @@ using Xunit;
 
 namespace OLT.Core.Rules.Tests
 {
+
     public class SimpleModelActionRuleTests : BaseUnitTests
     {
         public static TheoryData<ITestRuleSimpleModelRequest, SimpleModelRequest, IOltRuleResult, bool> SimpleModelData
