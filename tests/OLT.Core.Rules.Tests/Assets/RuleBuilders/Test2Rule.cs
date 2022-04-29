@@ -2,15 +2,15 @@
 
 namespace OLT.Core.Rules.Tests.Assets.RuleBuilders
 {
-    public class Test2RuleBuilder : OltRuleBuilder
+    public class Test2Rule : OltActionRule<Test2Rule>
     {
-        public override bool RequiresDbTransaction => true;
+        //public override bool RequiresDbTransaction => true;
 
-        protected override Task<IOltRuleResult> RunRuleAsync()
+        protected override Task RunRuleAsync()
         {
             var parameter = GetParameter<TestParameter>();
             var name = parameter.Name;
-            return Task.FromResult(Success);
+            return Task.CompletedTask;
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-    public interface IOltRuleBuilder : IOltRule
+    public interface IOltActionRule : IOltRule
     {
         List<OltRuleCanRunException> CanExecute();
-        Task<IOltRuleResult> ExecuteAsync(IDbContextTransaction dbTransaction);
+        Task ExecuteAsync(IDbContextTransaction dbTransaction);
     }
 }
