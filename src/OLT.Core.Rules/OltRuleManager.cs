@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
-    [Obsolete("Move to OltRuleBuilder")]
+    [Obsolete("Move to OltActionRule")]
     public class OltRuleManager : OltDisposable, IOltRuleManager
     {
         private readonly List<IOltRule> _rules;

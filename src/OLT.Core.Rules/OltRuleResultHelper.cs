@@ -1,10 +1,14 @@
 ﻿using OLT.Constants;
+using System;
 
 namespace OLT.Core
 {
+    [Obsolete("Move to OltActionRule")]
     public static class OltRuleResultHelper
     {
+        [Obsolete("Move to OltActionRule")]
         public static IOltRuleResult Success => new OltRuleResultValid();
-        public static IOltRuleResult Invalid => new OltRuleResultInvalid(new OltValidationError(OltRuleDefaults.InvalidMessage));
+        [Obsolete("Move to OltActionRule")]
+        public static IOltRuleResult Invalid => new OltRuleResultInvalid(new OltValidationError(OltRuleDefaults.InvalidMessage));        
     }
 }
