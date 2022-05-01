@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OLT.Core
 {
+    [Obsolete("Move away from Results and Throw Exceptions")]
     public class OltRuleResultValid : IOltRuleResult
     {
         public virtual bool Success => true;
@@ -9,6 +11,7 @@ namespace OLT.Core
         public virtual List<IOltValidationError> Results => new List<IOltValidationError>();
     }
 
+    [Obsolete("Move away from Results and Throw Exceptions")]
     public class OltRuleResultInvalid : IOltRuleResult
     {
         public OltRuleResultInvalid(IOltValidationError validationError)
