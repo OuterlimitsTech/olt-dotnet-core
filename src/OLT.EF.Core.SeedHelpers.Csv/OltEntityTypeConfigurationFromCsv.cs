@@ -63,7 +63,7 @@ namespace OLT.Core
             if (list.Any())
             {
                 builder.HasData(list);
-            }
+            }            
         }
 
     }
