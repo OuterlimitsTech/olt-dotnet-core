@@ -29,23 +29,18 @@ namespace OLT.Core
 
         protected virtual void Map(TEntity entity, TCsvModel csvRecord)
         {
-            var item = new TEntity
-            {
-                Id = csvRecord.Id
-            };
-
-            if (item is IOltEntitySortable sortableEntity)
+            if (entity is IOltEntitySortable sortableEntity)
             {
                 sortableEntity.SortOrder = (short)9999;
             }
 
-            if (item is IOltEntityAudit auditEntity)
+            if (entity is IOltEntityAudit auditEntity)
             {
                 auditEntity.CreateUser = DefaultUsername;
                 auditEntity.CreateDate = DefaultCreateDate;
             }
 
-            csvRecord.Map(item);
+            csvRecord.Map(entity);
 
         }
 
