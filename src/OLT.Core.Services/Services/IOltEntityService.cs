@@ -62,7 +62,14 @@ namespace OLT.Core
             where TResponseModel : class, new();
 
         TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new();
+        TResponseModel Update<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
+            where TSaveModel : class, new()
+            where TResponseModel : class, new();
+
         Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new();
+        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
+            where TSaveModel : class, new()
+            where TResponseModel : class, new();
 
 
         bool SoftDelete(IOltSearcher<TEntity> searcher);

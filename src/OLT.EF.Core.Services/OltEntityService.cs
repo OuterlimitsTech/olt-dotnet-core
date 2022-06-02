@@ -291,12 +291,32 @@ namespace OLT.Core
             return Get<TModel>(searcher);
         }
 
+        public virtual TResponseModel Update<TResponseModel, TModel>(IOltSearcher<TEntity> searcher, TModel model)
+            where TModel : class, new()
+            where TResponseModel : class, new()
+        {
+            var entity = GetQueryable(searcher).FirstOrDefault();
+            ServiceManager.AdapterResolver.Map(model, entity);
+            SaveChanges();
+            return Get<TResponseModel>(searcher);
+        }
+
         public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new()
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
             await SaveChangesAsync();
             return await GetAsync<TModel>(searcher);
+        }
+
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
+            where TSaveModel : class, new()
+            where TResponseModel : class, new()
+        {
+            var entity = await GetQueryable(searcher).FirstOrDefaultAsync();
+            ServiceManager.AdapterResolver.Map(model, entity);
+            await SaveChangesAsync();
+            return await GetAsync<TResponseModel>(searcher);
         }
 
         #endregion
