@@ -6,7 +6,7 @@
     <ProjectGuid>15400B99-351E-4BA4-AFD1-4573E7964062</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog" Version="2.11.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />

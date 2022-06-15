@@ -127,6 +127,11 @@ namespace OLT.EF.Core.Services.Tests
                 model.First = Faker.Name.First();
                 dto = service.Update(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
                 Assert.Equal(model.First, dto.First);
+
+                model.First = Faker.Name.First();
+                updated = service.Update<PersonAutoMapperModel, PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
+                Assert.Equal(model.First, updated.Name.First);
+
             }
 
             using (var provider = BuildProvider())
@@ -135,6 +140,7 @@ namespace OLT.EF.Core.Services.Tests
 
                 var addModel = PersonDto.FakerEntity();
                 var model = service.Add(addModel);
+
                 model.First = Faker.Name.First();
                 var updated = await service.UpdateAsync<PersonAutoMapperModel, PersonDto>(model.PersonId.GetValueOrDefault(), model);
                 Assert.Equal(model.First, updated.Name.First);
@@ -147,6 +153,11 @@ namespace OLT.EF.Core.Services.Tests
                 model.First = Faker.Name.First();
                 dto = await service.UpdateAsync(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
                 Assert.Equal(model.First, dto.First);
+
+
+                model.First = Faker.Name.First();
+                updated = await service.UpdateAsync<PersonAutoMapperModel, PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
+                Assert.Equal(model.First, updated.Name.First);
             }
         }
 
