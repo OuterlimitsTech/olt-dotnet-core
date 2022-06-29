@@ -1,14 +1,25 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OLT.Core;
+using OLT.Extensions.Caching.Tests.Assets;
 using StackExchange.Redis;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.Extensions.Caching.Tests
 {
     public class RedisCacheGeneral
     {
+        private readonly CacheConfiguration _config;
+
+        public RedisCacheGeneral(IOptions<CacheConfiguration> options)
+        {
+            _config = options.Value;
+        }
+
 
         [Fact]
         public void NewtonsoftCacheSerializerTests()
@@ -55,6 +66,58 @@ namespace OLT.Extensions.Caching.Tests
             {
                 Assert.False(true);
             }
+        }
+
+
+        [Fact]
+        public void TimeoutTests()
+        {
+            var provider = TestHelper.BuildRedisProvider(_config, TimeSpan.FromSeconds(2));
+            var cacheService = provider.GetRequiredService<IOltCacheService>();
+            
+
+            var cacheKey = $"cache-person-{Guid.NewGuid()}";
+            var model = TestHelper.CreateModel(Guid.NewGuid().ToString());
+
+            cacheService.Get(cacheKey, () => TestHelper.CloneModel(model), TimeSpan.FromMilliseconds(1)).Should().BeEquivalentTo(model);
+            Assert.False(new ManualResetEvent(false).WaitOne(500));
+            //memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
+
+
+            model = TestHelper.CreateModel(Guid.NewGuid().ToString());
+
+            cacheService.Get(cacheKey, () => TestHelper.CloneModel(model), null).Should().BeEquivalentTo(model);
+            Assert.False(new ManualResetEvent(false).WaitOne(500));
+            //memoryCache.Get<OltPersonName>(cacheKey).Should().NotBeNull();
+
+            Assert.False(new ManualResetEvent(false).WaitOne(2500));
+            //memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
+        }
+
+
+        [Fact]
+        public async Task TimeoutAsyncTests()
+        {
+            var provider = TestHelper.BuildRedisProvider(_config, TimeSpan.FromSeconds(2));
+            var cacheService = provider.GetRequiredService<IOltCacheService>();
+            
+
+            var cacheKey = $"cache-person-{Guid.NewGuid()}";
+            var model = TestHelper.CreateModel(Guid.NewGuid().ToString());
+
+            (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), TimeSpan.FromMilliseconds(1))).Should().BeEquivalentTo(model);
+            Assert.False(new ManualResetEvent(false).WaitOne(500));
+            //memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
+
+
+            model = TestHelper.CreateModel(Guid.NewGuid().ToString());
+
+            (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), null)).Should().BeEquivalentTo(model);
+            Assert.False(new ManualResetEvent(false).WaitOne(500));
+            //memoryCache.Get<OltPersonName>(cacheKey).Should().NotBeNull();
+
+            Assert.False(new ManualResetEvent(false).WaitOne(2500));
+            //memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
         }
     }
 }
