@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+		<Description>Server Redis Caching Library</Description>
+		<ProjectGuid>D42DD1C7-055E-4DE9-B674-E0BB113A0996</ProjectGuid>
+	</PropertyGroup>
+
+  <ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="6.0.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.45" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OLT.Extensions.Caching.Shared\OLT.Extensions.Caching.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <PackagePath></PackagePath>
+      <Pack>True</Pack>
+    </None>
+  </ItemGroup>
+
+</Project>

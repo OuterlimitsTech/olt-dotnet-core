@@ -18,13 +18,11 @@ namespace OLT.Extensions.Caching.Tests
         {
             var services = new ServiceCollection();
 
-            Assert.Throws<ArgumentNullException>("services", () => OltMemoryCacheServiceCollectionExtensions.AddOltAddMemoryCache(null, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15)));
-            Assert.Throws<ArgumentNullException>("services", () => OltMemoryCacheServiceCollectionExtensions.AddOltAddMemoryCache(null, opt => new MemoryCacheEntryOptions().SetAbsoluteExpiration(DateTimeOffset.Now.AddSeconds(15))));
-            Assert.Throws<ArgumentNullException>("setupAction", () => OltMemoryCacheServiceCollectionExtensions.AddOltAddMemoryCache(services, null));
+            Assert.Throws<ArgumentNullException>("services", () => OltMemoryCacheServiceCollectionExtensions.AddOltCacheMemory(null, TimeSpan.FromSeconds(15)));
 
             try
             {
-                OltMemoryCacheServiceCollectionExtensions.AddOltAddMemoryCache(services, TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15));
+                OltMemoryCacheServiceCollectionExtensions.AddOltCacheMemory(services, TimeSpan.FromSeconds(15));
                 Assert.True(true);
             }
             catch
@@ -36,22 +34,25 @@ namespace OLT.Extensions.Caching.Tests
         [Fact]
         public void TimeoutTests()
         {
-            var provider = TestHelper.BuildProvider(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20));
-            var oltMemoryCache = provider.GetRequiredService<IOltMemoryCache>();
+            var provider = TestHelper.BuildMemoryProvider(TimeSpan.FromSeconds(2));
+            var oltMemoryCache = provider.GetRequiredService<IOltCacheService>();
             var memoryCache = provider.GetRequiredService<IMemoryCache>();
 
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
             var model = TestHelper.CreateModel(Guid.NewGuid().ToString());
 
-            oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(model), TimeSpan.FromMilliseconds(1), null).Should().BeEquivalentTo(model);
+            oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(model), TimeSpan.FromMilliseconds(1)).Should().BeEquivalentTo(model);
             Assert.False(new ManualResetEvent(false).WaitOne(500));
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
 
 
             model = TestHelper.CreateModel(Guid.NewGuid().ToString());
 
-            oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(model), null, TimeSpan.FromMilliseconds(1)).Should().BeEquivalentTo(model);
+            oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(model), null).Should().BeEquivalentTo(model);
             Assert.False(new ManualResetEvent(false).WaitOne(500));
+            memoryCache.Get<OltPersonName>(cacheKey).Should().NotBeNull();
+
+            Assert.False(new ManualResetEvent(false).WaitOne(2500));
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
         }
 
@@ -59,22 +60,25 @@ namespace OLT.Extensions.Caching.Tests
         [Fact]
         public async Task TimeoutAsyncTests()
         {
-            var provider = TestHelper.BuildProvider(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(20));
-            var oltMemoryCache = provider.GetRequiredService<IOltMemoryCache>();
+            var provider = TestHelper.BuildMemoryProvider(TimeSpan.FromSeconds(2));
+            var oltMemoryCache = provider.GetRequiredService<IOltCacheService>();
             var memoryCache = provider.GetRequiredService<IMemoryCache>();
 
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
             var model = TestHelper.CreateModel(Guid.NewGuid().ToString());
 
-            (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), TimeSpan.FromMilliseconds(1), null)).Should().BeEquivalentTo(model);
+            (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), TimeSpan.FromMilliseconds(1))).Should().BeEquivalentTo(model);
             Assert.False(new ManualResetEvent(false).WaitOne(500));
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
 
 
             model = TestHelper.CreateModel(Guid.NewGuid().ToString());
 
-            (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), null, TimeSpan.FromMilliseconds(1))).Should().BeEquivalentTo(model);
+            (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CloneModel(model)), null)).Should().BeEquivalentTo(model);
             Assert.False(new ManualResetEvent(false).WaitOne(500));
+            memoryCache.Get<OltPersonName>(cacheKey).Should().NotBeNull();
+
+            Assert.False(new ManualResetEvent(false).WaitOne(2500));
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
         }
 

@@ -193,6 +193,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Searchers.Tests", "test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Searchers.GenericFilter", "src\OLT.Searchers.GenericFilter\OLT.Searchers.GenericFilter.csproj", "{42477CF1-68B7-4EA8-B3CF-FD81A4EB9532}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Extensions.Caching.Redis", "src\OLT.Extensions.Caching.Redis\OLT.Extensions.Caching.Redis.csproj", "{8A17320E-8E45-4824-B71F-A55D902A3215}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -455,6 +457,10 @@ Global
 		{42477CF1-68B7-4EA8-B3CF-FD81A4EB9532}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42477CF1-68B7-4EA8-B3CF-FD81A4EB9532}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42477CF1-68B7-4EA8-B3CF-FD81A4EB9532}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A17320E-8E45-4824-B71F-A55D902A3215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A17320E-8E45-4824-B71F-A55D902A3215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A17320E-8E45-4824-B71F-A55D902A3215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A17320E-8E45-4824-B71F-A55D902A3215}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -539,6 +545,7 @@ Global
 		{1267480B-259E-4E4F-A2CB-69844826088D} = {5283590F-599E-4FD4-A2AC-8E142C99E9C5}
 		{FF763B05-00F3-4D3B-A5AC-773A0351143B} = {5283590F-599E-4FD4-A2AC-8E142C99E9C5}
 		{42477CF1-68B7-4EA8-B3CF-FD81A4EB9532} = {5283590F-599E-4FD4-A2AC-8E142C99E9C5}
+		{8A17320E-8E45-4824-B71F-A55D902A3215} = {58D33CE1-FB7F-4ACE-AF22-88F72F72C3DD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B70EDC-6E19-4295-BFA0-9474A97DF56F}
