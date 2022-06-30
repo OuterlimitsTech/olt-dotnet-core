@@ -68,13 +68,5 @@ namespace OLT.Extensions.Caching.Tests
             return services.BuildServiceProvider();
         }
 
-        //public static ServiceProvider BuildProvider()
-        //{
-        //    var services = new ServiceCollection();
-        //    services.AddOltAddMemoryCache(o => new MemoryCacheEntryOptions()
-        //        .SetSlidingExpiration(defaultSlidingExpiration)
-        //        .SetAbsoluteExpiration(DateTimeOffset.Now.Add(defaultAbsoluteExpiration)));
-        //    return services.BuildServiceProvider();
-        //}
     }
 }

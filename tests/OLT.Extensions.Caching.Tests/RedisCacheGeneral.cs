@@ -46,18 +46,23 @@ namespace OLT.Extensions.Caching.Tests
             ConfigurationOptions options = null;
             Assert.Throws<ArgumentNullException>("options", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(services, TimeSpan.FromSeconds(15), options));
 
+            options = new ConfigurationOptions
+            {
+                EndPoints =
+                    {
+                        { "localhost", 6379 },
+                    },
+                ClientName = "test-app-2",
+            };
+
+            Assert.Throws<ArgumentNullException>("services", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(null, TimeSpan.FromSeconds(15), options));
+
             try
             {
                 OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(services, TimeSpan.FromSeconds(15), "localhost:6379");
 
-                options = new ConfigurationOptions
-                {
-                    EndPoints =
-                    {
-                        { "localhost", 6379 },
-                    },
-                    ClientName = "test-app-2",
-                };
+
+                
 
                 OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(services, TimeSpan.FromSeconds(15), options);
                 Assert.True(true);
