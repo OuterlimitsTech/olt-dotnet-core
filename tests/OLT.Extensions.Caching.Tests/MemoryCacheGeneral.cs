@@ -11,7 +11,17 @@ namespace OLT.Extensions.Caching.Tests
 {
 
     public class MemoryCacheGeneral
-    {   
+    {
+
+        [Fact]
+        public void CacheOptionsTests()
+        {
+            var timespan = TimeSpan.FromSeconds(Faker.RandomNumber.Next());
+            var options = new OltCacheOptions();
+            options.DefaultAbsoluteExpiration = timespan;
+            Assert.Equal(timespan, options.DefaultAbsoluteExpiration);
+            options.Value.Should().BeEquivalentTo(options);
+        }
 
         [Fact]
         public void ExtensionExceptionTests()

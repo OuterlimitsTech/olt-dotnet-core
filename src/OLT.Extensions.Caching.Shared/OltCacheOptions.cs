@@ -10,11 +10,6 @@ namespace OLT.Core
         /// </summary>
         public TimeSpan? DefaultAbsoluteExpiration { get; set; }
 
-        /// <summary>
-        /// Used for Cache Segmentation and required for providers like Redis
-        /// </summary>
-        public string KeyPrefix { get; set; }
-
         public OltCacheOptions Value
         {
             get { return this; }
