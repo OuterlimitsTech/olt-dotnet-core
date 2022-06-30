@@ -112,8 +112,9 @@ namespace OLT.Extensions.Caching.Tests
             Assert.False(new ManualResetEvent(false).WaitOne(500));
             
 
-            Assert.False(new ManualResetEvent(false).WaitOne(2500));
-            
+            Assert.False(new ManualResetEvent(false).WaitOne(2500));            
         }
+
+
     }
 }

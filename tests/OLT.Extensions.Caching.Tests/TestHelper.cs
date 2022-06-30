@@ -5,6 +5,7 @@ using System;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using OLT.Extensions.Caching.Tests.Assets;
+using StackExchange.Redis;
 
 namespace OLT.Extensions.Caching.Tests
 {
@@ -57,6 +58,13 @@ namespace OLT.Extensions.Caching.Tests
         {
             var services = new ServiceCollection();
             services.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(defaultAbsoluteExpiration, configuration.RedisCacheConnectionString);
+            return services.BuildServiceProvider();
+        }
+
+        public static ServiceProvider BuildRedisProvider(ConfigurationOptions configuration, TimeSpan defaultAbsoluteExpiration)
+        {
+            var services = new ServiceCollection();
+            services.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(defaultAbsoluteExpiration, configuration);
             return services.BuildServiceProvider();
         }
 
