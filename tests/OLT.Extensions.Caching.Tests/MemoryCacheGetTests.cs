@@ -20,11 +20,11 @@ namespace OLT.Extensions.Caching.Tests
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
             var services = new ServiceCollection();
 
-            services.AddOltAddMemoryCache(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15));
+            services.AddOltCacheMemory(TimeSpan.FromSeconds(15));
             var provider = services.BuildServiceProvider();
 
             var memoryCache = provider.GetRequiredService<IMemoryCache>();
-            var oltMemoryCache = provider.GetRequiredService<IOltMemoryCache>();
+            var oltMemoryCache = provider.GetRequiredService<IOltCacheService>();
 
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await oltMemoryCache.GetAsync(null, async () => await TestHelper.FakeAsync(model)));
@@ -40,8 +40,8 @@ namespace OLT.Extensions.Caching.Tests
             (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CreateModel()))).Should().BeEquivalentTo(model);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(model);
 
-
-            oltMemoryCache.Remove(cacheKey);
+            
+            await oltMemoryCache.RemoveAsync(cacheKey);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
 
         }
@@ -53,12 +53,12 @@ namespace OLT.Extensions.Caching.Tests
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
             var services = new ServiceCollection();
 
-            services.AddOltAddMemoryCache(TimeSpan.FromSeconds(10), TimeSpan.FromSeconds(15));
+            services.AddOltCacheMemory(TimeSpan.FromSeconds(15));
             var provider = services.BuildServiceProvider();
 
 
             var memoryCache = provider.GetRequiredService<IMemoryCache>();
-            var oltMemoryCache = provider.GetRequiredService<IOltMemoryCache>();
+            var oltMemoryCache = provider.GetRequiredService<IOltCacheService>();
 
             Assert.Throws<ArgumentNullException>(() => oltMemoryCache.Get(null, () => TestHelper.CloneModel(model)));
             Assert.Throws<ArgumentException>(() => oltMemoryCache.Get("", () => TestHelper.CloneModel(model)));

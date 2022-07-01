@@ -7,10 +7,15 @@
   <ItemGroup>
 		<PackageReference Include="Faker.Net" Version="2.0.154" />
 		<PackageReference Include="FluentAssertions" Version="6.7.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.6" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.6" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
+		<PackageReference Include="Xunit.DependencyInjection" Version="8.5.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -23,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.Extensions.Caching.Memory\OLT.Extensions.Caching.Memory.csproj" />
+    <ProjectReference Include="..\..\src\OLT.Extensions.Caching.Redis\OLT.Extensions.Caching.Redis.csproj" />
   </ItemGroup>
 
 </Project>

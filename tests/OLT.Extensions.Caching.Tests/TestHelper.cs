@@ -3,6 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using OLT.Extensions.Caching.Tests.Assets;
+using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace OLT.Extensions.Caching.Tests
 {
@@ -44,20 +49,28 @@ namespace OLT.Extensions.Caching.Tests
             };
         }
 
-        public static ServiceProvider BuildProvider(TimeSpan defaultSlidingExpiration, TimeSpan defaultAbsoluteExpiration)
+        public static ServiceProvider BuildMemoryProvider(TimeSpan defaultAbsoluteExpiration)
         {
             var services = new ServiceCollection();
-            services.AddOltAddMemoryCache(defaultSlidingExpiration, defaultAbsoluteExpiration);
+            services.AddOltCacheMemory(defaultAbsoluteExpiration);
             return services.BuildServiceProvider();
         }
 
-        //public static ServiceProvider BuildProvider()
-        //{
-        //    var services = new ServiceCollection();
-        //    services.AddOltAddMemoryCache(o => new MemoryCacheEntryOptions()
-        //        .SetSlidingExpiration(defaultSlidingExpiration)
-        //        .SetAbsoluteExpiration(DateTimeOffset.Now.Add(defaultAbsoluteExpiration)));
-        //    return services.BuildServiceProvider();
-        //}
+        public static ServiceProvider BuildRedisProvider(CacheConfiguration configuration, TimeSpan defaultAbsoluteExpiration, string cacheKeyPrefix)
+        {
+            var services = new ServiceCollection();
+            services.AddLogging(config => config.AddConsole());
+            services.AddOltCacheRedis(defaultAbsoluteExpiration, cacheKeyPrefix, configuration.RedisCacheConnectionString);
+            return services.BuildServiceProvider();
+        }
+
+        public static ServiceProvider BuildRedisProvider(RedisConfiguration configuration, TimeSpan defaultAbsoluteExpiration, string cacheKeyPrefix)
+        {
+            var services = new ServiceCollection();
+            services.AddLogging(config => config.AddConsole());
+            services.AddOltCacheRedis(defaultAbsoluteExpiration, cacheKeyPrefix, configuration);
+            return services.BuildServiceProvider();
+        }
+
     }
 }
