@@ -37,9 +37,9 @@ namespace OLT.Core
                 {
                     entry.AbsoluteExpiration = DateTimeOffset.Now.Add(absoluteExpiration.Value);
                 }
-                else if (_cacheOptions.DefaultAbsoluteExpiration.HasValue)
+                else
                 {
-                    entry.AbsoluteExpiration = DateTimeOffset.Now.Add(_cacheOptions.DefaultAbsoluteExpiration.Value);
+                    entry.AbsoluteExpiration = DateTimeOffset.Now.Add(_cacheOptions.DefaultAbsoluteExpiration);
                 }
                 return factory();
             });
@@ -56,9 +56,9 @@ namespace OLT.Core
                       {
                           entry.AbsoluteExpiration = DateTimeOffset.Now.Add(absoluteExpiration.Value);
                       }
-                      else if (_cacheOptions.DefaultAbsoluteExpiration.HasValue)
+                      else
                       {
-                          entry.AbsoluteExpiration = DateTimeOffset.Now.Add(_cacheOptions.DefaultAbsoluteExpiration.Value);
+                          entry.AbsoluteExpiration = DateTimeOffset.Now.Add(_cacheOptions.DefaultAbsoluteExpiration);
                       }
 
                       return await factory();

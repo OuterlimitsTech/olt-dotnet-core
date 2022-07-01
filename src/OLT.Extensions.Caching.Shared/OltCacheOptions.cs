@@ -8,7 +8,7 @@ namespace OLT.Core
         /// <summary>
         /// Default value for cache entry expiration
         /// </summary>
-        public TimeSpan? DefaultAbsoluteExpiration { get; set; }
+        public TimeSpan DefaultAbsoluteExpiration { get; set; } = TimeSpan.FromSeconds(1);
 
         public OltCacheOptions Value
         {

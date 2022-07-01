@@ -41,8 +41,8 @@ namespace OLT.Extensions.Caching.Tests
 
             //does it create a new entry? it should not
             (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CreateModel()))).Should().BeEquivalentTo(model);
-
-            cacheService.Remove(cacheKey);
+            
+            await cacheService.RemoveAsync(cacheKey);
 
             var model2 = TestHelper.CreateModel();
             (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(model2))).Should().NotBeEquivalentTo(model);  
@@ -96,6 +96,5 @@ namespace OLT.Extensions.Caching.Tests
             cacheService.Remove(cacheKey);
 
         }
-
     }
 }

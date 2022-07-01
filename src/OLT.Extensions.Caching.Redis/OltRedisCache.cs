@@ -52,14 +52,7 @@ namespace OLT.Core
             TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
 
             var value = factory();
-            if (expireAt.HasValue)
-            {
-                redisDatabase.AddAsync(cacheKey, value, expireAt.Value).GetAwaiter().GetResult();
-            }
-            else
-            {
-                redisDatabase.AddAsync(cacheKey, value).GetAwaiter().GetResult();
-            }
+            redisDatabase.AddAsync(cacheKey, value, expireAt.Value).GetAwaiter().GetResult();
 
             return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
         }
@@ -77,14 +70,7 @@ namespace OLT.Core
             TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
 
             var value = await factory();
-            if (expireAt.HasValue)
-            {
-                await redisDatabase.AddAsync(cacheKey, value, expireAt.Value);
-            }
-            else
-            {
-                await redisDatabase.AddAsync(cacheKey, value);
-            }
+            await redisDatabase.AddAsync(cacheKey, value, expireAt.Value);
 
             return await redisDatabase.GetAsync<TEntry>(cacheKey);
         }

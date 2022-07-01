@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,6 +22,27 @@ namespace OLT.Extensions.Caching.Tests
             options.DefaultAbsoluteExpiration = timespan;
             Assert.Equal(timespan, options.DefaultAbsoluteExpiration);
             options.Value.Should().BeEquivalentTo(options);
+        }
+
+        [Fact]
+        public void RedisCacheOptionsTests()
+        {
+            var prefix = Faker.Lorem.GetFirstWord();
+            var timespan = TimeSpan.FromSeconds(Faker.RandomNumber.Next());
+            var options = new OltRedisCacheOptions();
+            options.CacheKeyPrefix = prefix;
+            options.DefaultAbsoluteExpiration = timespan;
+            Assert.Equal(prefix, options.CacheKeyPrefix);
+            Assert.Equal(timespan, options.DefaultAbsoluteExpiration);
+            options.Value.Should().BeEquivalentTo(options);
+
+            prefix = Faker.Lorem.Words(10).Last();
+            timespan = TimeSpan.FromSeconds(Faker.RandomNumber.Next());
+            options = new OltRedisCacheOptions(prefix, timespan);
+            Assert.Equal(prefix, options.CacheKeyPrefix);
+            Assert.Equal(timespan, options.DefaultAbsoluteExpiration);            
+            options.Value.Should().BeEquivalentTo(options);
+
         }
 
         [Fact]

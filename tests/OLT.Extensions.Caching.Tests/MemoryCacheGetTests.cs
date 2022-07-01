@@ -40,8 +40,8 @@ namespace OLT.Extensions.Caching.Tests
             (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CreateModel()))).Should().BeEquivalentTo(model);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(model);
 
-
-            oltMemoryCache.Remove(cacheKey);
+            
+            await oltMemoryCache.RemoveAsync(cacheKey);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
 
         }
