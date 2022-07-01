@@ -21,7 +21,7 @@ namespace OLT.Core
 
         protected override string ToCacheKey(string key)
         {
-            return $"{_cacheOptions.CacheKeyPrefix}:{base.ToCacheKey(key)}".ToLower();
+            return $"{_cacheOptions.CacheKeyPrefix}:{base.ToCacheKey(key)}";
         }
 
         private string BuildKey<TEntry>(string key, Func<TEntry> factory)
