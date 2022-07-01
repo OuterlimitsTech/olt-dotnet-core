@@ -17,4 +17,8 @@
 		<ProjectReference Include="..\OLT.Extensions.Caching.Shared\OLT.Extensions.Caching.Shared.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+	</ItemGroup>
+
 </Project>
