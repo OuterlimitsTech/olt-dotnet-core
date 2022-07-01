@@ -23,7 +23,12 @@ namespace OLT.Core
             _memoryCache.Remove(ToCacheKey(key));
         }
 
-        
+        public override Task RemoveAsync(string key)
+        {
+            _memoryCache.Remove(ToCacheKey(key));
+            return Task.CompletedTask;
+        }
+
         public override TEntry Get<TEntry>(string key, Func<TEntry> factory, TimeSpan? absoluteExpiration = null)
         {
             var cacheEntry = _memoryCache.GetOrCreate(ToCacheKey(key), entry =>
@@ -60,5 +65,7 @@ namespace OLT.Core
                   });
             return cacheEntry;
         }
+
+
     }
 }

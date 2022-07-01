@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OLT.Extensions.Caching.Tests.Assets;
@@ -34,6 +35,8 @@ namespace OLT.Extensions.Caching.Tests
 
             var configuration = hostBuilderContext.Configuration;
 
+            services.AddLogging(config => config.AddConsole());
+            
 
             services.Configure<CacheConfiguration>(opt =>
             {

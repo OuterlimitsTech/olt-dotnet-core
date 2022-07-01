@@ -26,5 +26,6 @@ namespace OLT.Core
         public abstract Task<TEntry> GetAsync<TEntry>(string key, Func<Task<TEntry>> factory, TimeSpan? absoluteExpiration = null);
 
         public abstract void Remove(string key);
+        public abstract Task RemoveAsync(string key);
     }
 }

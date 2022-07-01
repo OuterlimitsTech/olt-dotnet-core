@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using OLT.Core;
 using OLT.Extensions.Caching.Tests.Assets;
 using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core.Configuration;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,10 +26,7 @@ namespace OLT.Extensions.Caching.Tests
             Func<Task<OltPersonName>> nullFactory = null;
             var model = TestHelper.CreateModel();
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
-            var services = new ServiceCollection();
-
-            services.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(TimeSpan.FromSeconds(30), _config.RedisCacheConnectionString);
-            var provider = services.BuildServiceProvider();
+            var provider = TestHelper.BuildRedisProvider(_config, TimeSpan.FromSeconds(30), "async-tests");
 
             var cacheService = provider.GetRequiredService<IOltCacheService>();
             
@@ -58,10 +56,7 @@ namespace OLT.Extensions.Caching.Tests
             Func<OltPersonName> nullFactory = null;
             var model = TestHelper.CreateModel();
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
-            var services = new ServiceCollection();
-
-            services.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(TimeSpan.FromSeconds(30), _config.RedisCacheConnectionString);
-            var provider = services.BuildServiceProvider();
+            var provider = TestHelper.BuildRedisProvider(_config, TimeSpan.FromSeconds(30), "non-async-tests");
 
             var cacheService = provider.GetRequiredService<IOltCacheService>();
 
@@ -85,19 +80,11 @@ namespace OLT.Extensions.Caching.Tests
         [Fact]
         public async Task AsyncConfigTests()
         {
-
-            ConfigurationOptions config = ConfigurationOptions.Parse(_config.RedisCacheConnectionString);
-
-
             var model = TestHelper.CreateModel();
             var cacheKey = $"cache-person-{Guid.NewGuid()}";
-            var services = new ServiceCollection();
-
-            services.AddOltCacheRedis<OltNewtonsoftCacheSerializer>(TimeSpan.FromSeconds(30), config);
-            var provider = services.BuildServiceProvider();
-
+            var provider = TestHelper.BuildRedisProvider(_config, TimeSpan.FromSeconds(30), "async-config-tests");           
+            
             var cacheService = provider.GetRequiredService<IOltCacheService>();
-
 
             var result = await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(model));
 

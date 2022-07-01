@@ -8,7 +8,7 @@ namespace OLT.Core
     public interface IOltCacheService : IOltInjectableSingleton
     {
         /// <summary>
-        /// A generic method for getting and setting objects to the memory cache
+        /// A generic method for getting and setting objects to the cache
         /// </summary>
         /// <typeparam name="TEntry">The type of the object to be returned.</typeparam>
         /// <param name="key">The name to be used when storing this object in the cache.</param>
@@ -19,7 +19,7 @@ namespace OLT.Core
 
 
         /// <summary>
-        /// A generic method for getting and setting objects to the memory cache.
+        /// A generic method for getting and setting objects to the cache.
         /// </summary>
         /// <typeparam name="TEntry">The type of the object to be returned.</typeparam>
         /// <param name="key">The name to be used when storing this object in the cache.</param>
@@ -30,10 +30,16 @@ namespace OLT.Core
 
 
         /// <summary>
-        /// A generic method for getting and setting objects to the memory cache.
+        /// A generic method for getting and setting objects to the cache.
         /// </summary>
         /// <param name="key">The name to be used for this object in the cache.</param>
         void Remove(string key);
+
+        /// <summary>
+        /// A generic method for getting and setting objects to the cache.
+        /// </summary>
+        /// <param name="key">The name to be used for this object in the cache.</param>
+        Task RemoveAsync(string key);
     }
 
 }

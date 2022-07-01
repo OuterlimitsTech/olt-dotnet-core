@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core.Abstractions;
 using System;
 using System.Threading.Tasks;
 
@@ -7,23 +8,20 @@ namespace OLT.Core
 {
     public class OltRedisCache : OltCacheService
     {
-        private readonly IOltCacheSerializer _cacheSerializer;
-        private readonly IConnectionMultiplexer _connectionMultiplexer;
-        private readonly OltCacheOptions _cacheOptions;
+        private readonly OltRedisCacheOptions _cacheOptions;
+        private readonly IRedisClientFactory _redisFactory;
 
         public OltRedisCache(
-            IOptions<OltCacheOptions> options,
-            IConnectionMultiplexer connectionMultiplexer,
-            IOltCacheSerializer cacheSerializer)
+            IRedisClientFactory redisFactory,
+            IOptions<OltRedisCacheOptions> options)
         {
-            _connectionMultiplexer = connectionMultiplexer;
-            _cacheSerializer = cacheSerializer;
             _cacheOptions = options.Value;
+            _redisFactory = redisFactory;
         }
 
         protected override string ToCacheKey(string key)
         {
-            return $"{_connectionMultiplexer.ClientName}:{base.ToCacheKey(key)}";
+            return $"{_cacheOptions.CacheKeyPrefix}:{base.ToCacheKey(key)}".ToLower();
         }
 
         private string BuildKey<TEntry>(string key, Func<TEntry> factory)
@@ -45,47 +43,64 @@ namespace OLT.Core
         {
             var cacheKey = BuildKey(key, factory);
 
-            var db = _connectionMultiplexer.GetDatabase();
-            var redisValue = db.StringGet(cacheKey);
-            if (redisValue.HasValue)
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            if (redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult())
             {
-                return _cacheSerializer.Deserialize<TEntry>(redisValue.ToString());
+                return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
             }
 
             TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
 
             var value = factory();
-            var stringValue = _cacheSerializer.Serialize(value);
-            db.StringSet(cacheKey, stringValue, expireAt);
-            return value;
+            if (expireAt.HasValue)
+            {
+                redisDatabase.AddAsync(cacheKey, value, expireAt.Value).GetAwaiter().GetResult();
+            }
+            else
+            {
+                redisDatabase.AddAsync(cacheKey, value).GetAwaiter().GetResult();
+            }
+
+            return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
         }
 
         public override async Task<TEntry> GetAsync<TEntry>(string key, Func<Task<TEntry>> factory, TimeSpan? absoluteExpiration = null)
         {
             var cacheKey = BuildKey(key, factory);
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
 
-            var db = _connectionMultiplexer.GetDatabase();
-            var redisValue = await db.StringGetAsync(cacheKey);
-            if (redisValue.HasValue)
+            if (await redisDatabase.ExistsAsync(cacheKey))
             {
-                return _cacheSerializer.Deserialize<TEntry>(redisValue.ToString());
+                return await redisDatabase.GetAsync<TEntry>(cacheKey);
             }
-            
+
             TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
 
             var value = await factory();
-            var stringValue = _cacheSerializer.Serialize(value);
-            await db.StringSetAsync(cacheKey, stringValue, expireAt);
+            if (expireAt.HasValue)
+            {
+                await redisDatabase.AddAsync(cacheKey, value, expireAt.Value);
+            }
+            else
+            {
+                await redisDatabase.AddAsync(cacheKey, value);
+            }
 
-
-            return value;
+            return await redisDatabase.GetAsync<TEntry>(cacheKey);
         }
 
         public override void Remove(string key)
         {
             var cacheKey = ToCacheKey(key);
-            var db = _connectionMultiplexer.GetDatabase();
-            db.KeyDelete(cacheKey);
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            redisDatabase.RemoveAsync(cacheKey).GetAwaiter().GetResult();
+        }
+
+        public override async Task RemoveAsync(string key)
+        {
+            var cacheKey = ToCacheKey(key);
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            await redisDatabase.RemoveAsync(cacheKey);
         }
     }
 }
