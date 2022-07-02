@@ -26,11 +26,6 @@ namespace OLT.Core
 
         private string BuildKey<TEntry>(string key, Func<TEntry> factory)
         {
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
             if (factory == null)
             {
                 throw new ArgumentNullException(nameof(factory));
@@ -87,6 +82,20 @@ namespace OLT.Core
             var cacheKey = ToCacheKey(key);
             var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
             await redisDatabase.RemoveAsync(cacheKey);
+        }
+
+        public override bool Exists(string key)
+        {
+            var cacheKey = ToCacheKey(key);
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            return redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult();
+        }
+
+        public override async Task<bool> ExistsAsync(string key)
+        {
+            var cacheKey = ToCacheKey(key);
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            return await redisDatabase.ExistsAsync(cacheKey);
         }
     }
 }
