@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
     <ProjectGuid>5BCF1998-1517-461E-83BA-1C4E86CC401C</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="3.0.0" />
+    <PackageReference Include="Amazon.Extensions.Configuration.SystemsManager" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />

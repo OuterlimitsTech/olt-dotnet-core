@@ -30,7 +30,7 @@ namespace OLT.Core
         }
 
         public override TEntry Get<TEntry>(string key, Func<TEntry> factory, TimeSpan? absoluteExpiration = null)
-        {
+        {            
             var cacheEntry = _memoryCache.GetOrCreate(ToCacheKey(key), entry =>
             {
                 if (absoluteExpiration.HasValue)
@@ -66,6 +66,22 @@ namespace OLT.Core
             return cacheEntry;
         }
 
+        public override bool Exists(string key)
+        {
+            if (_memoryCache.TryGetValue(ToCacheKey(key), out object value))
+            {
+                return true;
+            }
+            return false;
+        }
 
+        public override Task<bool> ExistsAsync(string key)
+        {
+            if (_memoryCache.TryGetValue(ToCacheKey(key), out object value))
+            {
+                return Task.FromResult(true);
+            }
+            return Task.FromResult(false);
+        }
     }
 }

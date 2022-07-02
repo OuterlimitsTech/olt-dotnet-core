@@ -47,7 +47,7 @@ namespace OLT.Logging.Serilog.Tests
         public void ExtensionTests()
         {
             var loggerConfig = new LoggerConfiguration();
-            var connectionString = Faker.Lorem.GetFirstWord();
+            var connectionString = "data source=localhost,1433;initial catalog=test;integrated security=False;user id=sa;password=nopass#4U";
 
             Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null, connectionString, null, null, LogEventLevel.Debug));
 
@@ -67,9 +67,10 @@ namespace OLT.Logging.Serilog.Tests
                 logger.Debug("{value1}", Faker.Lorem.Words(10).Last());
                 Assert.True(true);
             }
-            catch
+            catch (Exception ex)
             {
                 Assert.True(false);
+                throw;
             }
 
         }

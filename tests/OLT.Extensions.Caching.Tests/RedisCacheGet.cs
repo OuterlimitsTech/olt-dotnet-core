@@ -41,12 +41,16 @@ namespace OLT.Extensions.Caching.Tests
 
             //does it create a new entry? it should not
             (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CreateModel()))).Should().BeEquivalentTo(model);
+
+            (await cacheService.ExistsAsync(cacheKey)).Should().BeTrue();
+            (await cacheService.ExistsAsync(Faker.Lorem.GetFirstWord())).Should().BeFalse();
             
             await cacheService.RemoveAsync(cacheKey);
 
+            (await cacheService.ExistsAsync(cacheKey)).Should().BeFalse();
+
             var model2 = TestHelper.CreateModel();
             (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(model2))).Should().NotBeEquivalentTo(model);  
-
             (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(model))).Should().BeEquivalentTo(model2);
         }
 
@@ -70,8 +74,12 @@ namespace OLT.Extensions.Caching.Tests
             //does it create a new entry? it should not
             cacheService.Get(cacheKey, () => TestHelper.CreateModel()).Should().BeEquivalentTo(model);
 
-            cacheService.Remove(cacheKey);
+            cacheService.Exists(cacheKey).Should().BeTrue();
+            cacheService.Exists(Faker.Lorem.GetFirstWord()).Should().BeFalse();
 
+            cacheService.Remove(cacheKey);
+            cacheService.Exists(cacheKey).Should().BeFalse();
+            
             var model2 = TestHelper.CreateModel();            
             cacheService.Get(cacheKey, () => TestHelper.CloneModel(model2)).Should().NotBeEquivalentTo(model);
             cacheService.Get(cacheKey, () => TestHelper.CloneModel(model)).Should().BeEquivalentTo(model2);

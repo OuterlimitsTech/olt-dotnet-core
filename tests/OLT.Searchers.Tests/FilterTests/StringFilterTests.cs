@@ -25,9 +25,9 @@ namespace OLT.Searchers.Tests.FilterTests
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.String, key, label, hidden, false);
             Assert.False(template.Parse(null));
             Assert.Null(template.Formatted());
-
+            filter.Key.Should().BeEquivalentTo(key);
             Assert.Equal(parseable, template.Parse(TestHelper.BuildGenericParameter(key, value)));
-            template.Value.Should().BeEquivalentTo(expected);
+            template.Value.Should().BeEquivalentTo(expected);            
             template.Formatted().Should().BeEquivalentTo(expected);
         }
 

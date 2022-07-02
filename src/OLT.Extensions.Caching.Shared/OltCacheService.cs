@@ -22,10 +22,10 @@ namespace OLT.Core
         }
 
         public abstract TEntry Get<TEntry>(string key, Func<TEntry> factory, TimeSpan? absoluteExpiration = null);
-
         public abstract Task<TEntry> GetAsync<TEntry>(string key, Func<Task<TEntry>> factory, TimeSpan? absoluteExpiration = null);
-
         public abstract void Remove(string key);
         public abstract Task RemoveAsync(string key);
+        public abstract bool Exists(string key);
+        public abstract Task<bool> ExistsAsync(string key);
     }
 }

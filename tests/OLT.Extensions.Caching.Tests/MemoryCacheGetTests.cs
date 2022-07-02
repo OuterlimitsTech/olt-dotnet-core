@@ -40,9 +40,12 @@ namespace OLT.Extensions.Caching.Tests
             (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(TestHelper.CreateModel()))).Should().BeEquivalentTo(model);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(model);
 
-            
+            (await oltMemoryCache.ExistsAsync(cacheKey)).Should().BeTrue();
+            (await oltMemoryCache.ExistsAsync(Faker.Lorem.GetFirstWord())).Should().BeFalse();
+
             await oltMemoryCache.RemoveAsync(cacheKey);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
+            (await oltMemoryCache.ExistsAsync(cacheKey)).Should().BeFalse();
 
         }
 
@@ -71,8 +74,12 @@ namespace OLT.Extensions.Caching.Tests
             oltMemoryCache.Get(cacheKey, () => TestHelper.CreateModel()).Should().BeEquivalentTo(model);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(model);
 
+            oltMemoryCache.Exists(cacheKey).Should().BeTrue();
+            oltMemoryCache.Exists(Faker.Lorem.GetFirstWord()).Should().BeFalse();
+            
             oltMemoryCache.Remove(cacheKey);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
+            oltMemoryCache.Exists(cacheKey).Should().BeFalse();
         }
 
 

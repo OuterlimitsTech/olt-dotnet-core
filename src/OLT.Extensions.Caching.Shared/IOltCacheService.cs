@@ -17,7 +17,6 @@ namespace OLT.Core
         /// <returns>An object of the type you asked for</returns>
         TEntry Get<TEntry>(string key, Func<TEntry> factory, TimeSpan? absoluteExpiration = null);
 
-
         /// <summary>
         /// A generic method for getting and setting objects to the cache.
         /// </summary>
@@ -27,7 +26,6 @@ namespace OLT.Core
         /// <param name="absoluteExpiration">Expire cache at. (uses default if not supplied)</param>
         /// <returns>An object of the type you asked for</returns>
         Task<TEntry> GetAsync<TEntry>(string key, Func<Task<TEntry>> factory, TimeSpan? absoluteExpiration = null);
-
 
         /// <summary>
         /// A generic method for getting and setting objects to the cache.
@@ -40,6 +38,21 @@ namespace OLT.Core
         /// </summary>
         /// <param name="key">The name to be used for this object in the cache.</param>
         Task RemoveAsync(string key);
+
+        /// <summary>
+        /// Verify that the specified cache key exists
+        /// </summary>
+        /// <param name="key">The cache key.</param>
+        /// <returns>True if the key is present in cache. Othwerwise False</returns>
+        bool Exists(string key);
+
+        /// <summary>
+        /// Verify that the specified cache key exists
+        /// </summary>
+        /// <param name="key">The cache key.</param>
+        /// <returns>True if the key is present in cache. Othwerwise False</returns>
+        Task<bool> ExistsAsync(string key);
+
     }
 
 }

@@ -9,11 +9,14 @@ namespace OLT.Core
         public OltGenericFilter(IOltGenericParameterParser<TValueType> parser, IOltEntityQueryBuilder<TEntity, TValueType> queryBuilder)
         {
             Parser = parser;
-            QueryBuilder = queryBuilder;
+            QueryBuilder = queryBuilder;            
         }
 
+        public virtual string Key => Parser.Key;
         protected virtual IOltGenericParameterParser<TValueType> Parser { get; }
         protected virtual IOltEntityQueryBuilder<TEntity, TValueType> QueryBuilder { get; }
+
+        
 
         public bool HasValue(IOltGenericParameter parameters)
         {

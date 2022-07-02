@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using AutoMapper.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
@@ -19,7 +20,7 @@ namespace OLT.Core
 
         protected virtual bool HasAutoMap<TSource, TDestination>()
         {
-            return Mapper.ConfigurationProvider.FindTypeMapFor<TSource, TDestination>() != null;
+            return Mapper.ConfigurationProvider.Internal().FindTypeMapFor<TSource, TDestination>() != null;
         }
 
         protected virtual OltAutoMapperException<TSource, TResult> BuildException<TSource, TResult>(Exception exception)
