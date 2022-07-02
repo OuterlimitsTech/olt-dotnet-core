@@ -2,6 +2,7 @@
 {
     public interface IOltGenericFilter
     {
+        string Key { get; }
         bool HasValue(IOltGenericParameter parameters);
     }
 
