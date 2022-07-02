@@ -24,6 +24,8 @@ namespace OLT.Searchers.Tests.FilterTests
             var filter = new OltFilterDateRange<FakeEntity>(template, new FakeEntityDateRangeSearcher());
             template.ValueList.Should().BeEquivalentTo(ranges);
 
+            filter.Key.Should().BeEquivalentTo(key);
+            filter.Key.Should().BeEquivalentTo(template.Key);            
             GeneralTemplateTests(filter, template, OltGenericParameterTemplates.DateRange, key, label, hidden, true);
 
         }

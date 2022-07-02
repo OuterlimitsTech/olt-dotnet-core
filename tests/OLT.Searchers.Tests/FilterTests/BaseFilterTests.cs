@@ -11,7 +11,7 @@ namespace OLT.Searchers.Tests.FilterTests
     public abstract class BaseFilterTests
     {
         protected void GeneralTemplateTests(IOltGenericFilterTemplate filter, IOltFilterTemplate filterTemplate, string templateName, string key, string label, bool hidden, bool hasValue)
-        {
+        {            
             Assert.Equal(key, filter.FilterTemplate.Key);
             Assert.Equal(label, filter.FilterTemplate.Label);
             Assert.Equal(templateName, filter.FilterTemplate.TemplateName);
