@@ -1,7 +1,7 @@
 ﻿namespace OLT.Core
 {
 
-    public abstract class OltFilterTemplate<TValueType> : OltGenericParameterParser<TValueType>, IOltFilterTemplate
+    public abstract class OltFilterTemplate<TValueType> : OltGenericParameterParser<TValueType>, IOltFilterTemplate<TValueType>
     {
         protected OltFilterTemplate(string key, string label, bool hidden = false) : base(key)
         {
