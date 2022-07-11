@@ -7,9 +7,9 @@
         string Formatted();
     }
 
-    public interface IOltFilterTemplate<out TValueType> : IOltFilterTemplate
+    public interface IOltFilterTemplate<out TValueType> : IOltFilterTemplate, IOltGenericParameterParser<TValueType>
     {        
-        TValueType Value { get; }
+        
     }
 
 }
