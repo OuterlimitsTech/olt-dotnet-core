@@ -54,7 +54,7 @@ namespace OLT.Email.SendGrid.Tests
                 opt.RunNumber = configuration.GetValue<string>("GITHUB_RUN_NUMBER") ??  Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER") ??  "[No Run Number]";
                 opt.TestWhitelist = new OltEmailConfigurationWhitelist
                 {
-                    Email = new List<string> { opt.ToEmail }
+                    Email = opt.ToEmail
                 };
             });
         }

@@ -20,7 +20,7 @@ namespace OLT.Email.SendGrid.Tests
         public static OltEmailConfigurationWhitelist BuildWhitelist(List<IOltEmailAddress> emailAddresses)
         {
             var config = new OltEmailConfigurationWhitelist();
-            config.Email.AddRange(emailAddresses.Select(p => p.Email));
+            config.Email = string.Join(';', emailAddresses.Select(p => p.Email));
             return config;
         }
 
@@ -50,12 +50,12 @@ namespace OLT.Email.SendGrid.Tests
 
             for(int i = 0; i < numEmailWhitelist; i++)
             {
-                result.TestWhitelist.Email.Add(FakerEmailAddress().Email);
+                result.TestWhitelist.Email = FakerEmailAddress().Email;
             }
 
             for (int i = 0; i < numDomainWhitelist; i++)
             {
-                result.TestWhitelist.Email.Add(Faker.Internet.DomainName());
+                result.TestWhitelist.Email = Faker.Internet.DomainName();
             }
 
             return result;

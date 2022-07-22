@@ -127,6 +127,9 @@ namespace OLT.Email.Tests.Common
                 Faker.Internet.FreeEmail(),
                 Faker.Internet.Email(),
                 Faker.Internet.FreeEmail(),
+                "",
+                " ",
+                null
             };
 
             var domainList = new List<string>
@@ -134,29 +137,41 @@ namespace OLT.Email.Tests.Common
                 whiteDomain,
                 Faker.Internet.DomainName(),
                 Faker.Internet.DomainName(),
-                Faker.Internet.DomainName()
+                Faker.Internet.DomainName(),
+                "",
+                " ",
+                null
             };
+
+            var config = new OltEmailConfigurationWhitelist { Domain = null, Email = null };
+            config.DomainParsed.Should().BeEmpty();
+            config.EmailParsed.Should().BeEmpty();
+
+            config = new OltEmailConfigurationWhitelist { Domain = string.Join(';', domainList), Email = string.Join(';', emailList) };
+            config.DomainParsed.Should().HaveCount(domainList.Count - 3);
+            config.EmailParsed.Should().HaveCount(emailList.Count - 3);
+
 
             var args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = null, Email = null });
             Assert.False(args.AllowSend(Faker.Internet.Email()));
             Assert.False(args.AllowSend(badDomainEmail));
             Assert.False(args.AllowSend(whiteEmail));
-            Assert.False(args.AllowSend(whiteDomainEmail));
+            Assert.False(args.AllowSend(whiteDomainEmail));            
 
 
-            args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = null, Email = emailList });
+            args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = null, Email = string.Join(';', emailList) });
             Assert.False(args.AllowSend(Faker.Internet.Email()));
             Assert.False(args.AllowSend(badDomainEmail));
             Assert.True(args.AllowSend(whiteEmail));
             Assert.False(args.AllowSend(whiteDomainEmail));
 
-            args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = domainList, Email = null });
+            args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = string.Join(';', domainList), Email = null });
             Assert.False(args.AllowSend(Faker.Internet.Email()));
             Assert.False(args.AllowSend(badDomainEmail));
             Assert.False(args.AllowSend(whiteEmail));
             Assert.True(args.AllowSend(whiteDomainEmail));
 
-            args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = domainList, Email = emailList });
+            args = new OltEmailClientSmtp().EnableProductionEnvironment(false).WithWhitelist(new OltEmailConfigurationWhitelist { Domain = string.Join(';', domainList), Email = string.Join(';', emailList) });
             Assert.False(args.AllowSend(Faker.Internet.Email()));
             Assert.False(args.AllowSend(badDomainEmail));
             Assert.True(args.AllowSend(whiteEmail));

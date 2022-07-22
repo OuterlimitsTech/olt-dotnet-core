@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
@@ -36,18 +37,18 @@ namespace OLT.Email.Tests.Common
             var whiteDomain = Faker.Internet.DomainName();
 
             var config = new OltEmailConfiguration();
-            config.TestWhitelist.Domain.Add(whiteDomain);
-            config.TestWhitelist.Email.Add(whiteEmail);
+            config.TestWhitelist.Domain = whiteDomain;
+            config.TestWhitelist.Email = whiteEmail;
             config.From.Name = fromName;
             config.From.Email = fromEmail;
-
+            
             Assert.False(config.Production);
             Assert.Equal(fromName, config.From.Name);
             Assert.Equal(fromEmail, config.From.Email);
             Assert.NotEmpty(config.TestWhitelist.Email);
             Assert.NotEmpty(config.TestWhitelist.Domain);
-            Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
-            Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
+            Assert.Equal(whiteEmail, config.TestWhitelist.EmailParsed.ToList()[0]);
+            Assert.Equal(whiteDomain, config.TestWhitelist.DomainParsed.ToList()[0]);
             config.Production = true;
             Assert.True(config.Production);
         }
@@ -68,10 +69,5 @@ namespace OLT.Email.Tests.Common
             }           
 
         }
-
-       
-
-
-
     }
 }
