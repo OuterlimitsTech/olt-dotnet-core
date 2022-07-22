@@ -176,11 +176,8 @@ namespace OLT.Email.Tests.Smtp
             var bccWhiteEmailDomain = $"{Faker.Internet.UserName()}@{bccWhiteDomain}";
 
             var whitelist = new OltEmailConfigurationWhitelist();
-            whitelist.Email.Add(whiteEmail);
-            whitelist.Email.Add(bccWhiteEmail);
-
-            whitelist.Domain.Add(whiteDomain);
-            whitelist.Domain.Add(bccWhiteDomain);
+            whitelist.Email = $"{whiteEmail};{bccWhiteEmail};;"; //extra semicolon is intentional
+            whitelist.Domain = $"{whiteDomain};{bccWhiteDomain}; ;"; //extra semicolon is intentional
 
 
             var server = new OltSmtpServer

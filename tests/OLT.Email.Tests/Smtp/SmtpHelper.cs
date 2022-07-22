@@ -20,7 +20,7 @@ namespace OLT.Email.Tests.Smtp
         public static OltEmailConfigurationWhitelist BuildWhitelist(List<IOltEmailAddress> emailAddresses)
         {
             var config = new OltEmailConfigurationWhitelist();
-            config.Email.AddRange(emailAddresses.Select(p => p.Email));
+            config.Email = string.Join(';', emailAddresses.Select(p => p.Email));
             return config;
         }
 

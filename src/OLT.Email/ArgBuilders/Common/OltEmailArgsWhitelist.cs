@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OLT.Email
@@ -6,7 +7,8 @@ namespace OLT.Email
     public abstract class OltEmailArgsWhitelist<T> : OltEmailArgsProduction<T>
         where T : OltEmailArgsWhitelist<T>
     {
-        protected  OltEmailConfigurationWhitelist Whitelist { get; set; } = new OltEmailConfigurationWhitelist();
+        protected List<string> DomainWhitelist { get; set; } = new List<string>();
+        protected List<string> EmailWhitelist { get; set; } = new List<string>();
 
         protected OltEmailArgsWhitelist()
         {
@@ -25,14 +27,14 @@ namespace OLT.Email
                 throw new ArgumentNullException(nameof(config));
             }
 
-            if (config.Domain != null)
+            if (!string.IsNullOrWhiteSpace(config.Domain))
             {
-                this.Whitelist.Domain.AddRange(config.Domain.Except(this.Whitelist.Domain));
+                this.DomainWhitelist.AddRange(config.DomainParsed.Except(this.DomainWhitelist));
             }
             
-            if (config.Email != null)
+            if (!string.IsNullOrWhiteSpace(config.Email))
             {
-                this.Whitelist.Email.AddRange(config.Email.Except(this.Whitelist.Email));
+                this.EmailWhitelist.AddRange(config.EmailParsed.Except(this.EmailWhitelist));
             }
             
             return (T)this;
@@ -57,16 +59,16 @@ namespace OLT.Email
                 throw new InvalidOperationException($"{nameof(emailAddress)}.{nameof(emailAddress.Email)} is null");
             }
 
-            if (!this.Whitelist.Email.Any(value => string.Equals(emailAddress.Email, value, StringComparison.OrdinalIgnoreCase)))
+            if (!this.EmailWhitelist.Any(value => string.Equals(emailAddress.Email, value, StringComparison.OrdinalIgnoreCase)))
             {
-                this.Whitelist.Email.Add(emailAddress.Email);
+                this.EmailWhitelist.Add(emailAddress.Email);
             }
 
             return (T)this;
         }
 
         /// <summary>
-        /// Determines if Email can be sent depending on EnableProductionEnvironment() is true or <see cref="Whitelist"/> and EnableProductionEnvironment() is false
+        /// Determines if Email can be sent depending on EnableProductionEnvironment() is true or <see cref="OltEmailConfigurationWhitelist"/> and EnableProductionEnvironment() is false
         /// </summary>
         public override bool AllowSend(string emailAddress)
         {
@@ -75,8 +77,8 @@ namespace OLT.Email
                 return true;
             }
 
-            return Whitelist.Domain.Any(p => emailAddress.EndsWith(p, StringComparison.OrdinalIgnoreCase)) ||
-                   Whitelist.Email.Any(p => emailAddress.Equals(p, StringComparison.OrdinalIgnoreCase));
+            return DomainWhitelist.Any(p => emailAddress.EndsWith(p, StringComparison.OrdinalIgnoreCase)) ||
+                   EmailWhitelist.Any(p => emailAddress.Equals(p, StringComparison.OrdinalIgnoreCase));
         }
 
     }

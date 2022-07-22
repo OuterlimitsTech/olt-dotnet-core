@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace OLT.Email
 {
@@ -8,19 +9,29 @@ namespace OLT.Email
     public class OltEmailConfigurationWhitelist
     {
         /// <summary>
-        /// List of top-level domains for sending emails in non-production environments
+        /// Semicolon delimited string of top-level domains for sending emails in non-production environments
         /// </summary>
         /// <example>
-        /// outerlimitstech.com
+        /// mydomain.com;mydomain.io
         /// </example>
-        public List<string> Domain { get; set; } = new List<string>();
+        public virtual string Domain { get; set; }
 
         /// <summary>
-        /// List of email addresses for sending emails in non-production environments
+        /// Parsed <seealso cref="Domain"/> 
+        /// </summary>
+        public virtual IEnumerable<string> DomainParsed => Domain?.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)) ?? new List<string>();
+
+        /// <summary>
+        /// Semicolon delimited string of email addresses for sending emails in non-production environments
         /// </summary>
         /// <example>
-        /// john.doe@fake-email.com
+        /// john.doe@fake-email.com;jane.smith@fake-email.com
         /// </example>
-        public List<string> Email { get; set; } = new List<string>();
+        public virtual string Email { get; set; }
+
+        /// <summary>
+        /// Parsed <seealso cref="Email"/> 
+        /// </summary>
+        public virtual IEnumerable<string> EmailParsed => Email?.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)) ?? new List<string>();
     }
 }

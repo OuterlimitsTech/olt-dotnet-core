@@ -58,8 +58,8 @@ namespace OLT.Email.SendGrid.Tests
 
             var whitelist = new OltEmailConfigurationWhitelist 
             {
-                Email = new List<string> { _prodConfig.ToEmail },
-                Domain = new List<string> { Faker.Internet.DomainName() },
+                Email =  _prodConfig.ToEmail,
+                Domain = Faker.Internet.DomainName(),
             };
 
             var recipients = new OltEmailRecipients 

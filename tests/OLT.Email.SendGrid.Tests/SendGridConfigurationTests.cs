@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
@@ -34,9 +35,9 @@ namespace OLT.Email.SendGrid.Tests
             var whiteDomain = Faker.Internet.DomainName();
 
             var config = new OltEmailConfigurationSendGrid();
-            config.ApiKey = apiKey;
-            config.TestWhitelist.Domain.Add(whiteDomain);
-            config.TestWhitelist.Email.Add(whiteEmail);
+            config.ApiKey = apiKey;            
+            config.TestWhitelist.Domain = whiteDomain;
+            config.TestWhitelist.Email = $"{whiteEmail};";
             config.From.Name = fromName;
             config.From.Email = fromEmail;
 
@@ -46,8 +47,8 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Equal(fromEmail, config.From.Email);
             Assert.NotEmpty(config.TestWhitelist.Email);
             Assert.NotEmpty(config.TestWhitelist.Domain);
-            Assert.Equal(whiteEmail, config.TestWhitelist.Email[0]);
-            Assert.Equal(whiteDomain, config.TestWhitelist.Domain[0]);
+            Assert.Equal(whiteEmail, config.TestWhitelist.EmailParsed.ToList()[0]);
+            Assert.Equal(whiteDomain, config.TestWhitelist.DomainParsed.ToList()[0]);
 
             config.Production = true;
             Assert.True(config.Production);
