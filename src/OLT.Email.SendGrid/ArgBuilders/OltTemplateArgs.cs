@@ -4,6 +4,7 @@ using OLT.Constants;
 using SendGrid.Helpers.Mail;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -109,24 +110,34 @@ namespace OLT.Email.SendGrid
             {
                 throw new OltSendGridValidationException(ValidationErrors());
             }
-            
-            var client = CreateClient();
-            var msg = CreateMessage(BuildRecipients());
-            var sendResponse = await client.SendEmailAsync(msg);
 
-            var result = new OltSendGridEmailResult();
-            if (sendResponse.StatusCode != HttpStatusCode.Accepted)
+            var result = new OltSendGridEmailResult
             {
-                var body = await sendResponse.Body.ReadAsStringAsync();
+                RecipientResults = BuildRecipients()
+            };
 
-                result.Errors.Add($"{sendResponse.StatusCode}");
-                result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body);
-                result.SendGrid.Errors.ForEach(error =>
+            var client = CreateClient();
+            var msg = CreateMessage(result.RecipientResults);
+
+            if (msg.Personalizations.Any() && msg.Personalizations[0].Tos?.Count > 0)
+            {
+                var sendResponse = await client.SendEmailAsync(msg);
+
+                if (sendResponse.StatusCode != HttpStatusCode.Accepted)
                 {
-                    result.Errors.Add($"{error.Field} - {error.Message}");
-                });
+                    var body = await sendResponse.Body.ReadAsStringAsync();
 
-                
+                    result.Errors.Add($"{sendResponse.StatusCode}");
+                    result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body);
+                    result.SendGrid.Errors.ForEach(error =>
+                    {
+                        result.Errors.Add($"{error.Field} - {error.Message}");
+                    });
+                }
+            }
+            else
+            {
+                result.Errors.Add("No Recipients were attached.  This can be caused by skipping due to the whitelist");
             }
             return result;
         }
