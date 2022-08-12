@@ -145,7 +145,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData(UnitTestConstants.StringValues.FooBar, false)]
         public void IsNumeric(string value, bool expectedResult)
         {
-            Assert.Equal(expectedResult, value.IsNumeric());
+            Assert.Equal(expectedResult, OltStringExtensions.IsNumeric(value));
         }
 
 
@@ -155,7 +155,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData(UnitTestConstants.StringValues.PhoneValues.Formatted, UnitTestConstants.StringValues.PhoneValues.Clean)]
         public void StripNonNumeric(string value, string expectedResult)
         {
-            Assert.Equal(expectedResult, value.StripNonNumeric());
+            Assert.Equal(expectedResult, OltStringExtensions.StripNonNumeric(value));
         }
 
 
@@ -170,10 +170,10 @@ namespace OLT.Extensions.General.Tests
         {
             if (value == null)
             {
-                Assert.Equal(expectedResult, value.StripNonNumeric(allowDecimal));
+                Assert.Equal(expectedResult, OltStringExtensions.StripNonNumeric(value, allowDecimal));
                 return;
             }
-            Assert.Equal(expectedResult, $"{value}{value2}".StripNonNumeric(allowDecimal));
+            Assert.Equal(expectedResult, OltStringExtensions.StripNonNumeric($"{value}{value2}", allowDecimal));
         }
 
         [Theory]
@@ -187,7 +187,7 @@ namespace OLT.Extensions.General.Tests
         public void Slugify(string value, string value2, int maxLength, string expected)
         {
             var testValue = value == null ? value : $"{value}   ${value2}";
-            Assert.Equal(expected.Left(maxLength), testValue.Slugify(maxLength));
+            Assert.Equal(expected.Left(maxLength), OltStringExtensions.Slugify(testValue, maxLength));
         }
 
         [Theory]
@@ -199,7 +199,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData("Hello", "There", ",", "Hello,There")]
         public void Append(string value, string value2, string separator, string expected)
         {
-            Assert.Equal(expected, value.Append(value2, separator));
+            Assert.Equal(expected, OltStringExtensions.Append(value, value2, separator));
         }
 
         [Theory]
@@ -212,7 +212,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData("HELLO THERE CHARLIE Brown", "Hello there charlie brown")]
         public void ToProperCase(string value, string expected)
         {
-            Assert.Equal(expected, value.ToProperCase());
+            Assert.Equal(expected, OltStringExtensions.ToProperCase(value));
         }
 
 
@@ -225,7 +225,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData("2021-09-01", true)]
         public void IsDate(string value, bool expectedResult)
         {
-            Assert.Equal(expectedResult, value.IsDate());
+            Assert.Equal(expectedResult, OltStringExtensions.IsDate(value));
         }
 
 
@@ -244,7 +244,7 @@ namespace OLT.Extensions.General.Tests
         [MemberData(nameof(ToDateMemberData))]
         public void ToDate(string value, DateTime? expectedResult, DateTime? defaultValue = null)
         {
-            Assert.Equal(expectedResult, defaultValue.HasValue? value.ToDate(defaultValue.Value) : value.ToDate());
+            Assert.Equal(expectedResult, defaultValue.HasValue ? OltStringExtensions.ToDate(value, defaultValue.Value) : OltStringExtensions.ToDate(value));
         }
 
 
@@ -295,8 +295,15 @@ namespace OLT.Extensions.General.Tests
         [InlineData("9223372036854775800", 9223372036854775800)]
         [InlineData("45.234", null)]
         [InlineData("-9223372036854775800", -9223372036854775800)]
-        [InlineData("-1", -1)]
+        [InlineData("-1", -1L)]
         public void ToLong(string value, long? expectedResult)
+        {
+            Assert.Equal(expectedResult, OltStringExtensions.ToLong(value));
+        }
+
+        [Theory]
+        [InlineData("-1", -1)]
+        public void ToLongInt(string value, int? expectedResult)
         {
             Assert.Equal(expectedResult, OltStringExtensions.ToLong(value));
         }
@@ -305,11 +312,11 @@ namespace OLT.Extensions.General.Tests
         [InlineData("", long.MaxValue, long.MaxValue)]
         [InlineData("", 9223372036854775800, 9223372036854775800)]
         [InlineData(null, long.MaxValue, long.MaxValue)]
-        [InlineData(" ", 100, 100)]
+        [InlineData(" ", 100L, 100L)]
         [InlineData("FooBar", -9223372036854775800, -9223372036854775800)]        
         [InlineData("45.234", 9223372036854775800, 9223372036854775800)]
         [InlineData("-9223372036854775800", -9223372036854775800, 0)]
-        [InlineData("-1", -1, 0)]
+        [InlineData("-1", -1L, 0L)]
         public void ToLongWithDefault(string value, long? expectedResult, long defaultValue)
         {
             Assert.Equal(expectedResult, OltStringExtensions.ToLong(value, defaultValue));
@@ -343,21 +350,21 @@ namespace OLT.Extensions.General.Tests
         [MemberData(nameof(ToDecimalMemberData))]
         public void ToDecimal(string value, decimal? expectedResult, decimal? defaultValue = null)
         {
-            Assert.Equal(expectedResult, defaultValue.HasValue ? value.ToDecimal(defaultValue.Value) : value.ToDecimal());
+            Assert.Equal(expectedResult, defaultValue.HasValue ? OltStringExtensions.ToDecimal(value, defaultValue.Value) : OltStringExtensions.ToDecimal(value));
         }
 
         [Theory]
         [InlineData("", double.MaxValue, double.MaxValue)]
         [InlineData("", null)]
         [InlineData(null, null)]
-        [InlineData(" ", 0, 0)]
+        [InlineData(" ", 0d, 0d)]
         [InlineData(null, 1.01, 1.01)]
-        [InlineData("FooBar", 0, 0)]
+        [InlineData("FooBar", 0d, 0d)]
         [InlineData("45.234", 45.234, 0.0)]
-        [InlineData("-1", -1)]
+        [InlineData("-1", -1d)]
         public void ToDouble(string value, double? expectedResult, double? defaultValue = null)
         {
-            Assert.Equal(expectedResult, defaultValue.HasValue ? value.ToDouble(defaultValue.Value) : value.ToDouble());
+            Assert.Equal(expectedResult, defaultValue.HasValue ? OltStringExtensions.ToDouble(value, defaultValue.Value) : OltStringExtensions.ToDouble(value));
         }
 
 
@@ -394,7 +401,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData(UnitTestConstants.BoolValues.FalseValues.Int, false)]
         public void ToBool(string value, bool? expectedResult, bool? defaultValue = null)
         {
-            Assert.Equal(expectedResult, defaultValue.HasValue ? value.ToBool(defaultValue.Value) : value.ToBool());
+            Assert.Equal(expectedResult, defaultValue.HasValue ? OltStringExtensions.ToBool(value, defaultValue.Value) : OltStringExtensions.ToBool(value));
         }
 
         [Theory]
@@ -407,7 +414,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData(UnitTestConstants.StringValues.HelloWorld, false)]
         public void IsHex(string value, bool expectedResult)
         {
-            Assert.Equal(expectedResult, value.IsHex());
+            Assert.Equal(expectedResult, OltStringExtensions.IsHex(value));
         }
 
         [Theory]
