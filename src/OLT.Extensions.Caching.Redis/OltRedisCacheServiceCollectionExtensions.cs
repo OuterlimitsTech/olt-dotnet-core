@@ -60,9 +60,8 @@ namespace OLT.Core
             {
                 throw new ArgumentNullException(nameof(cacheKeyPrefix));
             }
-            
+
             redisConfiguration.Name = redisConfiguration.Name ?? redisConfiguration.ConfigurationOptions.ClientName;
-            
 
             services.AddSingleton((provider) => provider
                 .GetRequiredService<IRedisClientFactory>()

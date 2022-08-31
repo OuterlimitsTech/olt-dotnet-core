@@ -83,5 +83,20 @@ namespace OLT.Core
             }
             return Task.FromResult(false);
         }
+
+        public override void Flush()
+        {
+            if (_memoryCache is MemoryCache memoryCache)
+            {
+                var percentage = 1.0; //100%
+                memoryCache.Compact(percentage);
+            }
+        }
+
+        public override Task FlushAsync()
+        {
+            Flush();
+            return Task.CompletedTask;
+        }
     }
 }

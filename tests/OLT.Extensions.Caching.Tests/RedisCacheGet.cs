@@ -1,11 +1,15 @@
-﻿using FluentAssertions;
+﻿using Faker;
+using FluentAssertions;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OLT.Core;
 using OLT.Extensions.Caching.Tests.Assets;
 using StackExchange.Redis;
+using StackExchange.Redis.Extensions.Core.Abstractions;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -103,6 +107,93 @@ namespace OLT.Extensions.Caching.Tests
 
             cacheService.Remove(cacheKey);
 
+        }
+
+
+
+        [Fact]
+        public void FlushTests()
+        {
+
+            var cacheKeys = new Dictionary<string, OltPersonName>();
+            var services = new ServiceCollection();
+            var config = new RedisConfiguration
+            {
+                ConnectionString = $"{_config.RedisCacheConnectionString.Replace("unit-test", "unit-test-flush")},allowAdmin=true,defaultDatabase=4"
+            };
+
+            var provider = TestHelper.BuildRedisProvider(config, TimeSpan.FromMinutes(2), "flush-tests");
+
+            var cacheService = provider.GetRequiredService<IOltCacheService>();
+
+            for (var idx = 0; idx < 10; idx++)
+            {
+                var model = TestHelper.CreateModel();
+                var cacheKey = $"cache-person-{Guid.NewGuid()}";
+                cacheKeys.Add(cacheKey, model);
+                cacheService.Get(cacheKey, () => TestHelper.CloneModel(model)).Should().BeEquivalentTo(model);
+            }
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                cacheService.Get(cacheKey, () => TestHelper.CloneModel(newModel)).Should().BeEquivalentTo(expected);
+            }
+
+            cacheService.Flush();
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                cacheService.Get(cacheKey, () => TestHelper.CloneModel(newModel)).Should().BeEquivalentTo(newModel);
+            }
+        }
+
+        [Fact]
+        public async Task FlushAsyncTests()
+        {
+
+            var cacheKeys = new Dictionary<string, OltPersonName>();
+            var services = new ServiceCollection();
+            
+            var config = new RedisConfiguration
+            {
+                ConnectionString = $"{_config.RedisCacheConnectionString.Replace("unit-test", "unit-test-flush-async")},allowAdmin=true,defaultDatabase=3"
+            };
+
+            var provider = TestHelper.BuildRedisProvider(config, TimeSpan.FromMinutes(2), "async-flush-tests");
+
+            var cacheService = provider.GetRequiredService<IOltCacheService>();
+
+            for (var idx = 0; idx < 10; idx++)
+            {
+                var model = TestHelper.CreateModel();
+                var cacheKey = $"cache-person-{Guid.NewGuid()}";
+                cacheKeys.Add(cacheKey, model);
+                (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(model))).Should().BeEquivalentTo(model);
+            }
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(newModel))).Should().BeEquivalentTo(expected);
+            }
+
+            await cacheService.FlushAsync();
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                (await cacheService.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(newModel))).Should().BeEquivalentTo(newModel);
+            }
         }
     }
 }

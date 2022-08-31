@@ -76,7 +76,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Services
         public PersonEntity Get(bool includeDeleted, params IOltSearcher<PersonEntity>[] searchers) => GetQueryable(includeDeleted, searchers).FirstOrDefault();
         public PersonEntity Get(IOltSearcher<PersonEntity> searcher) => GetQueryable(searcher).FirstOrDefault();
         public List<PersonEntity> Get(bool includeDeleted) => GetQueryable<PersonEntity>(includeDeleted).ToList();
-        public List<PersonEntity> GetNonDeleted() => InitializeQueryable<PersonEntity>().ToList();
+        public List<PersonEntity> GetNonDeleted() => InitializeQueryable<PersonEntity>(false).ToList();
         public async Task<PersonEntity> GetAsync(IOltSearcher<PersonEntity> searcher) => await GetQueryable(searcher).FirstOrDefaultAsync();
 
         public List<PersonEntity> GetPeopleOrdered(bool includeDeleted) => GetQueryable<PersonEntity>(includeDeleted, p => p.OrderBy(t => t.NameLast).ThenBy(t => t.NameFirst)).ToList();

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -79,9 +80,94 @@ namespace OLT.Extensions.Caching.Tests
             
             oltMemoryCache.Remove(cacheKey);
             memoryCache.Get<OltPersonName>(cacheKey).Should().BeNull();
-            oltMemoryCache.Exists(cacheKey).Should().BeFalse();
+            oltMemoryCache.Exists(cacheKey).Should().BeFalse();            
+            
         }
 
+        [Fact]
+        public void FlushTests()
+        {
+            
+            var cacheKeys = new Dictionary<string, OltPersonName>();
+            var services = new ServiceCollection();
 
+            services.AddOltCacheMemory(TimeSpan.FromMinutes(2));
+            var provider = services.BuildServiceProvider();
+
+            var memoryCache = provider.GetRequiredService<IMemoryCache>();
+            var oltMemoryCache = provider.GetRequiredService<IOltCacheService>();
+
+            for(var idx = 0; idx < 10; idx++)
+            {
+                var model = TestHelper.CreateModel();
+                var cacheKey = $"cache-person-{Guid.NewGuid()}";
+                cacheKeys.Add(cacheKey, model);
+                oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(model)).Should().BeEquivalentTo(model);
+                memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(model);
+            }
+
+            foreach(var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(newModel)).Should().BeEquivalentTo(expected);
+                memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(expected);
+            }
+
+            oltMemoryCache.Flush();
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                oltMemoryCache.Get(cacheKey, () => TestHelper.CloneModel(newModel)).Should().BeEquivalentTo(newModel);
+                memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(newModel);
+            }
+        }
+
+        [Fact]
+        public async Task FlushAsyncTests()
+        {
+
+            var cacheKeys = new Dictionary<string, OltPersonName>();
+            var services = new ServiceCollection();
+
+            services.AddOltCacheMemory(TimeSpan.FromMinutes(2));
+            var provider = services.BuildServiceProvider();
+
+            var memoryCache = provider.GetRequiredService<IMemoryCache>();
+            var oltMemoryCache = provider.GetRequiredService<IOltCacheService>();
+
+            for (var idx = 0; idx < 10; idx++)
+            {
+                var model = TestHelper.CreateModel();
+                var cacheKey = $"cache-person-{Guid.NewGuid()}";
+                cacheKeys.Add(cacheKey, model);
+                (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(model))).Should().BeEquivalentTo(model);
+                memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(model);
+            }
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(newModel))).Should().BeEquivalentTo(expected);
+                memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(expected);
+            }
+
+            await oltMemoryCache.FlushAsync();
+
+            foreach (var item in cacheKeys)
+            {
+                var newModel = TestHelper.CreateModel();
+                var cacheKey = item.Key;
+                var expected = item.Value;
+                (await oltMemoryCache.GetAsync(cacheKey, async () => await TestHelper.FakeAsync(newModel))).Should().BeEquivalentTo(newModel);
+                memoryCache.Get<OltPersonName>(cacheKey).Should().BeEquivalentTo(newModel);
+            }
+        }
     }
 }

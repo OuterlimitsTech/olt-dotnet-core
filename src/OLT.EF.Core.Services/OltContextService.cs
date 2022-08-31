@@ -30,11 +30,6 @@ namespace OLT.Core
 
         #region [ Queryable Methods ]
 
-        protected virtual IQueryable<TEntity> InitializeQueryable<TEntity>() where TEntity : class, IOltEntity
-        {
-            return InitializeQueryable<TEntity>(false);
-        }
-
         protected virtual IQueryable<TEntity> InitializeQueryable<TEntity>(bool includeDeleted) where TEntity : class, IOltEntity
         {
             return Context.InitializeQueryable<TEntity>(includeDeleted);
