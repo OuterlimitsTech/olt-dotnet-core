@@ -18,11 +18,29 @@ namespace OLT.Core
         {
         }
 
+        /// <summary>
+        /// Used for Adding new Entities
+        /// </summary>
         protected virtual DbSet<TEntity> Repository => Context.Set<TEntity>();
 
-        #region [ Get Queryable ]
+        #region [ Queryable Methods ]
 
-        protected virtual IQueryable<TEntity> GetQueryable() => Repository;
+
+        /// <summary>
+        /// Initializes Queryable for Methods.  Override this for things like Inlude.
+        /// </summary>
+        /// <param name="includeDeleted"></param>
+        /// <returns></returns>
+        protected virtual IQueryable<TEntity> InitializeQueryable(bool includeDeleted)
+        {
+            return InitializeQueryable<TEntity>(includeDeleted);
+        }
+
+        /// <summary>
+        /// Returns Queryable using <seealso cref="InitializeQueryable"/> for non-deleted records
+        /// </summary>
+        /// <returns></returns>
+        protected virtual IQueryable<TEntity> GetQueryable() => InitializeQueryable(false);
 
         #endregion
 
