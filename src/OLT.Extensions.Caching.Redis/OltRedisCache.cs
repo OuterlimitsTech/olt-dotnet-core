@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using System;
@@ -96,6 +97,17 @@ namespace OLT.Core
             var cacheKey = ToCacheKey(key);
             var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
             return await redisDatabase.ExistsAsync(cacheKey);
+        }
+
+        public override void Flush()
+        {
+            FlushAsync().GetAwaiter().GetResult();
+        }
+
+        public override async Task FlushAsync()
+        {
+            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            await redisDatabase.FlushDbAsync();
         }
     }
 }

@@ -27,5 +27,7 @@ namespace OLT.Core
         public abstract Task RemoveAsync(string key);
         public abstract bool Exists(string key);
         public abstract Task<bool> ExistsAsync(string key);
+        public abstract void Flush();
+        public abstract Task FlushAsync();
     }
 }

@@ -53,6 +53,15 @@ namespace OLT.Core
         /// <returns>True if the key is present in cache. Othwerwise False</returns>
         Task<bool> ExistsAsync(string key);
 
+        /// <summary>
+        /// Flushes all cache entries
+        /// </summary>
+        void Flush();
+
+        /// <summary>
+        /// Flushes all cache entries
+        /// </summary>
+        Task FlushAsync();
     }
 
 }
