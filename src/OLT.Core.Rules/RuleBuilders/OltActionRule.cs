@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-
-
     public abstract class OltActionRule<T> : OltRule, IOltActionRule
         where T : OltActionRule<T>
     {
@@ -21,17 +19,15 @@ namespace OLT.Core
 
         #region [ Execute ]
 
-        public virtual List<OltRuleCanRunException> CanExecute()
+        public virtual Task<List<OltRuleCanRunException>> CanExecuteAsync()
         {
             var list = new List<OltRuleCanRunException>();
-            //if (RequiresDbTransaction && !HasTransaction)
             if (!HasTransaction)
             {
                 list.Add(new OltRuleMissingTransactionException(this));
             }
-            return list;
+            return Task.FromResult(list);
         }
-
 
         protected virtual async Task RunDependentRulesAsync(OltDependentRuleRunTypes type, IDbContextTransaction dbTransaction)
         {
@@ -53,7 +49,7 @@ namespace OLT.Core
         {
             HasTransaction = dbTransaction != null;
 
-            var errors = CanExecute();
+            var errors = await CanExecuteAsync();
             if (errors.Any())
             {
                 throw new AggregateException(errors);
@@ -77,6 +73,7 @@ namespace OLT.Core
                 throw;
             }
         }
+
 
         #endregion
 
