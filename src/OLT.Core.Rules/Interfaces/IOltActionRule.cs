@@ -6,7 +6,7 @@ namespace OLT.Core
 {
     public interface IOltActionRule : IOltRule
     {
-        List<OltRuleCanRunException> CanExecute();
+        Task<List<OltRuleCanRunException>> CanExecuteAsync();
         Task ExecuteAsync(IDbContextTransaction dbTransaction);
     }
 }
