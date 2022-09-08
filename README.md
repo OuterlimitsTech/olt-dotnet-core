@@ -1,5 +1,54 @@
 <img src="https://user-images.githubusercontent.com/1365728/127748628-47575d74-a2fb-4539-a31e-74d8b435fc21.png" width="30%" >
 
+# OLT.Core.Services and OLT.EF.Core.Services Flow
+
+```mermaid
+classDiagram
+    IDisposable <|-- OltDisposable
+    IDisposable <|-- IOltInjectableScoped
+    IOltInjectableScoped <|-- IOltCoreService
+    IOltCoreService <|-- OltCoreService
+    OltDisposable <|-- OltCoreService: Base Dispoable class
+    OltCoreService <|-- OltContextService
+    OltContextService <|-- OltEntityService
+    OltEntityService <|-- OltEntityIdService
+    OltEntityIdService
+    class OltDisposable {
+        Disposed
+        Dispose(disposing)
+        +Dispose()
+    }
+    class OltCoreService {
+        ServiceManager
+    }
+    class OltContextService{
+      Context
+      SaveChangesAsync()
+      InitializeQueryable()
+      GetQueryable(IOltSearcher)
+      GetAllAsync(IOltSearcher)
+      GetAsync(IOltSearcher)
+      MarkDeletedAsync(Entity)
+      CountAsync(IQueryable)
+    }
+    class OltEntityService{
+      Repository
+      +GetAsync(IOltSearcher)
+      +GetAllAsync(IOltSearcher)
+      +GetPagedAsync(pagingParams)
+      +AddAsync(IOltSearcher, dataModel)
+      +UpdateAsync(IOltSearcher, dataModel)
+      +SoftDeleteAsync(IOltSeacher)
+    }
+    class OltEntityIdService{
+      +GetAsync(id)
+      +AddAsync(dataModel)
+      +UpdateAsync(id, dataModel)
+      +SoftDeleteAsync(id)
+    }
+
+```
+
 # OLT Core Libraries
 
 [![CI](https://github.com/OuterlimitsTech/olt-dotnet-core/actions/workflows/build.yml/badge.svg)](https://github.com/OuterlimitsTech/olt-dotnet-core/actions/workflows/build.yml) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=OuterlimitsTech_olt-dotnet-core&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=OuterlimitsTech_olt-dotnet-core)
