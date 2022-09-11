@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,30 @@ namespace OLT.Core
             foreach (var value in rules)
             {
                 await value.Rule.ExecuteAsync(dbTransaction);
+            }
+        }
+
+        /// <summary>
+        /// Run Rule using new Transaction
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public virtual async Task ExecuteAsync<TContext>(TContext context)
+            where TContext : DbContext, IOltDbContext
+        {
+            using (var transaction = await context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    await ExecuteAsync(transaction);
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
             }
         }
 
