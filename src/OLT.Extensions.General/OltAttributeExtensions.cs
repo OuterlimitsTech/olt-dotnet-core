@@ -153,7 +153,7 @@ namespace OLT.Core
                 }
             }
 
-            throw new ArgumentException(nameof(source));
+            throw new ArgumentException("Unable to find EnumMember", nameof(source));
         }
     }
 }
