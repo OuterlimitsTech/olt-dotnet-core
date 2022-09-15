@@ -1,9 +1,11 @@
-﻿using OLT.Core;
+﻿using Newtonsoft.Json.Linq;
+using OLT.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -16,6 +18,7 @@ namespace OLT.Extensions.General.Tests
         public enum TestAttributeEnum1
         {
             [Description("Test Value 1")]
+            [EnumMember(Value = "value-one")]
             Value1,
 
             [CustomTest("value2")]
@@ -130,6 +133,22 @@ namespace OLT.Extensions.General.Tests
         {
             Assert.Throws<ArgumentException>(() => OltAttributeExtensions.FromDescription<TestAttributeEnum1>(Faker.Name.First()));
             Assert.Throws<ArgumentNullException>(() => OltAttributeExtensions.FromDescription<TestAttributeEnum1>(null));
+        }
+
+
+        [Theory]
+        [InlineData(TestAttributeEnum1.Value1, "value-one")]
+        [InlineData(TestAttributeEnum1.Value2, "Value2")]        
+        public void FromEnumMember(TestAttributeEnum1 expected, string value)
+        {
+            Assert.Equal(expected, OltAttributeExtensions.FromEnumMember<TestAttributeEnum1>(value));
+        }
+
+        [Fact]
+        public void FromEnumMemberInvalid()
+        {
+            Assert.Throws<ArgumentException>(() => OltAttributeExtensions.FromEnumMember<TestAttributeEnum1>(Faker.Name.First()));
+            Assert.Throws<ArgumentNullException>(() => OltAttributeExtensions.FromEnumMember<TestAttributeEnum1>(null));
         }
     }
 }

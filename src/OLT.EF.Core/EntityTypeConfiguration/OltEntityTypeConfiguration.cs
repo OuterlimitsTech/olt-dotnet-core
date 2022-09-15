@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OLT.Constants;
@@ -44,7 +45,13 @@ namespace OLT.Core
         protected virtual string GetColumnName(PropertyInfo item)
         {
             return OltAttributeExtensions.GetAttributeInstance<ColumnAttribute>(item)?.Name;
-        }    
+        }
+
+        protected virtual string GetEnumMember<TEnum>(TEnum item)
+            where TEnum : System.Enum
+        {
+            return OltAttributeExtensions.GetAttributeInstance<EnumMemberAttribute, TEnum>(item)?.Value;
+        }
     }
 
 

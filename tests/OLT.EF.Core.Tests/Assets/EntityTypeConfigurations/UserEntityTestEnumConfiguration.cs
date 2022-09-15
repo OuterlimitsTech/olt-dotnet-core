@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Newtonsoft.Json.Linq;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets.Entites;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using Xunit;
 
 namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
@@ -16,6 +18,7 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
         [KeyValue("LastName", "Account")]
         [Description("Test Account")]
         [UniqueId("0bdd9387-0348-441a-bc2d-49f043689922")]
+        [EnumMember(Value = "test-account")]
         TestAccount = 500,
 
         [Code("SystemLoad")]
@@ -24,6 +27,7 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
         [KeyValue("LastName", "Load")]
         [Description("System Load")]
         [UniqueId("ba1fa666-8ea9-4b8c-91f9-8c7589b98894")]
+        [EnumMember(Value = "system-load")]
         SystemLoad = 530,
     }
 
@@ -52,7 +56,8 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
             var fullName = @enum.GetDescription();
             var sortOrder = @enum.GetCodeEnumSort();            
             var uid = OltAttributeExtensions.GetAttributeInstance<UniqueIdAttribute, UserEntityTypes>(@enum)?.UniqueId;
-            
+            var enumMember = OltAttributeExtensions.GetAttributeInstance<EnumMemberAttribute, UserEntityTypes>(@enum)?.Value;
+
 
             entity.Username = GetEnumCode(@enum);
             entity.Email = keyValue.First(p => p.Key == "Email").Value;
@@ -65,6 +70,7 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
             Assert.Equal(entity.Username, base.GetEnumCode(@enum));
             Assert.Equal(sortOrder, base.GetEnumCodeSortOrder(@enum));
             Assert.Equal(uid, base.GetUniqueId(@enum));
+            Assert.Equal(enumMember, base.GetEnumMember(@enum));
 
         }
 
