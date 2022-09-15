@@ -22,6 +22,7 @@ namespace OLT.Extensions.General.Tests
             Value1,
 
             [CustomTest("value2")]
+            [EnumMember(Value = "Value-Two")]
             Value2,
 
             [CustomTest("value3a")]
@@ -138,7 +139,7 @@ namespace OLT.Extensions.General.Tests
 
         [Theory]
         [InlineData(TestAttributeEnum1.Value1, "value-one")]
-        [InlineData(TestAttributeEnum1.Value2, "Value2")]        
+        [InlineData(TestAttributeEnum1.Value2, "Value-Two")]        
         public void FromEnumMember(TestAttributeEnum1 expected, string value)
         {
             Assert.Equal(expected, OltAttributeExtensions.FromEnumMember<TestAttributeEnum1>(value));
