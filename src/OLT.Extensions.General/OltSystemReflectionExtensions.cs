@@ -204,6 +204,17 @@ namespace System.Reflection
         }
 
         /// <summary>
+        /// Scans provided assembly for all objects that implements interfaces
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="assembly"></param>
+        /// <returns>Returns an instance for all objects</returns>
+        public static IEnumerable<T> GetAllImplements<T>(this Assembly assembly)
+        {
+            return GetAllImplements<T>(new List<Assembly>() { assembly });
+        }
+
+        /// <summary>
         /// Scans provided assemblies for all objects that implements interfaces
         /// </summary>
         /// <typeparam name="T"></typeparam>
