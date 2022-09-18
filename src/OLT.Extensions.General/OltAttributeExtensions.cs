@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace OLT.Core
@@ -113,6 +114,46 @@ namespace OLT.Core
             }            
 
             return (TEnum)Enum.Parse(type, source, true);
+        }
+
+        /// <summary>
+        /// Searches <typeparamref name="TEnum"/> for <see cref="EnumMemberAttribute"/> 
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="source"></param>
+        /// <returns>First instance of <typeparamref name="TEnum"/></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TEnum FromEnumMember<TEnum>(this string source) where TEnum : System.Enum, IConvertible
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            var type = typeof(TEnum);
+
+            foreach (var en in Enum.GetValues(type))
+            {
+                var memInfo = type.GetMember(en.ToString());
+
+                if (memInfo != null && memInfo.Length > 0)
+                {
+
+                    var attrs = memInfo[0].GetCustomAttributes(typeof(EnumMemberAttribute), false);
+
+                    if (attrs != null && attrs.Length > 0)
+                    {
+                        var value = ((EnumMemberAttribute)attrs[0]).Value;
+                        if (string.Equals(source, value, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return (TEnum)en;
+                        }
+                    }
+                }
+            }
+
+            throw new ArgumentException("Unable to find EnumMember", nameof(source));
         }
     }
 }

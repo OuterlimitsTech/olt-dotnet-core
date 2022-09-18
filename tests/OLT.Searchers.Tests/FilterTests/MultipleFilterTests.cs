@@ -24,7 +24,18 @@ namespace OLT.Searchers.Tests.FilterTests
 
             var seedRecs = FakeEntity.FakerList(5, intValues);
             seedRecs.Add(expected);
-            seedRecs.AddRange(FakeEntity.FakerList(5, intValues));
+
+
+            //Every so often, Faker will generate the same first or last name in the collection of 5 causing this test to fail
+            //seedRecs.AddRange(FakeEntity.FakerList(5, intValues));
+            //I changed it to add an index to the end of the last name to prevent this
+            var idx = 1;
+            FakeEntity.FakerList(5, intValues).ForEach(item =>
+            {
+                item.LastName = $"{item.LastName}-{idx}";
+                idx++;
+            });
+            
 
             var recs = TestHelper.BuildRandomList(seedRecs, intValues, 1000, 3, 9);
             recs[3].FirstName = expected.FirstName;

@@ -22,9 +22,11 @@ namespace OLT.Extensions.General.Tests
             var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies();
             Assert.Equal(4, assembliesToScan.GetAllImplements<ITestInterface>().Count());
             Assert.Equal(4, assembliesToScan.ToArray().GetAllImplements<ITestInterface>().Count());
+            Assert.Equal(4, this.GetType().Assembly.GetAllImplements<ITestInterface>().Count());
 
             Assert.Empty(assembliesToScan.GetAllImplements<ITestEmptyInterface>());
             Assert.Empty(assembliesToScan.ToArray().GetAllImplements<ITestEmptyInterface>());
+            Assert.Empty(this.GetType().Assembly.GetAllImplements<ITestEmptyInterface>());
         }
 
 

@@ -11,10 +11,24 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
     {
         NoAttributes = 123,
 
-        [Code("TestCode", 1234)]
+        [Code("TestCode")]
+        [SortOrder(1234)]
         [Description("Testing")]
         [UniqueId("bb07399c-6bd2-41fe-a680-2b5b86fcae8a")]
         AttributeType = 678,
+
+        [Code("TestCode1", 123)]
+        [SortOrder(321)]
+        BothSortPresent = 688,
+
+        [Code("TestCode2", 987)]
+        LegacySortPresent = 693,
+
+        [SortOrder(5697)]
+        [UniqueId("41800cb1-bc07-4d66-b528-b41021e3d650")]
+        [Description("Sort")]
+        SortOnly = 702,
+
     }
 
     public class UserTypeEntityTestEnumConfiguration : OltEntityTypeConfiguration<UserType, UserTypes>
@@ -34,13 +48,41 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
                 Assert.Equal("NoAttributes", entity.Name);
                 Assert.Equal(DefaultSort, entity.SortOrder);
             }
-            else
+
+            if (@enum == UserTypes.AttributeType)
             {
                 Assert.Equal((int)UserTypes.AttributeType, entity.Id);
                 Assert.Equal("bb07399c-6bd2-41fe-a680-2b5b86fcae8a", entity.UniqueId.ToString());
                 Assert.Equal("TestCode", entity.Code);
                 Assert.Equal("Testing", entity.Name);
                 Assert.Equal(1234, entity.SortOrder);
+            }
+
+            if (@enum == UserTypes.BothSortPresent)
+            {
+                Assert.Equal((int)UserTypes.BothSortPresent, entity.Id);
+                Assert.NotEqual(Guid.Empty, entity.UniqueId);
+                Assert.Equal("TestCode1", entity.Code);
+                Assert.Equal("BothSortPresent", entity.Name);
+                Assert.Equal(321, entity.SortOrder);
+            }
+
+            if (@enum == UserTypes.LegacySortPresent)
+            {
+                Assert.Equal((int)UserTypes.LegacySortPresent, entity.Id);
+                Assert.NotEqual(Guid.Empty, entity.UniqueId);
+                Assert.Equal("TestCode2", entity.Code);
+                Assert.Equal("LegacySortPresent", entity.Name);
+                Assert.Equal(987, entity.SortOrder);
+            }
+
+            if (@enum == UserTypes.SortOnly)
+            {
+                Assert.Equal((int)UserTypes.SortOnly, entity.Id);
+                Assert.Equal("41800cb1-bc07-4d66-b528-b41021e3d650", entity.UniqueId.ToString());
+                Assert.Equal("SortOnly", entity.Code);
+                Assert.Equal("Sort", entity.Name);
+                Assert.Equal(5697, entity.SortOrder);
             }
 
             Assert.Equal(DefaultUsername, entity.CreateUser);

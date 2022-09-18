@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OLT.Constants;
@@ -17,11 +18,19 @@ namespace OLT.Core
         protected virtual DateTimeOffset DefaultCreateDate => OltEFCoreConstants.DefaultSeedCreateDate;
         protected virtual string DefaultUsername => OltEFCoreConstants.DefaultSeedUsername;
 
+        [Obsolete("Move To GetEnumSortOrder")]
         protected virtual short GetEnumCodeSortOrder<TEnum>(TEnum item, short defaultValue = OltCommonDefaults.SortOrder)
             where TEnum : System.Enum
         {
             return OltAttributeExtensions.GetAttributeInstance<CodeAttribute, TEnum>(item)?.DefaultSort ?? defaultValue;
         }
+
+        protected virtual short GetEnumSortOrder<TEnum>(TEnum item, short defaultValue = OltCommonDefaults.SortOrder)
+            where TEnum : System.Enum
+        {
+            return OltAttributeExtensions.GetAttributeInstance<SortOrderAttribute, TEnum>(item)?.SortOrder ?? defaultValue;
+        }
+
 
         protected virtual string GetEnumDescription<TEnum>(TEnum item)
             where TEnum : System.Enum
@@ -44,7 +53,13 @@ namespace OLT.Core
         protected virtual string GetColumnName(PropertyInfo item)
         {
             return OltAttributeExtensions.GetAttributeInstance<ColumnAttribute>(item)?.Name;
-        }    
+        }
+
+        protected virtual string GetEnumMember<TEnum>(TEnum item)
+            where TEnum : System.Enum
+        {
+            return OltAttributeExtensions.GetAttributeInstance<EnumMemberAttribute, TEnum>(item)?.Value;
+        }
     }
 
 
@@ -80,7 +95,12 @@ namespace OLT.Core
 
             if (entity is IOltEntitySortable sortableEntity)
             {
-                sortableEntity.SortOrder = GetEnumCodeSortOrder(@enum, DefaultSort);
+                sortableEntity.SortOrder = GetEnumSortOrder(@enum, DefaultSort);
+                var legacy = GetEnumCodeSortOrder(@enum, DefaultSort);
+                if (legacy != DefaultSort && sortableEntity.SortOrder == DefaultSort)
+                {
+                    sortableEntity.SortOrder = legacy;
+                }
             }
 
             if (entity is IOltEntityAudit auditEntity)
