@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json.Linq;
+using OLT.Constants;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets.Entites;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
 {
     public enum UserEntityTypes
     {
-        [Code("TestAccount", 1500)]
+        [Code("TestAccount")]
+        [SortOrder(1500)]
         [KeyValue("Email", "test@test.com")]
         [KeyValue("FirstName", "Test")]
         [KeyValue("LastName", "Account")]
@@ -27,13 +29,24 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
         [KeyValue("LastName", "Load")]
         [Description("System Load")]
         [UniqueId("ba1fa666-8ea9-4b8c-91f9-8c7589b98894")]
-        [EnumMember(Value = "system-load")]
+        //[EnumMember(Value = "system-load")]  
         SystemLoad = 530,
+
+        [Code("LegacySortOrder", 350)]
+        [KeyValue("Email", "legacy@test.com")]
+        [KeyValue("FirstName", "Code")]
+        [KeyValue("LastName", "Legacy")]
+        [Description("Code Legacy")]
+        [UniqueId("3bf7576b-9e4b-4941-9196-6bab23ed6f69")]
+        LegacySortOrder = 535,
+
+
+        ErrorAccount = 540,
     }
 
     public class UserEntityTestEnumConfiguration : OltEntityTypeConfiguration<UserEntity, UserEntityTypes>
     {
-
+        private short testDefaultSort = short.MaxValue - 10;
         public List<UserEntity> Results { get; } = new List<UserEntity>();
 
         public override void Configure(EntityTypeBuilder<UserEntity> builder)
@@ -51,28 +64,74 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
         {
             base.Map(entity, @enum);
 
-            var keyValue = @enum.GetKeyValueAttributes();
+            //if (@enum == UserEntityTypes.ErrorAccount && System.Diagnostics.Debugger.IsAttached)
+            //{
+            //    System.Diagnostics.Debugger.Break();
+            //}
 
-            var fullName = @enum.GetDescription();
-            var sortOrder = @enum.GetCodeEnumSort();            
+            if (@enum == UserEntityTypes.LegacySortOrder && System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+
+            var keyValue = OltKeyValueAttributeExtensions.GetKeyValueAttributes(@enum);
+            var fullName = OltAttributeExtensions.GetDescription(@enum);
+            var legacySortOrder = OltCodeAttributeExtensions.GetCodeEnumSort(@enum);
+            var sortOrder = OltSortOrderAttributeExtensions.GetSortOrderEnum(@enum);
+            var sortOrderDifferentDefault = OltSortOrderAttributeExtensions.GetSortOrderEnum(@enum, testDefaultSort);
             var uid = OltAttributeExtensions.GetAttributeInstance<UniqueIdAttribute, UserEntityTypes>(@enum)?.UniqueId;
             var enumMember = OltAttributeExtensions.GetAttributeInstance<EnumMemberAttribute, UserEntityTypes>(@enum)?.Value;
 
 
             entity.Username = GetEnumCode(@enum);
-            entity.Email = keyValue.First(p => p.Key == "Email").Value;
-            entity.FirstName = keyValue.First(p => p.Key == "FirstName")?.Value;
-            entity.LastName = keyValue.First(p => p.Key == "LastName")?.Value;
             
-            Results.Add(entity);
-
-            Assert.Equal(fullName, base.GetEnumDescription(@enum));
             Assert.Equal(entity.Username, base.GetEnumCode(@enum));
-            Assert.Equal(sortOrder, base.GetEnumCodeSortOrder(@enum));
             Assert.Equal(uid, base.GetUniqueId(@enum));
             Assert.Equal(enumMember, base.GetEnumMember(@enum));
+            Assert.Equal(sortOrderDifferentDefault, base.GetEnumSortOrder(@enum, testDefaultSort));
 
+            if (@enum == UserEntityTypes.ErrorAccount)
+            {
+                entity.Email = keyValue.FirstOrDefault(p => p.Key == "Email")?.Value;
+                entity.FirstName = keyValue.FirstOrDefault(p => p.Key == "FirstName")?.Value;
+                entity.LastName = keyValue.FirstOrDefault(p => p.Key == "LastName")?.Value;
+
+
+                Assert.Equal(fullName, @enum.ToString());
+                Assert.Null(base.GetEnumDescription(@enum));
+                Assert.Equal(OltCommonDefaults.SortOrder, sortOrder);
+                Assert.Null(entity.Username);
+                Assert.Null(uid);
+                Assert.Null(enumMember);
+            }
+            else
+            {
+                entity.Email = keyValue.First(p => p.Key == "Email").Value;
+                entity.FirstName = keyValue.First(p => p.Key == "FirstName")?.Value;
+                entity.LastName = keyValue.First(p => p.Key == "LastName")?.Value;
+
+                if (@enum == UserEntityTypes.LegacySortOrder)
+                {
+                    Assert.Equal(legacySortOrder, base.GetEnumCodeSortOrder(@enum));
+                    Assert.Equal(OltCommonDefaults.SortOrder, sortOrder);
+                }
+                else
+                {
+                    Assert.Equal(OltCommonDefaults.SortOrder, legacySortOrder);
+                    Assert.Equal(sortOrder, base.GetEnumSortOrder(@enum));
+                }
+                    
+                Assert.Equal(fullName, base.GetEnumDescription(@enum));
+            }
+
+            Assert.Equal(entity.Email, keyValue.FirstOrDefault(p => p.Key == "Email")?.Value);
+            Assert.Equal(entity.FirstName, keyValue.FirstOrDefault(p => p.Key == "FirstName")?.Value);
+            Assert.Equal(entity.LastName, keyValue.FirstOrDefault(p => p.Key == "LastName")?.Value);
+
+            Results.Add(entity);
         }
+
+        
 
     }
 }

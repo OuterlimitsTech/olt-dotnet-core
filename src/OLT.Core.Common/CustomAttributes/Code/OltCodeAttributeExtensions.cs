@@ -27,6 +27,7 @@ namespace OLT.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns><see cref="short"/> DefaultSort from <see cref="CodeAttribute"/> or <see langword="null"/></returns>
+        [Obsolete("Move to OltSortOrderAttributeExtensions.GetSortOrderEnum")]
         public static short? GetCodeEnumSort(this Enum value)
         {
             var attribute = value?.GetType()
