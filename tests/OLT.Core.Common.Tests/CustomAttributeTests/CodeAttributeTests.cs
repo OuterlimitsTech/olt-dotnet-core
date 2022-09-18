@@ -1,9 +1,12 @@
-﻿using System.ComponentModel;
+﻿using OLT.Constants;
+using System.ComponentModel;
 using System.Linq;
 using Xunit;
+using static OLT.Core.Common.Tests.CustomAttributeTests.CodeAttributeTests;
 
 namespace OLT.Core.Common.Tests.CustomAttributeTests
 {
+
     public class CodeAttributeTests
     {
         public enum CodeAttributeTest
@@ -21,7 +24,7 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
             Value4,
         }
 
-        private const short DefaultSort = 9999;
+        private const short DefaultSort = OltCommonDefaults.SortOrder;
 
         [Fact]
         public void RawAttributeTest()
@@ -67,5 +70,6 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
                 Assert.Equal(expected, OltCodeAttributeExtensions.FromCodeEnum<CodeAttributeTest>(value));
             }            
         }
+
     }
 }
