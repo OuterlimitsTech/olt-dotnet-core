@@ -42,9 +42,11 @@ namespace OLT.Core.Rules.Tests
             //    });
 
             services.AddScoped<IOltServiceManager, TestRuleServiceManager>();
+            services.AddScoped<IOltRuleServiceManager, OltRuleServiceManager>();
             services.AddScoped<ITestRuleService, TestRuleService>();
+            services.AddScoped<ITestRuleContext, TestRuleContext>();
 
-
+            
             return services.BuildServiceProvider();
         }
 

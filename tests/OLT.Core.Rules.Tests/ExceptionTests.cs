@@ -56,9 +56,7 @@ namespace OLT.Core.Rules.Tests
                     rule3.ThrowError = false;
                     await func.Should().NotThrowAsync<OltRuleMissingParameterException<TestParameter>>();
                 }
-            }
-
-            
+            }           
 
         }
     }

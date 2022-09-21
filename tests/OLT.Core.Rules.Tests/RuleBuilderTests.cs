@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using OLT.Core.Rules.Tests.Assets.Context;
 using OLT.Core.Rules.Tests.Assets.RuleBuilders;
 using System;
+using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -59,14 +61,16 @@ namespace OLT.Core.Rules.Tests
 
             using (var provider = BuildProvider2())
             {
-                var rule = new Test2Rule();
-                rule.WithParameter(new TestParameter());
+                var rule = new Test4Rule();
+                rule.WithValue("intValue", rule.intValue)
+                    .WithValue("strValue", rule.strValue);
+
                 using (var tran = new MockTran())
                 {
-                    Func<Task> func = () => rule.ExecuteAsync(tran);
-                    await func.Should().NotThrowAsync<OltRuleException>();
+                    await rule.ExecuteAsync(tran);
                 }
             }
+
         }
 
 
