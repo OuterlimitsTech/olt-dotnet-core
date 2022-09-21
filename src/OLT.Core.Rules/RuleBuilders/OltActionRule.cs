@@ -14,6 +14,7 @@ namespace OLT.Core
         private readonly Dictionary<string, object> _params = new Dictionary<string, object>();
         private readonly Dictionary<string, IOltCoreService> _services = new Dictionary<string, IOltCoreService>();
         protected Dictionary<string, OltDependentRule> DependentRules = new Dictionary<string, OltDependentRule>();
+        
 
         protected virtual bool HasTransaction { get; set; }
         protected abstract Task RunRuleAsync();
@@ -38,6 +39,63 @@ namespace OLT.Core
                 await value.Rule.ExecuteAsync(dbTransaction);
             }
         }
+
+
+        #region [ Value ]
+
+        private readonly Dictionary<string, IConvertible> _values = new Dictionary<string, IConvertible>();
+
+        /// <summary>
+        /// Registres a value type by key
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public T WithValue<TValue>(string key, TValue data) where TValue : IConvertible
+        {
+            if (_values.ContainsKey(key))
+            {
+                throw new ArgumentException("An element with the same key already exists");
+            }
+            _values.Add(key, data);
+            return (T)this;
+        }
+
+        /// <summary>
+        /// Gets a registred value type by key
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRuleMissingValueException{TValue}"></exception>
+        protected TValue GetValue<TValue>(string key) where TValue : IConvertible
+        {
+            if (_values.ContainsKey(key))
+            {
+                return (TValue)Convert.ChangeType(_values[key], typeof(TValue));
+            }
+            throw new OltRuleMissingValueException<TValue>(this, key);
+        }
+
+        /// <summary>
+        /// Gets a registred value type by key.  If missing, returns default value
+        /// </summary>
+        /// <typeparam name="TValue"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        protected TValue GetValue<TValue>(string key, TValue defaultValue) where TValue : IConvertible
+        {
+            if (_values.ContainsKey(key))
+            {
+                return (TValue)Convert.ChangeType(_values[key], typeof(TValue));
+            }
+            return defaultValue;
+        }
+
+        #endregion
 
         /// <summary>
         /// Run Rule using new Transaction
