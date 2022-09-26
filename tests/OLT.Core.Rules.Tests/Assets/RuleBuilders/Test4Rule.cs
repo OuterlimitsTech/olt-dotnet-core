@@ -20,11 +20,18 @@ namespace OLT.Core.Rules.Tests.Assets.RuleBuilders
             Assert.Equal(intValue, ruleIntValue);
             Assert.Equal(strValue, ruleStrValue);
 
-            short expected = (short)Faker.RandomNumber.Next(short.MaxValue);
+            //Check passing in default for a existing value
+            short intDefault = (short)Faker.RandomNumber.Next();
+            ruleIntValue = GetValue<int>("intValue", intDefault);
+            Assert.Equal(intValue, ruleIntValue);
 
-            var nonValue = GetValue<short>("shortValue", expected);
-            Assert.Equal(expected, nonValue);
+            //Check passing in default for a non-existing value
+            short shortExpected = (short)Faker.RandomNumber.Next(short.MaxValue);
+            var nonValue = GetValue<short>("shortValue", shortExpected);
+            Assert.Equal(shortExpected, nonValue);
 
+
+            //Check mising value exception
             Assert.Throws<OltRuleMissingValueException<string>>(() => GetValue<string>("strValue1"));
 
             return Task.CompletedTask;
