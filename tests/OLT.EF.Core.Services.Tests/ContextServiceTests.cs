@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
+using OLT.EF.Core.Services.Tests.Assets;
 using OLT.EF.Core.Services.Tests.Assets.Entites;
 using OLT.EF.Core.Services.Tests.Assets.Models;
 using OLT.EF.Core.Services.Tests.Assets.Searchers;
@@ -138,6 +139,7 @@ namespace OLT.EF.Core.Services.Tests
         }
 
 
+
         [Fact]
         public async Task DbTransactionTestsAsync()
         {
@@ -159,9 +161,7 @@ namespace OLT.EF.Core.Services.Tests
                 {
                     Assert.True(true);
                 }
-                
             }
-
 
             using (var provider = BuildProvider())
             {
@@ -182,7 +182,60 @@ namespace OLT.EF.Core.Services.Tests
                 {
                     Assert.True(true);
                 }
+            }
+        }
 
+        [Fact]
+        public async Task DbTransactionNestedTestsAsync()
+        {
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IContextService>();
+                var context = provider.GetService<UnitTestContext>();
+                using var transaction = await context.Database.BeginTransactionAsync();
+                await service.DbTransactionAsync(false);
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IContextService>();
+                var context = provider.GetService<UnitTestContext>();
+                using var transaction = await context.Database.BeginTransactionAsync();
+                try
+                {
+                    await service.DbTransactionAsync(true);
+                    Assert.True(false);
+                }
+                catch
+                {
+                    Assert.True(true);
+                }
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IContextService>();
+                var context = provider.GetService<UnitTestContext>();
+                using var transaction = await context.Database.BeginTransactionAsync();
+                var dto = await service.DbTransactionAsync<UserDto>(false);
+                Assert.NotNull(dto);
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IContextService>();
+                var context = provider.GetService<UnitTestContext>();
+                using var transaction = await context.Database.BeginTransactionAsync();
+                try
+                {
+                    var dto = await service.DbTransactionAsync<UserDto>(true);
+                    Assert.True(false);
+                }
+                catch
+                {
+                    Assert.True(true);
+                }
             }
         }
 
