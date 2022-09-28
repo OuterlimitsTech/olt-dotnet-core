@@ -470,7 +470,43 @@ namespace OLT.EF.Core.Services.Tests
 
         }
 
+        [Fact]
+        public async Task Any()
+        {
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonUniqueIdService>();
+                var random = Guid.NewGuid();
+                var model = await service.AddAsync(PersonDto.FakerEntity());
+                Assert.True(await service.AnyAsync(model.UniqueId.Value));
+                Assert.True(await service.AnyAsync(p => p.UniqueId == model.UniqueId.Value));
 
+                Assert.False(await service.AnyAsync(random));
+                Assert.False(await service.AnyAsync(p => p.UniqueId == random));
+
+                model = service.Add(PersonDto.FakerEntity());
+                Assert.True(await service.AnyAsync(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
+                Assert.False(await service.AnyAsync(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
+
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonUniqueIdService>();
+                var random = Guid.NewGuid();
+                var model = service.Add(PersonDto.FakerEntity());
+                Assert.True(service.Any(model.UniqueId.Value));
+                Assert.True(service.Any(p => p.UniqueId == model.UniqueId.Value));
+
+                Assert.False(service.Any(random));
+                Assert.False(service.Any(p => p.UniqueId == random));
+
+                model = service.Add(PersonDto.FakerEntity());
+                Assert.True(service.Any(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
+                Assert.False(service.Any(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
+
+            }
+        }
 
     }
 }
