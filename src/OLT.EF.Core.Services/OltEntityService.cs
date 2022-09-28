@@ -190,6 +190,12 @@ namespace OLT.Core
 
         #region [ Build Result List ]
 
+        /// <summary>
+        /// Builds result from Adding a list of entities
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
         protected virtual List<TModel> BuildResultList<TModel>(List<TEntity> entities) where TModel : class, new()
         {
             var returnList = new List<TModel>();
@@ -362,7 +368,7 @@ namespace OLT.Core
             return Count(GetQueryable(searcher));
         }
 
-        public int Count(Expression<Func<TEntity, bool>> predicate)
+        public virtual int Count(Expression<Func<TEntity, bool>> predicate)
         {
             return Count(this.GetQueryable().Where(predicate));
         }
@@ -372,12 +378,36 @@ namespace OLT.Core
             return await CountAsync(GetQueryable(searcher));
         }
 
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await CountAsync(this.GetQueryable().Where(predicate));
         }
 
         #endregion
 
+        #region [ Any ]
+
+        public virtual bool Any(IOltSearcher<TEntity> searcher)
+        {
+            return Any(GetQueryable(searcher));
+        }
+
+        public virtual bool Any(Expression<Func<TEntity, bool>> predicate)
+        {
+            return Any(this.GetQueryable().Where(predicate));
+        }
+
+        public virtual async Task<bool> AnyAsync(IOltSearcher<TEntity> searcher)
+        {
+            return await AnyAsync(GetQueryable(searcher));
+        }
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await AnyAsync(this.GetQueryable().Where(predicate));
+        }
+
+        #endregion
+        
     }
 }

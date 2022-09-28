@@ -79,5 +79,10 @@ namespace OLT.Core
         int Count(Expression<Func<TEntity, bool>> predicate);
         Task<int> CountAsync(IOltSearcher<TEntity> searcher);
         Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
+
+        bool Any(IOltSearcher<TEntity> searcher);
+        bool Any(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> AnyAsync(IOltSearcher<TEntity> searcher);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

@@ -180,6 +180,22 @@ namespace OLT.Core
 
         #endregion
 
+        #region [ Any ]
+
+        protected virtual bool Any<TEntity>(IQueryable<TEntity> queryable)
+            where TEntity : class, IOltEntity
+        {
+            return queryable.Any();
+        }
+
+        protected virtual async Task<bool> AnyAsync<TEntity>(IQueryable<TEntity> queryable)
+            where TEntity : class, IOltEntity
+        {
+            return await queryable.AnyAsync();
+        }
+
+        #endregion
+
         #region [ Mapping ]
 
         protected virtual IOltPaged<TModel> MapPaged<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
@@ -259,6 +275,52 @@ namespace OLT.Core
             var model = new TModel();
             var entity = await queryable.FirstOrDefaultAsync();
             return ServiceManager.AdapterResolver.Map(entity, model);
+        }
+
+        #endregion
+
+        #region [ DB Transaction ]
+
+        protected virtual async Task<TResult> WithDbTransactionAsync<TResult>(Func<Task<TResult>> action)
+        {
+            if (Context.Database.CurrentTransaction == null)
+            {
+                using var transaction = await Context.Database.BeginTransactionAsync();
+                try
+                {
+                    return await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            else
+            {
+                return await OltContextTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
+            }
+        }
+
+        protected virtual async Task WithDbTransactionAsync(Func<Task> action)
+        {
+            if (Context.Database.CurrentTransaction == null)
+            {
+                using var transaction = await Context.Database.BeginTransactionAsync();
+                try
+                {
+                    await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            else
+            {
+                await OltContextTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
+            }
         }
 
         #endregion

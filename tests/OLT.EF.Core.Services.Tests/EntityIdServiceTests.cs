@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.EF.Core.Services.Tests.Assets.Entites;
@@ -491,6 +492,44 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault(), false)));
             }
 
+        }
+
+        [Fact]
+        public async Task Any()
+        {
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonService>();
+
+                var model = await service.AddAsync(PersonDto.FakerEntity());
+                Assert.True(await service.AnyAsync(model.PersonId.Value));
+                Assert.True(await service.AnyAsync(p => p.Id == model.PersonId.Value));
+
+                Assert.False(await service.AnyAsync(-1000));
+                Assert.False(await service.AnyAsync(p => p.Id == -1000));
+
+                model = service.Add(PersonDto.FakerEntity());
+                Assert.True(await service.AnyAsync(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
+                Assert.False(await service.AnyAsync(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonService>();
+
+                var model = service.Add(PersonDto.FakerEntity());
+                Assert.True(service.Any(model.PersonId.Value));
+                Assert.True(service.Any(p => p.Id == model.PersonId.Value));
+
+                Assert.False(service.Any(-1000));
+                Assert.False(service.Any(p => p.Id == -1000));
+
+                model = service.Add(PersonDto.FakerEntity());
+                Assert.True(service.Any(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
+                Assert.False(service.Any(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
+            }
+
+           
         }
     }
 }
