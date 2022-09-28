@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -33,6 +34,12 @@ namespace OLT.Core
 
         #region [ Build Result List ]
 
+        /// <summary>
+        /// Builds result from Adding a list of entities
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
         protected override List<TModel> BuildResultList<TModel>(List<TEntity> entities)
         {
             var returnList = new List<TModel>();
@@ -146,5 +153,18 @@ namespace OLT.Core
 
         #endregion
 
+        #region [ Any ]
+
+        public virtual bool Any(int id)
+        {
+            return Any(GetQueryable(id));
+        }
+
+        public virtual async Task<bool> AnyAsync(int id)
+        {
+            return await AnyAsync(GetQueryable(id));
+        }
+
+        #endregion
     }
 }

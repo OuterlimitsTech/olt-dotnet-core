@@ -24,5 +24,7 @@ namespace OLT.Core
         bool SoftDelete(int id);
         Task<bool> SoftDeleteAsync(int id);
 
+        bool Any(int id);
+        Task<bool> AnyAsync(int id);
     }
 }
