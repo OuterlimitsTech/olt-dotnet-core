@@ -298,7 +298,6 @@ namespace OLT.Core
             }
             else
             {
-
                 return await OltContextTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
             }
         }
@@ -320,7 +319,6 @@ namespace OLT.Core
             }
             else
             {
-
                 await OltContextTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
             }
         }
