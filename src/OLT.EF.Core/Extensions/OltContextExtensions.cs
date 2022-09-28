@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Query;
+
 
 // ReSharper disable once CheckNamespace
 namespace OLT.Core
 {
+
     public static class OltContextExtensions
     {
         
