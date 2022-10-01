@@ -18,8 +18,9 @@ namespace OLT.Core.Services.Tests
             var list = TestHelper.BuildTestList(expected);
             var queryable = list.AsQueryable();
 
-            Assert.True(new OltSearcherGetById<EntityPersonModel>(expected.Id).IncludeDeleted);
+            Assert.False(new OltSearcherGetById<EntityPersonModel>(expected.Id).IncludeDeleted);
             Assert.False(new OltSearcherGetById<EntityPersonModel>(expected.Id, false).IncludeDeleted);
+            Assert.True(new OltSearcherGetById<EntityPersonModel>(expected.Id, true).IncludeDeleted);
             Assert.Equal(expected.Id, new OltSearcherGetById<EntityPersonModel>(expected.Id).Id);
 
             var searcher = new OltSearcherGetById<EntityPersonModel>(expected.Id);
