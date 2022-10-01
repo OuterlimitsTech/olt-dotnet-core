@@ -49,6 +49,10 @@ namespace OLT.EF.Core.Services.Tests.Assets.Services
 
         bool Delete<TEntity>(int id) where TEntity : class, IOltEntityId;
         Task<bool> DeleteAsync<TEntity>(int id) where TEntity : class, IOltEntityId;
+
+
+        Task DbTransactionAsync(bool throwError);
+        Task<TModel> DbTransactionAsync<TModel>(bool throwError) where TModel : class, new();
     }
 
     public class ContextService : OltContextService<UnitTestContext>, IContextService
@@ -119,5 +123,32 @@ namespace OLT.EF.Core.Services.Tests.Assets.Services
             var entity = await GetQueryable(new OltSearcherGetById<TEntity>(id)).FirstOrDefaultAsync();
             return await MarkDeletedAsync(entity);
         }
+
+        public async Task DbTransactionAsync(bool throwError)
+        {
+            await WithDbTransactionAsync(() =>
+            {
+                if (throwError)
+                {
+                    throw new Exception("TestError");
+                }
+
+                return Task.CompletedTask;
+            });
+        }
+
+        public async Task<TModel> DbTransactionAsync<TModel>(bool throwError) where TModel : class, new()
+        {
+            return await WithDbTransactionAsync<TModel>(() =>
+            {
+                if (throwError)
+                {
+                    throw new Exception("TestError");
+                }
+
+                return Task.FromResult(new TModel());
+            });
+        }
+        
     }
 }

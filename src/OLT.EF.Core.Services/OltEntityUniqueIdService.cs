@@ -34,6 +34,12 @@ namespace OLT.Core
 
         #region [ Build Result List ]
 
+        /// <summary>
+        /// Builds result from Adding a list of entities
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="entities"></param>
+        /// <returns></returns>
         protected override List<TModel> BuildResultList<TModel>(List<TEntity> entities)
         {
             var returnList = new List<TModel>();
@@ -147,5 +153,18 @@ namespace OLT.Core
 
         #endregion
 
+        #region [ Any ]
+
+        public virtual bool Any(Guid uid)
+        {
+            return Any(GetQueryable(uid));
+        }
+
+        public virtual async Task<bool> AnyAsync(Guid uid)
+        {
+            return await AnyAsync(GetQueryable(uid));
+        }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
