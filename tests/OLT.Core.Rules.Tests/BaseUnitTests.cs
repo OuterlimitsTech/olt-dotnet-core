@@ -10,22 +10,22 @@ namespace OLT.Core.Rules.Tests
     public abstract class BaseUnitTests
     {
 
+        //protected ServiceProvider BuildProvider()
+        //{
+        //    var services = new ServiceCollection();
+        //    //services.AddScoped<IOltRule, TestRuleFailure>();
+        //    //services.AddScoped<IOltRule, TestRuleBadRequest>();
+        //    //services.AddScoped<IOltRule, TestRuleInValid>();
+        //    //services.AddScoped<IOltRule, TestRule>();            
+        //    //services.AddScoped<IOltRule, TestRuleValid>();
+        //    //services.AddScoped<IOltRule, TestRuleMulipleInterface>();
+        //    //services.AddScoped<IOltRuleManager, OltRuleManager>();
+
+        //    return services.BuildServiceProvider();
+        //}
+
+
         protected ServiceProvider BuildProvider()
-        {
-            var services = new ServiceCollection();
-            //services.AddScoped<IOltRule, TestRuleFailure>();
-            //services.AddScoped<IOltRule, TestRuleBadRequest>();
-            //services.AddScoped<IOltRule, TestRuleInValid>();
-            //services.AddScoped<IOltRule, TestRule>();            
-            //services.AddScoped<IOltRule, TestRuleValid>();
-            //services.AddScoped<IOltRule, TestRuleMulipleInterface>();
-            //services.AddScoped<IOltRuleManager, OltRuleManager>();
-
-            return services.BuildServiceProvider();
-        }
-
-
-        protected ServiceProvider BuildProvider2()
         {
             var services = new ServiceCollection();
 
@@ -41,12 +41,14 @@ namespace OLT.Core.Rules.Tests
 
             //    });
 
-            services.AddScoped<IOltServiceManager, TestRuleServiceManager>();
+            
+            services.AddScoped<IOltServiceManager, TestCoreServiceManager>();
             services.AddScoped<IOltRuleServiceManager, OltRuleServiceManager>();
             services.AddScoped<ITestRuleService, TestRuleService>();
             services.AddScoped<ITestRuleContext, TestRuleContext>();
+            services.AddScoped<IOltRuleContext>(services => services.GetRequiredService<ITestRuleContext>());
+            services.AddScoped<IOltRuleServiceManager, OltRuleServiceManager>();
 
-            
             return services.BuildServiceProvider();
         }
 

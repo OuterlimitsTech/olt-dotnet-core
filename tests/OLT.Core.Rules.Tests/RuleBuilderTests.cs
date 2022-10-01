@@ -18,7 +18,7 @@ namespace OLT.Core.Rules.Tests
         [Fact]
         public async Task GeneralTests()
         {
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var rule = new Test1Rule();
                 rule.WithService(provider.GetService<ITestRuleService>());
@@ -27,7 +27,7 @@ namespace OLT.Core.Rules.Tests
             }
 
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var rule = new Test1Rule();
                 using (var tran = new MockTran())
@@ -37,7 +37,7 @@ namespace OLT.Core.Rules.Tests
             }
 
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var rule = new Test1Rule();
                 rule.WithService(provider.GetService<ITestRuleService>());
@@ -49,7 +49,7 @@ namespace OLT.Core.Rules.Tests
             }
 
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var rule = new Test2Rule();                
                 using (var tran = new MockTran())
@@ -59,7 +59,7 @@ namespace OLT.Core.Rules.Tests
                 }
             }
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var rule = new Test4Rule();
                 rule.WithValue("intValue", rule.intValue)
@@ -78,7 +78,7 @@ namespace OLT.Core.Rules.Tests
         public async Task DependentRuleTests()
         {
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var service = provider.GetService<ITestRuleService>();
                 var param = new TestParameter();
