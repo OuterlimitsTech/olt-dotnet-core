@@ -106,6 +106,11 @@ namespace OLT.Core
         public virtual async Task ExecuteAsync<TContext>(TContext context)
             where TContext : DbContext, IOltDbContext
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             using (var transaction = await context.Database.BeginTransactionAsync())
             {
                 try

@@ -25,7 +25,7 @@ namespace OLT.Core.Rules.Tests
         //}
 
 
-        protected ServiceProvider BuildProvider()
+        protected ServiceProvider BuildProvider(bool withDbContext = false)
         {
             var services = new ServiceCollection();
 
@@ -48,6 +48,17 @@ namespace OLT.Core.Rules.Tests
             services.AddScoped<ITestRuleContext, TestRuleContext>();
             services.AddScoped<IOltRuleContext>(services => services.GetRequiredService<ITestRuleContext>());
             services.AddScoped<IOltRuleServiceManager, OltRuleServiceManager>();
+
+            if (withDbContext)
+            {
+                services.AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
+                {
+                    optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}", opt => opt.EnableNullChecks());
+                    optionsBuilder.EnableSensitiveDataLogging();
+                    optionsBuilder.EnableDetailedErrors();
+
+                });
+            }
 
             return services.BuildServiceProvider();
         }
