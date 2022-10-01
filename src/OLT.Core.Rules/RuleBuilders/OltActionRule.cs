@@ -110,7 +110,7 @@ namespace OLT.Core
             {
                 throw new ArgumentNullException(nameof(context));
             }
-            return await ExecuteInternalAsync(context);
+            await ExecuteInternalAsync(context);
         }
 
         private async Task ExecuteInternalAsync<TContext>(TContext context)
