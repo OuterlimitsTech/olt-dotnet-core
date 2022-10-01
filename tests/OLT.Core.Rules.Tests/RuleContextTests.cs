@@ -40,7 +40,7 @@ namespace OLT.Core.Rules.Tests
                 Assert.NotNull(ruleContext as TestRuleContext);
                 Assert.NotNull(ruleContext.ServiceManager.GetService<ITestRuleService>());
                 Assert.NotNull(ruleContext as ITestRuleContext);
-                Assert.Throws<InvalidOperationException>(() => ruleContext.ServiceManager.GetService<ITestRuleBogusService>());
+                Assert.Throws<InvalidOperationException>(() => ruleContext.ServiceManager.GetService<ITestRuleBogusService>());                
             }
 
 

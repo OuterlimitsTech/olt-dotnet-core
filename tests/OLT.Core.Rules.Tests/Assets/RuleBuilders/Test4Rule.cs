@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -36,5 +37,17 @@ namespace OLT.Core.Rules.Tests.Assets.RuleBuilders
 
             return Task.CompletedTask;
         }
+
+
+        public TValue GetValueTest<TValue>(string key) where TValue : IConvertible
+        {
+            return GetValue<TValue>(key);
+        }
+
+        public TValue GetValueTest<TValue>(string key, TValue defaultValue) where TValue : IConvertible
+        {
+            return GetValue<TValue>(key, defaultValue);
+        }
+
     }
 }
