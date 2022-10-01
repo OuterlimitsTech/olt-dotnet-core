@@ -20,7 +20,7 @@ namespace OLT.Core
 
         #region [ Get Queryable ]
 
-        protected virtual IQueryable<TEntity> GetQueryable(int id) => GetQueryable(new OltSearcherGetById<TEntity>(id));
+        protected virtual IQueryable<TEntity> GetQueryable(int id, bool includeDeleted = true) => InitializeQueryable(includeDeleted).Where(p => p.Id == id);
 
         #endregion
 
