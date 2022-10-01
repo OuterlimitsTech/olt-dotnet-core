@@ -110,7 +110,12 @@ namespace OLT.Core
             {
                 throw new ArgumentNullException(nameof(context));
             }
+            return await ExecuteInternalAsync(context);
+        }
 
+        private async Task ExecuteInternalAsync<TContext>(TContext context)
+            where TContext : DbContext, IOltDbContext
+        {
             using (var transaction = await context.Database.BeginTransactionAsync())
             {
                 try
