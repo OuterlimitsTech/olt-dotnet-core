@@ -5,9 +5,9 @@ namespace OLT.Core
     public interface IOltEntityIdService<TEntity> : IOltEntityService<TEntity>
         where TEntity : class, IOltEntityId, IOltEntity
     {
-        TModel Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+        TModel Get<TModel>(int id) where TModel : class, new();
 
-        Task<TModel> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+        Task<TModel> GetAsync<TModel>(int id) where TModel : class, new();
 
         TModel Update<TModel>(int id, TModel model) where TModel : class, new();
 
