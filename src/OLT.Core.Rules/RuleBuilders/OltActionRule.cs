@@ -38,8 +38,79 @@ namespace OLT.Core
             {
                 await value.Rule.ExecuteAsync(dbTransaction);
             }
+        }        
+
+        private async Task ExecuteInternalAsync<TContext>(TContext context)
+            where TContext : DbContext, IOltDbContext
+        {
+            using (var transaction = await context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    await ExecuteAsync(transaction);
+                    await transaction.CommitAsync();
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
         }
 
+        /// <summary>
+        /// Run Rule using new Transaction
+        /// </summary>
+        /// <typeparam name="TContext"></typeparam>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public virtual Task ExecuteAsync<TContext>(TContext context)
+            where TContext : DbContext, IOltDbContext
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+            return ExecuteInternalAsync(context);
+        }
+
+        /// <summary>
+        /// Run Rule with DB Transaction Savepoint
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="AggregateException"></exception>
+        /// <exception cref="OltRuleException"></exception>        
+        /// <exception cref="OltRuleCanRunException"></exception>
+        public virtual async Task ExecuteAsync(IDbContextTransaction dbTransaction)
+        {
+            HasTransaction = dbTransaction != null;
+
+            var errors = await CanExecuteAsync();
+            if (errors.Any())
+            {
+                throw new AggregateException(errors);
+            }
+
+            try
+            {
+
+                await dbTransaction.CreateSavepointAsync(this.SavePointName);
+
+                await RunDependentRulesAsync(OltDependentRuleRunTypes.RunBefore, dbTransaction);
+                await RunRuleAsync();
+                await RunDependentRulesAsync(OltDependentRuleRunTypes.RunAfter, dbTransaction);
+
+                await dbTransaction.ReleaseSavepointAsync(this.SavePointName);
+
+            }
+            catch (Exception)
+            {
+                await dbTransaction.RollbackToSavepointAsync(this.SavePointName);
+                throw;
+            }
+        }
+
+        #endregion
 
         #region [ Value ]
 
@@ -94,79 +165,6 @@ namespace OLT.Core
             }
             return defaultValue;
         }
-
-        #endregion
-
-        /// <summary>
-        /// Run Rule using new Transaction
-        /// </summary>
-        /// <typeparam name="TContext"></typeparam>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public virtual async Task ExecuteAsync<TContext>(TContext context)
-            where TContext : DbContext, IOltDbContext
-        {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-            await ExecuteInternalAsync(context);
-        }
-
-        private async Task ExecuteInternalAsync<TContext>(TContext context)
-            where TContext : DbContext, IOltDbContext
-        {
-            using (var transaction = await context.Database.BeginTransactionAsync())
-            {
-                try
-                {
-                    await ExecuteAsync(transaction);
-                    await transaction.CommitAsync();
-                }
-                catch (Exception)
-                {
-                    await transaction.RollbackAsync();
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Run Rule with DB Transaction Savepoint
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="AggregateException"></exception>
-        /// <exception cref="OltRuleException"></exception>        
-        /// <exception cref="OltRuleCanRunException"></exception>
-        public virtual async Task ExecuteAsync(IDbContextTransaction dbTransaction)
-        {
-            HasTransaction = dbTransaction != null;
-
-            var errors = await CanExecuteAsync();
-            if (errors.Any())
-            {
-                throw new AggregateException(errors);
-            }
-
-            try
-            {
-
-                await dbTransaction.CreateSavepointAsync(this.SavePointName);
-
-                await RunDependentRulesAsync(OltDependentRuleRunTypes.RunBefore, dbTransaction);
-                await RunRuleAsync();
-                await RunDependentRulesAsync(OltDependentRuleRunTypes.RunAfter, dbTransaction);
-
-                await dbTransaction.ReleaseSavepointAsync(this.SavePointName);
-
-            }
-            catch (Exception)
-            {
-                await dbTransaction.RollbackToSavepointAsync(this.SavePointName);
-                throw;
-            }
-        }
-
 
         #endregion
 
