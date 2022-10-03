@@ -20,15 +20,15 @@ namespace OLT.Core
 
         #region [ Get Queryable ]
 
-        protected virtual IQueryable<TEntity> GetQueryable(int id) => GetQueryable(new OltSearcherGetById<TEntity>(id));
+        protected virtual IQueryable<TEntity> GetQueryable(int id, bool includeDeleted = false) => InitializeQueryable(includeDeleted).Where(p => p.Id == id);
 
         #endregion
 
         #region [ Get ]
         
-        public virtual TModel Get<TModel>(int id) where TModel : class, new() => Get<TModel>(GetQueryable(id));
+        public virtual TModel Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted));
 
-        public virtual async Task<TModel> GetAsync<TModel>(int id) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id));
+        public virtual async Task<TModel> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted));
 
         #endregion
 
@@ -157,12 +157,12 @@ namespace OLT.Core
 
         public virtual bool Any(int id)
         {
-            return Any(GetQueryable(id));
+            return Any(GetQueryable(id, true));
         }
 
         public virtual async Task<bool> AnyAsync(int id)
         {
-            return await AnyAsync(GetQueryable(id));
+            return await AnyAsync(GetQueryable(id, true));
         }
 
         #endregion
