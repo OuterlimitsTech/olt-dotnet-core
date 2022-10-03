@@ -31,6 +31,7 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
             var value = (short)Faker.RandomNumber.Next(short.MaxValue);
             var attr = new SortOrderAttribute(value);
             Assert.Equal(value, attr.SortOrder);
+            Assert.Equal(OltCommonDefaults.SortOrder, new SortOrderAttribute().SortOrder);
         }
 
         [Theory]

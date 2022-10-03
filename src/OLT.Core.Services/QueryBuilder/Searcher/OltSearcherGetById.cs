@@ -6,7 +6,7 @@ namespace OLT.Core
         where TEntity : class, IOltEntityId
     {
 
-        public OltSearcherGetById(int id, bool includeDeleted = true)
+        public OltSearcherGetById(int id, bool includeDeleted = false)
         {
             Id = id;
             IncludeDeleted = includeDeleted;
