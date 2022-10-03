@@ -176,8 +176,14 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.True(await service.SoftDeleteAsync(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
                 Assert.False(await service.SoftDeleteAsync(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
 
-                Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
+                Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value, true)));
+                Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
                 Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value, false)));
+
+                //Without Searcher
+                Assert.NotNull(await service.GetAsync<PersonDto>(model.PersonId.Value, true));
+                Assert.Null(await service.GetAsync<PersonDto>(model.PersonId.Value));
+                Assert.Null(await service.GetAsync<PersonDto>(model.PersonId.Value, false));
             }
 
             using (var provider = BuildProvider())
@@ -191,8 +197,14 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.True(service.SoftDelete(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
                 Assert.False(service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
 
-                Assert.NotNull(service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
+                Assert.NotNull(service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value, true)));
+                Assert.Null(service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value)));
                 Assert.Null(service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.Value, false)));
+
+                //Without Searcher
+                Assert.NotNull(service.Get<PersonDto>(model.PersonId.Value, true));
+                Assert.Null(service.Get<PersonDto>(model.PersonId.Value));
+                Assert.Null(service.Get<PersonDto>(model.PersonId.Value, false));
             }
         }
 
@@ -361,8 +373,11 @@ namespace OLT.EF.Core.Services.Tests
 
                 var newDto = await service.AddAsync(PersonAutoMapperModel.FakerEntity());
                 await service.SoftDeleteAsync(newDto.PersonId.GetValueOrDefault());
-                var result = await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault()));
+                var result = await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault(), true));
                 Assert.Equal(newDto.PersonId, result?.PersonId);
+
+                var nullResult = await service.GetAsync<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault(), false));
+                Assert.Null(nullResult);
             }
 
             
@@ -373,7 +388,7 @@ namespace OLT.EF.Core.Services.Tests
                 var newDto = service.Add(PersonAutoMapperModel.FakerEntity());
                 service.SoftDelete(newDto.PersonId.GetValueOrDefault());
                 var result = service.Get<PersonDto>(new OltSearcherGetById<PersonEntity>(newDto.PersonId.GetValueOrDefault()));
-                Assert.Equal(newDto.PersonId, result?.PersonId);
+                Assert.Null(result);
             }
 
 

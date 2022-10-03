@@ -20,7 +20,7 @@ namespace OLT.Core
 
         #region [ Get Queryable ]
 
-        protected virtual IQueryable<TEntity> GetQueryable(int id, bool includeDeleted = false) => InitializeQueryable(true).Where(p => p.Id == id);
+        protected virtual IQueryable<TEntity> GetQueryable(int id, bool includeDeleted = false) => InitializeQueryable(includeDeleted).Where(p => p.Id == id);
 
         #endregion
 
