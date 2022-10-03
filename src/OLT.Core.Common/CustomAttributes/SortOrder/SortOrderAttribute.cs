@@ -9,11 +9,17 @@ namespace OLT.Core
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class SortOrderAttribute : Attribute
     {
-        public short SortOrder { get; set; } = OltCommonDefaults.SortOrder;
+        public SortOrderAttribute()
+        {
+            SortOrder = OltCommonDefaults.SortOrder;
+        }
 
         public SortOrderAttribute(short sortOrder)
         {
             this.SortOrder = sortOrder;
         }
+
+        public short SortOrder { get; set; }
+
     }
 }
