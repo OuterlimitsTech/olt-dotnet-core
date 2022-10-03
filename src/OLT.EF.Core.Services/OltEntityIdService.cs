@@ -95,43 +95,58 @@ namespace OLT.Core
 
         #region [ Update ]
 
-        
-        public virtual TModel Update<TModel>(int id, TModel model)
-            where TModel : class, new()
+        protected virtual void UpdateInternal<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
         {
-            var entity = GetQueryable(id).FirstOrDefault();
+            var queryable = GetQueryable(id);
+            if (include != null)
+            {
+                queryable = include(queryable);
+            }
+            var entity = queryable.FirstOrDefault();
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
+        }
+
+        public virtual TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+            where TModel : class, new()
+        {
+            UpdateInternal(id, model, include);
             return Get<TModel>(id);
         }
 
 
-        public virtual TResponseModel Update<TResponseModel, TModel>(int id, TModel model)
+        public virtual TResponseModel Update<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
-            var entity = GetQueryable(id).FirstOrDefault();
-            ServiceManager.AdapterResolver.Map(model, entity);
-            SaveChanges();
+            UpdateInternal(id, model, include);
             return Get<TResponseModel>(id);
         }
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model)
-            where TModel : class, new()
+        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
         {
-            var entity = await GetQueryable(id).FirstOrDefaultAsync();
+            var queryable = GetQueryable(id);
+            if (include != null)
+            {
+                queryable = include(queryable);
+            }
+            var entity = await queryable.FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
             await SaveChangesAsync();
+        }
+
+        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+            where TModel : class, new()
+        {
+            await UpdateInternalAsync(id, model, include);
             return await GetAsync<TModel>(id);
         }
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model)
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
-            var entity = await GetQueryable(id).FirstOrDefaultAsync();
-            ServiceManager.AdapterResolver.Map(model, entity);
-            await SaveChangesAsync();
+            await UpdateInternalAsync(id, model, include);
             return await GetAsync<TResponseModel>(id);
         }
 

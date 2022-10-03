@@ -61,13 +61,13 @@ namespace OLT.Core
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
-        TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new();
-        TResponseModel Update<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
+        TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new();
+        TResponseModel Update<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
-        Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new();
-        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
+        Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new();
+        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 

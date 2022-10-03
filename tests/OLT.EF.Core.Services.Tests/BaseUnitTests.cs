@@ -41,7 +41,8 @@ namespace OLT.EF.Core.Services.Tests
                 .AddScoped<IUserService, UserService>() 
                 .AddSingleton<IOltAdapter, UserModelAdapter>()
                 .AddSingleton<IOltAdapter, UserDtoAdapter>()
-                .AddSingleton<IOltAdapter, PersonDtoAdapter>()                
+                .AddSingleton<IOltAdapter, PersonDtoAdapter>()
+                .AddSingleton<IOltAdapter, PersonWithAddressDtoAdapter>()
                 .AddScoped<IOltDbAuditUser, DbAuditUserService>();
 
 
