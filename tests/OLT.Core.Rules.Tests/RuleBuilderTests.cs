@@ -1,55 +1,31 @@
 ﻿using FluentAssertions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
 using OLT.Core.Rules.Tests.Assets.Context;
 using OLT.Core.Rules.Tests.Assets.RuleBuilders;
 using System;
+using System.Data;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.Core.Rules.Tests
 {
-   
+
     public class RuleBuilderTests : BaseUnitTests
     {
         [Fact]
         public async Task GeneralTests()
         {
-            using (var provider = BuildProvider2())
+            
+
+
+            using (var provider = BuildProvider())
             {
-                var rule = new Test1Rule();
-                rule.WithService(provider.GetService<ITestRuleService>());
-                var error = await Assert.ThrowsAsync<AggregateException>(() => rule.ExecuteAsync(null));
-                Assert.IsType<OltRuleMissingTransactionException>(error.InnerException);
-            }
-
-
-            using (var provider = BuildProvider2())
-            {
-                var rule = new Test1Rule();
-                using (var tran = new MockTran())
-                {
-                    await Assert.ThrowsAsync<OltRuleMissingServiceException<ITestRuleService>>(() => rule.ExecuteAsync(tran));
-                }
-            }
-
-
-            using (var provider = BuildProvider2())
-            {
-                var rule = new Test1Rule();
-                rule.WithService(provider.GetService<ITestRuleService>());
-                using (var tran = new MockTran())
-                {
-                    Func<Task> func = () => rule.ExecuteAsync(tran);
-                    await func.Should().NotThrowAsync<OltRuleException>();
-                }
-            }
-
-
-            using (var provider = BuildProvider2())
-            {
-                var rule = new Test2Rule();                
+                var rule = new Test2Rule();
                 using (var tran = new MockTran())
                 {
                     Func<Task> func = () => rule.ExecuteAsync(tran);
@@ -57,16 +33,7 @@ namespace OLT.Core.Rules.Tests
                 }
             }
 
-            using (var provider = BuildProvider2())
-            {
-                var rule = new Test2Rule();
-                rule.WithParameter(new TestParameter());
-                using (var tran = new MockTran())
-                {
-                    Func<Task> func = () => rule.ExecuteAsync(tran);
-                    await func.Should().NotThrowAsync<OltRuleException>();
-                }
-            }
+
         }
 
 
@@ -74,7 +41,7 @@ namespace OLT.Core.Rules.Tests
         public async Task DependentRuleTests()
         {
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var service = provider.GetService<ITestRuleService>();
                 var param = new TestParameter();
@@ -84,7 +51,7 @@ namespace OLT.Core.Rules.Tests
                                             .WithParameter(param)
                                             .WithService(service), OltDependentRuleRunTypes.RunAfter)
                     .WithService(service);
-                
+
                 using (var tran = new MockTran())
                 {
                     Func<Task> func = () => rule1.ExecuteAsync(tran);

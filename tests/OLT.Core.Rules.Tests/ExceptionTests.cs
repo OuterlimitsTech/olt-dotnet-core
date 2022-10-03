@@ -46,7 +46,7 @@ namespace OLT.Core.Rules.Tests
             Assert.Equal($"{rule1.RuleName} requires {typeof(TestParameter).FullName}", ex.Message);
 
 
-            using (var provider = BuildProvider2())
+            using (var provider = BuildProvider())
             {
                 var rule3 = new Test3Rule().WithService(provider.GetService<ITestRuleService>());
                 using (var tran = new MockTran())
@@ -56,9 +56,7 @@ namespace OLT.Core.Rules.Tests
                     rule3.ThrowError = false;
                     await func.Should().NotThrowAsync<OltRuleMissingParameterException<TestParameter>>();
                 }
-            }
-
-            
+            }           
 
         }
     }

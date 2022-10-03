@@ -6,17 +6,8 @@ using System.Threading.Tasks;
 
 namespace OLT.Core.Rules.Tests.Assets.RuleBuilders
 {
-    public class TestRuleServiceManager : OltDisposable, IOltServiceManager
-    {
-        
-    }
 
-    public interface ITestRuleService : IOltCoreService
-    {
-        bool TestMethod();
-    }
-
-    public class TestRuleService : OltCoreService<TestRuleServiceManager>, ITestRuleService
+    public class TestRuleService : OltCoreService<TestCoreServiceManager>, ITestRuleService
     {
         public TestRuleService(IOltServiceManager serviceManager) : base(serviceManager)
         {
