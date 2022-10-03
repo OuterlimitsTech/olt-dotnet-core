@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace OLT.Core
 {
@@ -307,7 +308,7 @@ namespace OLT.Core
         #region [ Update ]
         
 
-        public virtual TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new()
+        public virtual TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new()
         {
             var entity = GetQueryable(searcher).FirstOrDefault();
             ServiceManager.AdapterResolver.Map(model, entity);
@@ -315,7 +316,7 @@ namespace OLT.Core
             return Get<TModel>(searcher);
         }
 
-        public virtual TResponseModel Update<TResponseModel, TModel>(IOltSearcher<TEntity> searcher, TModel model)
+        public virtual TResponseModel Update<TResponseModel, TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
@@ -325,7 +326,7 @@ namespace OLT.Core
             return Get<TResponseModel>(searcher);
         }
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new()
+        public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new()
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
@@ -333,7 +334,7 @@ namespace OLT.Core
             return await GetAsync<TModel>(searcher);
         }
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
             where TSaveModel : class, new()
             where TResponseModel : class, new()
         {

@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
 using FluentAssertions.Execution;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
+using OLT.EF.Core.Services.Tests.Assets;
 using OLT.EF.Core.Services.Tests.Assets.Entites;
 using OLT.EF.Core.Services.Tests.Assets.Models;
 using OLT.EF.Core.Services.Tests.Assets.Services;
@@ -132,7 +134,7 @@ namespace OLT.EF.Core.Services.Tests
                 model.First = Faker.Name.First();
                 updated = service.Update<PersonAutoMapperModel, PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
                 Assert.Equal(model.First, updated.Name.First);
-
+                
             }
 
             using (var provider = BuildProvider())
@@ -159,6 +161,57 @@ namespace OLT.EF.Core.Services.Tests
                 model.First = Faker.Name.First();
                 updated = await service.UpdateAsync<PersonAutoMapperModel, PersonDto>(new OltSearcherGetById<PersonEntity>(model.PersonId.GetValueOrDefault()), model);
                 Assert.Equal(model.First, updated.Name.First);
+            }
+        }
+
+        [Fact]
+        public async Task AddUpdateWithChildEntity()
+        {
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonService>();
+
+                var addModel = PersonWithAddressDto.FakerDto(4);                
+                var model = service.Add(addModel);
+
+                Assert.Equal(4, model.Addresses.Count);
+
+                var address = model.Addresses.First();
+                model.First = Faker.Name.First();
+                model.Addresses[1].Street = "1234 Oak";
+
+
+                var updated = service.Update<PersonWithAddressDto>(model.PersonId.GetValueOrDefault(), model, queryable => queryable.Include(i => i.Addresses));
+
+                Assert.Equal(4, updated.Addresses.Count);
+                Assert.Equal(model.Addresses[1].Street, updated.Addresses[1].Street);
+
+
+                //NOTE:  The inmemory provider always does the include UGH!
+                //model = service.Get<PersonWithAddressDto>(model.PersonId.Value);
+                //updated = service.Update<PersonWithAddressDto>(model.PersonId.GetValueOrDefault(), model);  //Without the include, it will automatically re-add all addresses
+                //Assert.Equal(8, updated.Addresses.Count);
+
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetService<IPersonService>();
+
+                var addModel = PersonWithAddressDto.FakerDto(4);
+                var model = await service.AddAsync(addModel);
+
+                Assert.Equal(4, model.Addresses.Count);
+
+                var address = model.Addresses.First();
+                model.First = Faker.Name.First();
+                model.Addresses[1].Street = "1234 Oak";
+
+
+                var updated = await service.UpdateAsync<PersonWithAddressDto>(model.PersonId.GetValueOrDefault(), model, queryable => queryable.Include(i => i.Addresses));
+
+                Assert.Equal(4, updated.Addresses.Count);
+                Assert.Equal(model.Addresses[1].Street, updated.Addresses[1].Street);
             }
         }
 
