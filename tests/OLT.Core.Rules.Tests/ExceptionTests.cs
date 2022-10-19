@@ -13,12 +13,19 @@ namespace OLT.Core.Rules.Tests
     {
 
         [Fact]
-        public void MissingTransactionExceptionTest()
+        public async Task MissingTransactionExceptionTest()
         {
             var rule1 = new Test1Rule();
             var ex = new OltRuleMissingTransactionException(rule1);
             var expectedMsg = $"{rule1.RuleName} requires {nameof(IDbContextTransaction)}";
-            Assert.Equal(expectedMsg, ex.Message);        }
+            Assert.Equal(expectedMsg, ex.Message);
+
+            Func<Task> func = () => rule1.ExecuteAsync(null);
+            (await func.Should().ThrowAsync<AggregateException>()).WithInnerException<OltRuleMissingTransactionException>();            
+        }
+
+       
+
 
         [Fact]
         public async Task MissingServiceExceptionTest()

@@ -16,7 +16,6 @@ namespace OLT.Core
         protected Dictionary<string, OltDependentRule> DependentRules = new Dictionary<string, OltDependentRule>();
         
 
-        protected virtual bool HasTransaction { get; set; }
         protected abstract Task RunRuleAsync();
 
         #region [ Execute ]
@@ -24,10 +23,6 @@ namespace OLT.Core
         public virtual Task<List<OltRuleCanRunException>> CanExecuteAsync()
         {
             var list = new List<OltRuleCanRunException>();
-            if (!HasTransaction)
-            {
-                list.Add(new OltRuleMissingTransactionException(this));
-            }
             return Task.FromResult(list);
         }
 
@@ -83,9 +78,12 @@ namespace OLT.Core
         /// <exception cref="OltRuleCanRunException"></exception>
         public virtual async Task ExecuteAsync(IDbContextTransaction dbTransaction)
         {
-            HasTransaction = dbTransaction != null;
 
             var errors = await CanExecuteAsync();
+            if (dbTransaction == null)
+            {
+                errors.Add(new OltRuleMissingTransactionException(this));
+            }
             if (errors.Any())
             {
                 throw new AggregateException(errors);
