@@ -16,7 +16,6 @@ namespace OLT.Core
         protected Dictionary<string, OltDependentRule> DependentRules = new Dictionary<string, OltDependentRule>();
         
 
-        //protected virtual bool HasTransaction { get; set; }
         protected abstract Task RunRuleAsync();
 
         #region [ Execute ]
