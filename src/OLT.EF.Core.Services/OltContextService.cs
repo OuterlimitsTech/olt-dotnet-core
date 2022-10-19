@@ -288,7 +288,9 @@ namespace OLT.Core
                 using var transaction = await Context.Database.BeginTransactionAsync();
                 try
                 {
-                    return await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                    var result = await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                    await transaction.CommitAsync();
+                    return result;
                 }
                 catch (Exception)
                 {
@@ -310,6 +312,7 @@ namespace OLT.Core
                 try
                 {
                     await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                    await transaction.CommitAsync();
                 }
                 catch (Exception)
                 {
