@@ -1,19 +1,9 @@
 <Project>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <SonarQubeExclude>true</SonarQubeExclude>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-
-  <!-- <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="6.0.3" />
-    <PackageReference Include="Serilog.Sinks.InMemory" Version="0.6.0" />
-    <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-  </ItemGroup> -->
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OLT.AspNetCore.Serilog\OLT.AspNetCore.Serilog.csproj" />
