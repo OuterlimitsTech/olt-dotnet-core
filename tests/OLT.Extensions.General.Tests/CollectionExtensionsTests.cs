@@ -5,6 +5,7 @@ using Xunit;
 
 namespace OLT.Extensions.General.Tests
 {
+
     public class CollectionExtensionsTests
     {
 
