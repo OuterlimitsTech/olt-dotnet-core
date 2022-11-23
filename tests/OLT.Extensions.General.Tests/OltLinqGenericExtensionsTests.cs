@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Options;
 using OLT.Extensions.General.Tests.Assets.Interface;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,17 @@ namespace OLT.Extensions.General.Tests
             found2.Should().NotContain(inBothList);
 
             found1.Should().Contain(found2);
+
+
+            Func<TestItem, TestItem, bool> nullFuncComparer = null;
+            Assert.Throws<ArgumentNullException>("first", () => OltLinqGenericExtensions.Except(null, list2, (p, q) => p.Uid == q.Uid));
+            Assert.Throws<ArgumentNullException>("second", () => OltLinqGenericExtensions.Except(list1, null, (p, q) => p.Uid == q.Uid));
+            Assert.Throws<ArgumentNullException>("comparer", () => OltLinqGenericExtensions.Except(list1, list2, nullFuncComparer));
+
+            OltLambdaComparer<TestItem> nullLambdaComparer = null;
+            Assert.Throws<ArgumentNullException>("first", () => OltLinqGenericExtensions.Except(null, list2, new OltLambdaComparer<TestItem>((p, q) => p.Uid == q.Uid)));
+            Assert.Throws<ArgumentNullException>("second", () => OltLinqGenericExtensions.Except(list1, null, new OltLambdaComparer<TestItem>((p, q) => p.Uid == q.Uid)));
+            Assert.Throws<ArgumentNullException>("comparer", () => OltLinqGenericExtensions.Except(list1, list2, nullLambdaComparer));
         }
 
         [Fact]
@@ -82,8 +94,18 @@ namespace OLT.Extensions.General.Tests
 
             found2.Should().HaveCount(inBothList.Count());
             found2.Should().Contain(inBothList);
-
             found1.Should().Contain(found2);
+
+            Func<TestItem, TestItem, bool> nullFuncComparer = null;
+            Assert.Throws<ArgumentNullException>("first", () => OltLinqGenericExtensions.Intersect(null, list2, (p, q) => p.Uid == q.Uid));
+            Assert.Throws<ArgumentNullException>("second", () => OltLinqGenericExtensions.Intersect(list1, null, (p, q) => p.Uid == q.Uid));
+            Assert.Throws<ArgumentNullException>("comparer", () => OltLinqGenericExtensions.Intersect(list1, list2, nullFuncComparer));
+
+            OltLambdaComparer<TestItem> nullLambdaComparer = null;
+            Assert.Throws<ArgumentNullException>("first", () => OltLinqGenericExtensions.Intersect(null, list2, new OltLambdaComparer<TestItem>((p, q) => p.Uid == q.Uid)));
+            Assert.Throws<ArgumentNullException>("second", () => OltLinqGenericExtensions.Intersect(list1, null, new OltLambdaComparer<TestItem>((p, q) => p.Uid == q.Uid)));
+            Assert.Throws<ArgumentNullException>("comparer", () => OltLinqGenericExtensions.Intersect(list1, list2, nullLambdaComparer));
+
 
         }
     }
