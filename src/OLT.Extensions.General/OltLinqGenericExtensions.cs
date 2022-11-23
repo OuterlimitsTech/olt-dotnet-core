@@ -65,7 +65,7 @@ namespace System.Linq
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return first.Where(x => second.Count(y => comparer(x, y)) == 0);
+            return first.Where(x => !second.Any(y => comparer(x, y)));
         }
 
         /// <summary>

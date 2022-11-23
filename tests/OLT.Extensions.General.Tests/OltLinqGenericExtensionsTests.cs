@@ -48,12 +48,19 @@ namespace OLT.Extensions.General.Tests
 
             found1.Should().HaveCount(diff);
             found1.Should().NotContain(inBothList);
-
             found2.Should().HaveCount(diff);
             found2.Should().NotContain(inBothList);
-
             found1.Should().Contain(found2);
 
+
+            var found3 = OltLinqGenericExtensions.Except(list2, list1, new OltLambdaComparer<TestItem>((p, q) => p.Uid == q.Uid)).ToList();
+            var found4 = OltLinqGenericExtensions.Except(list2, list1, (p, q) => p.Uid == q.Uid).ToList();
+            diff = list2.Count() - inBothList.Count();
+            found3.Should().HaveCount(diff);
+            found3.Should().NotContain(inBothList);
+            found4.Should().HaveCount(diff);
+            found4.Should().NotContain(inBothList);
+            found3.Should().Contain(found4);
 
             Func<TestItem, TestItem, bool> nullFuncComparer = null;
             Assert.Throws<ArgumentNullException>("first", () => OltLinqGenericExtensions.Except(null, list2, (p, q) => p.Uid == q.Uid));
@@ -91,10 +98,17 @@ namespace OLT.Extensions.General.Tests
 
             found1.Should().HaveCount(inBothList.Count());
             found1.Should().Contain(inBothList);
-
             found2.Should().HaveCount(inBothList.Count());
             found2.Should().Contain(inBothList);
             found1.Should().Contain(found2);
+
+            var found3 = OltLinqGenericExtensions.Intersect(list2, list1, new OltLambdaComparer<TestItem>((p, q) => p.Uid == q.Uid)).ToList();
+            var found4 = OltLinqGenericExtensions.Intersect(list2, list1, (p, q) => p.Uid == q.Uid).ToList();
+            found3.Should().HaveCount(inBothList.Count());
+            found3.Should().Contain(inBothList);
+            found4.Should().HaveCount(inBothList.Count());
+            found4.Should().Contain(inBothList);
+            found3.Should().Contain(found4);
 
             Func<TestItem, TestItem, bool> nullFuncComparer = null;
             Assert.Throws<ArgumentNullException>("first", () => OltLinqGenericExtensions.Intersect(null, list2, (p, q) => p.Uid == q.Uid));
