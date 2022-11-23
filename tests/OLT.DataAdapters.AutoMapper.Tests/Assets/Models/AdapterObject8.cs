@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OLT.DataAdapters.AutoMapper.Tests.Assets.Models
 {
-    public class AdapterObject8
+    public class AdapterObject8 : IAdapterObject
     {
         public int ObjectId { get; set; }
         public string Street { get; set; }
