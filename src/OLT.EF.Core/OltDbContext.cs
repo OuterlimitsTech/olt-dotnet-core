@@ -20,7 +20,8 @@ namespace OLT.Core
         where TContext: DbContext, IOltDbContext
     {
         private IOltDbAuditUser _dbAuditUser;
-        private ILogger<OltDbContext<TContext>> _logger;
+        //private ILogger<OltDbContext<TContext>> _logger;
+        private ILogger _logger;
 
 #pragma warning disable S2743 // Static fields should not be used in generic types
 #pragma warning disable IDE0044 // Add readonly modifier
@@ -47,7 +48,8 @@ namespace OLT.Core
 
 
         protected virtual IOltDbAuditUser DbAuditUser => _dbAuditUser ??= this.GetService<IOltDbAuditUser>();
-        protected virtual ILogger<OltDbContext<TContext>> Logger => _logger ??= this.GetService<ILogger<OltDbContext<TContext>>>();
+        protected virtual ILogger Logger => _logger ??= this.GetService<ILogger>();
+        //protected virtual ILogger<OltDbContext<TContext>> Logger => _logger ??= this.GetService<ILogger<OltDbContext<TContext>>>();
 
         public abstract string DefaultSchema { get; }
         public abstract bool DisableCascadeDeleteConvention { get; }
@@ -114,19 +116,19 @@ namespace OLT.Core
         protected virtual void WriteExceptionEntries(IEnumerable<EntityEntry> entries)
         {
 
-            foreach (var entry in entries)
-            {
-                foreach (var prop in entry.CurrentValues.Properties)
-                {
-                    var val = prop.PropertyInfo.GetValue(entry.Entity);
-                    Logger.LogDebug("[DB Field] -> {identifier}: {propertyInfo} ~ ({valueLength}) - ({value})", ContextId, prop, val?.ToString().Length, val);
+            //foreach (var entry in entries)
+            //{
+            //    foreach (var prop in entry.CurrentValues.Properties)
+            //    {
+            //        var val = prop.PropertyInfo.GetValue(entry.Entity);
+            //        Logger.LogDebug("[DB Field] -> {identifier}: {propertyInfo} ~ ({valueLength}) - ({value})", ContextId, prop, val?.ToString().Length, val);
 
-                    if (val?.ToString().Length > prop.GetMaxLength())
-                    {
-                        Logger.LogCritical("[DB Field] MaxLength Exceeded -> {identifier}: {propertyInfo} ----> ({value}) [{valueLength} > {maxLength}] <----", ContextId, prop, val, val?.ToString().Length, prop.GetMaxLength());
-                    }
-                }
-            }
+            //        if (val?.ToString().Length > prop.GetMaxLength())
+            //        {
+            //            Logger.LogCritical("[DB Field] MaxLength Exceeded -> {identifier}: {propertyInfo} ----> ({value}) [{valueLength} > {maxLength}] <----", ContextId, prop, val, val?.ToString().Length, prop.GetMaxLength());
+            //        }
+            //    }
+            //}
         }
 
 

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentAssertions.Common;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
@@ -22,6 +24,7 @@ namespace OLT.EF.Core.Tests
         public void EntitiesOfTypeTests()
         {
             var serviceProvider = new ServiceCollection()
+                .AddLogging(config => config.AddConsole())
                 .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
                 .BuildServiceProvider();
 
@@ -58,6 +61,7 @@ namespace OLT.EF.Core.Tests
         public void ApplyGlobalFilterTest()
         {
             var serviceProvider = new ServiceCollection()
+                .AddLogging(config => config.AddConsole())
                 .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
                 .BuildServiceProvider();
 
