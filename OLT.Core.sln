@@ -199,6 +199,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.Extensions.EF.Core", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Extensions.EF.Core", "src\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj", "{E2D2FC9B-9E71-4E21-AB59-C0C7BBD80825}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Extensions.EF.Core.Tests", "tests\OLT.Extensions.EF.Core.Tests\OLT.Extensions.EF.Core.Tests.csproj", "{E5D44C0E-390D-4480-AF8A-E6968AB37300}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -469,6 +471,10 @@ Global
 		{E2D2FC9B-9E71-4E21-AB59-C0C7BBD80825}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2D2FC9B-9E71-4E21-AB59-C0C7BBD80825}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2D2FC9B-9E71-4E21-AB59-C0C7BBD80825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5D44C0E-390D-4480-AF8A-E6968AB37300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5D44C0E-390D-4480-AF8A-E6968AB37300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5D44C0E-390D-4480-AF8A-E6968AB37300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5D44C0E-390D-4480-AF8A-E6968AB37300}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -555,6 +561,7 @@ Global
 		{42477CF1-68B7-4EA8-B3CF-FD81A4EB9532} = {5283590F-599E-4FD4-A2AC-8E142C99E9C5}
 		{D42DD1C7-055E-4DE9-B674-E0BB113A0996} = {58D33CE1-FB7F-4ACE-AF22-88F72F72C3DD}
 		{E2D2FC9B-9E71-4E21-AB59-C0C7BBD80825} = {1AA26E80-A124-4553-AE24-2721D851AB46}
+		{E5D44C0E-390D-4480-AF8A-E6968AB37300} = {1AA26E80-A124-4553-AE24-2721D851AB46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B70EDC-6E19-4295-BFA0-9474A97DF56F}
