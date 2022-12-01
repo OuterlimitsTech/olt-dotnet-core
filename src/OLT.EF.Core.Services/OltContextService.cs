@@ -288,7 +288,7 @@ namespace OLT.Core
                 using var transaction = await Context.Database.BeginTransactionAsync();
                 try
                 {
-                    var result = await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                    var result = await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(transaction, action);
                     await transaction.CommitAsync();
                     return result;
                 }
@@ -300,7 +300,7 @@ namespace OLT.Core
             }
             else
             {
-                return await OltContextTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
+                return await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
             }
         }
 
@@ -311,7 +311,7 @@ namespace OLT.Core
                 using var transaction = await Context.Database.BeginTransactionAsync();
                 try
                 {
-                    await OltContextTransactionExtensions.CreateSubTransactionAsync(transaction, action);
+                    await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(transaction, action);
                     await transaction.CommitAsync();
                 }
                 catch (Exception)
@@ -322,7 +322,7 @@ namespace OLT.Core
             }
             else
             {
-                await OltContextTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
+                await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
             }
         }
 
