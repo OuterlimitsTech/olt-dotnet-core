@@ -79,9 +79,9 @@ namespace OLT.Extensions.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var context = provider.GetService<UnitTestContext>();
-                await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () =>
+                await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, async () =>
                 {
-                    return Task.CompletedTask;
+                    await SubTran(context);
                 });
             }
 
@@ -106,9 +106,9 @@ namespace OLT.Extensions.EF.Core.Tests
             {
                 var context = provider.GetService<UnitTestContext>();
 
-                await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () =>
+                await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, async () =>
                 {
-                    return Task.FromResult(new UserEntity());
+                    return await UserEntityTran(context);
                 });
             }
 
@@ -128,5 +128,20 @@ namespace OLT.Extensions.EF.Core.Tests
             }
         }
 
+        private async Task SubTran(UnitTestContext context)
+        {
+            await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () =>
+            {
+                return Task.CompletedTask;
+            });
+        }
+
+        private async Task<UserEntity> UserEntityTran(UnitTestContext context)
+        {
+            return await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () =>
+            {
+                return Task.FromResult(new UserEntity());
+            });
+        }
     }
 }
