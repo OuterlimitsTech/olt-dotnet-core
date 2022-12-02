@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Extensions.EF.Core.Tests.Assets
 {
+
     public class MockTran : OltDisposable, IDbContextTransaction
     {
         public Guid TransactionId => Guid.NewGuid();

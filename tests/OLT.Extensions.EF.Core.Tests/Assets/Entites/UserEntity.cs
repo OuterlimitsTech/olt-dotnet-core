@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OLT.Core;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.Extensions.EF.Core.Tests.Assets.Entites
 {

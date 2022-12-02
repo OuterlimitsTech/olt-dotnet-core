@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.Extensions.EF.Core.Tests.Assets;
 using OLT.Extensions.EF.Core.Tests.Assets.Entites;
@@ -7,7 +8,7 @@ using Xunit;
 namespace OLT.Extensions.EF.Core.Tests
 {
 
-    public class ContextTransactionExtensionsTest : BaseUnitTests
+    public class OltEntityFrameworkCoreExtensionsTest : BaseUnitTests
     {
         [Fact]
         public async Task CreateSubTransactionTests()
@@ -71,5 +72,61 @@ namespace OLT.Extensions.EF.Core.Tests
                 }
             }
         }
+
+        [Fact]
+        public async Task UsingDbTransactionTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+                await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () =>
+                {
+                    return Task.CompletedTask;
+                });
+            }
+
+
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+                try
+                {
+                    await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () => { throw new System.Exception("Test"); });
+                    Assert.True(false);
+                }
+                catch
+                {
+                    Assert.True(true);
+                }
+
+            }
+
+
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+
+                await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () =>
+                {
+                    return Task.FromResult(new UserEntity());
+                });
+            }
+
+
+            using (var provider = BuildProvider())
+            {
+                var context = provider.GetService<UnitTestContext>();
+                try
+                {
+                    await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () => { throw new System.Exception("Test"); });
+                    Assert.True(false);
+                }
+                catch
+                {
+                    Assert.True(true);
+                }
+            }
+        }
+
     }
 }
