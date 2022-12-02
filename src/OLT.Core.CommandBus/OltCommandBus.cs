@@ -6,24 +6,22 @@ using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-
     public abstract class OltCommandBus<TContext> : OltDisposable, IOltCommandBus
         where TContext : DbContext
     {
-        private readonly List<IOltCommandHandler> _handlers;
-        private readonly IOltIdentity _identity;
-
         public OltCommandBus(
             IOltIdentity identity,
             IEnumerable<IOltCommandHandler> handlers,
             TContext context)
         {
             Context = context;
-            _identity = identity;
-            _handlers = handlers.ToList();
+            Identity = identity;
+            Handlers = handlers.ToList();
         }
 
         protected virtual TContext Context { get; }
+        protected virtual IOltIdentity Identity { get; }
+        protected virtual List<IOltCommandHandler> Handlers { get; }
 
         /// <summary>
         /// Attempts to locate <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
@@ -33,7 +31,7 @@ namespace OLT.Core
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         protected virtual IOltCommandHandler GetHandler(IOltCommand command)
         {
-            var handler = _handlers.SingleOrDefault(p => p.ActionName == command.ActionName);
+            var handler = Handlers.SingleOrDefault(p => p.ActionName == command.ActionName);
             if (handler == null)
             {
                 throw new OltCommandHandlerNotFoundException(command);
@@ -44,7 +42,7 @@ namespace OLT.Core
         protected virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command)
         {
             var handler = GetHandler(command);
-            return await handler.ValidateAsync(_identity, command);
+            return await handler.ValidateAsync(Identity, command);
         }
 
         protected virtual async Task<IOltCommandResult> ExecuteAsync(IOltCommand command)
@@ -58,7 +56,7 @@ namespace OLT.Core
             var handler = GetHandler(command);
             return await Context.Database.UsingDbTransactionAsync(async () =>
             {
-                return await handler.ExecuteAsync(_identity, command);
+                return await handler.ExecuteAsync(Identity, command);
             });
         }
 
@@ -86,5 +84,20 @@ namespace OLT.Core
             var result = await ExecuteAsync(command);
             return result.GetResult<T>();
         }
+    }
+
+    public abstract class OltCommandBus<TContext, TIdentity> : OltCommandBus<TContext>
+        where TContext : DbContext
+        where TIdentity : IOltIdentity
+    {
+        protected OltCommandBus(
+            IOltIdentity identity, 
+            IEnumerable<IOltCommandHandler> handlers, 
+            TContext context) : base(identity, handlers, context)
+        {
+            Identity = (TIdentity)identity;
+        }
+
+        protected new TIdentity Identity { get; }
     }
 }
