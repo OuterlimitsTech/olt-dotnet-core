@@ -10,17 +10,14 @@ namespace OLT.Core
         where TContext : DbContext
     {
         public OltCommandBus(
-            IOltIdentity identity,
             IEnumerable<IOltCommandHandler> handlers,
             TContext context)
         {
             Context = context;
-            Identity = identity;
             Handlers = handlers.ToList();
         }
 
         protected virtual TContext Context { get; }
-        protected virtual IOltIdentity Identity { get; }
         protected virtual List<IOltCommandHandler> Handlers { get; }
 
         /// <summary>
@@ -42,7 +39,7 @@ namespace OLT.Core
         protected virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command)
         {
             var handler = GetHandler(command);
-            return await handler.ValidateAsync(Identity, command);
+            return await handler.ValidateAsync(this, command);
         }
 
         protected virtual async Task<IOltCommandResult> ExecuteAsync(IOltCommand command)
@@ -56,7 +53,7 @@ namespace OLT.Core
             var handler = GetHandler(command);
             return await Context.Database.UsingDbTransactionAsync(async () =>
             {
-                return await handler.ExecuteAsync(Identity, command);
+                return await handler.ExecuteAsync(this, command);
             });
         }
 
@@ -84,20 +81,5 @@ namespace OLT.Core
             var result = await ExecuteAsync(command);
             return result.GetResult<T>();
         }
-    }
-
-    public abstract class OltCommandBus<TContext, TIdentity> : OltCommandBus<TContext>
-        where TContext : DbContext
-        where TIdentity : IOltIdentity
-    {
-        protected OltCommandBus(
-            IOltIdentity identity, 
-            IEnumerable<IOltCommandHandler> handlers, 
-            TContext context) : base(identity, handlers, context)
-        {
-            Identity = (TIdentity)identity;
-        }
-
-        protected new TIdentity Identity { get; }
     }
 }

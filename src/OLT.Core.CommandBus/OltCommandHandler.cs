@@ -8,20 +8,21 @@ namespace OLT.Core
     {
         public virtual string ActionName => typeof(TCommand).FullName;
 
-        public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltIdentity identity, IOltCommand command)
+        public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommandBus commandBus, IOltCommand command)
         {
-            var result = await ValidateAsync(identity, (TCommand)command);
+            var result = await ValidateAsync(commandBus, (TCommand)command);
             var commandValid = await command.ValidateAsync();
             return OltCommandValidationResult.FromResult(result, commandValid);
         }
 
-        public virtual async Task<IOltCommandResult> ExecuteAsync(IOltIdentity identity, IOltCommand command)
+        public virtual async Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
         {
-            return await ExecuteAsync(identity, (TCommand)command);
+            return await ExecuteAsync(commandBus, (TCommand)command);
         }
 
-        protected abstract Task<ValidationResult> ValidateAsync(IOltIdentity identity, TCommand command);
-        protected abstract Task<IOltCommandResult> ExecuteAsync(IOltIdentity identity, TCommand command);
+        protected abstract Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TCommand command);
+        protected abstract Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
 
     }
+  
 }
