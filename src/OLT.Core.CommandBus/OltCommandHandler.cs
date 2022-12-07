@@ -23,6 +23,10 @@ namespace OLT.Core
         protected abstract Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TCommand command);
         protected abstract Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
 
+        public virtual Task PostExecuteAsync(IOltCommandResult result)
+        {
+            return Task.CompletedTask;
+        }
     }
   
 }

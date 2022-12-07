@@ -22,6 +22,13 @@ namespace OLT.Core
         /// <param name="command"></param>
         /// <returns></returns>
         Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command);
-                
+
+        /// <summary>
+        /// Called after all Transactions are committed. Allows for Sending Emails, Submitting Event Queues, etc.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        Task AfterExecuteAsync(IOltCommandResult result);
+
     }
 }
