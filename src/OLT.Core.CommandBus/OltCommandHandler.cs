@@ -10,6 +10,7 @@ namespace OLT.Core
 
 
         protected abstract Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TCommand command);
+
         public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommandBus commandBus, IOltCommand command)
         {
             var result = await ValidateAsync(commandBus, (TCommand)command);
@@ -18,9 +19,10 @@ namespace OLT.Core
         }        
 
         protected abstract Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
-        public virtual async Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
+
+        public virtual Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
         {
-            return await ExecuteAsync(commandBus, (TCommand)command);
+            return ExecuteAsync(commandBus, (TCommand)command);
         }
 
         public virtual Task PostExecuteAsync(IOltCommand command, IOltCommandResult result)
