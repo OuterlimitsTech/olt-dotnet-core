@@ -21,30 +21,43 @@ namespace OLT.Core
         protected virtual TContext Context { get; }
         protected virtual List<IOltCommandHandler> Handlers { get; }
         protected virtual Queue<OltAfterCommandQueueItem> PostProcessItems => new Queue<OltAfterCommandQueueItem>();
-
+                
         /// <summary>
         /// Attempts to locate <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
         /// </summary>
         /// <param name="command"></param>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
+        /// <exception cref="OltCommandHandlerMultipleException"></exception>
         protected virtual IOltCommandHandler GetHandler(IOltCommand command)
         {
-            var handler = Handlers.SingleOrDefault(p => p.ActionName == command.ActionName);
-            if (handler == null)
+            var handlerCount = Handlers.Count(p => p.ActionName == command.ActionName);
+            if (handlerCount == 1)
             {
-                throw new OltCommandHandlerNotFoundException(command);
+                return Handlers.Single(p => p.ActionName == command.ActionName);
             }
-            return handler;
+
+            if (handlerCount > 1)
+            {
+                throw new OltCommandHandlerMultipleException(command);
+            }
+
+            throw new OltCommandHandlerNotFoundException(command);
         }
 
-        protected virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command)
+        public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command)
         {
             var handler = GetHandler(command);
             return await handler.ValidateAsync(this, command);
         }
 
-        protected virtual async Task<IOltCommandResult> ExecuteAsync(IOltCommand command)
+
+        /// <summary>
+        /// Executes Command
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        protected virtual async Task<IOltCommandBusResult> ExecuteAsync(IOltCommand command)
         {
             var validationResult = await ValidateAsync(command);
             if (!validationResult.Valid)
@@ -52,7 +65,7 @@ namespace OLT.Core
                 throw validationResult.ToException();
             }
 
-            var correlationId = Guid.NewGuid();
+            
             var handler = GetHandler(command);
 
             try
@@ -63,7 +76,7 @@ namespace OLT.Core
                 });
 
                 var postResult = await PostExecuteAsync(handler, command, result);
-                return result;
+                return OltCommandBusResult.FromCommand(command, result);
             }
             catch
             {
@@ -121,6 +134,7 @@ namespace OLT.Core
         /// <param name="command"></param>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
+        /// <exception cref="OltCommandHandlerMultipleException"></exception>
         public virtual async Task ProcessAsync(IOltCommand command)
         {
             await ExecuteAsync(command);
@@ -132,12 +146,15 @@ namespace OLT.Core
         /// <param name="command"></param>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
+        /// <exception cref="OltCommandHandlerMultipleException"></exception>
         /// <exception cref="NullReferenceException">Thrown is command result is null</exception>
         /// <exception cref="InvalidCastException">Thrown if command result can not be cast to <typeparamref name="T"/></exception>
         public virtual async Task<T> ProcessAsync<T>(IOltCommand command)
         {
             var result = await ExecuteAsync(command);
-            return result.GetResult<T>();
+            return result.CommandResult.GetResult<T>();
         }
+
+
     }
 }

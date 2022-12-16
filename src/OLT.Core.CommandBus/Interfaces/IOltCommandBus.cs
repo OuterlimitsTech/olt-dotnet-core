@@ -5,6 +5,15 @@ namespace OLT.Core
 {
     public interface IOltCommandBus : IOltInjectableScoped
     {
+
+        /// <summary>
+        /// Runs Command Validation
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        /// <exception cref="OltCommandHandlerNotFoundException"></exception>
+        Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command);
+
         /// <summary>
         /// Processes Command using <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
         /// </summary>

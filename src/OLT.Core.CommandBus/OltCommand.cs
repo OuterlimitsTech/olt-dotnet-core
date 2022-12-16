@@ -8,6 +8,6 @@ namespace OLT.Core
     {    
         public abstract Task<ValidationResult> ValidateAsync();
         public virtual string ActionName => GetType().FullName;
-        public virtual Guid CorrelationId { get; init; } = Guid.NewGuid();
+        public virtual string CorrelationId { get; init; } = $"COMMAND:{Guid.NewGuid():N}_{OltKeyGenerator.GetUniqueKey(9)}_{Guid.NewGuid():N}";
     }
 }
