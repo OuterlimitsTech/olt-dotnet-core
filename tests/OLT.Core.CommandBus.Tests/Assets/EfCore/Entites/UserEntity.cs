@@ -40,7 +40,7 @@ namespace OLT.Core.CommandBus.Tests.Assets.EfCore.Entites
         public string NameSuffix { get; set; }
 
 
-        public static UserEntity FakerEntity(bool emptyGuid = false)
+        public static UserEntity FakerEntity()
         {
             return new UserEntity
             {

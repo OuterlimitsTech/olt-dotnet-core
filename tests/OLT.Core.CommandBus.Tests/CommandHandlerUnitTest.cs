@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core.CommandBus.Tests.Assets.Handlers;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OLT.Core.CommandBus.Tests
 {
@@ -34,7 +35,7 @@ namespace OLT.Core.CommandBus.Tests
             {
                 var commandBus = provider.GetService<IOltCommandBus>();
                 var command = new SimpleCommand();
-                await Assert.ThrowsAsync<NullReferenceException>(() => commandBus.ProcessAsync<UserEntity>(command));
+                await Assert.ThrowsAsync<OltCommandResultNullException>(() => commandBus.ProcessAsync<UserEntity>(command));
             }
 
             using (var provider = BuildProvider())
@@ -57,6 +58,14 @@ namespace OLT.Core.CommandBus.Tests
                 Assert.Equal(typeof(UserEntity), result.GetType());
             }
 
+            using (var provider = BuildProvider())
+            {
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var command = new UserEntityCommand();
+                var handler = new UserEntityCommandHandler();
+                var result = await commandBus.ProcessAsync<UserEntity>(command);
+                Assert.Equal(command.ActionName, handler.ActionName);
+            }
         }
     }
 }

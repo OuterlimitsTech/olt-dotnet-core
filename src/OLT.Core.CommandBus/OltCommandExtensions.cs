@@ -23,13 +23,13 @@ namespace OLT.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="commandResult"></param>
         /// <returns></returns>
-        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="OltCommandResultNullException"></exception>
         /// <exception cref="InvalidCastException"></exception>
         public static T ToResult<T>(this OltCommandResult commandResult)
         {
             if (commandResult?.Result == null)
             {
-                throw new NullReferenceException($"{nameof(OltCommandResult)}.{nameof(commandResult.Result)}");
+                throw new OltCommandResultNullException();
             }
 
             if (commandResult.Result.GetType() == typeof(T))

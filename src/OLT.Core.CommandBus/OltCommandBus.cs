@@ -10,7 +10,7 @@ namespace OLT.Core
     public abstract class OltCommandBus<TContext> : OltDisposable, IOltCommandBus
         where TContext : DbContext
     {
-        public OltCommandBus(
+        protected OltCommandBus(
             IEnumerable<IOltCommandHandler> handlers,
             TContext context)
         {
@@ -135,9 +135,9 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandHandlerMultipleException"></exception>
-        public virtual async Task ProcessAsync(IOltCommand command)
+        public virtual Task ProcessAsync(IOltCommand command)
         {
-            await ExecuteAsync(command);
+            return ExecuteAsync(command);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandHandlerMultipleException"></exception>
-        /// <exception cref="NullReferenceException">Thrown is command result is null</exception>
+        /// <exception cref="OltCommandResultNullException">Thrown is command result is null</exception>
         /// <exception cref="InvalidCastException">Thrown if command result can not be cast to <typeparamref name="T"/></exception>
         public virtual async Task<T> ProcessAsync<T>(IOltCommand command)
         {

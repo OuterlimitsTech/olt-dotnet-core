@@ -1,5 +1,4 @@
 using OLT.Core.CommandBus.Tests.Assets;
-using System;
 using Xunit;
 
 namespace OLT.Core.CommandBus.Tests
@@ -37,5 +36,7 @@ namespace OLT.Core.CommandBus.Tests
             Assert.Equal(simpleCommand.ActionName, new SimpleCommand().ActionName);
             Assert.NotEqual(simpleCommand.ActionName, testCommand.ActionName);
         }
+
     }
+
 }

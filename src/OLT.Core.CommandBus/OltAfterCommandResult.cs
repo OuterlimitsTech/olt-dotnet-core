@@ -6,7 +6,7 @@ namespace OLT.Core
 {
     public record OltAfterCommandResult(List<Exception> Errors) : IOltAfterCommandResult
     {
-        public bool Success => Errors.Any() == false;
+        public bool Success => !Errors.Any();
 
         public static OltAfterCommandResult Create(List<Exception> errors)
         {
