@@ -20,7 +20,6 @@ namespace OLT.Core
 
         protected virtual TContext Context { get; }
         protected virtual List<IOltCommandHandler> Handlers { get; }
-        protected virtual Queue<OltAfterCommandQueueItem> PostProcessItems => new Queue<OltAfterCommandQueueItem>();
                 
         /// <summary>
         /// Attempts to locate <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
@@ -72,51 +71,8 @@ namespace OLT.Core
                 return await handler.ExecuteAsync(this, command);
             });
             
-            var postResult = await PostExecuteAsync(handler, command, result);
             return OltCommandBusResult.FromCommand(command, result);
 
-        }
-
-        /// <summary>
-        /// Runs (or Queues if in Transaction) the <seealso cref="IOltCommandHandler.PostExecuteAsync(IOltCommand, IOltCommandResult)"/> 
-        /// </summary>
-        /// <param name="currentHandler"></param>
-        /// <param name="command"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        protected virtual async Task<IOltAfterCommandResult> PostExecuteAsync(IOltCommandHandler currentHandler, IOltCommand command, IOltCommandResult result)
-        {
-            if (Context.Database.CurrentTransaction == null)
-            {
-                var errors = new List<Exception>();
-
-                try
-                {
-                    foreach (var item in PostProcessItems)
-                    {
-                        try
-                        {
-                            var handler = GetHandler(item.Command);
-                            await handler.PostExecuteAsync(item.Command, item.Result);  //Run the nested command handlers in order
-                        }
-                        catch(Exception ex)
-                        {
-                            errors.Add(ex);
-                        }
-                    }
-                    await currentHandler.PostExecuteAsync(command, result);
-                }
-                catch(Exception ex)
-                {
-                    errors.Add(ex);
-                }
-                return OltAfterCommandResult.Create(errors);
-            }
-            else
-            {
-                PostProcessItems.Enqueue(new OltAfterCommandQueueItem(command, result));
-                return OltAfterCommandResult.Create(new List<Exception>());
-            }
         }
 
 
@@ -146,7 +102,5 @@ namespace OLT.Core
             var result = await ExecuteAsync(command);
             return result.CommandResult.GetResult<T>();
         }
-
-
     }
 }

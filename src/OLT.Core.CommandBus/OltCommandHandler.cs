@@ -24,16 +24,6 @@ namespace OLT.Core
         {
             return ExecuteAsync(commandBus, (TCommand)command);
         }
-
-        public virtual Task PostExecuteAsync(IOltCommand command, IOltCommandResult result)
-        {
-            return PostExecuteAsync((TCommand)command, result);
-        }
-
-        public virtual Task PostExecuteAsync(TCommand command, IOltCommandResult result)
-        {
-            return Task.CompletedTask;
-        }
     }
   
 }

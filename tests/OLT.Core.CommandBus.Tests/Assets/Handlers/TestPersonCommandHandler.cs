@@ -21,10 +21,5 @@ namespace OLT.Core.CommandBus.Tests.Assets.Handlers
             };
             return await validator.ValidateAsync(dto);
         }
-
-        public override Task PostExecuteAsync(TestPersonCommand command, IOltCommandResult result)
-        {            
-            return Task.CompletedTask;
-        }
     }
 }
