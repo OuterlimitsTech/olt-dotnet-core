@@ -1,12 +1,12 @@
 ﻿using OLT.Core.CommandBus.Tests.Assets;
-using System.Net.Http;
 using System;
 using Xunit;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core.CommandBus.Tests.Assets.Handlers;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using OLT.Core.CommandBus.Tests.Assets.Models;
+using FluentAssertions;
 
 namespace OLT.Core.CommandBus.Tests
 {
@@ -42,7 +42,7 @@ namespace OLT.Core.CommandBus.Tests
             {
                 var commandBus = provider.GetService<IOltCommandBus>();
                 var command = new UserEntityCommand();
-                await Assert.ThrowsAsync<InvalidCastException>(() => commandBus.ProcessAsync<AddresssEntity>(command));
+                await Assert.ThrowsAsync<InvalidCastException>(() => commandBus.ProcessAsync<TestPersonDto>(command));
             }            
         }
 
@@ -66,6 +66,52 @@ namespace OLT.Core.CommandBus.Tests
                 var result = await commandBus.ProcessAsync<UserEntity>(command);
                 Assert.Equal(command.ActionName, handler.ActionName);
             }
+        }
+
+
+        [Fact]
+        public async Task ValidatorTest()
+        {
+            using (var provider = BuildProvider())
+            {
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var command = new TestPersonCommand(new TestPersonDto());
+
+                //Command Validation
+                var validationResult = await command.ValidateAsync();
+                validationResult.Errors.Should().HaveCount(3);
+                Assert.False(validationResult.IsValid);
+
+                //Check Command Handler Validation (should be command plus handler errors)
+                var result = await commandBus.ValidateAsync(command);
+                Assert.False(result.Valid);
+                result.Errors.Should().HaveCount(4);
+
+
+                await Assert.ThrowsAsync<OltValidationException>(() => commandBus.ProcessAsync<TestPersonDto>(command));
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var dto = TestPersonDto.FakerDto();
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var command = new TestPersonCommand(dto);
+
+                //Command Validation
+                var validationResult = await command.ValidateAsync();
+                Assert.True(validationResult.IsValid);
+                validationResult.Errors.Should().HaveCount(0);
+
+                //Check Command Handler Validation (should be command plus handler errors)
+                var result = await commandBus.ValidateAsync(command);
+                Assert.True(result.Valid);
+                result.Errors.Should().HaveCount(0);
+
+                var actionResult = await commandBus.ProcessAsync<TestPersonDto>(command);
+                actionResult.Should().BeEquivalentTo(dto);
+            }
+
+
         }
     }
 }

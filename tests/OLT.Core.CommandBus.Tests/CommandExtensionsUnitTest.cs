@@ -2,6 +2,7 @@
 using Xunit;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
 using FluentAssertions;
+using OLT.Core.CommandBus.Tests.Assets.Models;
 
 namespace OLT.Core.CommandBus.Tests
 {
@@ -21,7 +22,7 @@ namespace OLT.Core.CommandBus.Tests
         public void ExceptionTests()
         {
             Assert.Throws<OltCommandResultNullException>(() => OltCommandExtensions.ToResult<UserEntity>(OltCommandResult.Complete()));
-            Assert.Throws<InvalidCastException>(() => OltCommandExtensions.ToResult<UserEntity>(OltCommandResult.Complete(new AddresssEntity())));
+            Assert.Throws<InvalidCastException>(() => OltCommandExtensions.ToResult<UserEntity>(OltCommandResult.Complete(new TestPersonDto())));
         }
     }
 }

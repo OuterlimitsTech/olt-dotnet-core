@@ -1,4 +1,5 @@
 using OLT.Core.CommandBus.Tests.Assets;
+using OLT.Core.CommandBus.Tests.Assets.Models;
 using Xunit;
 
 namespace OLT.Core.CommandBus.Tests

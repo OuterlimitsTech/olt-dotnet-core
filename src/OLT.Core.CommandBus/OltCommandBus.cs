@@ -64,25 +64,17 @@ namespace OLT.Core
             {
                 throw validationResult.ToException();
             }
-
             
             var handler = GetHandler(command);
 
-            try
+            var result = await Context.Database.UsingDbTransactionAsync(async () =>
             {
-                var result = await Context.Database.UsingDbTransactionAsync(async () =>
-                {
-                    return await handler.ExecuteAsync(this, command);
-                });
+                return await handler.ExecuteAsync(this, command);
+            });
+            
+            var postResult = await PostExecuteAsync(handler, command, result);
+            return OltCommandBusResult.FromCommand(command, result);
 
-                var postResult = await PostExecuteAsync(handler, command, result);
-                return OltCommandBusResult.FromCommand(command, result);
-            }
-            catch
-            {
-                throw;
-            }
- 
         }
 
         /// <summary>
