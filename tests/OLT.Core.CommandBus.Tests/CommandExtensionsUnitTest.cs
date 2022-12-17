@@ -14,8 +14,9 @@ namespace OLT.Core.CommandBus.Tests
         {
             var entity = UserEntity.FakerEntity();
             var commandResult = OltCommandResult.Complete(entity);
-            var result = OltCommandExtensions.ToResult<UserEntity>(commandResult);
-            result.Should().BeEquivalentTo(entity);
+
+            OltCommandExtensions.ToResult<UserEntity>(commandResult).Should().BeEquivalentTo(entity);
+            OltCommandExtensions.ToResult<UserEntity>((IOltCommandResult)commandResult).Should().BeEquivalentTo(entity);
         }
 
         [Fact]
