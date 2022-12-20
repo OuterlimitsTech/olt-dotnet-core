@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
+    [Obsolete("Move to OltCommandBus")]
     public class OltRuleServiceManager : OltDisposable, IOltRuleServiceManager
     {
         private readonly IServiceProvider _serviceProvider;

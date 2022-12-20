@@ -37,4 +37,21 @@ namespace OLT.Extensions.General.Tests.Assets.Interface
     {
         public T Value { get; set; }
     }
+
+    public class TestItem
+    {
+        public TestItem()
+        {
+            Uid = Guid.NewGuid();
+        }
+
+        public TestItem(int id) : this()
+        {
+            Id = id;
+        }
+
+        public int Id { get; set; }
+        public Guid Uid { get; }
+    }
+
 }
