@@ -1,4 +1,6 @@
 ﻿using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Threading.Tasks;
 
 namespace OLT.Core
@@ -23,7 +25,7 @@ namespace OLT.Core
         public virtual Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
         {
             return ExecuteAsync(commandBus, (TCommand)command);
-        }
+        }       
     }
   
 }
