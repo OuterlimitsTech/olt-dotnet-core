@@ -108,7 +108,7 @@ namespace OLT.Core.CommandBus.Tests
                 result.Errors.Should().HaveCount(0);
 
                 var actionResult = await commandBus.ProcessAsync<TestPersonDto>(command);
-                actionResult.Should().BeEquivalentTo(dto);
+                actionResult.Should().NotBeEquivalentTo(dto);
             }
 
 
