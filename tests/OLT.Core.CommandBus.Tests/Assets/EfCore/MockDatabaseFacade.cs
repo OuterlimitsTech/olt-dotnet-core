@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace OLT.Core.CommandBus.Tests.Assets.EfCore
 {
@@ -18,7 +19,11 @@ namespace OLT.Core.CommandBus.Tests.Assets.EfCore
         {
             get
             {
-                return _transaction;
+                if (_transaction != null)
+                {
+                    return _transaction.Transactions.Any() ? _transaction : null;
+                }
+                return null;
             }
         }
 

@@ -94,6 +94,7 @@ namespace OLT.Core
         /// <returns></returns>
         protected virtual async Task PostExecuteAsync(IOltCommandHandler currentHandler, IOltCommand command, IOltCommandResult result)
         {
+
             if (currentHandler is IOltPostCommandHandler postHandler)
             {
                 PostProcessItems.Enqueue(new OltAfterCommandQueueItem(postHandler, command, result));

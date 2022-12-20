@@ -113,5 +113,28 @@ namespace OLT.Core.CommandBus.Tests
 
 
         }
+
+
+        [Fact]
+        public async Task PostCommandHandler()
+        {
+            using (var provider = BuildProvider())
+            {
+                var dto = TestPersonDto.FakerDto();
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var command = new TestPersonCommand(dto);
+                try
+                {
+                    await commandBus.ProcessAsync(command);
+                    Assert.True(true);
+                }
+                catch
+                {
+                    Assert.True(false);
+                }
+            }
+
+        }
+
     }
 }
