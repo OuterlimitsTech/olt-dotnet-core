@@ -134,6 +134,25 @@ namespace OLT.Core.CommandBus.Tests
                 }
             }
 
+
+            using (var provider = BuildProvider())
+            {
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var dto = TestPersonDto.FakerDto();
+                var command = new TestPersonCommand(dto);
+                var handler = new TestPersonCommandHandler();
+                var result = await handler.ExecuteAsync(commandBus, command);
+                await handler.PostExecuteAsync(command, result);
+            }
+
+            //using (var provider = BuildProvider())
+            //{
+            //    var commandBus = provider.GetService<IOltCommandBus>();
+            //    var command = new UserEntityCommand();
+            //    var handler = new UserEntityCommandHandler();
+            //    var result = await handler.ExecuteAsync(commandBus, command);
+            //    await Assert.ThrowsAsync<NotImplementedException>(() => handler.PostExecuteAsync(command, result));
+            //}
         }
 
     }

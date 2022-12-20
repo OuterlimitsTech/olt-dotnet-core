@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Core.CommandBus.Tests.Assets.Handlers
 {
-    public class TestPersonCommandHandler : OltCommandHandler<TestPersonCommand>, IOltPostCommandHandler<TestPersonCommand>
+    public class TestPersonCommandHandler : OltCommandHandler<TestPersonCommand>, IOltPostCommandHandler
     {
         private TestPersonDto _dto;
         private TestPersonCommand _command;
@@ -29,7 +29,7 @@ namespace OLT.Core.CommandBus.Tests.Assets.Handlers
             return await validator.ValidateAsync(dto);
         }
 
-        public Task PostExecuteAsync(TestPersonCommand command, IOltCommandResult result)
+        public Task PostExecuteAsync(IOltCommand command, IOltCommandResult result)
         {
             var resultDto = result.GetResult<TestPersonDto>();
             resultDto.Should().Be(_dto);
