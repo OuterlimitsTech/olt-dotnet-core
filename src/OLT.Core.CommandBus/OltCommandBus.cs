@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,8 @@ namespace OLT.Core
             Context = context;
             Handlers = handlers.ToList();
         }
+
+        protected virtual ConcurrentQueue<OltAfterCommandQueueItem> PostProcessItems { get; } = new ConcurrentQueue<OltAfterCommandQueueItem>();
 
         protected virtual TContext Context { get; }
         protected virtual List<IOltCommandHandler> Handlers { get; }
@@ -44,10 +47,15 @@ namespace OLT.Core
             throw new OltCommandHandlerNotFoundException(command);
         }
 
+
+        /// <summary>
+        /// Validates Command and CommandHandler can Execute
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
         public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command)
         {
-            var handler = GetHandler(command);
-            return await handler.ValidateAsync(this, command);
+            return await GetHandler(command).ValidateAsync(this, command);
         }
 
 
@@ -70,9 +78,35 @@ namespace OLT.Core
             {
                 return await handler.ExecuteAsync(this, command);
             });
-            
+
+            await PostExecuteAsync(handler, command, result);
+
             return OltCommandBusResult.FromCommand(command, result);
 
+        }
+
+        /// <summary>
+        /// Runs in order (or Queues if in Transaction) the <seealso cref="IOltPostCommandHandler.PostExecuteAsync(IOltCommand, IOltCommandResult)"/> 
+        /// </summary>
+        /// <param name="currentHandler"></param>
+        /// <param name="command"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected virtual async Task PostExecuteAsync(IOltCommandHandler currentHandler, IOltCommand command, IOltCommandResult result)
+        {
+
+            if (currentHandler is IOltPostCommandHandler postHandler)
+            {
+                PostProcessItems.Enqueue(new OltAfterCommandQueueItem(postHandler, command, result));
+            }
+
+            if (Context.Database.CurrentTransaction == null)
+            {
+                foreach (var item in PostProcessItems)
+                {
+                    await item.Handler.PostExecuteAsync(item.Command, item.Result);  //Run the nested command handlers in order
+                }                
+            }
         }
 
 

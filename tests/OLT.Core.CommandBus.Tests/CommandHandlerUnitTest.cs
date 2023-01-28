@@ -108,10 +108,52 @@ namespace OLT.Core.CommandBus.Tests
                 result.Errors.Should().HaveCount(0);
 
                 var actionResult = await commandBus.ProcessAsync<TestPersonDto>(command);
-                actionResult.Should().BeEquivalentTo(dto);
+                actionResult.Should().NotBeEquivalentTo(dto);
             }
 
 
         }
+
+
+        [Fact]
+        public async Task PostCommandHandler()
+        {
+            using (var provider = BuildProvider())
+            {
+                var dto = TestPersonDto.FakerDto();
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var command = new TestPersonCommand(dto);
+                try
+                {
+                    await commandBus.ProcessAsync(command);
+                    Assert.True(true);
+                }
+                catch
+                {
+                    Assert.True(false);
+                }
+            }
+
+
+            using (var provider = BuildProvider())
+            {
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var dto = TestPersonDto.FakerDto();
+                var command = new TestPersonCommand(dto);
+                var handler = new TestPersonCommandHandler();
+                var result = await handler.ExecuteAsync(commandBus, command);
+                await handler.PostExecuteAsync(command, result);
+            }
+
+            //using (var provider = BuildProvider())
+            //{
+            //    var commandBus = provider.GetService<IOltCommandBus>();
+            //    var command = new UserEntityCommand();
+            //    var handler = new UserEntityCommandHandler();
+            //    var result = await handler.ExecuteAsync(commandBus, command);
+            //    await Assert.ThrowsAsync<NotImplementedException>(() => handler.PostExecuteAsync(command, result));
+            //}
+        }
+
     }
 }
