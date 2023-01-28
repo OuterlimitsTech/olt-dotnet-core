@@ -7,6 +7,7 @@ using OLT.Email.SendGrid.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -20,6 +21,26 @@ namespace OLT.Email.SendGrid.Tests
         public SendGridSendTests(IOptions<SendGridProductionConfiguration> options)
         {
             _prodConfig = options.Value;
+        }
+
+        [Fact]
+        public async Task SandBoxMode()
+        {
+            var firstName = Faker.Name.First();
+            var fullName = $"{firstName} Unit Test";
+            var template = JsonEmailTemplate.FakerData(_prodConfig.TemplateIdJson);
+            template.Recipients.To.Add(new OltEmailAddress(_prodConfig.ToEmail, fullName));
+            template.TemplateData.Recipient.First = firstName;
+            template.TemplateData.Recipient.FullName = fullName;
+
+            var result = await OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
+                .EnableSandbox()
+                .EnableProductionEnvironment(true)
+                .SendAsync(true);
+
+
+            result.Should().NotBeNull();
+            result.Errors.Should().BeEmpty();
         }
 
         [Fact]
