@@ -60,10 +60,15 @@ jobs:
         with:
           redis-version: 7
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3.0.3
         with:
           dotnet-version: 6.0.x
+
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #     dotnet-version: 6.0.x
 
       - name: Get branch name
         id: branch-name
