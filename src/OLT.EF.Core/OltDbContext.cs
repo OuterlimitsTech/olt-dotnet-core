@@ -21,7 +21,7 @@ namespace OLT.Core
     {
         private IOltDbAuditUser _dbAuditUser;
         //private ILogger<OltDbContext<TContext>> _logger;
-        private ILogger _logger;
+        //private ILogger _logger;
 
 #pragma warning disable S2743 // Static fields should not be used in generic types
 #pragma warning disable IDE0044 // Add readonly modifier
@@ -48,7 +48,7 @@ namespace OLT.Core
 
 
         protected virtual IOltDbAuditUser DbAuditUser => _dbAuditUser ??= this.GetService<IOltDbAuditUser>();
-        protected virtual ILogger Logger => _logger ??= this.GetService<ILogger>();
+        //protected virtual ILogger Logger => _logger ??= this.GetService<ILogger>();
         //protected virtual ILogger<OltDbContext<TContext>> Logger => _logger ??= this.GetService<ILogger<OltDbContext<TContext>>>();
 
         public abstract string DefaultSchema { get; }
@@ -246,7 +246,7 @@ namespace OLT.Core
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogCritical(ex, "Entity Type: {EntityType} -> {PropertyName}", entityEntry.Entity.GetType().FullName, nullableStringField.PropertyName);
+                        //Logger.LogCritical(ex, "Entity Type: {EntityType} -> {PropertyName}", entityEntry.Entity.GetType().FullName, nullableStringField.PropertyName);
                         throw new OltException($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
                     }
                 }

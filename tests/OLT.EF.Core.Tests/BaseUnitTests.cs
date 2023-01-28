@@ -22,6 +22,7 @@ namespace OLT.EF.Core.Tests
                     optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}", opt => opt.EnableNullChecks());                    
                     optionsBuilder.EnableSensitiveDataLogging();
                     optionsBuilder.EnableDetailedErrors();
+                    optionsBuilder.LogTo(Console.WriteLine);
 
                     var options = optionsBuilder.Options as DbContextOptions<UnitTestContext>;
                     using (var context = new UnitTestContext(options))
@@ -39,6 +40,7 @@ namespace OLT.EF.Core.Tests
                     optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");
                     optionsBuilder.EnableSensitiveDataLogging();
                     optionsBuilder.EnableDetailedErrors();
+                    optionsBuilder.LogTo(Console.WriteLine);
                 });
 
             services.AddScoped<IOltDbAuditUser, DbAuditUserService>();

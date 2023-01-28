@@ -40,20 +40,20 @@ namespace OLT.EF.Core.Tests
                 //    //Logger.Debug(col.Name);
                 //});
                 Assert.Collection(columns,
-                    item => Assert.Equal(item.Name, expected),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.ActionCode)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.CreateDate)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.CreateUser)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.DeletedBy)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.DeletedOn)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.EffectiveDate)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.ModifyDate)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.ModifyUser)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.NameFirst)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.NameLast)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.NameMiddle)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.StatusTypeId)}"),
-                    item => Assert.Equal(item.Name, $"{nameof(PersonEntity.UniqueId)}")
+                    item => Assert.Equal(expected, item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.ActionCode)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.CreateDate)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.CreateUser)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.DeletedBy)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.DeletedOn)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.EffectiveDate)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.ModifyDate)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.ModifyUser)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.NameFirst)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.NameLast)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.NameMiddle)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.StatusTypeId)}", item.Name),
+                    item => Assert.Equal($"{nameof(PersonEntity.UniqueId)}", item.Name)
                     );
 
 
