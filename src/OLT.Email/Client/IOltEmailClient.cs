@@ -18,8 +18,8 @@ namespace OLT.Email
     {        
         TClient CreateClient();
         TMessage CreateMessage(OltEmailRecipientResult recipients);
-        TResult Send();
-        Task<TResult> SendAsync();
+        TResult Send(bool throwExceptions);
+        Task<TResult> SendAsync(bool throwExceptions);
 
     }
 }

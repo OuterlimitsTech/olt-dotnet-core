@@ -104,45 +104,52 @@ namespace OLT.Email.SendGrid
             return msg;
         }
 
-        public override async Task<OltSendGridEmailResult> SendAsync()
+        public override async Task<OltSendGridEmailResult> SendAsync(bool throwExceptions)
         {
-            if (!IsValid)
+            var result = new OltSendGridEmailResult();
+
+            try
             {
-                throw new OltSendGridValidationException(ValidationErrors());
-            }
-
-            var result = new OltSendGridEmailResult
-            {
-                RecipientResults = BuildRecipients()
-            };
-
-            var client = CreateClient();
-            var msg = CreateMessage(result.RecipientResults);
-
-            if (msg.Personalizations.Any() && msg.Personalizations[0].Tos?.Count > 0)
-            {
-                var sendResponse = await client.SendEmailAsync(msg);
-                var success = sendResponse.StatusCode >= HttpStatusCode.OK && sendResponse.StatusCode <= HttpStatusCode.PartialContent;
-
-                if (!success)
+                if (!IsValid)
                 {
-                    var body = await sendResponse.Body.ReadAsStringAsync();
+                    throw new OltSendGridValidationException(ValidationErrors());
+                }
 
-                    result.Errors.Add($"{sendResponse.StatusCode}");
+                result.RecipientResults = BuildRecipients();
 
-                    result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body) ?? new OltSendGridResponseJson();
-                    result.SendGrid.Errors.ForEach(error =>
+                var msg = CreateMessage(result.RecipientResults);
+
+                if (msg.Personalizations.Any() && msg.Personalizations[0].Tos?.Count > 0)
+                {
+                    var client = CreateClient();
+                    var sendResponse = await client.SendEmailAsync(msg);
+                    var success = sendResponse.StatusCode >= HttpStatusCode.OK && sendResponse.StatusCode <= HttpStatusCode.PartialContent;
+
+                    if (!success)
                     {
-                        result.Errors.Add($"{error.Field} - {error.Message}");
-                    });
-
-                 
+                        var body = await sendResponse.Body.ReadAsStringAsync();
+                        result.Errors.Add($"{sendResponse.StatusCode}");
+                        result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body) ?? new OltSendGridResponseJson();
+                        result.SendGrid.Errors.ForEach(error =>
+                        {
+                            result.Errors.Add($"{error.Field} - {error.Message}");
+                        });
+                    }
+                }
+                else
+                {
+                    throw new OltEmailNoRecipientsValidationException();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                result.Errors.Add("No Recipients were attached.  This can be caused by skipping due to the whitelist");
+                if (throwExceptions)
+                {
+                    throw;
+                }
+                result.Errors.Add(ex.ToString());
             }
+
             return result;
         }
 

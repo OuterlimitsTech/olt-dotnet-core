@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace OLT.Email
 {
+
 #pragma warning disable S3925 // "ISerializable" should be implemented correctly
     public class OltEmailValidationException : OLT.Core.OltException
 #pragma warning restore S3925 // "ISerializable" should be implemented correctly
