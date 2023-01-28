@@ -122,17 +122,21 @@ namespace OLT.Email.SendGrid
             if (msg.Personalizations.Any() && msg.Personalizations[0].Tos?.Count > 0)
             {
                 var sendResponse = await client.SendEmailAsync(msg);
+                var success = sendResponse.StatusCode >= HttpStatusCode.OK && sendResponse.StatusCode <= HttpStatusCode.PartialContent;
 
-                if (sendResponse.StatusCode != HttpStatusCode.Accepted)
+                if (!success)
                 {
                     var body = await sendResponse.Body.ReadAsStringAsync();
 
                     result.Errors.Add($"{sendResponse.StatusCode}");
-                    result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body);
+
+                    result.SendGrid = JsonConvert.DeserializeObject<OltSendGridResponseJson>(body) ?? new OltSendGridResponseJson();
                     result.SendGrid.Errors.ForEach(error =>
                     {
                         result.Errors.Add($"{error.Field} - {error.Message}");
                     });
+
+                 
                 }
             }
             else
