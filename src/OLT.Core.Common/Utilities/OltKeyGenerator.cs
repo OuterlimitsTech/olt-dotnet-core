@@ -72,7 +72,7 @@ namespace OLT.Core
 
 
             byte[] data = new byte[4 * size];
-            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+            using (RandomNumberGenerator crypto = RandomNumberGenerator.Create())
             {
                 crypto.GetBytes(data);
             }
@@ -97,7 +97,7 @@ namespace OLT.Core
                 .ToArray();
 
             byte[] data = new byte[size];
-            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+            using (RandomNumberGenerator crypto = RandomNumberGenerator.Create())
             {
                 crypto.GetBytes(data);
             }

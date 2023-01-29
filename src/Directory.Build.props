@@ -5,7 +5,7 @@
     <Company>OuterLimits Technologies, Inc</Company>
     <Product>OLT Core Libraries</Product>
     <Authors>Chris Straw</Authors>
-    <Copyright>Copyright © 2003-2022, OuterLimits Technologies, Inc Plainfield, IN</Copyright>
+    <Copyright>Copyright © 2003-2023, OuterLimits Technologies, Inc Plainfield, IN</Copyright>
     <RepositoryUrl>https://github.com/OuterlimitsTech/olt-dotnet-core</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
@@ -36,7 +36,7 @@
     </None>
   </ItemGroup>
 
-  <PropertyGroup>		
+  <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildProjectName).xml</DocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
     <NoWarn>$(NoWarn);S110</NoWarn>
