@@ -71,7 +71,7 @@ namespace OLT.Email
         /// <param name="rethrowException"></param>
         public static void OltEmailError(this Exception ex, OltSmtpServer server, IOltApplicationErrorEmail template, bool rethrowException = false)
         {
-            BuildOltEmailClient(ex, server, template).Send();
+            BuildOltEmailClient(ex, server, template).Send(false);
             if (rethrowException)
             {
                 throw ex;

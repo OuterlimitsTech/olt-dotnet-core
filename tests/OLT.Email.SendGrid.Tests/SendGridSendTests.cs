@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OLT.Email.SendGrid.Common;
@@ -6,6 +7,7 @@ using OLT.Email.SendGrid.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,6 +21,26 @@ namespace OLT.Email.SendGrid.Tests
         public SendGridSendTests(IOptions<SendGridProductionConfiguration> options)
         {
             _prodConfig = options.Value;
+        }
+
+        [Fact]
+        public async Task SandBoxMode()
+        {
+            var firstName = Faker.Name.First();
+            var fullName = $"{firstName} Unit Test";
+            var template = JsonEmailTemplate.FakerData(_prodConfig.TemplateIdJson);
+            template.Recipients.To.Add(new OltEmailAddress(_prodConfig.ToEmail, fullName));
+            template.TemplateData.Recipient.First = firstName;
+            template.TemplateData.Recipient.FullName = fullName;
+
+            var result = await OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
+                .EnableSandbox()
+                .EnableProductionEnvironment(true)
+                .SendAsync(true);
+
+
+            result.Should().NotBeNull();
+            result.Errors.Should().BeEmpty();
         }
 
         [Fact]
@@ -42,7 +64,7 @@ namespace OLT.Email.SendGrid.Tests
 
             var result = OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
                 .WithCustomArg("email_uid", uid)
-                .Send();
+                .Send(true);
 
             Assert.True(result.Success);
 
@@ -50,7 +72,7 @@ namespace OLT.Email.SendGrid.Tests
 
             var resultAsync = await OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, template)
                 .WithCustomArg("email_uid", uid)
-                .SendAsync();
+                .SendAsync(true);
 
             Assert.True(resultAsync.Success);
 
@@ -95,7 +117,7 @@ namespace OLT.Email.SendGrid.Tests
                 //typically controlled via config/environment variable
                 .EnableProductionEnvironment(false);
 
-            resultAsync = await client.SendAsync();
+            resultAsync = await client.SendAsync(true);
 
             Assert.True(resultAsync.Success);
                         
@@ -110,7 +132,7 @@ namespace OLT.Email.SendGrid.Tests
                 .WithCustomArg("some_internal_id", Faker.Identification.UkNhsNumber())
                 .EnableProductionEnvironment(false);
 
-            resultAsync = await client.SendAsync();
+            resultAsync = await client.SendAsync(true);
 
             Assert.True(resultAsync.Success);
         }
@@ -138,7 +160,7 @@ namespace OLT.Email.SendGrid.Tests
                 args = args.WithUnsubscribeGroupId(_prodConfig.UnsubscribeGroupId.Value);
             }
 
-            var resultAsync = await args.SendAsync();
+            var resultAsync = await args.SendAsync(true);
 
             Assert.True(resultAsync.Success);
         }
@@ -196,13 +218,13 @@ namespace OLT.Email.SendGrid.Tests
             var config = new OltEmailConfigurationSendGrid();
             var template = JsonEmailTemplate.FakerData(_prodConfig.TemplateIdJson);
 
-            Assert.Throws<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).Send());  //SHOULD FAIL
-            await Assert.ThrowsAsync<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).SendAsync());  //SHOULD FAIL
+            Assert.Throws<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).Send(true));  //SHOULD FAIL
+            await Assert.ThrowsAsync<ArgumentNullException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(config, template).SendAsync(true));  //SHOULD FAIL
 
             var noRecTemplate = JsonEmailTemplate.FakerData(_prodConfig.TemplateIdJson);
             noRecTemplate.Recipients = new OltEmailRecipients();
-            Assert.Throws<OltSendGridValidationException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, noRecTemplate).Send());  //SHOULD FAIL
-            await Assert.ThrowsAsync<OltSendGridValidationException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, noRecTemplate).SendAsync());  //SHOULD FAIL
+            Assert.Throws<OltSendGridValidationException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, noRecTemplate).Send(true));  //SHOULD FAIL
+            await Assert.ThrowsAsync<OltSendGridValidationException>(() => OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, noRecTemplate).SendAsync(true));  //SHOULD FAIL
         }
 
         [Fact]
@@ -220,9 +242,18 @@ namespace OLT.Email.SendGrid.Tests
             //Invalid Template
             var args = OltEmailSendGridExtensions.BuildOltEmailClient(_prodConfig, fakeTemplate);
 
-            var result = await args.SendAsync();
+            var result = await args.SendAsync(false);
             Assert.NotEmpty(result.Errors);
 
+            try
+            {
+                result = await args.SendAsync(true);  //Should not throw exception as all errors are from send grid
+            }
+            catch
+            {
+                throw;
+            }
+            
 
             var config = new OltEmailConfigurationSendGrid
             {
@@ -240,9 +271,18 @@ namespace OLT.Email.SendGrid.Tests
             //Invalid API Key
             args = OltEmailSendGridExtensions.BuildOltEmailClient(config, jsonTemplate);
 
-            result = await args.SendAsync();
-            Assert.NotEmpty(result.Errors);
+            
+            var noRecipientsValidationException = await Assert.ThrowsAsync<OltEmailNoRecipientsValidationException>(() => args.SendAsync(true));
+            Assert.Equal("No Recipients were attached.  This can be caused by skipping due to the whitelist", noRecipientsValidationException.Message);
 
+
+            result = await args.SendAsync(false);
+            Assert.NotEmpty(result.Errors);
+            result.Errors.Where(p => p.StartsWith("OLT.Email.OltEmailNoRecipientsValidationException: No Recipients were attached.  This can be caused by skipping due to the whitelist"))
+                .Should()
+                .NotBeEmpty()
+                .And
+                .HaveCount(1);
         }
     }
 }
