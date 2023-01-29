@@ -54,11 +54,11 @@ namespace OLT.Email
         public abstract SmtpClient CreateClient();
         public abstract MailMessage CreateMessage(OltEmailRecipientResult recipients);
 
-        public virtual OltEmailResult Send()
+        public virtual OltEmailResult Send(bool throwExceptions)
         {
             try
             {
-                return Task.Run(() => SendAsync()).Result;
+                return Task.Run(() => SendAsync(throwExceptions)).Result;
             }
             catch (AggregateException ex)
             {
@@ -66,7 +66,7 @@ namespace OLT.Email
             }
         }
 
-        public abstract Task<OltEmailResult> SendAsync();
+        public abstract Task<OltEmailResult> SendAsync(bool throwExceptions);
     }
 
    
