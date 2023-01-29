@@ -61,11 +61,11 @@ namespace OLT.Email.SendGrid
 
         }
 
-        public virtual OltSendGridEmailResult Send()
+        public virtual OltSendGridEmailResult Send(bool throwExceptions)
         {
             try
             {
-                return Task.Run(() => SendAsync()).Result;
+                return Task.Run(() => SendAsync(throwExceptions)).Result;
             }
             catch (AggregateException ex)
             {
@@ -73,7 +73,7 @@ namespace OLT.Email.SendGrid
             }
         }
 
-        public abstract Task<OltSendGridEmailResult> SendAsync();
+        public abstract Task<OltSendGridEmailResult> SendAsync(bool throwExceptions);
 
     }
 }

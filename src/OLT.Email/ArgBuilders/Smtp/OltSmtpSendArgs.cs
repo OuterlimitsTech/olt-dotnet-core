@@ -7,21 +7,21 @@ namespace OLT.Email
     public abstract class OltSmtpSendArgs<T> : OltCalendarInviteArgs<T>
       where T : OltSmtpSendArgs<T>
     {
-        public override async Task<OltEmailResult> SendAsync()
+        public override async Task<OltEmailResult> SendAsync(bool throwExceptions)
         {
-            var errors = ValidationErrors();
-            if (errors.Any())
-            {
-                throw new OltEmailValidationException(errors);
-            }
 
-            var result = new OltEmailResult
-            {
-                RecipientResults = BuildRecipients()
-            };
+            var result = new OltEmailResult();
 
             try
             {
+                var errors = ValidationErrors();
+                if (errors.Any())
+                {
+                    throw new OltEmailValidationException(errors);
+                }
+
+                result.RecipientResults = BuildRecipients();
+
                 using (var client = CreateClient())
                 {
                     using (var msg = CreateMessage(result.RecipientResults))
@@ -30,11 +30,19 @@ namespace OLT.Email
                         {
                             await client.SendMailAsync(msg);
                         }
+                        else
+                        {
+                            throw new OltEmailNoRecipientsValidationException();
+                        }
                     }
-                }
+                }                
             }
             catch (Exception ex)
             {
+                if (throwExceptions)
+                {
+                    throw;
+                }
                 result.Errors.Add(ex.ToString());
             }
 

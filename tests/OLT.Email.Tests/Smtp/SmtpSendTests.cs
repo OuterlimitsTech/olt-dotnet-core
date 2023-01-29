@@ -37,8 +37,8 @@ namespace OLT.Email.Tests.Smtp
                 Credentials = null
             };
 
-            Assert.Throws<ArgumentNullException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, new OltSmtpEmail()).Send());  //SHOULD FAIL
-            await Assert.ThrowsAsync<ArgumentNullException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, new OltSmtpEmail()).SendAsync());  //SHOULD FAIL
+            Assert.Throws<ArgumentNullException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, new OltSmtpEmail()).Send(true));  //SHOULD FAIL
+            await Assert.ThrowsAsync<ArgumentNullException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, new OltSmtpEmail()).SendAsync(true));  //SHOULD FAIL
 
             var smtpEmail = new OltSmtpEmail
             {
@@ -51,9 +51,29 @@ namespace OLT.Email.Tests.Smtp
                 },
             };
 
-            Assert.Throws<OltEmailValidationException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).Send());  //SHOULD FAIL
-            await Assert.ThrowsAsync<OltEmailValidationException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).SendAsync());  //SHOULD FAIL
+            Assert.Throws<OltEmailValidationException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).Send(true));  //SHOULD FAIL
+            await Assert.ThrowsAsync<OltEmailValidationException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).SendAsync(true));  //SHOULD FAIL
 
+
+            try
+            {
+                var result = OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).Send(false);
+                Assert.NotEmpty(result.Errors);
+            }
+            catch
+            {
+                throw;
+            }
+
+            try
+            {
+                var result = await OltSmtpEmailExtensions.BuildOltEmailClient(smtpServer, true, smtpEmail).SendAsync(false);
+                Assert.NotEmpty(result.Errors);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         [Fact]
@@ -93,7 +113,8 @@ namespace OLT.Email.Tests.Smtp
             Assert.True(args.AllowSend(email));
 
             args = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, smtpEmail, ex);
-            Assert.True(args.AllowSend(email));
+            Assert.True(args.AllowSend(email));           
+
 
             Assert.Throws<Exception>(() => OltSmtpEmailExtensions.OltEmailError(ex, _smtpTestServer, smtpEmail, true)); //SENDS EMAIL
 
@@ -143,15 +164,88 @@ namespace OLT.Email.Tests.Smtp
                 },
             };
 
-            var result1 = OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).Send();
-            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).SendAsync();
+            var result1 = OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).Send(false);
+            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).SendAsync(false);
 
             Assert.False(result2.Success);
             result2.Should().BeEquivalentTo(result1);
 
+            Assert.Throws<System.Net.Mail.SmtpException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).Send(true));
+            await Assert.ThrowsAsync<System.Net.Mail.SmtpException>(() => OltSmtpEmailExtensions.BuildOltEmailClient(invalidServer, true, smtpEmail).SendAsync(true));
+
         }
 
 
+        [Fact]
+        public async Task SmtpWhitelist()
+        {
+            var buildVersion = _configuration.GetValue<string>("GITHUB_RUN_NUMBER") ??
+                              Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER") ??
+                              "[No Run Number]";
+
+            var now = DateTimeOffset.Now;
+            var name = Faker.Name.FullName();
+            var email = Faker.Internet.Email();
+            var bccName = Faker.Name.FullName();
+            var bccEmail = Faker.Internet.Email();
+            var bccName2 = Faker.Name.FullName();
+            var bccEmail2 = Faker.Internet.Email();
+
+            var fromName = $"{Faker.Name.First()} Unit Test";
+            var fromEmail = _configuration.GetValue<string>("SMTP_FROM_ADDRESS") ?? Environment.GetEnvironmentVariable("SMTP_FROM_ADDRESS");
+            var subject = $"Unit Test Email {now:f} Run - {buildVersion} ";
+            var message = $"{buildVersion} -> This was generated on {now:f} from {this.GetType().Assembly.GetName().Name}.{nameof(SmtpSendTests)}.{nameof(SmtpEmail)}";
+
+
+            var smtpEmail = new OltSmtpEmail
+            {
+                Subject = subject,
+                Body = message,
+                Recipients = new OltEmailRecipients
+                {
+                    To = new List<IOltEmailAddress>
+                        {
+                            new OltEmailAddress
+                            {
+                                Name = name,
+                                Email = email
+                            }
+                        },
+                    CarbonCopy = new List<IOltEmailAddress>
+                        {
+                            new OltEmailAddress
+                            {
+                                Name = bccName,
+                                Email = bccEmail
+                            },
+                            new OltEmailAddress
+                            {
+                                Name = bccName2,
+                                Email = bccEmail2
+                            }
+                        },
+                },
+                From = new OltEmailAddress
+                {
+                    Name = fromName,
+                    Email = fromEmail
+                },
+            };
+
+            //var whitelist = new OltEmailConfigurationWhitelist();
+
+            var args = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, false, smtpEmail); //.WithWhitelist(whitelist); 
+            var noRecipientsValidationException = await Assert.ThrowsAsync<OltEmailNoRecipientsValidationException>(() => args.SendAsync(true));  //Should Fail due to whitelist
+            Assert.Equal("No Recipients were attached.  This can be caused by skipping due to the whitelist", noRecipientsValidationException.Message);
+
+                        
+            args.Send(false).Errors.Should().NotBeEmpty().And.HaveCount(1);
+
+            var result = await args.SendAsync(false);
+            result.Success.Should().BeFalse();
+            result.Errors.Should().NotBeEmpty().And.HaveCount(1);
+
+        }
 
         [Fact]
         public async Task SmtpEmail()
@@ -162,6 +256,7 @@ namespace OLT.Email.Tests.Smtp
             Assert.NotNull(_smtpTestServer.Credentials.Username);
             Assert.NotNull(_smtpTestServer.Credentials.Password);
             Assert.False(_smtpTestServer.DisableSsl);
+            
 
             var buildVersion = _configuration.GetValue<string>("GITHUB_RUN_NUMBER") ??
                                Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER") ??
@@ -234,10 +329,10 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(fromName, smtpEmail.From.Name);
             Assert.Equal(fromEmail, smtpEmail.From.Email);
 
-            var result = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).Send(); //SENDS EMAIL
+            var result = OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).Send(true); //SENDS EMAIL
             Assert.True(result.Success);
 
-            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).SendAsync(); //SENDS EMAIL
+            var result2 = await OltSmtpEmailExtensions.BuildOltEmailClient(_smtpTestServer, true, smtpEmail).SendAsync(true); //SENDS EMAIL
             Assert.True(result.Success);
             result2.Should().BeEquivalentTo(result);
             result2.RecipientResults.To.Should().HaveSameCount(smtpEmail.Recipients.To);
