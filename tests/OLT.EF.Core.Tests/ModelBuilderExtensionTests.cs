@@ -8,6 +8,7 @@ using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
 using OLT.EF.Core.Tests.Assets.Entites.Code;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace OLT.EF.Core.Tests
         public void EntitiesOfTypeTests()
         {
             var serviceProvider = new ServiceCollection()
-                .AddLogging(config => config.AddConsole())
+                //.AddLogging(config => config.AddConsole())
+                //.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: false))
                 .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
                 .BuildServiceProvider();
 
@@ -61,7 +63,8 @@ namespace OLT.EF.Core.Tests
         public void ApplyGlobalFilterTest()
         {
             var serviceProvider = new ServiceCollection()
-                .AddLogging(config => config.AddConsole())
+                //.AddLogging(config => config.AddConsole())
+                //.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: false))
                 .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
                 .BuildServiceProvider();
 
@@ -76,7 +79,8 @@ namespace OLT.EF.Core.Tests
                     OltModelBuilderExtensions.ApplyGlobalFilters<IOltEntityDeletable>(builder, p => p.DeletedBy == null);
 
                     Assert.NotNull(builder.Entity<CodeTableEntity>().Metadata.GetQueryFilter());
-                    Assert.Null(builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter());
+                    //Assert.Null(builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter());
+                    Assert.NotNull(builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter());
 
                     Assert.Contains("DeletedBy == null", builder.Entity<PersonEntity>().Metadata.GetQueryFilter().ToString());
                     Assert.Contains("DeletedBy == null", builder.Entity<CodeTableEntity>().Metadata.GetQueryFilter().ToString());

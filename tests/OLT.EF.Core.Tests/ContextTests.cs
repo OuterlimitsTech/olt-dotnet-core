@@ -5,6 +5,7 @@ using OLT.Constants;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
+using Serilog;
 using System;
 using System.Linq;
 using Xunit;
@@ -151,7 +152,8 @@ namespace OLT.EF.Core.Tests
             var services = new ServiceCollection();
 
             services
-                .AddLogging(config => config.AddConsole())
+                //.AddLogging(config => config.AddConsole())
+                //.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: false))
                 .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
                 {
                     optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}");

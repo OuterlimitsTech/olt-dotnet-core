@@ -43,7 +43,7 @@ namespace OLT.Core
 
         protected OltDbContext(DbContextOptions<TContext> options) : base(options)
         {
-
+            
         }
 
 
@@ -115,20 +115,43 @@ namespace OLT.Core
 
         protected virtual void WriteExceptionEntries(IEnumerable<EntityEntry> entries)
         {
+            var entryDetails = new List<string>();
+            var errors = new List<string>();
+            foreach (var entry in entries)
+            {
+                foreach (var prop in entry.CurrentValues.Properties)
+                {
+                    var val = prop.PropertyInfo.GetValue(entry.Entity);
+                    entryDetails.Add($"[DB Field] -> {ContextId}: {prop} ~ ({val?.ToString().Length}) - ({val})");
+                    if (val?.ToString().Length > prop.GetMaxLength())
+                    {
+                        errors.Add($"[DB Field] MaxLength Exceeded -> {ContextId}: {prop} ----> ({val}) [{val?.ToString().Length} > {prop.GetMaxLength()}] <----");
+                    }
+                }
+            }
 
-            //foreach (var entry in entries)
-            //{
-            //    foreach (var prop in entry.CurrentValues.Properties)
-            //    {
-            //        var val = prop.PropertyInfo.GetValue(entry.Entity);
-            //        Logger.LogDebug("[DB Field] -> {identifier}: {propertyInfo} ~ ({valueLength}) - ({value})", ContextId, prop, val?.ToString().Length, val);
+            try
+            {
+                var logger = this.GetService<ILogger<OltDbContext<TContext>>>();
+                foreach(var detail in entryDetails)
+                {
+                    logger.LogDebug(detail);
+                }
 
-            //        if (val?.ToString().Length > prop.GetMaxLength())
-            //        {
-            //            Logger.LogCritical("[DB Field] MaxLength Exceeded -> {identifier}: {propertyInfo} ----> ({value}) [{valueLength} > {maxLength}] <----", ContextId, prop, val, val?.ToString().Length, prop.GetMaxLength());
-            //        }
-            //    }
-            //}
+                foreach (var error in errors)
+                {
+                    logger.LogError(error);
+                }
+            }
+            catch (Exception)
+            {
+                var exceptions = errors.Select(s => new OltException(s));                
+                if (exceptions.Any())
+                {
+                    throw new AggregateException("[DB Field] MaxLength Exceeded", exceptions);
+                }
+            }
+
         }
 
 
@@ -245,8 +268,7 @@ namespace OLT.Core
                         }
                     }
                     catch (Exception ex)
-                    {
-                        //Logger.LogCritical(ex, "Entity Type: {EntityType} -> {PropertyName}", entityEntry.Entity.GetType().FullName, nullableStringField.PropertyName);
+                    {                        
                         throw new OltException($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
                     }
                 }

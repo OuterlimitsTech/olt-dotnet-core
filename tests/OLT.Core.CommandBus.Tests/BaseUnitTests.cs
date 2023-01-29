@@ -16,7 +16,7 @@ namespace OLT.Core.CommandBus.Tests
             var services = new ServiceCollection();
 
             services
-                .AddLogging(config => config.AddConsole())
+                //.AddLogging(config => config.AddConsole())
                 .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
                 {
                     optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}", opt => opt.EnableNullChecks());

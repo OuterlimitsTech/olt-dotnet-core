@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Moq;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
+using Serilog;
 using System;
 
 namespace OLT.EF.Core.Tests
@@ -13,10 +15,13 @@ namespace OLT.EF.Core.Tests
 
         protected ServiceProvider BuildProvider()
         {
+            var loggerMock = new Mock<ILogger<OltDbContext<UnitTestContext>>>();
+
             var services = new ServiceCollection();
 
             services
-                .AddLogging(config => config.AddConsole())
+                //.AddLogging(config => config.AddConsole())
+                //.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: false))
                 .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) => 
                 {                    
                     optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}", opt => opt.EnableNullChecks());                    
@@ -44,6 +49,7 @@ namespace OLT.EF.Core.Tests
                 });
 
             services.AddScoped<IOltDbAuditUser, DbAuditUserService>();
+            
             return services.BuildServiceProvider();
         }
 

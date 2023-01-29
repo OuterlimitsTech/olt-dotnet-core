@@ -57,7 +57,7 @@ namespace OLT.AspNetCore.Tests
             features.Set<IFormFeature>(form);
             features.Set<IRouteValuesFeature>(routeValues);
             var context = new DefaultHttpContext(features);
-            context.Response.Body = new MemoryStream();
+            //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
             results.Values.Should().BeEquivalentTo(expected.ToDictionary(v => v.Key, x => x.Value.ToString()));
@@ -112,7 +112,7 @@ namespace OLT.AspNetCore.Tests
             features.Set<IFormFeature>(form);
             features.Set<IRouteValuesFeature>(routeValues);
             var context = new DefaultHttpContext(features);
-            context.Response.Body = new MemoryStream();
+            //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
             
@@ -141,7 +141,7 @@ namespace OLT.AspNetCore.Tests
             var features = new FeatureCollection();
             features.Set<IQueryFeature>(query);
             var context = new DefaultHttpContext(features);
-            context.Response.Body = new MemoryStream();
+            //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request.Query);
             results.Values.Should().BeEquivalentTo(dictionary.ToDictionary(v => v.Key, x => x.Value.ToString()));
@@ -172,7 +172,7 @@ namespace OLT.AspNetCore.Tests
             var features = new FeatureCollection();
             features.Set<IRouteValuesFeature>(routeValues);
             var context = new DefaultHttpContext(features);
-            context.Response.Body = new MemoryStream();
+            //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request.RouteValues);
 
@@ -200,7 +200,7 @@ namespace OLT.AspNetCore.Tests
             var features = new FeatureCollection();
             features.Set<IFormFeature>(form);
             var context = new DefaultHttpContext(features);
-            context.Response.Body = new MemoryStream();
+            //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request.Form);
             results.Values.Should().BeEquivalentTo(dictionary.ToDictionary(v => v.Key, x => x.Value.ToString()));
@@ -224,7 +224,7 @@ namespace OLT.AspNetCore.Tests
             var features = new FeatureCollection();
             features.Set<IQueryFeature>(query);
             var context = new DefaultHttpContext(features);
-            context.Response.Body = new MemoryStream();
+            //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
             

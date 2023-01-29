@@ -7,11 +7,11 @@
 		<ProjectGuid>d7bce122-0ca4-4a8a-8483-beb6a88b12b3</ProjectGuid>
 	</PropertyGroup>
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+	<!--<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
-	</ItemGroup>
+	</ItemGroup>-->
 
-	<ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+	<ItemGroup>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
 	</ItemGroup>
 
