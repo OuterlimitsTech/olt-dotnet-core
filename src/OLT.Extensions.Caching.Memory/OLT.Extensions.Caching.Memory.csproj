@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Description>Server Memory Caching Library</Description>
     <ProjectGuid>07D849D0-2A73-40FD-BE60-5A7366B7E88B</ProjectGuid>
   </PropertyGroup>

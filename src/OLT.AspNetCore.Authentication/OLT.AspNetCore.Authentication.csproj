@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Description>OLT AspNetCore Library</Description>
     <ProjectGuid>68E5FD50-A4E7-43F1-859C-D080A89A1DE9</ProjectGuid>
   </PropertyGroup>

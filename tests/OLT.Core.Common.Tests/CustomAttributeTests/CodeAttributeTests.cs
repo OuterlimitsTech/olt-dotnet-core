@@ -40,12 +40,12 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
         }
 
         [Theory]
-        [InlineData("value-1", (short)10, CodeAttributeTest.Value1)]
-        [InlineData(null, null, CodeAttributeTest.Value2)]
-        [InlineData(null, null, CodeAttributeTest.Value3)]
-        [InlineData("value-4", (short)5000, CodeAttributeTest.Value4)]
-        [InlineData(null, null, null)]
-        public void GetCodeEnumExtenstions(string expected, short? expectedSort, CodeAttributeTest? value)
+        [InlineData("value-1", CodeAttributeTest.Value1)]
+        [InlineData(null, CodeAttributeTest.Value2)]
+        [InlineData(null, CodeAttributeTest.Value3)]
+        [InlineData("value-4", CodeAttributeTest.Value4)]
+        [InlineData(null, null)]
+        public void GetCodeEnumExtenstions(string expected, CodeAttributeTest? value)
         {
             Assert.Equal(expected, OltCodeAttributeExtensions.GetCodeEnum(value));            
         }

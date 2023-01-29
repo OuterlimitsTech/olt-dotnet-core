@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>DataAdapters Library</Description>
     <ProjectGuid>45FC2E6A-863E-40E1-9633-FE9EA30928ED</ProjectGuid>

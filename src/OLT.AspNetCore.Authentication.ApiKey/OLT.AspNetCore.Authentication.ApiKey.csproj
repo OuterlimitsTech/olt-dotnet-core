@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Description>OLT AspNetCore Autentication for API Key in the Header or Query</Description>
     <RootNamespace>OLT.AspNetCore.Authentication</RootNamespace>
     <ProjectGuid>C956A868-FF52-4A3D-B8EF-875F00F5BFC0</ProjectGuid>

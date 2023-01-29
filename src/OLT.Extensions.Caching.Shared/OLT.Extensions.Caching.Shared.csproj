@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>Abstract Caching Library</Description>
     <ProjectGuid>6155F10A-0E8E-4E90-A7C3-E995CE67E3AF</ProjectGuid>

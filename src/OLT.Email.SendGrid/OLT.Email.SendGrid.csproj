@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Description>Sends Email via SendGrid with whitelist for non-production environments</Description>
     <ProjectGuid>4253995B-2ED9-4723-AE76-3D9B1DD57852</ProjectGuid>
   </PropertyGroup>
