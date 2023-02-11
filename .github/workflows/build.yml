@@ -67,6 +67,11 @@ jobs:
             6.0.x
             7.0.x
 
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v1
+      #   with:
+      #     dotnet-version: 6.0.x
+
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v5.1
