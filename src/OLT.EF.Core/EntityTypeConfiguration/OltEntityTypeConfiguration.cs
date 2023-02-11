@@ -12,7 +12,7 @@ using OLT.Constants;
 namespace OLT.Core
 {
     public abstract class OltEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-        where TEntity : class, IOltEntity, new()
+        where TEntity : class, IOltEntity
     {        
         public abstract void Configure(EntityTypeBuilder<TEntity> builder);
         protected virtual DateTimeOffset DefaultCreateDate => OltEFCoreConstants.DefaultSeedCreateDate;
