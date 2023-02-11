@@ -20,11 +20,11 @@ namespace OLT.Core
         /// <returns>The <see cref="string"/>.</returns>
         public static string GeneratePassword(int length = 8, bool useNumbers = true, bool useLowerCaseLetters = true, bool useUpperCaseLetters = true, bool useSymbols = true)
         {
-            var total = (new char[0])
-                            .Concat(useUpperCaseLetters ? OltCharacters.UpperCase : new char[0])
-                            .Concat(useLowerCaseLetters ? OltCharacters.LowerCase : new char[0])
-                            .Concat(useNumbers ? OltCharacters.Numerals : new char[0])
-                            .Concat(useSymbols ? OltCharacters.Symbols : new char[0])
+            var total = Array.Empty<char>()
+                            .Concat(useUpperCaseLetters ? OltCharacters.UpperCase : Array.Empty<char>())
+                            .Concat(useLowerCaseLetters ? OltCharacters.LowerCase : Array.Empty<char>())
+                            .Concat(useNumbers ? OltCharacters.Numerals : Array.Empty<char>())
+                            .Concat(useSymbols ? OltCharacters.Symbols : Array.Empty<char>())
                             .ToArray();
 
             var random = new Random(GetCryptographicRandomNumber());
@@ -64,7 +64,7 @@ namespace OLT.Core
 
         public static string GetUniqueKey(int size)
         {
-            var chars = (new char[0])
+            var chars = Array.Empty<char>()
                 .Concat(OltCharacters.UpperCase)
                 .Concat(OltCharacters.LowerCase)
                 .Concat(OltCharacters.Numerals)
@@ -90,7 +90,7 @@ namespace OLT.Core
 
         public static string GetUniqueKeyOriginal_BIASED(int size)
         {
-            var chars = (new char[0])
+            var chars = Array.Empty<char>()
                 .Concat(OltCharacters.UpperCase)
                 .Concat(OltCharacters.LowerCase)
                 .Concat(OltCharacters.Numerals)

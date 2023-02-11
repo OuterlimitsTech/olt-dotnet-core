@@ -20,8 +20,6 @@ namespace OLT.Core
         where TContext: DbContext, IOltDbContext
     {
         private IOltDbAuditUser _dbAuditUser;
-        //private ILogger<OltDbContext<TContext>> _logger;
-        //private ILogger _logger;
 
 #pragma warning disable S2743 // Static fields should not be used in generic types
 #pragma warning disable IDE0044 // Add readonly modifier
@@ -48,8 +46,6 @@ namespace OLT.Core
 
 
         protected virtual IOltDbAuditUser DbAuditUser => _dbAuditUser ??= this.GetService<IOltDbAuditUser>();
-        //protected virtual ILogger Logger => _logger ??= this.GetService<ILogger>();
-        //protected virtual ILogger<OltDbContext<TContext>> Logger => _logger ??= this.GetService<ILogger<OltDbContext<TContext>>>();
 
         public abstract string DefaultSchema { get; }
         public abstract bool DisableCascadeDeleteConvention { get; }
@@ -135,12 +131,12 @@ namespace OLT.Core
                 var logger = this.GetService<ILogger<OltDbContext<TContext>>>();
                 foreach(var detail in entryDetails)
                 {
-                    logger.LogDebug(detail);
+                    logger.LogDebug("DB Exception -> Entry Detail: {detail}", detail);
                 }
 
                 foreach (var error in errors)
                 {
-                    logger.LogError(error);
+                    logger.LogError("DB Exception: {error}", error);
                 }
             }
             catch (Exception)
