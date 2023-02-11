@@ -1,14 +1,12 @@
 ﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Asp.Versioning;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.AspNetCore.Tests.Assets;
 using OLT.Constants;
 using OLT.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,7 +28,7 @@ namespace OLT.AspNetCore.Tests
         [InlineData("/api/api-version/one?api-version=2.0", HttpStatusCode.OK)]
         [InlineData("/api/api-version/one?api-version=3.0", HttpStatusCode.BadRequest)]
         [InlineData("/api/api-version/two", HttpStatusCode.BadRequest)]
-        [InlineData("/api/api-version/two?api-version=1.0", HttpStatusCode.MethodNotAllowed)]
+        [InlineData("/api/api-version/two?api-version=1.0", HttpStatusCode.BadRequest)]
         [InlineData("/api/api-version/two?api-version=2.0", HttpStatusCode.OK)]
         [InlineData("/api/api-version/two?api-version=3.0", HttpStatusCode.BadRequest)]
         public async Task ControllerTests(string uri, HttpStatusCode expected)

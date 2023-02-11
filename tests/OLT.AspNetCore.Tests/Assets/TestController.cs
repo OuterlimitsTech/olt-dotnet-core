@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 using OLT.Core;
 
 namespace OLT.AspNetCore.Tests.Assets

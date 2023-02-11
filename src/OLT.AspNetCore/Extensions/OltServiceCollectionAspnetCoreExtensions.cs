@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
+using Asp.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
@@ -100,7 +98,7 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(options));
             }
 
-            return services
+            services
                 .AddApiVersioning(opt =>
                 {
                     opt.ApiVersionReader = ApiVersionReader.Combine(options.Parameter.BuildReaders());
@@ -108,13 +106,16 @@ namespace OLT.Core
                     opt.DefaultApiVersion = options.DefaultVersion;
                     opt.ReportApiVersions = options.ReportVersions;                    
                 })
-                .AddVersionedApiExplorer(opt =>
+                .AddApiExplorer(opt =>
                 {
                     //The format of the version added to the route URL  
                     opt.GroupNameFormat = "'v'VVV";
                     //Tells swagger to replace the version in the controller route  
                     opt.SubstituteApiVersionInUrl = true;
-                });
+                })
+                .AddMvc();
+
+            return services;
         }        
     }
 }
