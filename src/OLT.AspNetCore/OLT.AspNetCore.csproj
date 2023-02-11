@@ -9,8 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="6.4.0" />
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />		
 	</ItemGroup>
 
 	<ItemGroup>
