@@ -128,7 +128,7 @@ namespace OLT.Core
 
             try
             {
-                var logger = this.GetService<ILogger<OltDbContext<TContext>>>();
+                var logger = this.GetService<ILogger<OltDbContext<TContext>>>() ?? this.GetService<ILogger>();
                 foreach(var detail in entryDetails)
                 {
                     logger.LogDebug("DB Exception -> Entry Detail: {detail}", detail);
@@ -139,7 +139,7 @@ namespace OLT.Core
                     logger.LogError("DB Exception: {error}", error);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 var exceptions = errors.Select(s => new OltException(s));                
                 if (exceptions.Any())
