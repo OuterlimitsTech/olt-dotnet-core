@@ -139,7 +139,7 @@ namespace OLT.Core
                     logger.LogError("DB Exception: {error}", error);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 var exceptions = errors.Select(s => new OltException(s));                
                 if (exceptions.Any())

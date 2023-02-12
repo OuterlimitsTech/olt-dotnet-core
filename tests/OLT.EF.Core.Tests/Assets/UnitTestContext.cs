@@ -59,6 +59,7 @@ namespace OLT.EF.Core.Tests.Assets
                 }
             }
         }
+
         protected override void PrepareToSave()
         {            
             base.PrepareToSave();

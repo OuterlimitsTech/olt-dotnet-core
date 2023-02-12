@@ -92,8 +92,8 @@ namespace OLT.EF.Core.Tests
                 var entity = await AddPerson(context);
 
                 entity.NameFirst = Faker.Lorem.Paragraph(20);  //overflow
-                Assert.Throws<AggregateException>(() => context.SaveChanges());                
-                //await Assert.ThrowsAsync<AggregateException>(() => context.SaveChangesAsync());
+                Assert.Throws<DbUpdateException>(() => context.SaveChanges());
+                await Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
             }
 
             using (var provider = BuildProviderWithLogging())
