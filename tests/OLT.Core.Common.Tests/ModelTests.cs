@@ -124,8 +124,7 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(0, model.Page);
             Assert.Equal(0, model.Size);
             Assert.Equal(0, model.Count);
-            Assert.Null(model.Data);
-            Assert.False(model.Asc);
+
 
             Assert.Null(model as IOltPagingParams);
             Assert.NotNull(model as IOltPaged);
@@ -139,15 +138,11 @@ namespace OLT.Core.Common.Tests
             model.Page = page;
             model.Size = size;
             model.Count = count;
-            model.SortBy = sortBy;
             model.Data = list;
-            model.Asc = true;
 
             Assert.Equal(page, model.Page);
             Assert.Equal(size, model.Size);
             Assert.Equal(count, model.Count);
-            Assert.Equal(sortBy, model.SortBy);
-            Assert.True(model.Asc);
             model.Data.Should().BeEquivalentTo(list);
         }
 

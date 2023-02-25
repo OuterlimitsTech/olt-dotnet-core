@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace OLT.Core
 {
-
     public static class OltModelBuilderExtensions
     {
 
@@ -74,22 +73,43 @@ namespace OLT.Core
             }
 
 #pragma warning disable S125
+
             EntitiesOfType<TEntity>(modelBuilder, builder =>
             {
                 var clrType = builder.Metadata.ClrType;
-                
-                //TPH class?
-                if (!builder.Metadata.GetDefaultTableName().Equals(builder.Metadata.GetTableName(), StringComparison.OrdinalIgnoreCase) && builder.Metadata.GetDiscriminatorPropertyName() != null)
+                var tableName = builder.Metadata.GetDefaultTableName();
+
+                if (tableName != null && clrType != null)
                 {
-                    //Console.WriteLine($"GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorProperty()} of type {builder.Metadata.ClrType.FullName}");
-                    clrType = clrType.BaseType;
-                    //Console.WriteLine($"{builder.Metadata.GetTableName()} not equal to {builder.Metadata.GetDefaultTableName()} of type {builder.Metadata.ClrType.FullName}");
+                    //TPH class?
+                    if (builder.Metadata.GetDiscriminatorPropertyName() != null)
+                    {
+
+                        if (clrType.FullName.Equals(clrType.BaseType.FullName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            //Console.WriteLine($"{tableName}: GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorPropertyName()} of type {builder.Metadata.ClrType.FullName}");
+                            clrType = clrType.BaseType;
+                            //Console.WriteLine($"{tableName}: {builder.Metadata.GetTableName()} not equal to {builder.Metadata.GetDefaultTableName()} of type {builder.Metadata.ClrType.FullName}");
+                        }
+                        else
+                        {
+                            clrType = null;  //Don't set the expression on the child TPH entity. This changed from EF6 to EF7
+                        }
+
+                    }
+
+                    if (clrType != null)
+                    {
+                        var newParam = Expression.Parameter(clrType);
+                        var newBody = ReplacingExpressionVisitor.Replace(expression.Parameters.Single(), newParam, expression.Body);
+                        modelBuilder.Entity(clrType).HasQueryFilter(Expression.Lambda(newBody, newParam));
+                    }
+
                 }
-                var newParam = Expression.Parameter(clrType);
-                var newBody = ReplacingExpressionVisitor.Replace(expression.Parameters.Single(), newParam, expression.Body);
-                modelBuilder.Entity(clrType).HasQueryFilter(Expression.Lambda(newBody, newParam));
 
             });
+
+
 #pragma warning restore S125
 
         }

@@ -102,7 +102,7 @@ namespace OLT.EF.Core.Tests
 
                 var entity = await AddPerson(context);
                 entity.NameFirst = null;
-                //Assert.Throws<Exception>(() => context.SaveChanges());
+                Assert.Throws<Exception>(() => context.SaveChanges());
                 await Assert.ThrowsAsync<Exception>(() => context.SaveChangesAsync());
             }
         }

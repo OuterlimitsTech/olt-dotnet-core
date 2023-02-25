@@ -323,9 +323,10 @@ namespace OLT.Core
             var typeHandle = type.TypeHandle;
 
             // Fast return if we did this already.....
-            if (_entityMetatdataCache.ContainsKey(typeHandle))
+            List<NullableStringPropertyMetaData> existing;
+            if (_entityMetatdataCache.TryGetValue(typeHandle, out existing))
             {
-                return _entityMetatdataCache[typeHandle];
+                return existing;
             }
 
             List<NullableStringPropertyMetaData> result = new List<NullableStringPropertyMetaData>();
