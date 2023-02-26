@@ -81,10 +81,10 @@ namespace OLT.Core
 
                 if (tableName != null && clrType != null)
                 {
+                    var discriminatorPropertyName = builder.Metadata.GetDiscriminatorPropertyName();
                     //TPH class?
-                    if (builder.Metadata.GetDiscriminatorPropertyName() != null)
+                    if (discriminatorPropertyName != null)
                     {
-
                         if (clrType.FullName.Equals(clrType.BaseType.FullName, StringComparison.OrdinalIgnoreCase))
                         {
                             //Console.WriteLine($"{tableName}: GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorPropertyName()} of type {builder.Metadata.ClrType.FullName}");
@@ -93,9 +93,8 @@ namespace OLT.Core
                         }
                         else
                         {
-                            clrType = null;  //Don't set the expression on the child TPH entity. This changed from EF6 to EF7
+                            clrType = null;  //Don't set the expression on the child TPH entity. This changed from EF Core 6 to EF Core 7
                         }
-
                     }
 
                     if (clrType != null)
