@@ -1,4 +1,3 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32112.339
@@ -203,9 +202,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Core.CommandBus.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OLT.AspNetCore.Versioning", "OLT.AspNetCore.Versioning", "{3E11448E-5ACC-46B8-AD23-3DD96C7F94ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.AspNetCore.Versioning", "src\OLT.AspNetCore.Versioning\OLT.AspNetCore.Versioning.csproj", "{828461F3-7249-461E-A72D-DAFECFD555E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Versioning", "src\OLT.AspNetCore.Versioning\OLT.AspNetCore.Versioning.csproj", "{828461F3-7249-461E-A72D-DAFECFD555E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.AspNetCore.Versioning.Tests", "tests\OLT.AspNetCore.Versioning.Tests\OLT.AspNetCore.Versioning.Tests.csproj", "{F553B28A-C4AF-4215-9535-053132393CDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.AspNetCore.Versioning.Tests", "tests\OLT.AspNetCore.Versioning.Tests\OLT.AspNetCore.Versioning.Tests.csproj", "{F553B28A-C4AF-4215-9535-053132393CDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{3D90FC9A-8A2E-4870-BC52-3193FEE45FE4}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
