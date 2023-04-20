@@ -11,7 +11,7 @@ namespace OLT.Core
         string DefaultAnonymousUser { get; }
         string AuditUser { get; }
         int SaveChanges();
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
     }
 
 

@@ -7,7 +7,7 @@ namespace OLT.Core
     {
         public override bool TryParse(string param, out string value)
         {
-            if (param.IsNotEmpty())
+            if (!string.IsNullOrWhiteSpace(param))
             {
                 value = param;
                 return true;
