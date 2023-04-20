@@ -11,7 +11,7 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
     {
         public enum CodeAttributeTest
         {
-            [Code("value-1", 10)]
+            [Code("value-1")]
             Value1,
 
             Value2,
@@ -20,7 +20,7 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
             Value3,
 
             [Description("Value 4")]
-            [Code("value-4", 5000)]
+            [Code("value-4")]
             Value4,
         }
 
@@ -33,25 +33,21 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
 
             var attr = new CodeAttribute(value);
             Assert.Equal(value, attr.Code);
-            Assert.Equal(DefaultSort, attr.DefaultSort);
 
             value = Faker.Lorem.Words(10).Last();
-            var sort = (short)Faker.RandomNumber.Next(100, 500);
-            attr = new CodeAttribute(value, sort);
+            attr = new CodeAttribute(value);
             Assert.Equal(value, attr.Code);
-            Assert.Equal(sort, attr.DefaultSort);
         }
 
         [Theory]
-        [InlineData("value-1", (short)10, CodeAttributeTest.Value1)]
-        [InlineData(null, null, CodeAttributeTest.Value2)]
-        [InlineData(null, null, CodeAttributeTest.Value3)]
-        [InlineData("value-4", (short)5000, CodeAttributeTest.Value4)]
-        [InlineData(null, null, null)]
-        public void GetCodeEnumExtenstions(string expected, short? expectedSort, CodeAttributeTest? value)
+        [InlineData("value-1", CodeAttributeTest.Value1)]
+        [InlineData(null, CodeAttributeTest.Value2)]
+        [InlineData(null, CodeAttributeTest.Value3)]
+        [InlineData("value-4", CodeAttributeTest.Value4)]
+        [InlineData(null, null)]
+        public void GetCodeEnumExtenstions(string expected, CodeAttributeTest? value)
         {
-            Assert.Equal(expected, OltCodeAttributeExtensions.GetCodeEnum(value));
-            Assert.Equal(expectedSort, OltCodeAttributeExtensions.GetCodeEnumSort(value));
+            Assert.Equal(expected, OltCodeAttributeExtensions.GetCodeEnum(value));            
         }
 
 

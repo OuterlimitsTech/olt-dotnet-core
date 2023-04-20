@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
 		<RootNamespace>OLT.Core</RootNamespace>
 		<Description>Auto Mapper Extensions for Data Adapters</Description>
 		<ProjectGuid>c956c04f-4523-4f68-961c-8174803aa073</ProjectGuid>

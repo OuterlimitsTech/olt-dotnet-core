@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net6.0</TargetFrameworks>
+    <TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Description>General Extensions</Description>
     <ProjectGuid>545BCC71-DBCB-4943-8E23-6C82A16B624B</ProjectGuid>
   </PropertyGroup>

@@ -8,7 +8,7 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models
     {
         public DateTimeOffset Created { get; set; }
 
-        public static void BuildMap(IMappingExpression<PersonEntity, PersonAutoMapperPagedDto> mappingExpression)
+        public static IMappingExpression<PersonEntity, PersonAutoMapperPagedDto> BuildMap(IMappingExpression<PersonEntity, PersonAutoMapperPagedDto> mappingExpression)
         {
             mappingExpression
                 .ForMember(f => f.PersonId, opt => opt.MapFrom(t => t.Id))
@@ -20,6 +20,8 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models
                 .ForMember(f => f.Id, opt => opt.Ignore())
                 .ForMember(f => f.CreateDate, opt => opt.Ignore())
                 ;
+
+            return mappingExpression;
         }
     }
 }

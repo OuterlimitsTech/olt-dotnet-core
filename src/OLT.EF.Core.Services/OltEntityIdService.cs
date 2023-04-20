@@ -10,7 +10,7 @@ namespace OLT.Core
 {
     public abstract class OltEntityIdService<TContext, TEntity> : OltEntityService<TContext, TEntity>, IOltEntityIdService<TEntity>
         where TEntity : class, IOltEntityId, IOltEntity, new()
-        where TContext : DbContext, IOltDbContext
+        where TContext : IOltDbContext
     {
         protected OltEntityIdService(
             IOltServiceManager serviceManager,

@@ -20,7 +20,6 @@ namespace OLT.Core
         where TContext: DbContext, IOltDbContext
     {
         private IOltDbAuditUser _dbAuditUser;
-        private ILogger<OltDbContext<TContext>> _logger;
 
 #pragma warning disable S2743 // Static fields should not be used in generic types
 #pragma warning disable IDE0044 // Add readonly modifier
@@ -42,12 +41,11 @@ namespace OLT.Core
 
         protected OltDbContext(DbContextOptions<TContext> options) : base(options)
         {
-
+            
         }
 
 
         protected virtual IOltDbAuditUser DbAuditUser => _dbAuditUser ??= this.GetService<IOltDbAuditUser>();
-        protected virtual ILogger<OltDbContext<TContext>> Logger => _logger ??= this.GetService<ILogger<OltDbContext<TContext>>>();
 
         public abstract string DefaultSchema { get; }
         public abstract bool DisableCascadeDeleteConvention { get; }
@@ -113,20 +111,43 @@ namespace OLT.Core
 
         protected virtual void WriteExceptionEntries(IEnumerable<EntityEntry> entries)
         {
-
+            var entryDetails = new List<string>();
+            var errors = new List<string>();
             foreach (var entry in entries)
             {
                 foreach (var prop in entry.CurrentValues.Properties)
                 {
                     var val = prop.PropertyInfo.GetValue(entry.Entity);
-                    Logger.LogDebug("[DB Field] -> {identifier}: {propertyInfo} ~ ({valueLength}) - ({value})", ContextId, prop, val?.ToString().Length, val);
-
+                    entryDetails.Add($"[DB Field] -> {ContextId}: {prop} ~ ({val?.ToString().Length}) - ({val})");
                     if (val?.ToString().Length > prop.GetMaxLength())
                     {
-                        Logger.LogCritical("[DB Field] MaxLength Exceeded -> {identifier}: {propertyInfo} ----> ({value}) [{valueLength} > {maxLength}] <----", ContextId, prop, val, val?.ToString().Length, prop.GetMaxLength());
+                        errors.Add($"[DB Field] MaxLength Exceeded -> {ContextId}: {prop} ----> ({val}) [{val?.ToString().Length} > {prop.GetMaxLength()}] <----");
                     }
                 }
             }
+
+            try
+            {
+                var logger = this.GetService<ILogger<OltDbContext<TContext>>>() ?? this.GetService<ILogger>();
+                foreach(var detail in entryDetails)
+                {
+                    logger.LogDebug("DB Exception -> Entry Detail: {detail}", detail);
+                }
+
+                foreach (var error in errors)
+                {
+                    logger.LogError("DB Exception: {error}", error);
+                }
+            }
+            catch (Exception)
+            {
+                var exceptions = errors.Select(s => new OltException(s));                
+                if (exceptions.Any())
+                {
+                    throw new AggregateException("[DB Field] MaxLength Exceeded", exceptions);
+                }
+            }
+
         }
 
 
@@ -243,8 +264,7 @@ namespace OLT.Core
                         }
                     }
                     catch (Exception ex)
-                    {
-                        Logger.LogCritical(ex, "Entity Type: {EntityType} -> {PropertyName}", entityEntry.Entity.GetType().FullName, nullableStringField.PropertyName);
+                    {                        
                         throw new OltException($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
                     }
                 }
@@ -303,9 +323,10 @@ namespace OLT.Core
             var typeHandle = type.TypeHandle;
 
             // Fast return if we did this already.....
-            if (_entityMetatdataCache.ContainsKey(typeHandle))
+            List<NullableStringPropertyMetaData> existing;
+            if (_entityMetatdataCache.TryGetValue(typeHandle, out existing))
             {
-                return _entityMetatdataCache[typeHandle];
+                return existing;
             }
 
             List<NullableStringPropertyMetaData> result = new List<NullableStringPropertyMetaData>();

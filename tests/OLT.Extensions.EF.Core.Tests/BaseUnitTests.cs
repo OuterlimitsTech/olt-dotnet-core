@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using OLT.Core;
 using OLT.Extensions.EF.Core.Tests.Assets;
 using System;
+using Serilog;
 
 namespace OLT.Extensions.EF.Core.Tests
 {
@@ -15,7 +15,8 @@ namespace OLT.Extensions.EF.Core.Tests
             var services = new ServiceCollection();
 
             services
-                .AddLogging(config => config.AddConsole())
+                //.AddLogging(config => config.AddConsole())
+                .AddLogging(loggingBuilder =>  loggingBuilder.AddSerilog(dispose: true))
                 .AddDbContextPool<UnitTestContext>((serviceProvider, optionsBuilder) =>
                 {
                     optionsBuilder.UseInMemoryDatabase(databaseName: $"UnitTest_EFCore_{Guid.NewGuid()}", opt => opt.EnableNullChecks());

@@ -5,6 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.EF.Core.Tests.Assets.Entites.Code
 {
+    public interface ITesting : IOltEntityDeletable
+    {
+
+    }
     public abstract class BaseCodeValueEntity : OltEntityIdDeletable, IOltEntityCodeValue, IOltEntitySortable
     {
         [StringLength(50)]
@@ -18,7 +22,7 @@ namespace OLT.EF.Core.Tests.Assets.Entites.Code
 
     //TPH Model
     [Table(nameof(CodeTableEntity), Schema = "Code")]
-    public abstract class CodeTableEntity : BaseCodeValueEntity
+    public abstract class CodeTableEntity : BaseCodeValueEntity, ITesting
     {
         public string GetDiscriminator()
         {

@@ -8,7 +8,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
 {
     public abstract class BaseAdpaterTests
     {
-        private readonly List<Profile> DefaultMaps = new List<Profile> { new AutoMapperMaps(), new AdapterObject4PagedMap() };
+        private readonly List<Profile> DefaultMaps = new List<Profile> { new AutoMapperMaps() };
 
         protected void RegisterMaps(IServiceCollection services, List<Profile> maps)
         {
@@ -23,9 +23,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             var services = new ServiceCollection();
             services.AddSingleton<IOltAdapterResolver, OltAdapterResolverAutoMapper>();
             services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject3Adapter>();
-            services.AddSingleton<IOltAdapter, AdapterObject4PagedMap>();
             services.AddSingleton<IOltAdapter, AdapterObject2ToAdapterObject5PagedAdapter>();
-            services.AddSingleton<IOltAdapter, InvalidPagedMap>();
             RegisterMaps(services, maps ?? DefaultMaps);
             return services.BuildServiceProvider();
         }

@@ -85,21 +85,26 @@ namespace OLT.EF.Core.Tests
         [Fact]
         public async Task ExceptionTests()
         {
-            using (var provider = BuildProvider())
+            using (var provider = BuildProviderWithLogging())
             {
                 var context = provider.GetService<UnitTestContext>();
 
                 var entity = await AddPerson(context);
 
                 entity.NameFirst = Faker.Lorem.Paragraph(20);  //overflow
-                Assert.Throws<DbUpdateException>(() => context.SaveChanges());                
+                Assert.Throws<DbUpdateException>(() => context.SaveChanges());
                 await Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
+            }
 
+            using (var provider = BuildProviderWithLogging())
+            {
+                var context = provider.GetService<UnitTestContext>();
+
+                var entity = await AddPerson(context);
                 entity.NameFirst = null;
                 Assert.Throws<Exception>(() => context.SaveChanges());
                 await Assert.ThrowsAsync<Exception>(() => context.SaveChangesAsync());
             }
-
         }
 
         [Fact]

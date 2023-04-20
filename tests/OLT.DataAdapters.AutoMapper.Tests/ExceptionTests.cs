@@ -30,10 +30,5 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             Assert.Equal($"AutoMapper Exception while using map {nameof(IOltAdapterMap<AdapterObject1, AdapterObject2>)}: {typeof(AdapterObject1).FullName} -> {typeof(AdapterObject2).FullName}", ex.Message);
         }
 
-        [Fact]
-        public void GeneralTests()
-        {
-            Assert.Equal(OltAdapterExtensions.BuildAdapterName<AdapterObject2, AdapterObject4>(), new AdapterObject4PagedMap().Name);
-        }
     }
 }

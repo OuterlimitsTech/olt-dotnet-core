@@ -32,14 +32,6 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
         //[EnumMember(Value = "system-load")]  
         SystemLoad = 530,
 
-        [Code("LegacySortOrder", 350)]
-        [KeyValue("Email", "legacy@test.com")]
-        [KeyValue("FirstName", "Code")]
-        [KeyValue("LastName", "Legacy")]
-        [Description("Code Legacy")]
-        [UniqueId("3bf7576b-9e4b-4941-9196-6bab23ed6f69")]
-        LegacySortOrder = 535,
-
 
         ErrorAccount = 540,
     }
@@ -69,14 +61,9 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
             //    System.Diagnostics.Debugger.Break();
             //}
 
-            if (@enum == UserEntityTypes.LegacySortOrder && System.Diagnostics.Debugger.IsAttached)
-            {
-                System.Diagnostics.Debugger.Break();
-            }
 
             var keyValue = OltKeyValueAttributeExtensions.GetKeyValueAttributes(@enum);
             var fullName = OltAttributeExtensions.GetDescription(@enum);
-            var legacySortOrder = OltCodeAttributeExtensions.GetCodeEnumSort(@enum);
             var sortOrder = OltSortOrderAttributeExtensions.GetSortOrderEnum(@enum);
             var sortOrderDifferentDefault = OltSortOrderAttributeExtensions.GetSortOrderEnum(@enum, testDefaultSort);
             var uid = OltAttributeExtensions.GetAttributeInstance<UniqueIdAttribute, UserEntityTypes>(@enum)?.UniqueId;
@@ -110,17 +97,7 @@ namespace OLT.EF.Core.Tests.Assets.EntityTypeConfigurations
                 entity.FirstName = keyValue.First(p => p.Key == "FirstName")?.Value;
                 entity.LastName = keyValue.First(p => p.Key == "LastName")?.Value;
 
-                if (@enum == UserEntityTypes.LegacySortOrder)
-                {
-                    Assert.Equal(legacySortOrder, base.GetEnumCodeSortOrder(@enum));
-                    Assert.Equal(OltCommonDefaults.SortOrder, sortOrder);
-                }
-                else
-                {
-                    Assert.Equal(OltCommonDefaults.SortOrder, legacySortOrder);
-                    Assert.Equal(sortOrder, base.GetEnumSortOrder(@enum));
-                }
-                    
+                Assert.Equal(sortOrder, base.GetEnumSortOrder(@enum));
                 Assert.Equal(fullName, base.GetEnumDescription(@enum));
             }
 

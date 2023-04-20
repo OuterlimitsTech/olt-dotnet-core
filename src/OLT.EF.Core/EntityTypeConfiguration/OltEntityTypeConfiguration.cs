@@ -12,18 +12,11 @@ using OLT.Constants;
 namespace OLT.Core
 {
     public abstract class OltEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
-        where TEntity : class, IOltEntity, new()
+        where TEntity : class, IOltEntity
     {        
         public abstract void Configure(EntityTypeBuilder<TEntity> builder);
         protected virtual DateTimeOffset DefaultCreateDate => OltEFCoreConstants.DefaultSeedCreateDate;
         protected virtual string DefaultUsername => OltEFCoreConstants.DefaultSeedUsername;
-
-        [Obsolete("Move To GetEnumSortOrder")]
-        protected virtual short GetEnumCodeSortOrder<TEnum>(TEnum item, short defaultValue = OltCommonDefaults.SortOrder)
-            where TEnum : System.Enum
-        {
-            return OltAttributeExtensions.GetAttributeInstance<CodeAttribute, TEnum>(item)?.DefaultSort ?? defaultValue;
-        }
 
         protected virtual short GetEnumSortOrder<TEnum>(TEnum item, short defaultValue = OltCommonDefaults.SortOrder)
             where TEnum : System.Enum
@@ -96,11 +89,6 @@ namespace OLT.Core
             if (entity is IOltEntitySortable sortableEntity)
             {
                 sortableEntity.SortOrder = GetEnumSortOrder(@enum, DefaultSort);
-                var legacy = GetEnumCodeSortOrder(@enum, DefaultSort);
-                if (legacy != DefaultSort && sortableEntity.SortOrder == DefaultSort)
-                {
-                    sortableEntity.SortOrder = legacy;
-                }
             }
 
             if (entity is IOltEntityAudit auditEntity)

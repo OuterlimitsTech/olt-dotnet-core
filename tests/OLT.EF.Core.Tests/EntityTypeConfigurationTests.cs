@@ -68,7 +68,7 @@ namespace OLT.EF.Core.Tests
 
                     Assert.False(entityTypeBuilder.Property(p => p.LastName).Metadata.IsColumnNullable());
 
-                    config.Results.Should().HaveCount(4);
+                    config.Results.Should().HaveCount(3);
 
                 }
             }
@@ -95,7 +95,7 @@ namespace OLT.EF.Core.Tests
                     config.Configure(entityTypeBuilder);
 
 
-                    config.Results.Should().HaveCount(5);
+                    config.Results.Should().HaveCount(3);
 
                 }
             }

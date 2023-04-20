@@ -8,7 +8,7 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
     {
         public enum SortAttributeTest
         {
-            [Code("value-1", 10)]
+            [Code("value-1")]
             [SortOrder(15)]
             Value1,
 
@@ -19,7 +19,7 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
             Value3,
 
             [Description("Value 4")]
-            [Code("value-4", 5000)]
+            [Code("value-4")]
             Value4,
         }
 

@@ -16,8 +16,12 @@ using Xunit;
 
 namespace OLT.AspNetCore.Tests
 {
+
     public class ApplicationBuilderSettingsExtensionsTests
     {
+  
+
+
         public static IEnumerable<object[]> OptionsData =>
             new List<object[]>
             {

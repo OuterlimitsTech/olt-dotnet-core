@@ -22,21 +22,6 @@ namespace OLT.Core
             return attribute?.Code;
         }
 
-        /// <summary>
-        /// Returns DefaultSort value from <see cref="CodeAttribute"/> attribute
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns><see cref="short"/> DefaultSort from <see cref="CodeAttribute"/> or <see langword="null"/></returns>
-        [Obsolete("Move to OltSortOrderAttributeExtensions.GetSortOrderEnum")]
-        public static short? GetCodeEnumSort(this Enum value)
-        {
-            var attribute = value?.GetType()
-                .GetField(value.ToString())
-                .GetCustomAttributes(typeof(CodeAttribute), false)
-                .Cast<CodeAttribute>()
-                .SingleOrDefault();
-            return attribute?.DefaultSort;
-        }
 
         /// <summary>
         /// Searches <typeparamref name="TEnum"/> for <see cref="CodeAttribute"/> or Name matching string

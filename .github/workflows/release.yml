@@ -20,7 +20,9 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3.0.3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: |
+            6.0.x
+            7.0.x
 
       # - name: Setup .NET
       #   uses: actions/setup-dotnet@v1
@@ -38,7 +40,7 @@ jobs:
         run: dotnet build ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --configuration Release -p:Version=${{ steps.version.outputs.version-without-v }} --no-restore
 
       - name: "Pack project"
-        run: dotnet pack ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ format('{0}/{1}', env.SOURCE_DIRECTORY, env.SOLUTION_FILE) }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.version.outputs.version-without-v }} --p:PackageOutputPath=${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: "Push package"
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/**/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ env.NUGET_SOURCE_URL }}
