@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
+    [Obsolete("Will be removed in 8.x")]
     public class OltFileBuilderManager : OltDisposable, IOltFileBuilderManager
     {
         private readonly Dictionary<string, IOltFileBuilder> _builders;
