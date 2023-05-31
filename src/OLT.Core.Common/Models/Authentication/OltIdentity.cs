@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 
 namespace OLT.Core
 {
@@ -15,19 +14,19 @@ namespace OLT.Core
         /// <summary>
         /// Is Anonymous Request (other properties will likely be null)
         /// </summary>
-        public virtual bool IsAnonymous => Identity == null || Username == null;
+        public virtual bool IsAnonymous => Identity == null || UserPrincipalName == null;
 
-        public abstract ClaimsPrincipal Identity { get; }
-
-        /// <summary>
-        /// Claim <see cref="ClaimTypes.NameIdentifier"/>
-        /// </summary>
-        public virtual string Username => GetClaims(ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+        public abstract System.Security.Claims.ClaimsPrincipal Identity { get; }
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.GivenName"/>
+        /// Claim <see cref="OltClaimTypes.PreferredUsername"/>
         /// </summary>
-        public virtual string FirstName => GetClaims(ClaimTypes.GivenName).FirstOrDefault()?.Value;
+        public virtual string Username => GetClaims(OltClaimTypes.PreferredUsername).FirstOrDefault()?.Value;
+
+        /// <summary>
+        /// Claim <see cref="OltClaimTypes.GivenName"/>
+        /// </summary>
+        public virtual string FirstName => GetClaims(OltClaimTypes.GivenName).FirstOrDefault()?.Value;
 
         /// <summary>
         /// Claim <see cref="OltClaimTypes.MiddleName"/>
@@ -35,40 +34,40 @@ namespace OLT.Core
         public virtual string MiddleName => GetClaims(OltClaimTypes.MiddleName).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Surname"/>
+        /// Claim <see cref="OltClaimTypes.FamilyName"/> 
         /// </summary>
-        public virtual string LastName => GetClaims(ClaimTypes.Surname).FirstOrDefault()?.Value;
+        public virtual string LastName => GetClaims(OltClaimTypes.FamilyName).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Email"/>
+        /// Claim <see cref="OltClaimTypes.Email"/>
         /// </summary>
-        public virtual string Email => GetClaims(ClaimTypes.Email).FirstOrDefault()?.Value;
+        public virtual string Email => GetClaims(OltClaimTypes.Email).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.HomePhone"/>
+        /// Claim <see cref="OltClaimTypes.PhoneNumber"/>
         /// </summary>
-        public virtual string Phone => GetClaims(ClaimTypes.HomePhone).FirstOrDefault()?.Value;
+        public virtual string Phone => GetClaims(OltClaimTypes.PhoneNumber).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Name"/>
+        /// Claim <see cref="OltClaimTypes.Name"/>
         /// </summary>
-        public virtual string FullName => GetClaims(ClaimTypes.Name).FirstOrDefault()?.Value;
+        public virtual string FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Upn"/>
+        /// Claim <see cref="OltClaimTypes.Subject"/>
         /// </summary>
-        public virtual string UserPrincipalName => GetClaims(ClaimTypes.Upn).FirstOrDefault()?.Value;
+        public virtual string UserPrincipalName => GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
 
         /// <summary>
         /// Get all claims for given <see cref="Identity"/>
         /// </summary>
-        public virtual List<Claim> GetAllClaims()
+        public virtual List<System.Security.Claims.Claim> GetAllClaims()
         {
             if (Identity != null)
             {
                 return Identity.Claims.ToList();
             }
-            return new List<Claim>();
+            return new List<System.Security.Claims.Claim>();
         }
 
         /// <summary>
@@ -76,14 +75,14 @@ namespace OLT.Core
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual List<Claim> GetClaims(string type)
+        public virtual List<System.Security.Claims.Claim> GetClaims(string type)
         {
             return GetAllClaims().Where(p => p.Type == type).ToList();
         }
 
 
         /// <summary>
-        /// Returns claim for <see cref="ClaimTypes.NameIdentifier"/> 
+        /// Returns claim for <see cref="OltClaimTypes.PreferredUsername"/> 
         /// </summary>
         public virtual string GetDbUsername()
         {
@@ -91,18 +90,18 @@ namespace OLT.Core
         }
 
         /// <summary>
-        /// Returns all claims <see cref="ClaimTypes.Role"/>
+        /// Returns all claims <see cref="OltClaimTypes.Role"/>
         /// </summary>
-        public virtual List<Claim> GetRoles()
+        public virtual List<System.Security.Claims.Claim> GetRoles()
         {
-            return GetAllClaims().Where(p => p.Type == ClaimTypes.Role).ToList();
+            return GetAllClaims().Where(p => p.Type == OltClaimTypes.Role).ToList();
         }
 
 
         /// <summary>
-        /// Checks if claim <see cref="ClaimTypes.Role"/> exists
+        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists
         /// </summary>
-        /// <param name="claimName"><see cref="ClaimTypes.Role"/></param>
+        /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
         /// <returns></returns>
         public virtual bool HasRole(string claimName)
         {
@@ -110,7 +109,7 @@ namespace OLT.Core
         }
 
         /// <summary>
-        /// Checks if claim <see cref="ClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 
+        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 
         /// </summary>
         /// <typeparam name="TRoleEnum"></typeparam>
         /// <param name="roles"></param>
