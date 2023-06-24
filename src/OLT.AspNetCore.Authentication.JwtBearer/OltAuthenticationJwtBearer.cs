@@ -94,7 +94,7 @@ namespace OLT.AspNetCore.Authentication
                 //        //var userId = int.Parse(context.Principal.Identity.Name);
                 //        //if (context.Principal.Identity is ClaimsIdentity identity)
                 //        //{
-                //        //    var userId = Convert.ToInt32(identity.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Upn)?.Value);
+                //        //    var userId = Convert.ToInt32(identity.Claims.FirstOrDefault(p => p.Type == OltClaimTypes.Upn)?.Value);
                 //        //}
 
                 //        //var user = userService.GetById(userId);

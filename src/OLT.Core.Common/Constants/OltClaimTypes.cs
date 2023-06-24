@@ -215,7 +215,12 @@ namespace OLT.Constants
         public const string Region = "region";
 
         public const string RequestForgeryProtection = "rfp";
+
+        /// <summary>
+        /// Roles
+        /// </summary>
         public const string Role = "role";
+
         public const string Scope = "scope";
 
         /// <summary>
@@ -231,10 +236,10 @@ namespace OLT.Constants
 
         //public const string TargetLinkUri = "target_link_uri";
 
-        ///// <summary>
-        ///// Token Type
-        ///// </summary>
-        //public const string TokenType = "token_type";
+        /// <summary>
+        /// Token Type
+        /// </summary>
+        public const string TokenType = "token_type";
 
         ///// <summary>
         ///// Token Usage Type
@@ -263,6 +268,12 @@ namespace OLT.Constants
         /// https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
         /// </summary>
         public const string Zoneinfo = "zoneinfo";
+
+
+        /// <summary>
+        /// Legacy Primary Identifer (kept for older token apps)
+        /// </summary>
+        public const string UserPrincipalName = "user_principal_name";
 
     }
 }

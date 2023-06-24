@@ -5,6 +5,23 @@ namespace OLT.Core
 {
     public class OltPersonName : IOltPersonName
     {
+        public OltPersonName()
+        {
+            
+        }
+
+        public OltPersonName(string first, string last) : this()
+        {
+            First = first;
+            Last = last;
+        }
+
+        public OltPersonName(string first, string middle, string last, string suffix) : this(first, last)
+        {
+            Middle = middle;
+            Suffix = suffix;
+        }
+
         /// <summary>
         /// First Name
         /// </summary>

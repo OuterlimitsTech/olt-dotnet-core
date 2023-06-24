@@ -9,7 +9,7 @@ namespace OLT.Core
     {
 
         /// <summary>
-        /// Build claims <see cref="ClaimTypes.Name"/>, <see cref="ClaimTypes.Email"/>, <see cref="ClaimTypes.AuthenticationMethod"/>, <see cref="ClaimTypes.Upn"/>, <see cref="ClaimTypes.NameIdentifier"/>, <see cref="ClaimTypes.Role"/>
+        /// Build claims <see cref="OltClaimTypes.Name"/>, <see cref="OltClaimTypes.Email"/>, <see cref="OltClaimTypes.AuthenticationMethod"/>, <see cref="OltClaimTypes.Upn"/>, <see cref="OltClaimTypes.NameIdentifier"/>, <see cref="OltClaimTypes.Role"/>
         /// </summary>
         /// <typeparam name="TNameModel"></typeparam>
         /// <param name="model"></param>
@@ -24,20 +24,20 @@ namespace OLT.Core
             }
 
             var list = new List<Claim>();            
-            list.AddClaim(ClaimTypes.Name, model.FullName);
-            list.AddClaim(ClaimTypes.Email, model.Email);
-            list.AddClaim(ClaimTypes.AuthenticationMethod, model.AuthenticationType);
-            list.AddClaim(ClaimTypes.Upn, model.UserPrincipalName);
-            list.AddClaim(ClaimTypes.NameIdentifier, model.Username);
+            list.AddClaim(OltClaimTypes.Name, model.FullName);
+            list.AddClaim(OltClaimTypes.Email, model.Email);
+            list.AddClaim(OltClaimTypes.TokenType, model.AuthenticationType);
+            list.AddClaim(OltClaimTypes.UserPrincipalName, model.UserPrincipalName);
+            list.AddClaim(OltClaimTypes.PreferredUsername, model.Username);
 
             list.AddRange(model.Name.ToClaims());
-            list.AddRange(model.Roles.Select(value => new Claim(ClaimTypes.Role, value)));
-            list.AddRange(model.Permissions.Select(value => new Claim(ClaimTypes.Role, value)));
+            list.AddRange(model.Roles.Select(value => new Claim(OltClaimTypes.Role, value)));
+            list.AddRange(model.Permissions.Select(value => new Claim(OltClaimTypes.Role, value)));
             return list;
         }
 
         /// <summary>
-        /// Build claims <see cref="ClaimTypes.GivenName"/> <see cref="OltClaimTypes.MiddleName"/> <see cref="ClaimTypes.Surname"/>
+        /// Build claims <see cref="OltClaimTypes.GivenName"/> <see cref="OltClaimTypes.MiddleName"/> <see cref="OltClaimTypes.Surname"/>
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
@@ -51,16 +51,16 @@ namespace OLT.Core
 
             var list = new List<Claim>();
                         
-            list.AddClaim(new Claim(ClaimTypes.GivenName, model.First));
+            list.AddClaim(new Claim(OltClaimTypes.GivenName, model.First));
             list.AddClaim(new Claim(OltClaimTypes.MiddleName, model.Middle));
 
             if (!string.IsNullOrWhiteSpace(model.Suffix))
             {
-                list.AddClaim(new Claim(ClaimTypes.Surname, $"{model.Last} {model.Suffix}"));
+                list.AddClaim(new Claim(OltClaimTypes.FamilyName, $"{model.Last} {model.Suffix}"));
             }
             else
             {
-                list.AddClaim(new Claim(ClaimTypes.Surname, model.Last));
+                list.AddClaim(new Claim(OltClaimTypes.FamilyName, model.Last));
             }
             
             return list;

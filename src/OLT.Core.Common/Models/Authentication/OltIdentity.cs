@@ -19,44 +19,44 @@ namespace OLT.Core
         public abstract System.Security.Claims.ClaimsPrincipal Identity { get; }
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.PreferredUsername"/>
+        /// Default Claim <see cref="OltClaimTypes.PreferredUsername"/>
         /// </summary>
         public virtual string Username => GetClaims(OltClaimTypes.PreferredUsername).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.GivenName"/>
+        /// Default Claim <see cref="OltClaimTypes.GivenName"/>
         /// </summary>
         public virtual string FirstName => GetClaims(OltClaimTypes.GivenName).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.MiddleName"/>
+        /// Default Claim <see cref="OltClaimTypes.MiddleName"/>
         /// </summary>
         public virtual string MiddleName => GetClaims(OltClaimTypes.MiddleName).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.FamilyName"/> 
+        /// Default Claim <see cref="OltClaimTypes.FamilyName"/> 
         /// </summary>
         public virtual string LastName => GetClaims(OltClaimTypes.FamilyName).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.Email"/>
+        /// Default Claim <see cref="OltClaimTypes.Email"/>
         /// </summary>
         public virtual string Email => GetClaims(OltClaimTypes.Email).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.PhoneNumber"/>
+        /// Default Claim <see cref="OltClaimTypes.PhoneNumber"/>
         /// </summary>
         public virtual string Phone => GetClaims(OltClaimTypes.PhoneNumber).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.Name"/>
+        /// Default Claim <see cref="OltClaimTypes.Name"/>
         /// </summary>
         public virtual string FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.Subject"/>
+        /// The identifier of the user - Default Claim <see cref="OltClaimTypes.Subject"/> (legacy <see cref="OltClaimTypes.UserPrincipalName"/>)
         /// </summary>
-        public virtual string UserPrincipalName => GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
+        public virtual string UserPrincipalName => GetClaims(OltClaimTypes.UserPrincipalName).FirstOrDefault()?.Value ?? GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
 
         /// <summary>
         /// Get all claims for given <see cref="Identity"/>
