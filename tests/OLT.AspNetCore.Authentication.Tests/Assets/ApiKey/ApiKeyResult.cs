@@ -1,19 +1,18 @@
 ﻿using AspNetCore.Authentication.ApiKey;
 using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace OLT.AspNetCore.Authentication.Tests.Assets.ApiKey
 {
     public class ApiKeyResult : IApiKey
     {
-        public ApiKeyResult(List<Claim> claims)
+        public ApiKeyResult(List<System.Security.Claims.Claim> claims)
         {
             Claims = claims;
         }
 
         public string Key { get; set; }
         public string OwnerName { get; set; }
-        public IReadOnlyCollection<Claim> Claims { get; }
+        public IReadOnlyCollection<System.Security.Claims.Claim> Claims { get; }
     }
 
 }

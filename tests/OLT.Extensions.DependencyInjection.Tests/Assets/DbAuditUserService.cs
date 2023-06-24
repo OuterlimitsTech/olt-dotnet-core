@@ -1,6 +1,5 @@
 ﻿using OLT.Core;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Security.Principal;
 
 namespace OLT.Extensions.DependencyInjection.Tests.Assets
@@ -23,7 +22,7 @@ namespace OLT.Extensions.DependencyInjection.Tests.Assets
     public class TestIdentity : OltIdentity
     {
 
-        public override ClaimsPrincipal Identity
+        public override System.Security.Claims.ClaimsPrincipal Identity
         {
             get
             {

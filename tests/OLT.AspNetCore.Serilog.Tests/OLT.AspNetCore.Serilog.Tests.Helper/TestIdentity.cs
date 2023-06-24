@@ -1,12 +1,7 @@
 ﻿using OLT.Core;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.AspNetCore.Serilog.Tests
 {
@@ -14,7 +9,7 @@ namespace OLT.AspNetCore.Serilog.Tests
     public class TestIdentity : OltIdentity
     {
 
-        public override ClaimsPrincipal Identity
+        public override System.Security.Claims.ClaimsPrincipal Identity
         {
             get
             {

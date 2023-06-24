@@ -1,4 +1,5 @@
-﻿using static System.Net.WebRequestMethods;
+﻿using System;
+using static System.Net.WebRequestMethods;
 
 namespace OLT.Constants
 {
@@ -203,6 +204,9 @@ namespace OLT.Constants
         /// https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
         /// </summary>
         public const string PreferredUsername = "preferred_username";
+
+        [Obsolete("Change to PreferredUsername")]
+        public const string NameIdentifier = "preferred_username";
 
         /// <summary>
         /// https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims

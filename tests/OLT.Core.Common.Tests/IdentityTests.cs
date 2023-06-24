@@ -1,12 +1,7 @@
-﻿using FluentAssertions;
+﻿using OLT.Constants;
 using OLT.Core.Common.Tests.Assets;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.Core.Common.Tests
@@ -21,7 +16,7 @@ namespace OLT.Core.Common.Tests
             Assert.Null(model.Identity);
             Assert.True(model.IsAnonymous);
             Assert.Empty(model.GetAllClaims());
-            Assert.Empty(model.GetClaims(ClaimTypes.Name));
+            Assert.Empty(model.GetClaims(OltClaimTypes.Name));
             Assert.Empty(model.GetClaims(null));
             Assert.Null(model.GetDbUsername());
             Assert.False(model.HasRole(null));
@@ -48,10 +43,10 @@ namespace OLT.Core.Common.Tests
             model = new TestIdentity(identity);
             Assert.True(model.IsAnonymous);
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, Faker.Internet.UserName()));
+
+            identity.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.PreferredUsername, Faker.Internet.UserName()));
             model = new TestIdentity(identity);
             Assert.False(model.IsAnonymous);
-
         }
 
         [Theory]
@@ -67,7 +62,7 @@ namespace OLT.Core.Common.Tests
             var user = TestHelper.FakerAuthUserToken(nameSuffix);
 
             var claims = user.ToClaims();
-            claims.AddClaim(ClaimTypes.HomePhone, phone);
+            claims.AddClaim(OltClaimTypes.PhoneNumber, phone);
 
             var identity = new GenericIdentity(user.FullName);
             identity.AddClaims(claims);

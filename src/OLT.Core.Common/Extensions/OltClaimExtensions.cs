@@ -1,7 +1,6 @@
 ﻿using OLT.Constants;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 
 namespace OLT.Core
 {
@@ -9,13 +8,13 @@ namespace OLT.Core
     {
 
         /// <summary>
-        /// Build claims <see cref="OltClaimTypes.Name"/>, <see cref="OltClaimTypes.Email"/>, <see cref="OltClaimTypes.AuthenticationMethod"/>, <see cref="OltClaimTypes.Upn"/>, <see cref="OltClaimTypes.NameIdentifier"/>, <see cref="OltClaimTypes.Role"/>
+        /// Build claims <see cref="OltClaimTypes.Name"/>, <see cref="OltClaimTypes.Email"/>, <see cref="OltClaimTypes.TokenType"/>, <see cref="OltClaimTypes.UserPrincipalName"/>, <see cref="OltClaimTypes.PreferredUsername"/>, <see cref="OltClaimTypes.Role"/>
         /// </summary>
         /// <typeparam name="TNameModel"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public static List<Claim> ToClaims<TNameModel>(this OltAuthenticatedUserJson<TNameModel> model)
+        public static List<System.Security.Claims.Claim> ToClaims<TNameModel>(this OltAuthenticatedUserJson<TNameModel> model)
             where TNameModel : class, IOltPersonName, new()
         {
             if (model == null)
@@ -23,7 +22,7 @@ namespace OLT.Core
                 throw new System.ArgumentNullException(nameof(model));
             }
 
-            var list = new List<Claim>();            
+            var list = new List<System.Security.Claims.Claim>();            
             list.AddClaim(OltClaimTypes.Name, model.FullName);
             list.AddClaim(OltClaimTypes.Email, model.Email);
             list.AddClaim(OltClaimTypes.TokenType, model.AuthenticationType);
@@ -31,36 +30,36 @@ namespace OLT.Core
             list.AddClaim(OltClaimTypes.PreferredUsername, model.Username);
 
             list.AddRange(model.Name.ToClaims());
-            list.AddRange(model.Roles.Select(value => new Claim(OltClaimTypes.Role, value)));
-            list.AddRange(model.Permissions.Select(value => new Claim(OltClaimTypes.Role, value)));
+            list.AddRange(model.Roles.Select(value => new System.Security.Claims.Claim(OltClaimTypes.Role, value)));
+            list.AddRange(model.Permissions.Select(value => new System.Security.Claims.Claim(OltClaimTypes.Role, value)));
             return list;
         }
 
         /// <summary>
-        /// Build claims <see cref="OltClaimTypes.GivenName"/> <see cref="OltClaimTypes.MiddleName"/> <see cref="OltClaimTypes.Surname"/>
+        /// Build claims <see cref="OltClaimTypes.GivenName"/> <see cref="OltClaimTypes.MiddleName"/> <see cref="OltClaimTypes.FamilyName"/>
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public static List<Claim> ToClaims(this IOltPersonName model)
+        public static List<System.Security.Claims.Claim> ToClaims(this IOltPersonName model)
         {
             if (model == null)
             {
                 throw new System.ArgumentNullException(nameof(model));
             }
 
-            var list = new List<Claim>();
+            var list = new List<System.Security.Claims.Claim>();
                         
-            list.AddClaim(new Claim(OltClaimTypes.GivenName, model.First));
-            list.AddClaim(new Claim(OltClaimTypes.MiddleName, model.Middle));
+            list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.GivenName, model.First));
+            list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.MiddleName, model.Middle));
 
             if (!string.IsNullOrWhiteSpace(model.Suffix))
             {
-                list.AddClaim(new Claim(OltClaimTypes.FamilyName, $"{model.Last} {model.Suffix}"));
+                list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.FamilyName, $"{model.Last} {model.Suffix}"));
             }
             else
             {
-                list.AddClaim(new Claim(OltClaimTypes.FamilyName, model.Last));
+                list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.FamilyName, model.Last));
             }
             
             return list;
@@ -73,7 +72,7 @@ namespace OLT.Core
         /// <param name="type"></param>
         /// <param name="value"></param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public static void AddClaim(this List<Claim> claims, string type, string value)
+        public static void AddClaim(this List<System.Security.Claims.Claim> claims, string type, string value)
         {
             if (claims == null)
             {
@@ -86,7 +85,7 @@ namespace OLT.Core
             }
             if (value != null)
             {
-                AddClaim(claims, new Claim(type, value));
+                AddClaim(claims, new System.Security.Claims.Claim(type, value));
             }            
         }
 
@@ -97,7 +96,7 @@ namespace OLT.Core
         /// <param name="claims"></param>
         /// <param name="claim"></param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public static void AddClaim(this List<Claim> claims, Claim claim)
+        public static void AddClaim(this List<System.Security.Claims.Claim> claims, System.Security.Claims.Claim claim)
         {
             if (claims == null)
             {

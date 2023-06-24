@@ -1,5 +1,4 @@
 ﻿using OLT.Constants;
-using System.Security.Claims;
 
 namespace OLT.Core
 {
@@ -11,7 +10,7 @@ namespace OLT.Core
         /// <remarks>
         /// To Be used for local system Id
         /// </remarks>
-        /// <value><see cref="ClaimTypes.Upn"/></value>
+        /// <value><see cref="OltClaimTypes.UserPrincipalName"/></value>
         string UserPrincipalName { get; }
 
         /// <summary>
@@ -20,13 +19,13 @@ namespace OLT.Core
         /// <remarks>
         /// Unique Id from the OAuth Provider or Username provided from Token of User
         /// </remarks>
-        /// <value><see cref="ClaimTypes.NameIdentifier"/></value>
+        /// <value><see cref="OltClaimTypes.PreferredUsername"/></value>
         string Username { get; }
 
         /// <summary>
         /// First Name
         /// </summary>
-        /// <value><see cref="ClaimTypes.GivenName"/></value>
+        /// <value><see cref="OltClaimTypes.GivenName"/></value>
         string FirstName { get; }
 
         /// <summary>
@@ -38,21 +37,21 @@ namespace OLT.Core
         /// <summary>
         /// Email Address of User
         /// </summary>
-        /// <value><see cref="ClaimTypes.Surname"/></value>
+        /// <value><see cref="OltClaimTypes.FamilyName"/></value>
         string LastName { get; }
 
 
         /// <summary>
         /// Email Address of User
         /// </summary>
-        /// <value><see cref="ClaimTypes.Email"/></value>
+        /// <value><see cref="OltClaimTypes.Email"/></value>
         string Email { get; }
 
 
         /// <summary>
         /// Full Name of User
         /// </summary>
-        /// <value><see cref="ClaimTypes.Name"/></value>
+        /// <value><see cref="OltClaimTypes.Name"/></value>
         string FullName { get; }
     }
 }

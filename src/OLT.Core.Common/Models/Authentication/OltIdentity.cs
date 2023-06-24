@@ -14,14 +14,16 @@ namespace OLT.Core
         /// <summary>
         /// Is Anonymous Request (other properties will likely be null)
         /// </summary>
-        public virtual bool IsAnonymous => Identity == null || UserPrincipalName == null;
+        public virtual bool IsAnonymous => Identity == null || Username == null;
 
         public abstract System.Security.Claims.ClaimsPrincipal Identity { get; }
 
         /// <summary>
-        /// Default Claim <see cref="OltClaimTypes.PreferredUsername"/>
+        /// Default Claim <see cref="OltClaimTypes.PreferredUsername"/> (Windows Identities <see cref="System.Security.Claims.ClaimTypes.NameIdentifier"/>)
         /// </summary>
-        public virtual string Username => GetClaims(OltClaimTypes.PreferredUsername).FirstOrDefault()?.Value;
+        public virtual string Username => 
+            GetClaims(OltClaimTypes.PreferredUsername).FirstOrDefault()?.Value ??
+            GetClaims(System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;  //Support for Legacy Microsoft Identities
 
         /// <summary>
         /// Default Claim <see cref="OltClaimTypes.GivenName"/>
@@ -54,9 +56,12 @@ namespace OLT.Core
         public virtual string FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// The identifier of the user - Default Claim <see cref="OltClaimTypes.Subject"/> (legacy <see cref="OltClaimTypes.UserPrincipalName"/>)
+        /// The identifier of the user - Default Claim <see cref="OltClaimTypes.Subject"/> (legacy <see cref="OltClaimTypes.UserPrincipalName"/>) (Windows Identities <see cref="System.Security.Claims.ClaimTypes.Upn"/>)
         /// </summary>
-        public virtual string UserPrincipalName => GetClaims(OltClaimTypes.UserPrincipalName).FirstOrDefault()?.Value ?? GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
+        public virtual string UserPrincipalName => 
+            GetClaims(OltClaimTypes.UserPrincipalName).FirstOrDefault()?.Value ?? 
+            GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value ??
+            GetClaims(System.Security.Claims.ClaimTypes.Upn).FirstOrDefault()?.Value; //Support for Legacy Microsoft Identities
 
         /// <summary>
         /// Get all claims for given <see cref="Identity"/>
