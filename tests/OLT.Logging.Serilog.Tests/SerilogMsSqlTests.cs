@@ -17,13 +17,12 @@ namespace OLT.Logging.Serilog.Tests
         public void DefaultColumnOptionTests()
         {
             var result = OltSerilogMsSqlExtensions.DefaultColumnOptions;
-            result.AdditionalColumns.Should().HaveCount(7);
+            result.AdditionalColumns.Should().HaveCount(6);
             result.AdditionalColumns.Should().Satisfy(
                 e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.Application,
                 e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.RequestPath,
                 e => e.ColumnName == OltSerilogMsSqlConstants.ColumnNames.Source,
                 e => e.ColumnName == OltSerilogConstants.Properties.EventType,
-                e => e.ColumnName == OltSerilogConstants.Properties.UserPrincipalName,
                 e => e.ColumnName == OltSerilogConstants.Properties.Username,
                 e => e.ColumnName == OltSerilogConstants.Properties.DbUsername
                 );

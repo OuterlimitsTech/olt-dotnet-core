@@ -22,10 +22,10 @@ namespace OLT.Core.Common.Tests.Assets
             return new OltAuthenticatedUserJson<OltPersonName>()
             {
                 Name = FakerPersonName(nameSuffix),
-                UserPrincipalName = Faker.RandomNumber.Next(1050).ToString(),
+                NameId = Faker.RandomNumber.Next(1050).ToString(),
                 Username = Faker.Internet.UserName(),
                 Email = Faker.Internet.Email(),
-                AuthenticationType = Faker.Internet.DomainWord(),
+                TokenType = Faker.Internet.DomainWord(),
                 Roles = FakerRoleList("role-", 8, 15),
                 Permissions = FakerRoleList("perm-", 10, 23)
             };
@@ -36,10 +36,10 @@ namespace OLT.Core.Common.Tests.Assets
             return new OltAuthenticatedUserJwtTokenJson<OltPersonName>()
             {
                 Name = FakerPersonName(nameSuffix),
-                UserPrincipalName = Faker.RandomNumber.Next(1050).ToString(),
+                NameId = Faker.RandomNumber.Next(1050).ToString(),
                 Username = Faker.Internet.UserName(),
                 Email = Faker.Internet.Email(),
-                AuthenticationType = Faker.Internet.DomainWord(),
+                TokenType = Faker.Internet.DomainWord(),
                 Token = Faker.Lorem.Words(8).Last(),
                 Issued = DateTimeOffset.Now.AddMinutes(Faker.RandomNumber.Next(2, 10)),
                 Expires = DateTimeOffset.Now.AddMinutes(Faker.RandomNumber.Next(20, 40)),

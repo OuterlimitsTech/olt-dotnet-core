@@ -1,4 +1,5 @@
 ﻿using OLT.Constants;
+using System;
 using System.Collections.Generic;
 
 namespace OLT.Core
@@ -19,9 +20,28 @@ namespace OLT.Core
         /// User Principal Name (usually the Id of the user) 
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.UserPrincipalName"/>
+        /// Claim <see cref="OltClaimTypes.NameId"/>
         /// </remarks>
-        public virtual string UserPrincipalName { get; set; }
+        [Obsolete("Move to NameId")]
+        public virtual string UserPrincipalName
+        {
+            get
+            {
+                return NameId;
+            }
+            set
+            {
+                NameId = value;
+            }
+        }
+
+        /// <summary>
+        /// User's Unique Identifer for the Provider
+        /// </summary>
+        /// <remarks>
+        /// Claim <see cref="OltClaimTypes.NameId"/>
+        /// </remarks>        
+        public virtual string NameId { get; set; }
 
         /// <summary>
         /// Username of user
@@ -63,8 +83,27 @@ namespace OLT.Core
         /// </summary>
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.TokenType"/>
+        /// </remarks>     
+        [Obsolete("Move to TokenType")]
+        public virtual string AuthenticationType
+        {
+            get
+            {
+                return TokenType;
+            }
+            set
+            {
+                TokenType = value;
+            }
+        }
+
+        /// <summary>
+        /// Auth Type/Method (Bearer, API Key, etc.)
+        /// </summary>
+        /// <remarks>
+        /// Claim <see cref="OltClaimTypes.TokenType"/>
         /// </remarks>        
-        public virtual string AuthenticationType { get; set; }
+        public virtual string TokenType { get; set; }
 
         /// <summary>
         /// Roles for User

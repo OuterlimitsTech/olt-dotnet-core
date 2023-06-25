@@ -55,13 +55,15 @@ namespace OLT.Core.Common.Tests.ExtensionTests
             Assert.Contains(claims, p => p.Type == OltClaimTypes.Name);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.Email);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType);
-            Assert.Contains(claims, p => p.Type == OltClaimTypes.UserPrincipalName);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId);            
             Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername);
 
             Assert.Contains(claims, p => p.Type == OltClaimTypes.Name && p.Value == model.FullName);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.Email && p.Value == model.Email);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.TokenType);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.AuthenticationType);
-            Assert.Contains(claims, p => p.Type == OltClaimTypes.UserPrincipalName && p.Value == model.UserPrincipalName);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.NameId);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.UserPrincipalName);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername && p.Value == model.Username);
 
             var roleClaims = new List<string>();

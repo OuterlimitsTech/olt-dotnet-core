@@ -30,6 +30,7 @@ namespace OLT.Core.Common.Tests
             Assert.Null(model.Phone);
             Assert.Null(model.FullName);
             Assert.Null(model.UserPrincipalName);
+            Assert.Null(model.NameId);
         }
 
         [Fact]
@@ -145,6 +146,7 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(user.Username, model.Username);
             Assert.Equal(user.Email, model.Email);
             Assert.Equal(user.UserPrincipalName, model.UserPrincipalName);
+            Assert.Equal(user.NameId, model.NameId);
 
             if (!string.IsNullOrWhiteSpace(phone))
             {

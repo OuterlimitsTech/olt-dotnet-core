@@ -63,19 +63,16 @@ namespace OLT.Core
                         {ColumnName = OltSerilogConstants.Properties.EventType, PropertyName = OltSerilogConstants.Properties.EventType, DataType = SqlDbType.NVarChar, DataLength = 20},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogConstants.Properties.UserPrincipalName, DataType = SqlDbType.NVarChar, DataLength = 25},
-
-                    new SqlColumn
                         {ColumnName = OltSerilogConstants.Properties.Username, DataType = SqlDbType.NVarChar, DataLength = 255},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogConstants.Properties.DbUsername, DataType = SqlDbType.NVarChar, DataLength = 100},
+                        {ColumnName = OltSerilogConstants.Properties.DbUsername, DataType = SqlDbType.NVarChar, DataLength = 255},
 
                     new SqlColumn
                         {ColumnName = OltSerilogMsSqlConstants.ColumnNames.RequestPath, DataType = SqlDbType.NVarChar, DataLength = -1},
 
                     new SqlColumn
-                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.Source, DataType = SqlDbType.NVarChar, DataLength = 50},
+                        {ColumnName = OltSerilogMsSqlConstants.ColumnNames.Source, DataType = SqlDbType.NVarChar, DataLength = 255},
                 };
 
                 return new ColumnOptions

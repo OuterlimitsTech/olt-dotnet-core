@@ -1,4 +1,5 @@
 ﻿using OLT.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +9,22 @@ namespace OLT.Core
     {
 
         /// <summary>
-        /// Build claims <see cref="OltClaimTypes.Name"/>, <see cref="OltClaimTypes.Email"/>, <see cref="OltClaimTypes.TokenType"/>, <see cref="OltClaimTypes.UserPrincipalName"/>, <see cref="OltClaimTypes.PreferredUsername"/>, <see cref="OltClaimTypes.Role"/>
+        /// Build claims for the Properties
+        /// <see cref="OltClaimTypes.Name"/>, 
+        /// <see cref="OltClaimTypes.Email"/>, 
+        /// <see cref="OltClaimTypes.TokenType"/>, 
+        /// <see cref="OltClaimTypes.NameId"/>, 
+        /// <see cref="OltClaimTypes.PreferredUsername"/>, 
+        /// <see cref="OltClaimTypes.Username"/>, 
+        /// <see cref="OltClaimTypes.Role"/>
         /// </summary>
         /// <typeparam name="TNameModel"></typeparam>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
+        /// <remarks>
+        /// Claim <see cref="OltClaimTypes.NameId"/>
+        /// </remarks>   
         public static List<System.Security.Claims.Claim> ToClaims<TNameModel>(this OltAuthenticatedUserJson<TNameModel> model)
             where TNameModel : class, IOltPersonName, new()
         {
@@ -25,13 +36,15 @@ namespace OLT.Core
             var list = new List<System.Security.Claims.Claim>();            
             list.AddClaim(OltClaimTypes.Name, model.FullName);
             list.AddClaim(OltClaimTypes.Email, model.Email);
-            list.AddClaim(OltClaimTypes.TokenType, model.AuthenticationType);
-            list.AddClaim(OltClaimTypes.UserPrincipalName, model.UserPrincipalName);
+            list.AddClaim(OltClaimTypes.TokenType, model.TokenType);
+            list.AddClaim(OltClaimTypes.NameId, model.NameId);
             list.AddClaim(OltClaimTypes.PreferredUsername, model.Username);
+            list.AddClaim(OltClaimTypes.Username, model.Username);
+            list.AddClaim(OltClaimTypes.Nickname, model.Name.First);
 
             list.AddRange(model.Name.ToClaims());
-            list.AddRange(model.Roles.Select(value => new System.Security.Claims.Claim(OltClaimTypes.Role, value)));
-            list.AddRange(model.Permissions.Select(value => new System.Security.Claims.Claim(OltClaimTypes.Role, value)));
+            model.Roles.Where(value => value.IsNotEmpty()).ToList().ForEach(value => list.AddClaim(OltClaimTypes.Role, value));
+            model.Permissions.Where(value => value.IsNotEmpty()).ToList().ForEach(value => list.AddClaim(OltClaimTypes.Role, value));
             return list;
         }
 
@@ -50,16 +63,16 @@ namespace OLT.Core
 
             var list = new List<System.Security.Claims.Claim>();
                         
-            list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.GivenName, model.First));
-            list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.MiddleName, model.Middle));
+            list.AddClaim(OltClaimTypes.GivenName, model.First);
+            list.AddClaim(OltClaimTypes.MiddleName, model.Middle);
 
             if (!string.IsNullOrWhiteSpace(model.Suffix))
             {
-                list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.FamilyName, $"{model.Last} {model.Suffix}"));
+                list.AddClaim(OltClaimTypes.FamilyName, $"{model.Last} {model.Suffix}");
             }
             else
             {
-                list.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.FamilyName, model.Last));
+                list.AddClaim(OltClaimTypes.FamilyName, model.Last);
             }
             
             return list;
@@ -91,7 +104,7 @@ namespace OLT.Core
 
 
         /// <summary>
-        /// Adds claim if <see cref="Claim.Value"/> has a value
+        /// Adds claim if <see cref="System.Security.Claims.Claim.Value"/> has a value
         /// </summary>
         /// <param name="claims"></param>
         /// <param name="claim"></param>
