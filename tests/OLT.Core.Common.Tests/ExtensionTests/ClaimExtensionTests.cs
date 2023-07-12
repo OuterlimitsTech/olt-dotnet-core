@@ -11,7 +11,7 @@ namespace OLT.Core.Common.Tests.ExtensionTests
     public class ClaimExtensionTests
     {
         const int nameClaims = 3;
-        const int userClaims = 5;
+        const int userClaims = 7;
 
         [Theory]
         [InlineData(null)]
@@ -57,14 +57,17 @@ namespace OLT.Core.Common.Tests.ExtensionTests
             Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId);            
             Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.Username);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.Nickname);
 
             Assert.Contains(claims, p => p.Type == OltClaimTypes.Name && p.Value == model.FullName);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.Email && p.Value == model.Email);
             Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.TokenType);
-            Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.AuthenticationType);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.AuthenticationType);  //Legacy Check
             Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.NameId);
-            Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.UserPrincipalName);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.UserPrincipalName);  //Legacy Check
             Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername && p.Value == model.Username);
+            Assert.Contains(claims, p => p.Type == OltClaimTypes.Nickname && p.Value == model.Name.First);
 
             var roleClaims = new List<string>();
             roleClaims.AddRange(model.Roles);
