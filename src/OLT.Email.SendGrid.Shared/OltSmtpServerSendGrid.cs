@@ -8,7 +8,7 @@ namespace OLT.Email.SendGrid
         {
             Host = "smtp.sendgrid.net";
             Port = 587;
-            Credentials.Username = "apiKey";            
+            Credentials.Username = "apikey";            
         }
 
         public OltSmtpServerSendGrid(string apiKey) : this()
