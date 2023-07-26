@@ -107,11 +107,12 @@ namespace System.Reflection
 
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
+            var compare = resourceName.ToLower();
 
             for (int i = 0; i < arrResources.Length; i++)
             {
-                string name = arrResources[i];
-                if (name.Contains(resourceName))
+                string name = arrResources[i]?.ToLower();                
+                if (name.Contains(compare))
                 {
                     return assembly.GetManifestResourceStream(name);
                 }
