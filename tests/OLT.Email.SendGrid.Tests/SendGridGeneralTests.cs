@@ -22,7 +22,7 @@ namespace OLT.Email.SendGrid.Tests
             Assert.Equal("smtp.sendgrid.net", server.Host);
             Assert.Equal(port, server.Port);
             Assert.False(server.DisableSsl);
-            Assert.Equal("apiKey", server.Credentials.Username);
+            Assert.Equal("apikey", server.Credentials.Username);
             Assert.Equal(password, server.Credentials.Password);
 
             Assert.Throws<ArgumentNullException>(() => new OltSmtpServerSendGrid(null));
