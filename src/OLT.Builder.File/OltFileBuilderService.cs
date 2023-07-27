@@ -1,5 +1,8 @@
-﻿namespace OLT.Core
+﻿using System;
+
+namespace OLT.Core
 {
+    [Obsolete("Removing in 8.x")]
     public abstract class OltFileBuilderService : OltDisposable, IOltFileBuilder, IOltCoreService
     {
         public abstract string BuilderName { get; }
