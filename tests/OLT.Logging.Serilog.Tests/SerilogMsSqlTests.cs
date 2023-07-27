@@ -45,33 +45,38 @@ namespace OLT.Logging.Serilog.Tests
         [Fact]
         public void ExtensionTests()
         {
-            var loggerConfig = new LoggerConfiguration();
+            
             var connectionString = "data source=localhost,1433;initial catalog=test;integrated security=False;user id=sa;password=nopass#4U";
 
+            Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null, null, null, null, LogEventLevel.Debug));
             Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null, connectionString, null, null, LogEventLevel.Debug));
+            Assert.Throws<ArgumentNullException>("connectionString", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(new LoggerConfiguration(), null, null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true));
+            Assert.Throws<ArgumentOutOfRangeException>("connectionString", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(new LoggerConfiguration(), " ", null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true));
+            Assert.Throws<ArgumentOutOfRangeException>("connectionString", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(new LoggerConfiguration(), "", null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true));
 
-            try
-            {
-                OltSerilogMsSqlExtensions.WithOltMSSqlServer(loggerConfig, null, null, null, LogEventLevel.Debug);
-            }
-            catch (ArgumentException)
-            {
-                Assert.True(true);
-            }
 
-            try
-            {
-                OltSerilogMsSqlExtensions.WithOltMSSqlServer(loggerConfig, connectionString, null, null, LogEventLevel.Debug);
-                var logger = loggerConfig.CreateLogger();
-                logger.Debug("{value1}", Faker.Lorem.Words(10).Last());
-                Assert.True(true);
-            }
-            catch (Exception ex)
-            {
-                Assert.True(false);
-                throw;
-            }
+            OltSerilogMsSqlExtensions
+                .WithOltMSSqlServer(new LoggerConfiguration(), null, null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: false)
+                .Should()
+                .BeOfType<LoggerConfiguration>();
 
+            OltSerilogMsSqlExtensions
+                .WithOltMSSqlServer(new LoggerConfiguration(), " ", null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: false)
+                .Should()
+                .BeOfType<LoggerConfiguration>();
+
+            OltSerilogMsSqlExtensions
+                .WithOltMSSqlServer(new LoggerConfiguration(), "", null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: false)
+                .Should()
+                .BeOfType<LoggerConfiguration>();
+
+
+            var logger = OltSerilogMsSqlExtensions
+                .WithOltMSSqlServer(new LoggerConfiguration(), connectionString, null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true)
+                .CreateLogger();
+
+            Action act = () => logger.Debug("{value1}", Faker.Lorem.Words(10).Last());
+            act.Should().NotThrow();
         }
     }
 }

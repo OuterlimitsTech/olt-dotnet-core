@@ -42,7 +42,7 @@ namespace System.Reflection
 
             referencedAssemblies.AddRange(assembliesToScan);
 
-            if (assembliesToScan.Any(p => p.FullName != Assembly.GetCallingAssembly().FullName))
+            if (assembliesToScan.Exists(p => p.FullName != Assembly.GetCallingAssembly().FullName))
             {
                 referencedAssemblies.Add(Assembly.GetCallingAssembly());
             }
@@ -68,10 +68,10 @@ namespace System.Reflection
                 .ToList()
                 .ForEach(name =>
                 {
-                    var assembly = results.FirstOrDefault(p => string.Equals(p.FullName, name, StringComparison.OrdinalIgnoreCase));
+                    var assembly = results.Find(p => string.Equals(p.FullName, name, StringComparison.OrdinalIgnoreCase));
                     if (assembly == null)
                     {
-                        results.Add(referencedAssemblies.FirstOrDefault(p => p.FullName == name));
+                        results.Add(referencedAssemblies.Find(p => p.FullName == name));
                     }
                 });
 
@@ -107,11 +107,12 @@ namespace System.Reflection
 
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
+            var resourceCompare = resourceName.ToLower();
 
             for (int i = 0; i < arrResources.Length; i++)
             {
                 string name = arrResources[i];
-                if (name.Contains(resourceName))
+                if (name.ToLower().Contains(resourceCompare))
                 {
                     return assembly.GetManifestResourceStream(name);
                 }

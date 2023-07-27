@@ -30,9 +30,9 @@ namespace OLT.Core
             where TEnum : System.Enum
         {
             var value = GetMaintainable(@enum);            
-            entity.MaintAdd = value.ToBool(value.Create);            
-            entity.MaintUpdate = value.ToBool(value.Update);
-            entity.MaintDelete = value.ToBool(value.Delete);
+            entity.MaintAdd = MaintainableAttribute.ToBool(value.Create);            
+            entity.MaintUpdate = MaintainableAttribute.ToBool(value.Update);
+            entity.MaintDelete = MaintainableAttribute.ToBool(value.Delete);
         }
 
     }

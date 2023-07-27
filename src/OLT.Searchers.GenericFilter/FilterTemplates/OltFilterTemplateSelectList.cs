@@ -42,7 +42,7 @@ namespace OLT.Core
 
         public override string Formatted()
         {
-            return ValueList.FirstOrDefault(p => p.Value == Value)?.Label ?? ValueList.FirstOrDefault(p => p.Value == _defaultValue.Value)?.Label; 
+            return ValueList.Find(p => p.Value == Value)?.Label ?? ValueList.Find(p => p.Value == _defaultValue.Value)?.Label; 
         }
     }
 }

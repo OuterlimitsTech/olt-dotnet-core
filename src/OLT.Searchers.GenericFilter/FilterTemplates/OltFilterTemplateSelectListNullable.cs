@@ -29,7 +29,7 @@ namespace OLT.Core
 
         public override string Formatted()
         {
-            return Value == null ? null : ValueList.FirstOrDefault(p => p.Value == Value.Value)?.Label;
+            return Value == null ? null : ValueList.Find(p => p.Value == Value.Value)?.Label;
         }
     }
 }
