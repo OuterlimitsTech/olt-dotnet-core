@@ -12,16 +12,46 @@ namespace OLT.Core
     public static class OltSerilogMsSqlExtensions
     {
 
-        public static LoggerConfiguration WithOltMSSqlServer(this LoggerConfiguration loggerConfiguration, string connectionString, MSSqlServerSinkOptions options = null, ColumnOptions columnOptions = null, LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information)
+        /// <summary>
+        /// Configure SQL Logging Table
+        /// </summary>
+        /// <param name="loggerConfiguration"></param>
+        /// <param name="connectionString"></param>
+        /// <param name="options"></param>
+        /// <param name="columnOptions"></param>
+        /// <param name="restrictedToMinimumLevel"></param>
+        /// <param name="throwInvalidConnectionStringException"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static LoggerConfiguration WithOltMSSqlServer(this LoggerConfiguration loggerConfiguration, 
+            string connectionString, 
+            MSSqlServerSinkOptions options = null, 
+            ColumnOptions columnOptions = null, 
+            LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,
+            bool throwInvalidConnectionStringException = false)
         {
             if (loggerConfiguration == null)
             {
                 throw new ArgumentNullException(nameof(loggerConfiguration));
             }
 
+            if (connectionString == null)
+            {
+                if (throwInvalidConnectionStringException)
+                {
+                    throw new ArgumentNullException(nameof(connectionString), "connectionString is null");
+                }
+                return loggerConfiguration;
+            }
+
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new ArgumentException(nameof(connectionString));
+                if (throwInvalidConnectionStringException)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(connectionString), $"connectionString='{connectionString}'");
+                }
+                return loggerConfiguration;
             }
 
             options = options ?? DefaultSinkOptions;
