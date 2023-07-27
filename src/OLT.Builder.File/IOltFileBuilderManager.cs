@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing in 8.x")]
     public interface IOltFileBuilderManager : IOltInjectableSingleton
     {
         List<IOltFileBuilder> GetBuilders();

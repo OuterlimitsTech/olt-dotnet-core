@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing in 8.x")]
     public class OltFileBuilderManager : OltDisposable, IOltFileBuilderManager
     {
         private readonly Dictionary<string, IOltFileBuilder> _builders;
@@ -29,9 +30,9 @@ namespace OLT.Core
         public virtual IOltFileBase64 Generate<TRequest>(TRequest request, string name)
             where TRequest : IOltRequest
         {
-            if (_builders.ContainsKey(name))
+            if (_builders.TryGetValue(name, out IOltFileBuilder builder))
             {
-                return _builders[name].Build(request);
+                return builder.Build(request);
             }
             throw new OltFileBuilderNotFoundException(name);            
         }        
