@@ -106,7 +106,7 @@ namespace OLT.Core
         /// <returns></returns>
         public virtual bool HasRole(string claimName)
         {
-            return GetRoles().Any(p => string.Equals(p.Value, claimName, StringComparison.OrdinalIgnoreCase));
+            return GetRoles().Exists(p => string.Equals(p.Value, claimName, StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>

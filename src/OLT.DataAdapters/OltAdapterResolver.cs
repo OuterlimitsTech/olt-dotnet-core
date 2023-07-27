@@ -139,7 +139,7 @@ namespace OLT.Core
 
         protected virtual IOltAdapter GetAdapter(string adapterName, bool throwException = true)
         {
-            var adapter = Adapters.FirstOrDefault(p => p.Name == adapterName);
+            var adapter = Adapters.Find(p => p.Name == adapterName);
             if (adapter == null && throwException)
             {
                 throw new OltAdapterNotFoundException(adapterName);
