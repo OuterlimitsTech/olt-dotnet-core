@@ -2,6 +2,7 @@
 
 namespace OLT.Core
 {
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class MaintainableAttribute : Attribute
     {
 
