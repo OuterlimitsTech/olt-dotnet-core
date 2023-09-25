@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<RootNamespace>OLT.Core</RootNamespace>
+		<Description>Command Bus Abstractions for CQRS architecture</Description>
+		<ProjectGuid>{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}</ProjectGuid>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.4.0" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+	</ItemGroup>
+
+
+</Project>
