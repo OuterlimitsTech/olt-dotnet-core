@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
-    <Description>Contains common generic assets for OLT Packages</Description>
+    <Description>Contains common generic assets and contstants for OLT Packages</Description>
     <ProjectGuid>C67E4CE8-86F5-4A30-B5A1-F6057E11CB8A</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>

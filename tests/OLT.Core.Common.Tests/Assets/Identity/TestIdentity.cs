@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Principal;
+﻿using System.Security.Principal;
 
 namespace OLT.Core.Common.Tests.Assets
 {
@@ -22,6 +19,6 @@ namespace OLT.Core.Common.Tests.Assets
             Identity = new GenericPrincipal(identity, roles);
         }
 
-        public override ClaimsPrincipal Identity { get; }
+        public override System.Security.Claims.ClaimsPrincipal Identity { get; }
     }
 }

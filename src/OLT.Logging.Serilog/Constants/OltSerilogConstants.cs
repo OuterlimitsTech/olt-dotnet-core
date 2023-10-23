@@ -13,7 +13,6 @@ namespace OLT.Constants
 
         public static class Properties
         {
-            public const string UserPrincipalName = "UserPrincipalName";
             public const string Username = "Username";
             public const string DbUsername = "DbUsername";
             public const string EventType = "OltEventType";

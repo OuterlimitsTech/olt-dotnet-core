@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using OLT.Constants;
 using OLT.Core;
 
 namespace OLT.AspNetCore.Authentication
@@ -94,7 +95,7 @@ namespace OLT.AspNetCore.Authentication
                 //        //var userId = int.Parse(context.Principal.Identity.Name);
                 //        //if (context.Principal.Identity is ClaimsIdentity identity)
                 //        //{
-                //        //    var userId = Convert.ToInt32(identity.Claims.FirstOrDefault(p => p.Type == ClaimTypes.Upn)?.Value);
+                //        //    var userId = Convert.ToInt32(identity.Claims.FirstOrDefault(p => p.Type == OltClaimTypes.Upn)?.Value);
                 //        //}
 
                 //        //var user = userService.GetById(userId);
@@ -111,6 +112,8 @@ namespace OLT.AspNetCore.Authentication
                 opt.SaveToken = true;
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
+                    NameClaimType = OltClaimTypes.Name,
+                    RoleClaimType = OltClaimTypes.Role,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = ValidateIssuer,

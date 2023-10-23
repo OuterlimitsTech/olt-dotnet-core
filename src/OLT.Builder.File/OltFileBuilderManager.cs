@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
-    [Obsolete("Removing in 8.x")]
+    [Obsolete("Will be removed in 8.x")]
     public class OltFileBuilderManager : OltDisposable, IOltFileBuilderManager
     {
         private readonly Dictionary<string, IOltFileBuilder> _builders;

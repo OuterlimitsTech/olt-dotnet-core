@@ -1,7 +1,7 @@
 ﻿using AspNetCore.Authentication.ApiKey;
+using OLT.Constants;
 using OLT.Core;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OLT.AspNetCore.Authentication.ApiKey.Tests.Assets
@@ -12,9 +12,9 @@ namespace OLT.AspNetCore.Authentication.ApiKey.Tests.Assets
         {
             var ownerName = "Test Api Key";
 
-            var claimsList = new List<Claim>
+            var claimsList = new List<System.Security.Claims.Claim>
             {
-                new Claim(ClaimTypes.NameIdentifier, ownerName, ClaimValueTypes.String)
+                new System.Security.Claims.Claim(OltClaimTypes.PreferredUsername, ownerName, System.Security.Claims.ClaimValueTypes.String)
             };
 
             if (key == "1234")

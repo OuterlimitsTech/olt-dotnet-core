@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 
 namespace OLT.Core
 {
@@ -17,58 +16,95 @@ namespace OLT.Core
         /// </summary>
         public virtual bool IsAnonymous => Identity == null || Username == null;
 
-        public abstract ClaimsPrincipal Identity { get; }
+        public abstract System.Security.Claims.ClaimsPrincipal Identity { get; }
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.NameIdentifier"/>
+        /// End-User's Unique Name Id. Should be Used for the unique Id of the User
         /// </summary>
-        public virtual string Username => GetClaims(ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;
+        /// <value><see cref="OltClaimTypes.NameId"/></value>
+        public virtual string NameId => GetClaims(OltClaimTypes.NameId).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.GivenName"/>
+        /// The "sub" (subject) claim identifies the principal that is the subject of the JWT.
         /// </summary>
-        public virtual string FirstName => GetClaims(ClaimTypes.GivenName).FirstOrDefault()?.Value;
+        /// <value><see cref="OltClaimTypes.Subject"/></value>
+        public virtual string Subject => GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="OltClaimTypes.MiddleName"/>
+        /// THIS PROPERTY IS REQUIRED!!!
         /// </summary>
+        /// <remarks>
+        /// Windows Identities -> <see cref="System.Security.Claims.ClaimTypes.NameIdentifier"/>
+        /// </remarks>
+        /// <value><see cref="OltClaimTypes.PreferredUsername"/> or <see cref="OltClaimTypes.Username"/></value>
+        public virtual string Username => 
+            GetClaims(OltClaimTypes.PreferredUsername).FirstOrDefault()?.Value ??
+            GetClaims(OltClaimTypes.Username).FirstOrDefault()?.Value ??
+            GetClaims(System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;  //Support for Legacy Microsoft Identities
+
+        /// <summary>
+        /// Given name(s) or first name(s) of the End-User. 
+        /// </summary>
+        /// <value><see cref="OltClaimTypes.GivenName"/></value>
+        public virtual string FirstName => GetClaims(OltClaimTypes.GivenName).FirstOrDefault()?.Value;
+
+        /// <summary>
+        /// Middle name(s) of the End-User.
+        /// </summary>
+        /// <value><see cref="OltClaimTypes.MiddleName"/></value>
         public virtual string MiddleName => GetClaims(OltClaimTypes.MiddleName).FirstOrDefault()?.Value;
 
-        /// <summary>
-        /// Claim <see cref="ClaimTypes.Surname"/>
-        /// </summary>
-        public virtual string LastName => GetClaims(ClaimTypes.Surname).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Email"/>
+        /// Surname(s) or last name(s) of the End-User.
         /// </summary>
-        public virtual string Email => GetClaims(ClaimTypes.Email).FirstOrDefault()?.Value;
+        /// <value><see cref="OltClaimTypes.FamilyName"/></value>
+        public virtual string LastName => GetClaims(OltClaimTypes.FamilyName).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.HomePhone"/>
+        /// End-User's preferred e-mail address.
         /// </summary>
-        public virtual string Phone => GetClaims(ClaimTypes.HomePhone).FirstOrDefault()?.Value;
+        /// <value><see cref="OltClaimTypes.Email"/></value>
+        public virtual string Email => GetClaims(OltClaimTypes.Email).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Name"/>
+        /// End-User's preferred telephone number. E.164 [E.164] is RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or +56 (2) 687 2400. 
         /// </summary>
-        public virtual string FullName => GetClaims(ClaimTypes.Name).FirstOrDefault()?.Value;
+        /// <value><see cref="OltClaimTypes.PhoneNumber"/></value>
+        public virtual string Phone => GetClaims(OltClaimTypes.PhoneNumber).FirstOrDefault()?.Value;
 
         /// <summary>
-        /// Claim <see cref="ClaimTypes.Upn"/>
+        /// True if the End-User's phone number has been verified; otherwise false. 
         /// </summary>
-        public virtual string UserPrincipalName => GetClaims(ClaimTypes.Upn).FirstOrDefault()?.Value;
+        /// <value><see cref="OltClaimTypes.PhoneNumberVerified"/></value>
+        public virtual bool? PhoneVerified => GetClaims(OltClaimTypes.PhoneNumberVerified).FirstOrDefault()?.Value?.ToBool();
+
+        /// <summary>
+        /// End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences.
+        /// </summary>
+        /// <value><see cref="OltClaimTypes.Name"/></value>
+        public virtual string FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
+
+        /// <summary>
+        /// The identifier of the user - Default Claim 
+        /// -> Windows Identities <see cref="System.Security.Claims.ClaimTypes.Upn"/>
+        /// -> Falls Back to <see cref="NameId"/>
+        /// </summary>
+        [Obsolete("Move To NameId - This is a legacy AD claim")]
+        public virtual string UserPrincipalName => 
+            GetClaims(System.Security.Claims.ClaimTypes.Upn).FirstOrDefault()?.Value ?? //Support for Legacy Microsoft Identities
+            NameId; 
 
         /// <summary>
         /// Get all claims for given <see cref="Identity"/>
         /// </summary>
-        public virtual List<Claim> GetAllClaims()
+        public virtual List<System.Security.Claims.Claim> GetAllClaims()
         {
             if (Identity != null)
             {
                 return Identity.Claims.ToList();
             }
-            return new List<Claim>();
+            return new List<System.Security.Claims.Claim>();
         }
 
         /// <summary>
@@ -76,14 +112,14 @@ namespace OLT.Core
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public virtual List<Claim> GetClaims(string type)
+        public virtual List<System.Security.Claims.Claim> GetClaims(string type)
         {
             return GetAllClaims().Where(p => p.Type == type).ToList();
         }
 
 
         /// <summary>
-        /// Returns claim for <see cref="ClaimTypes.NameIdentifier"/> 
+        /// Returns claim for <see cref="OltClaimTypes.PreferredUsername"/> 
         /// </summary>
         public virtual string GetDbUsername()
         {
@@ -91,18 +127,18 @@ namespace OLT.Core
         }
 
         /// <summary>
-        /// Returns all claims <see cref="ClaimTypes.Role"/>
+        /// Returns all claims <see cref="OltClaimTypes.Role"/>
         /// </summary>
-        public virtual List<Claim> GetRoles()
+        public virtual List<System.Security.Claims.Claim> GetRoles()
         {
-            return GetAllClaims().Where(p => p.Type == ClaimTypes.Role).ToList();
+            return GetAllClaims().Where(p => p.Type == OltClaimTypes.Role).ToList();
         }
 
 
         /// <summary>
-        /// Checks if claim <see cref="ClaimTypes.Role"/> exists
+        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists
         /// </summary>
-        /// <param name="claimName"><see cref="ClaimTypes.Role"/></param>
+        /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
         /// <returns></returns>
         public virtual bool HasRole(string claimName)
         {
@@ -110,7 +146,7 @@ namespace OLT.Core
         }
 
         /// <summary>
-        /// Checks if claim <see cref="ClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 
+        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 
         /// </summary>
         /// <typeparam name="TRoleEnum"></typeparam>
         /// <param name="roles"></param>
