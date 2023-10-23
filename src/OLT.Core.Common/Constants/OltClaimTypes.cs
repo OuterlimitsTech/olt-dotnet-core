@@ -359,17 +359,11 @@ namespace OLT.Constants
         public const string Subject = "sub";
 
 
-        //public const string TargetLinkUri = "target_link_uri";
-
         /// <summary>
         /// Token Type - Auth Type/Method (Bearer, API Key, etc.)
         /// </summary>
         public const string TokenType = "token_type";
 
-        ///// <summary>
-        ///// Token Usage Type
-        ///// </summary>
-        //public const string TokenUsage = "token_usage";
 
         /// <summary>
         /// The "typ" (type) Header Parameter defined by [JWS] and [JWE] is used by JWT applications to declare the media type[IANA.MediaTypes] of this complete JWT.
@@ -407,13 +401,6 @@ namespace OLT.Constants
         /// https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
         /// </remarks>
         public const string Zoneinfo = "zoneinfo";
-
-
-        /////// <summary>
-        /////// Legacy Primary Identifer (kept for older token apps)
-        /////// </summary>
-        ////[Obsolete("Move to NameId")]
-        ////public const string UserPrincipalName = "user_principal_name";
 
     }
 }
