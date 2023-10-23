@@ -13,7 +13,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.AspNetCore.Authentication\OLT.AspNetCore.Authentication.csproj" />
+		<ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
 	  <ProjectReference Include="..\OLT.Extensions.DependencyInjection\OLT.Extensions.DependencyInjection.csproj" />
 	</ItemGroup>

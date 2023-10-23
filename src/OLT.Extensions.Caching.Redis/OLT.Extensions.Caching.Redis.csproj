@@ -8,9 +8,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
-		<PackageReference Include="StackExchange.Redis" Version="2.6.90" />
-		<PackageReference Include="StackExchange.Redis.Extensions.Core" Version="8.0.5" />
-		<PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="8.0.5" />
+		<PackageReference Include="StackExchange.Redis" Version="2.6.122" />
+		<PackageReference Include="StackExchange.Redis.Extensions.Core" Version="9.1.0" />
+		<PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="9.1.0" />
 	</ItemGroup>
 
 	<ItemGroup>

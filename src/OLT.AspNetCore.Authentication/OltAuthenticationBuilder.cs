@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.AspNetCore.Authentication
 {
+    [Obsolete("Removing in 8.x")]
     public abstract class OltAuthenticationBuilder : IOltAuthenticationBuilder
     {
         public abstract string Scheme { get; }
@@ -14,6 +15,7 @@ namespace OLT.AspNetCore.Authentication
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("Removing in 8.x")]
         public virtual AuthenticationBuilder AddAuthentication(IServiceCollection services)
         {
             return AddAuthentication(services, null);
@@ -28,6 +30,7 @@ namespace OLT.AspNetCore.Authentication
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="NullReferenceException"></exception>
+        [Obsolete("Removing in 8.x")]
         public virtual AuthenticationBuilder AddAuthentication(IServiceCollection services, Action<AuthenticationOptions> configureOptions)
         {
             if (services == null)
