@@ -3,6 +3,7 @@ using OLT.Core.Common.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace OLT.Core.Common.Tests
@@ -54,20 +55,26 @@ namespace OLT.Core.Common.Tests
         [InlineData("", null, null, null, null)]
         public void PersonNameTest(string expected, string first, string middle, string last, string suffix)
         {
-            var model = new OltPersonName
-            {
-                First = first,
-                Middle = middle,
-                Last = last,
-                Suffix = suffix
-            };            
+            var model = new OltPersonName(first, middle, last, suffix);
+
+            Assert.NotNull(model as IOltPersonName);
 
             Assert.Equal(first, model.First);
             Assert.Equal(middle, model.Middle);
             Assert.Equal(last, model.Last);
             Assert.Equal(suffix, model.Suffix);
-            Assert.Equal(expected, model.FullName);
-            Assert.NotNull(model as IOltPersonName);
+            Assert.Equal(expected, model.FullName);           
+
+
+            model = new OltPersonName(first, last);
+            Assert.Equal(first, model.First);
+            Assert.Null(model.Middle);
+            Assert.Equal(last, model.Last);
+            Assert.Null(model.Suffix);
+            Assert.Equal(System.Text.RegularExpressions.Regex.Replace(($"{first} {last}").Trim(), @"\s+", " "), model.FullName);
+
+
+            
         }
 
 

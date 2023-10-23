@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 // ReSharper disable once CheckNamespace
 namespace OLT.Core
@@ -13,7 +12,7 @@ namespace OLT.Core
             _httpContext = httpContext;
         }
 
-        public override ClaimsPrincipal? Identity => _httpContext.HttpContext?.User;
+        public override System.Security.Claims.ClaimsPrincipal? Identity => _httpContext.HttpContext?.User;
 
 
     }

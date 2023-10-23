@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OLT.Constants;
 using OLT.Core;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OLT.AspNetCore.Tests.Assets
@@ -29,11 +29,11 @@ namespace OLT.AspNetCore.Tests.Assets
                         OnValidateKey = context => {
                             if (context.ApiKey.Equals("XYZ"))
                             {
-                                context.ValidationSucceeded(new List<Claim> {  new Claim(ClaimTypes.Role, SecurityPermissions.UpdateData.GetCodeEnum() )});
+                                context.ValidationSucceeded(new List<System.Security.Claims.Claim> {  new System.Security.Claims.Claim(OltClaimTypes.Role, SecurityPermissions.UpdateData.GetCodeEnum() )});
                             }
                             else if (context.ApiKey.Equals("123"))
                             {
-                                context.ValidationSucceeded(new List<Claim> { new Claim(ClaimTypes.Role, SecurityPermissions.ReadOnly.GetCodeEnum()) });
+                                context.ValidationSucceeded(new List<System.Security.Claims.Claim> { new System.Security.Claims.Claim(OltClaimTypes.Role, SecurityPermissions.ReadOnly.GetCodeEnum()) });
                             }
                             else
                             {

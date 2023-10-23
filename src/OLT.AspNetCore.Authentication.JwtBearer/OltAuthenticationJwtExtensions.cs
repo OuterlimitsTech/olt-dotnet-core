@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,11 @@ namespace OLT.Core
             {
                 throw new ArgumentNullException(nameof(options));
             }
+
+            //But with the Security Token Handler not using the custom RoleClaimType correctly
+            //Clearing the DefaultInboundClaimTypeMap before adding the auth fixes the role claims
+            //https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1349
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             var builder = options.AddAuthentication(services, authOptionsAction);
             return options.AddScheme(builder, schemeOptions);

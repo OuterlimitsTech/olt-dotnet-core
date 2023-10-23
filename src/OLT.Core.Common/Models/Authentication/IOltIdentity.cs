@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
+﻿using OLT.Constants;
+using System.Collections.Generic;
 
 namespace OLT.Core
 {
@@ -16,29 +16,29 @@ namespace OLT.Core
         /// <summary>
         /// Get all claims for Identity
         /// </summary>
-        List<Claim> GetAllClaims();
+        List<System.Security.Claims.Claim> GetAllClaims();
 
         /// <summary>
         /// Get all claims for giving value
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        List<Claim> GetClaims(string type);
+        List<System.Security.Claims.Claim> GetClaims(string type);
 
         /// <summary>
-        /// Returns all claims <see cref="ClaimTypes.Role"/>
+        /// Returns all claims <see cref="OltClaimTypes.Role"/>
         /// </summary>
-        List<Claim> GetRoles();
+        List<System.Security.Claims.Claim> GetRoles();
 
         /// <summary>
-        /// Checks if claim <see cref="ClaimTypes.Role"/> exists
+        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists
         /// </summary>
-        /// <param name="claimName"><see cref="ClaimTypes.Role"/></param>
+        /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
         /// <returns></returns>
         bool HasRole(string claimName);
 
         /// <summary>
-        /// Checks if claim <see cref="ClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 
+        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 
         /// </summary>
         /// <typeparam name="TRoleEnum"></typeparam>
         /// <param name="roles"></param>

@@ -1,5 +1,4 @@
 ﻿using OLT.Constants;
-using System.Security.Claims;
 
 namespace OLT.Core
 {
@@ -9,7 +8,7 @@ namespace OLT.Core
         /// First Name
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="ClaimTypes.GivenName"/>
+        /// Claim <see cref="OltClaimTypes.GivenName"/>
         /// </remarks>
         string First { get; set; }
 
@@ -25,7 +24,7 @@ namespace OLT.Core
         /// First Name
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="ClaimTypes.Surname"/>
+        /// Claim <see cref="OltClaimTypes.FamilyName"/>
         /// </remarks>
         string Last { get; set; }
 
@@ -33,7 +32,7 @@ namespace OLT.Core
         /// Name Suffix (Jr, Sr, II, III, IV, V)
         /// </summary>
         /// <remarks>
-        /// Included with <see cref="Last"/> in claim <see cref="ClaimTypes.Surname"/> 
+        /// Included with <see cref="Last"/> in claim <see cref="OltClaimTypes.FamilyName"/> 
         /// </remarks>
         string Suffix { get; set; }
 
@@ -41,7 +40,7 @@ namespace OLT.Core
         /// Full Name using <see cref="First"/> <see cref="Middle"/> <see cref="Last"/> <see cref="Suffix"/>
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="ClaimTypes.Name"/>
+        /// Claim <see cref="OltClaimTypes.Name"/>
         /// </remarks>
         string FullName { get; }
     }

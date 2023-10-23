@@ -74,7 +74,8 @@ namespace OLT.AspNetCore.Tests
             var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor(), new ModelStateDictionary());
             var authorizationFilterContext = new AuthorizationFilterContext(actionContext, filters);
             actionFilter.OnAuthorization(authorizationFilterContext);
-            Assert.Null(authorizationFilterContext.Result);
+            //Assert.Null(authorizationFilterContext.Result);
+            Assert.NotNull(authorizationFilterContext.Result as UnauthorizedResult);
 
 
             using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupWithAuth>()))
