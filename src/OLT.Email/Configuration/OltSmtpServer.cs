@@ -1,5 +1,8 @@
-﻿namespace OLT.Email
+﻿using System;
+
+namespace OLT.Email
 {
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public class OltSmtpServer 
     {
         public virtual string Host { get; set; }

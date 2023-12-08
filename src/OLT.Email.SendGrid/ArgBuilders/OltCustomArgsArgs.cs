@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 namespace OLT.Email.SendGrid
-{
+{    
     public abstract class OltCustomArgsArgs<T> : OltUnsubscribeGroupArgs<T>
     where T : OltCustomArgsArgs<T>
     {
@@ -17,6 +17,7 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T WithCustomArg(string customArgKey, string customArgValue)
         {
             if (customArgKey == null)

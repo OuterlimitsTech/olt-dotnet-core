@@ -16,6 +16,7 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T EnableSandbox()
         {
             this.SandboxMode = true;

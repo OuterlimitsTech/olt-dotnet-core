@@ -8,6 +8,7 @@ using SendGrid.Helpers.Mail;
 
 namespace OLT.Email.SendGrid
 {
+    
     public abstract class OltApiKeyArgs<T> : OltFromEmailArgs<T>, IOltApiKeyArgs<T>, IOltEmailClient<SendGridClient, SendGridMessage, OltSendGridEmailResult>
         where T : OltApiKeyArgs<T>
     {
@@ -23,6 +24,7 @@ namespace OLT.Email.SendGrid
         /// <param name="apiKey"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T WithApiKey(string apiKey)
         {
             this.ApiKey = apiKey ?? throw new ArgumentNullException(nameof(apiKey));
@@ -61,6 +63,7 @@ namespace OLT.Email.SendGrid
 
         }
 
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public virtual OltSendGridEmailResult Send(bool throwExceptions)
         {
             try
@@ -73,6 +76,7 @@ namespace OLT.Email.SendGrid
             }
         }
 
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public abstract Task<OltSendGridEmailResult> SendAsync(bool throwExceptions);
 
     }

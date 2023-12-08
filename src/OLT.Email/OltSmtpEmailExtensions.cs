@@ -14,6 +14,7 @@ namespace OLT.Email
         /// <param name="configuration"></param>
         /// <param name="template"></param>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpConfiguration configuration, T template)  where T : IOltSmtpEmail
         {
             return BuildOltEmailClient(configuration.Smtp, configuration.Production, template).WithWhitelist(configuration.TestWhitelist);
@@ -27,6 +28,7 @@ namespace OLT.Email
         /// <param name="enableProduction">Sends all email, otherwise email must be in whitelist</param>
         /// <param name="template"></param>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpServer smtpServer, bool enableProduction, T template) where T : IOltSmtpEmail
         {
             var args = new OltEmailClientSmtp()
@@ -51,11 +53,13 @@ namespace OLT.Email
             return args;
         }
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this OltSmtpServer server, T template, Exception ex) where T : IOltApplicationErrorEmail
         {            
             return BuildOltEmailClient(ex, server, template);
         }
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public static OltEmailClientSmtp BuildOltEmailClient<T>(this Exception ex, OltSmtpServer server, T template) where T : IOltApplicationErrorEmail
         {
             return BuildOltEmailClient(server, true, template).WithAppError(ex, template.AppName, template.Environment);
@@ -69,6 +73,7 @@ namespace OLT.Email
         /// <param name="server"></param>
         /// <param name="template"></param>
         /// <param name="rethrowException"></param>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public static void OltEmailError(this Exception ex, OltSmtpServer server, IOltApplicationErrorEmail template, bool rethrowException = false)
         {
             BuildOltEmailClient(ex, server, template).Send(false);

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Email.SendGrid
 {
-
+    [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
     public abstract class OltTemplateArgs<T> : OltEnableSandboxArgs<T>
         where T : OltTemplateArgs<T>
     {

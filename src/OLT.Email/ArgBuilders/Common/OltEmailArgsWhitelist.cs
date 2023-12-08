@@ -20,6 +20,7 @@ namespace OLT.Email
         /// <param name="config"><see cref="OltEmailConfigurationWhitelist"/></param>
         /// <returns><typeparamref name="T"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.Extensions")]
         public T WithWhitelist(OltEmailConfigurationWhitelist config)
         {
             if (config == null)
@@ -47,6 +48,7 @@ namespace OLT.Email
         /// <returns><typeparamref name="T"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="InvalidOperationException">When email is null</exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.Extensions")]
         public T WithWhitelist(IOltEmailAddress emailAddress)
         {
             if (emailAddress == null)
@@ -70,6 +72,7 @@ namespace OLT.Email
         /// <summary>
         /// Determines if Email can be sent depending on EnableProductionEnvironment() is true or <see cref="OltEmailConfigurationWhitelist"/> and EnableProductionEnvironment() is false
         /// </summary>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.Extensions")]
         public override bool AllowSend(string emailAddress)
         {
             if (base.Enabled)

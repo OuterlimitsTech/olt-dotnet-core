@@ -4,6 +4,7 @@ using System.Text;
 
 namespace OLT.Email
 {
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public abstract class OltCalendarInviteArgs<T> : OltBodyArgs<T>
        where T : OltCalendarInviteArgs<T>
     {
