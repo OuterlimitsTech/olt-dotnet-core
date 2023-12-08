@@ -22,6 +22,7 @@ namespace OLT.Email
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithSmtpHost(string host)
         {
             this.SmtpHost = host ?? throw new ArgumentNullException(nameof(host));

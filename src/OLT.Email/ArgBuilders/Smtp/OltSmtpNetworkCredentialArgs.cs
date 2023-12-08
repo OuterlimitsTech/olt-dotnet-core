@@ -21,6 +21,7 @@ namespace OLT.Email
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithSmtpNetworkCredentials(string username, string password)
         {
             this.SmtpUsername = username ?? throw new ArgumentNullException(nameof(username));

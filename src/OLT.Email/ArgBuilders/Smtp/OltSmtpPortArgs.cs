@@ -19,6 +19,7 @@ namespace OLT.Email
         /// <remarks>Default is 587</remarks>
         /// <param name="port"></param>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithSmtpPort(int port)
         {
             if (port <= 0)

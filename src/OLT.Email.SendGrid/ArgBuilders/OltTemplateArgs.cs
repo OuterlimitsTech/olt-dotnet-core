@@ -9,8 +9,7 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace OLT.Email.SendGrid
-{
-    [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
+{    
     public abstract class OltTemplateArgs<T> : OltEnableSandboxArgs<T>
         where T : OltTemplateArgs<T>
     {
@@ -26,6 +25,7 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T WithTemplate(string templateId, object templateData)
         {
             if (templateId == null)
@@ -43,6 +43,7 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T WithTemplate(string templateId)
         {
             return this.WithTemplate(templateId, null);
@@ -53,6 +54,7 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T WithTemplate(IOltEmailTemplateId template)
         {
             if (template == null)

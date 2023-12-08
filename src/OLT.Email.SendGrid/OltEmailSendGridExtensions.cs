@@ -8,6 +8,7 @@ namespace OLT.Email.SendGrid
 
     public static class OltEmailSendGridExtensions
     {
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public static OltSendGridClient BuildOltEmailClient<T>(this OltEmailConfigurationSendGrid configuration, T template)
             where T : IOltEmailTemplateId, IOltEmailTemplate
         {

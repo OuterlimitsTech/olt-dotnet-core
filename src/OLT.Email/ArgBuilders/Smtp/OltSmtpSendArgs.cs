@@ -7,6 +7,7 @@ namespace OLT.Email
     public abstract class OltSmtpSendArgs<T> : OltCalendarInviteArgs<T>
       where T : OltSmtpSendArgs<T>
     {
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public override async Task<OltEmailResult> SendAsync(bool throwExceptions)
         {
 

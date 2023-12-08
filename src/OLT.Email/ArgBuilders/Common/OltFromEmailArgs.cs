@@ -22,6 +22,7 @@ namespace OLT.Email
         /// <param name="name"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithFromEmail(string email, string name = null)
         {
             if (email == null)
@@ -38,6 +39,7 @@ namespace OLT.Email
         /// </summary>
         /// <param name="email"></param>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithFromEmail(IOltEmailAddress email)
         {
             if (email == null)
