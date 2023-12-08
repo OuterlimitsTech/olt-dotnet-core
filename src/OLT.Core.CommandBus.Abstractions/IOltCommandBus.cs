@@ -33,7 +33,7 @@ namespace OLT.Core
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandResultNullException">Thrown is command result is null</exception>
         /// <exception cref="InvalidCastException">Thrown if command result can not be cast to <typeparamref name="T"/></exception>
-        // [Obsolete("ProcessAsync<T> is deprecated, use IOltCommand<TResult>")]  //TODO: Mark as Obsolete
+        // [Obsolete("ProcessAsync<T> is deprecated, use IOltCommand<TResult>")]  //Issue #149
         Task<T> ProcessAsync<T>(IOltCommand command);
 
         /// <summary>

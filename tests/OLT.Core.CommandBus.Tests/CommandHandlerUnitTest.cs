@@ -43,29 +43,14 @@ namespace OLT.Core.CommandBus.Tests
                 var commandBus = provider.GetService<IOltCommandBus>();
                 var command = new UserEntityCommand();
                 await Assert.ThrowsAsync<InvalidCastException>(() => commandBus.ProcessAsync<TestPersonDto>(command));
-            }            
+            }           
         }
 
 
         [Fact]
         public async Task ResultCastTest()
         {
-            using (var provider = BuildProvider())
-            {
-                var commandBus = provider.GetService<IOltCommandBus>();
-                var command = new UserEntityCommandWithResult();
-                var result = await commandBus.ProcessAsync(command);
-                Assert.Equal(typeof(UserEntity), result.GetType());
-            }
-
-            using (var provider = BuildProvider())
-            {
-                var commandBus = provider.GetService<IOltCommandBus>();
-                var command = new UserEntityCommand();
-                var result = await commandBus.ProcessAsync<UserEntity>(command);
-                Assert.Equal(typeof(UserEntity), result.GetType());
-            }
-
+           
             using (var provider = BuildProvider())
             {
                 var commandBus = provider.GetService<IOltCommandBus>();
@@ -73,6 +58,7 @@ namespace OLT.Core.CommandBus.Tests
                 var handler = new UserEntityCommandWithResultHandler();
                 var result = await commandBus.ProcessAsync(command);
                 Assert.Equal(command.ActionName, handler.ActionName);
+                Assert.Equal(typeof(UserEntity), result.GetType());
             }
 
             using (var provider = BuildProvider())
@@ -82,8 +68,18 @@ namespace OLT.Core.CommandBus.Tests
                 var handler = new UserEntityCommandHandler();
                 var result = await commandBus.ProcessAsync<UserEntity>(command);
                 Assert.Equal(command.ActionName, handler.ActionName);
+                Assert.Equal(typeof(UserEntity), result.GetType());
             }
 
+            using (var provider = BuildProvider())
+            {
+                var commandBus = provider.GetService<IOltCommandBus>();
+                var command = new TypedWithUnTypeHandlerCommand();
+                var handler = new UnTypedCommandHandler();
+                var result = await commandBus.ProcessAsync(command);
+                Assert.Equal(command.ActionName, handler.ActionName);
+                Assert.Equal(typeof(UserEntity), result.GetType());                
+            }
         }
 
 

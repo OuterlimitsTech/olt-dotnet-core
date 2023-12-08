@@ -56,6 +56,11 @@ namespace OLT.Core
 
         public virtual Task PostExecuteAsync(IOltCommand command, TResult result)
         {
+            return PostExecuteAsync((TCommand)command, result);
+        }
+
+        public virtual Task PostExecuteAsync(TCommand command, TResult result)
+        {
             return Task.CompletedTask;
         }
     }

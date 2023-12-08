@@ -40,6 +40,7 @@ namespace OLT.Core.CommandBus.Tests
             services.AddScoped<IOltCommandHandler, DuplicateHandlerSecondCommandHandler>();
             services.AddScoped<IOltCommandHandler, UserEntityCommandHandler>();
             services.AddScoped<IOltCommandHandler, UserEntityCommandWithResultHandler>();
+            services.AddScoped<IOltCommandHandler, UnTypedCommandHandler>();
             services.AddScoped<IOltCommandHandler, SimpleCommandHandler>();
             services.AddScoped<IOltCommandHandler, TestPersonCommandHandler>();
             services.AddScoped<IOltCommandHandler, TestPersonCommandWithResultHandler>();

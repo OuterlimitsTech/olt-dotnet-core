@@ -17,3 +17,5 @@ namespace OLT.Core.CommandBus.Tests.Assets.Handlers
         }
     }
 }
+
+
