@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
 		<Description>Server Redis Caching Library</Description>
 		<ProjectGuid>D42DD1C7-055E-4DE9-B674-E0BB113A0996</ProjectGuid>
 	</PropertyGroup>
