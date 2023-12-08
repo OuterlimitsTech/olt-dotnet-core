@@ -27,7 +27,7 @@ namespace OLT.Core
     }
 
 
-    public abstract class OltCommandHandler<TCommand, TResult> : OltDisposable, IOltCommandHandler<TResult>, IOltPostCommandHandler<TResult>
+    public abstract class OltCommandHandler<TCommand, TResult> : OltDisposable, IOltPostCommandHandler<TResult>
           where TCommand : notnull, IOltCommand<TResult>
           where TResult : notnull
     {
