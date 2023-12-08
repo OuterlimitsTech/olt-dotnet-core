@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\src\OLT.AspNetCore.Authentication.ApiKey\OLT.AspNetCore.Authentication.ApiKey.csproj" />
+		<ProjectReference Include="..\..\src\OLT.Core.Common\OLT.Core.Common.csproj" />
 	</ItemGroup>
 
 </Project>

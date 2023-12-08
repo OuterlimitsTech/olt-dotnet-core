@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AspNetCore.Authentication.ApiKey;
 using Microsoft.Extensions.Logging;
 using OLT.Core;
 
 namespace OLT.AspNetCore.Authentication
 {
+    [Obsolete("Deprecating Library in 8.x")]
     public abstract class OltApiKeyProvider<TService> : OltDisposable, IOltApiKeyProvider
         where TService : class, IOltApiKeyService
     {

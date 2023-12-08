@@ -1,7 +1,9 @@
 ﻿using AspNetCore.Authentication.ApiKey;
+using System;
 
 namespace OLT.AspNetCore.Authentication
 {
+    [Obsolete("Deprecating Library in 8.x")]
     public interface IOltAuthenticationApiKey : IOltAuthenticationSchemeBuilder<ApiKeyOptions>
     {
         /// <summary>

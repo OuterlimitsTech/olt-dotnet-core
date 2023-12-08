@@ -4,6 +4,7 @@ using AspNetCore.Authentication.ApiKey;
 
 namespace OLT.AspNetCore.Authentication
 {
+    [Obsolete("Deprecating Library in 8.x")]
     public enum OltApiKeyLocation
     {
         HeaderOrQueryParams,
@@ -11,6 +12,7 @@ namespace OLT.AspNetCore.Authentication
         QueryParamsOnly
     }
 
+    [Obsolete("Deprecating Library in 8.x")]
     public class OltAuthenticationApiKey<TProvider> : OltAuthenticationSchemeBuilder<ApiKeyOptions>, IOltAuthenticationApiKey
         where TProvider : class, IOltApiKeyProvider
     {

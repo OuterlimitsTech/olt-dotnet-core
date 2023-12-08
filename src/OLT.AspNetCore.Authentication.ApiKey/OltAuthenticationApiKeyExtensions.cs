@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.AspNetCore.Authentication
 {
+    [Obsolete("Deprecating Library in 8.x")]
     public static class OltAuthenticationApiKeyExtensions
     {
         /// <summary>
@@ -15,6 +16,7 @@ namespace OLT.AspNetCore.Authentication
         /// <param name="options"><seealso cref="IOltAuthenticationApiKey"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("Deprecating Library in 8.x")]
         public static AuthenticationBuilder AddApiKey<TOptions>(this IServiceCollection services, TOptions options)
             where TOptions : IOltAuthenticationApiKey, IOltAuthenticationSchemeBuilder<ApiKeyOptions>
             => services.AddApiKey(options, null, null);
@@ -28,6 +30,7 @@ namespace OLT.AspNetCore.Authentication
         /// <param name="apiKeyOptions"><seealso cref="ApiKeyOptions"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("Deprecating Library in 8.x")]
         public static AuthenticationBuilder AddApiKey<TOptions>(this IServiceCollection services, TOptions options, Action<ApiKeyOptions> apiKeyOptions)
             where TOptions : IOltAuthenticationApiKey, IOltAuthenticationSchemeBuilder<ApiKeyOptions>
             => services.AddApiKey(options, apiKeyOptions, null);
@@ -42,6 +45,7 @@ namespace OLT.AspNetCore.Authentication
         /// <param name="schemeOptions"><seealso cref="ApiKeyOptions"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("Deprecating Library in 8.x")]
         public static AuthenticationBuilder AddApiKey<TOptions>(this IServiceCollection services, TOptions options, Action<ApiKeyOptions> schemeOptions, Action<AuthenticationOptions> authOptionsAction)
             where TOptions : IOltAuthenticationApiKey, IOltAuthenticationSchemeBuilder<ApiKeyOptions>
         {
