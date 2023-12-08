@@ -10,7 +10,8 @@ namespace OLT.Core
             return new OltCommandResult();
         }
 
-        public static OltCommandResult Complete<T>(T result)
+        //[Obsolete("Complete<T> is deprecated, use IOltCommand<TResult> with OltCommandHandler<TCommand, TResult>")]
+        public static OltCommandResult Complete<T>(T result)  //TODO: Mark as Obsolete
         {
             return new OltCommandResult(result);
         }

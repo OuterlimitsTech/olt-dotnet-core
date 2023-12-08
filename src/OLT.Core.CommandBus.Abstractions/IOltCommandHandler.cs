@@ -24,4 +24,17 @@ namespace OLT.Core
         Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command);
 
     }
+
+    public interface IOltCommandHandler<TResult> : IOltCommandHandler
+        where TResult : notnull
+    {
+
+        /// <summary>
+        /// Run the Command. <paramref name="commandBus"/> allows for nested command execution
+        /// </summary>
+        /// <param name="commandBus"></param>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        Task<TResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand<TResult> command);
+    }
 }

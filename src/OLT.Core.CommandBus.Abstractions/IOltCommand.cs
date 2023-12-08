@@ -9,4 +9,9 @@ namespace OLT.Core
         string ActionName { get; }
         Task<ValidationResult> ValidateAsync();
     }
+
+    public interface IOltCommand<TResult> : IOltCommand where TResult : notnull
+    {
+
+    }
 }
