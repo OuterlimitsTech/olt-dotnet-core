@@ -17,6 +17,7 @@ namespace OLT.Email
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithAttachment(OltEmailAttachment value)
         {
             if (value == null)

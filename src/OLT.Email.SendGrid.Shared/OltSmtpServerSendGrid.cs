@@ -2,6 +2,7 @@
 
 namespace OLT.Email.SendGrid
 {
+    [Obsolete("OLT.Email.SendGrid is being deprecated in favor of jcamp.FluentEmail.Smtp")]
     public class OltSmtpServerSendGrid : OltSmtpServer
     {        
         protected OltSmtpServerSendGrid()

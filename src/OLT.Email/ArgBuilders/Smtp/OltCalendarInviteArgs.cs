@@ -3,7 +3,7 @@ using System.Net.Mail;
 using System.Text;
 
 namespace OLT.Email
-{
+{    
     public abstract class OltCalendarInviteArgs<T> : OltBodyArgs<T>
        where T : OltCalendarInviteArgs<T>
     {
@@ -20,6 +20,7 @@ namespace OLT.Email
         /// ICS File in Bytes
         /// </summary>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithCalendarInvite(byte[] icsFileBytes)
         {            
             this.CalendarInviteBtyes = icsFileBytes ?? throw new ArgumentNullException(nameof(icsFileBytes));

@@ -6,32 +6,32 @@ using System.Threading.Tasks;
 
 namespace OLT.Core.CommandBus.Tests.Assets.Handlers
 {
-    public class TestPersonCommandHandler : OltCommandHandler<TestPersonCommand>, IOltPostCommandHandler
+    public class TestPersonCommandWithResultHandler : OltCommandHandler<TestPersonCommandWithResult, TestPersonDto>
     {
         private TestPersonDto _dto;
-        private TestPersonCommand _command;
+        private TestPersonCommandWithResult _command;
 
-        protected override Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TestPersonCommand command)
+        protected override Task<TestPersonDto> ExecuteAsync(IOltCommandBus commandBus, TestPersonCommandWithResult command)
         {
             _command = command;
             _dto = TestPersonDto.FakerDto();
-            return Task.FromResult<IOltCommandResult>(OltCommandResult.Complete(_dto));
+            return Task.FromResult(_dto);
         }
 
-        protected override async Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TestPersonCommand command)
-        {           
+        protected override async Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TestPersonCommandWithResult command)
+        {
+
             var validator = new TestPersonCommandValidator();
             var dto = new TestCommandDtoHelper
             {
                 Value = command.Model.Id
-            };            
+            };
             return await validator.ValidateAsync(dto);
         }
 
-        public Task PostExecuteAsync(IOltCommand command, IOltCommandResult result)
+        public override Task PostExecuteAsync(IOltCommand command, TestPersonDto result)
         {
-            var resultDto = result.GetResult<TestPersonDto>();
-            resultDto.Should().Be(_dto);
+            result.Should().Be(_dto);
             command.Should().Be(_command);
             return Task.CompletedTask;
         }

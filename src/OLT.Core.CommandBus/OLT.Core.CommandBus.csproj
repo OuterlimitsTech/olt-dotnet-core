@@ -3,7 +3,7 @@
   <PropertyGroup>
 		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
 		<RootNamespace>OLT.Core</RootNamespace>
-		<Description>Command Bus for CQRS architecture</Description>
+		<Description>Command Bus for CQRS style architecture.  Wraps Commands within a DB Transaction</Description>
 		<ProjectGuid>043f2d15-646e-4541-9995-e85c93a6896d</ProjectGuid>
 	</PropertyGroup>
 

@@ -16,6 +16,7 @@ namespace OLT.Email.SendGrid
         /// </summary>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public T WithUnsubscribeGroupId(int unsubscribeGroupId)
         {
             if (unsubscribeGroupId <= 0)

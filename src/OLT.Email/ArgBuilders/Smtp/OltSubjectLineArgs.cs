@@ -17,6 +17,7 @@ namespace OLT.Email
         /// Email Subject
         /// </summary>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithSubject(string subject)
         {
             this.SubjectLine = subject ?? throw new ArgumentNullException(nameof(subject));

@@ -1,4 +1,6 @@
-﻿namespace OLT.Email
+﻿using System;
+
+namespace OLT.Email
 {
     public abstract class OltEmailArgsProduction<T> : OltEmailBuilderArgs
       where T : OltEmailArgsProduction<T>
@@ -16,6 +18,7 @@
         /// </summary>
         /// <param name="value"><see cref="bool"/></param>
         /// <returns><typeparamref name="T"/></returns>
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.Extensions")]
         public T EnableProductionEnvironment(bool value)
         {
             this._enabled = value;

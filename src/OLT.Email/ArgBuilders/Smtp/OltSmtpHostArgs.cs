@@ -22,6 +22,7 @@ namespace OLT.Email
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithSmtpHost(string host)
         {
             this.SmtpHost = host ?? throw new ArgumentNullException(nameof(host));
@@ -54,6 +55,7 @@ namespace OLT.Email
         public abstract SmtpClient CreateClient();
         public abstract MailMessage CreateMessage(OltEmailRecipientResult recipients);
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public virtual OltEmailResult Send(bool throwExceptions)
         {
             try
@@ -66,6 +68,7 @@ namespace OLT.Email
             }
         }
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public abstract Task<OltEmailResult> SendAsync(bool throwExceptions);
     }
 

@@ -18,6 +18,7 @@ namespace OLT.Email
         /// Email Body
         /// </summary>
         /// <returns></returns>
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public T WithBody(string body)
         {
             this.Body = body ?? throw new ArgumentNullException(nameof(body));
@@ -28,6 +29,7 @@ namespace OLT.Email
         /// Sets email body and subject to format an error
         /// </summary>
         /// <returns></returns>
+        [Obsolete("This method is being deprecated in favor of OLT.FluentEmail.Extensions -> OltAppError")]
         public T WithAppError(Exception exception, string appName, string environment)
         {
             if (exception == null)
