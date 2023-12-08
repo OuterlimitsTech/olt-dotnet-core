@@ -55,6 +55,7 @@ namespace OLT.Email
         public abstract SmtpClient CreateClient();
         public abstract MailMessage CreateMessage(OltEmailRecipientResult recipients);
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public virtual OltEmailResult Send(bool throwExceptions)
         {
             try
@@ -67,6 +68,7 @@ namespace OLT.Email
             }
         }
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public abstract Task<OltEmailResult> SendAsync(bool throwExceptions);
     }
 

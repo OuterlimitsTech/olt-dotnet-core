@@ -74,6 +74,7 @@ namespace OLT.Email.SendGrid
             return errors;
         }
 
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public override SendGridMessage CreateMessage(OltEmailRecipientResult recipients)
         {
             var msg = new SendGridMessage();
@@ -106,6 +107,7 @@ namespace OLT.Email.SendGrid
             return msg;
         }
 
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public override async Task<OltSendGridEmailResult> SendAsync(bool throwExceptions)
         {
             var result = new OltSendGridEmailResult();

@@ -9,6 +9,13 @@ namespace OLT.Core
     {
         public virtual string ActionName => typeof(TCommand).FullName;
 
+        protected abstract Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
+
+        public virtual Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
+        {
+            return ExecuteAsync(commandBus, (TCommand)command);
+        }
+
         protected abstract Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TCommand command);
 
         public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommandBus commandBus, IOltCommand command)
@@ -16,13 +23,6 @@ namespace OLT.Core
             var result = await ValidateAsync(commandBus, (TCommand)command);
             var commandValid = await command.ValidateAsync();
             return OltCommandValidationResult.FromResult(result, commandValid);
-        }        
-
-        protected abstract Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
-
-        public virtual Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
-        {
-            return ExecuteAsync(commandBus, (TCommand)command);
         }
     }
 
@@ -33,7 +33,6 @@ namespace OLT.Core
     {
         public virtual string ActionName => typeof(TCommand).FullName;
 
-        protected abstract Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TCommand command);
         protected abstract Task<TResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
 
         public virtual async Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand command)
@@ -42,6 +41,13 @@ namespace OLT.Core
             return new OltCommandResult(result);
         }
 
+        public virtual Task<TResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand<TResult> command)
+        {
+            return ExecuteAsync(commandBus, (TCommand)command);
+        }
+
+        protected abstract Task<ValidationResult> ValidateAsync(IOltCommandBus commandBus, TCommand command);
+
         public virtual async Task<IOltCommandValidationResult> ValidateAsync(IOltCommandBus commandBus, IOltCommand command)
         {
             var result = await ValidateAsync(commandBus, (TCommand)command);
@@ -49,11 +55,7 @@ namespace OLT.Core
             return OltCommandValidationResult.FromResult(result, commandValid);
         }
 
-        public virtual Task<TResult> ExecuteAsync(IOltCommandBus commandBus, IOltCommand<TResult> command)
-        {
-            return ExecuteAsync(commandBus, (TCommand)command);
-        }
-
+        
         public virtual Task PostExecuteAsync(IOltCommand command, TResult result)
         {
             return PostExecuteAsync((TCommand)command, result);

@@ -46,6 +46,7 @@ namespace OLT.Email.SendGrid
             return new SendGridClient(ApiKey);
         }
 
+        [Obsolete("OLT.Email.SendGrid is being deprecated in favor of OLT.FluentEmail.SendGrid")]
         public abstract SendGridMessage CreateMessage(OltEmailRecipientResult recipients);
 
 

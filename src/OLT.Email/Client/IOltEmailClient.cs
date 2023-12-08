@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OLT.Email
@@ -17,8 +18,11 @@ namespace OLT.Email
         where TResult : class, IOltEmailResult
     {        
         TClient CreateClient();
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         TMessage CreateMessage(OltEmailRecipientResult recipients);
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         TResult Send(bool throwExceptions);
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         Task<TResult> SendAsync(bool throwExceptions);
 
     }
