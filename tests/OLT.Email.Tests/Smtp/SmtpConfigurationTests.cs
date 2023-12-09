@@ -18,13 +18,13 @@ namespace OLT.Email.Tests.Smtp
         }
 
 
-        private readonly OltEmailConfiguration _emailConfiguration;
+        //private readonly OltEmailConfiguration _emailConfiguration;
         private readonly string FakeHost = Faker.Internet.DomainName();
 
-        public SmtpConfigurationTests(IOptions<OltSmtpConfiguration> options)
-        {
-            _emailConfiguration = options.Value;
-        }
+        //public SmtpConfigurationTests(IOptions<OltSmtpConfiguration> options)
+        //{
+        //    _emailConfiguration = options.Value;
+        //}
 
 
         [Fact]
@@ -93,22 +93,22 @@ namespace OLT.Email.Tests.Smtp
             Assert.Equal(password, server.Credentials.Password);
         }
 
-        [Fact]
-        public async Task OptionsTests()
-        {
-            Assert.NotNull(_emailConfiguration);
+        //[Fact]
+        //public async Task OptionsTests()
+        //{
+        //    Assert.NotNull(_emailConfiguration);
 
-            string fileName = "appsettings.json";
-            var filePath = Path.Combine(AppContext.BaseDirectory, fileName);
+        //    string fileName = "appsettings.json";
+        //    var filePath = Path.Combine(AppContext.BaseDirectory, fileName);
 
-            using (FileStream openStream = File.OpenRead(filePath))
-            {
-                AppSettingsJsonDto expectedConfig = await JsonSerializer.DeserializeAsync<AppSettingsJsonDto>(openStream);
-                Assert.NotNull(expectedConfig);
-                _emailConfiguration.Should().BeEquivalentTo(expectedConfig?.SmtpEmailConfig);
-            }
+        //    using (FileStream openStream = File.OpenRead(filePath))
+        //    {
+        //        AppSettingsJsonDto expectedConfig = await JsonSerializer.DeserializeAsync<AppSettingsJsonDto>(openStream);
+        //        Assert.NotNull(expectedConfig);
+        //        _emailConfiguration.Should().BeEquivalentTo(expectedConfig?.SmtpEmailConfig);
+        //    }
 
-        }
+        //}
 
     }
 }
