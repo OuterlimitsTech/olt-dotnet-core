@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using Xunit;
 using OLT.Core;
 using System;
+using Newtonsoft.Json.Linq;
 
 namespace OLT.Extensions.Configuration.Tests
 {
+
     public class ConnectionStringTests
     {
         readonly string name = "DBConnection";

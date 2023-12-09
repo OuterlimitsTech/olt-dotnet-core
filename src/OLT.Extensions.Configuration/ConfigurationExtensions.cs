@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
@@ -34,5 +35,28 @@ namespace OLT.Core
             return config.GetValue<string>($"connection-strings:{name}") ??
                    config.GetConnectionString(name);
         }
+
+        internal static int ToPort(this string self, int defaultValue)
+        {
+            if (string.IsNullOrWhiteSpace(self) || !int.TryParse(self, out var value))
+                return defaultValue;
+            return value;
+        }
+
+        internal static bool? ToBoolean(this string self, bool? defaultValue)
+        {
+            if (string.IsNullOrWhiteSpace(self))
+            {
+                return defaultValue;
+            }
+
+            if (bool.TryParse(self, out var val))
+            {
+                return val;
+            }
+
+            return defaultValue;
+        }
+
     }
 }
