@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Extensions.Caching.Tests.Assets
 {
-    public class CacheConfiguration 
+    public class CacheConfiguration
     {
         public string RedisCacheConnectionString { get; set; }
     }

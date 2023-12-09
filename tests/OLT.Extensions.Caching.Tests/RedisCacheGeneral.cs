@@ -13,6 +13,7 @@ using Xunit;
 
 namespace OLT.Extensions.Caching.Tests
 {
+    [Collection("Redis")]
     public class RedisCacheGeneral
     {
         private readonly CacheConfiguration _config;
