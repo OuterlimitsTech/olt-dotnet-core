@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFrameworks>net7.0;net6.0;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
     <Description>SMTP builder with whitelist for non-production environments</Description>
     <ProjectGuid>98759DA5-5EC5-4090-B8CE-BCE55737FE8F</ProjectGuid>
+		<Nullable>enable</Nullable>
+		<LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 </Project>
