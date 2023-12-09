@@ -30,7 +30,7 @@ namespace System.Linq
         /// <param name="orderBy">Optional</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static IOltPaged<T> ToPaged<T>(this IQueryable<T> queryable, IOltPagingParams pagingParams, Func<IQueryable<T>, IQueryable<T>> orderBy)
+        public static IOltPaged<T> ToPaged<T>(this IQueryable<T> queryable, IOltPagingParams pagingParams, Func<IQueryable<T>, IQueryable<T>>? orderBy)
         {
             if (queryable == null)
             {

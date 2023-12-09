@@ -14,7 +14,7 @@ namespace OLT.Core
 
         public Dictionary<string, string> Values { get; }
 
-        public T GetValue<T>(string key) where T : IConvertible
+        public T? GetValue<T>(string key) where T : IConvertible
         {
             var entry = Values.FirstOrDefault(p => p.Key.Equals(key, StringComparison.OrdinalIgnoreCase)).Value;
             if (entry != null)

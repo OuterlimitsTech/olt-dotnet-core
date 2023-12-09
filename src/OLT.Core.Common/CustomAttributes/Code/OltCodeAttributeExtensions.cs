@@ -12,10 +12,12 @@ namespace OLT.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns><see cref="string"/> Code from <see cref="CodeAttribute"/> or <see langword="null"/></returns>
-        public static string GetCodeEnum(this Enum value)
+        public static string? GetCodeEnum(this Enum value)
         {
-            var attribute = value?.GetType()
-                .GetField(value.ToString())
+            var attr = value?.GetType().GetField(value.ToString());
+            if (attr == null) return null;
+
+            var attribute = attr
                 .GetCustomAttributes(typeof(CodeAttribute), false)
                 .Cast<CodeAttribute>()
                 .SingleOrDefault();

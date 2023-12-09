@@ -23,7 +23,7 @@ namespace OLT.Core
         /// Claim <see cref="OltClaimTypes.NameId"/>
         /// </remarks>
         [Obsolete("Move to NameId")]
-        public virtual string UserPrincipalName
+        public virtual string? UserPrincipalName
         {
             get
             {
@@ -41,7 +41,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.NameId"/>
         /// </remarks>        
-        public virtual string NameId { get; set; }
+        public virtual string? NameId { get; set; }
 
         /// <summary>
         /// Username of user
@@ -49,7 +49,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.PreferredUsername"/>
         /// </remarks>
-        public virtual string Username { get; set; }
+        public virtual string? Username { get; set; }
 
         /// <summary>
         /// Email of user
@@ -57,7 +57,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.Email"/>
         /// </remarks>
-        public virtual string Email { get; set; }
+        public virtual string? Email { get; set; }
 
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.Name"/>
         /// </remarks>
-        public virtual string FullName => Name.FullName;
+        public virtual string? FullName => Name.FullName;
 
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace OLT.Core
         /// Claim <see cref="OltClaimTypes.TokenType"/>
         /// </remarks>     
         [Obsolete("Move to TokenType")]
-        public virtual string AuthenticationType
+        public virtual string? AuthenticationType
         {
             get
             {
@@ -103,7 +103,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.TokenType"/>
         /// </remarks>        
-        public virtual string TokenType { get; set; }
+        public virtual string? TokenType { get; set; }
 
         /// <summary>
         /// Roles for User

@@ -13,8 +13,10 @@ namespace OLT.Core
         /// <returns>Returns all instances of <see cref="KeyValueAttribute"/></returns>
         public static List<KeyValueAttribute> GetKeyValueAttributes(this Enum value)
         {
-            return value?.GetType()
-                .GetField(value.ToString())
+            var attr = value?.GetType().GetField(value.ToString());
+            if (attr == null) return new List<KeyValueAttribute>();
+
+            return attr
                 .GetCustomAttributes(typeof(KeyValueAttribute), false)
                 .ToList()
                 .Cast<KeyValueAttribute>()

@@ -9,13 +9,13 @@ namespace OLT.Core
             
         }
 
-        public OltPersonName(string first, string last) : this()
+        public OltPersonName(string? first, string? last) : this()
         {
             First = first;
             Last = last;
         }
 
-        public OltPersonName(string first, string middle, string last, string suffix) : this(first, last)
+        public OltPersonName(string? first, string? middle, string? last, string? suffix) : this(first, last)
         {
             Middle = middle;
             Suffix = suffix;
@@ -27,7 +27,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.GivenName"/>
         /// </remarks>
-        public virtual string First { get; set; }
+        public virtual string? First { get; set; }
 
         /// <summary>
         /// First Name
@@ -35,7 +35,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.MiddleName"/>
         /// </remarks>
-        public virtual string Middle { get; set; }
+        public virtual string? Middle { get; set; }
 
         /// <summary>
         /// First Name
@@ -43,7 +43,7 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.FamilyName"/>
         /// </remarks>
-        public virtual string Last { get; set; }
+        public virtual string? Last { get; set; }
 
         /// <summary>
         /// Name Suffix (Jr, Sr, II, III, IV, V)
@@ -51,7 +51,7 @@ namespace OLT.Core
         /// <remarks>
         /// Included with <see cref="Last"/> in claim <see cref="OltClaimTypes.FamilyName"/> 
         /// </remarks>
-        public virtual string Suffix { get; set; }
+        public virtual string? Suffix { get; set; }
 
         /// <summary>
         /// Full Name using <see cref="First"/> <see cref="Middle"/> <see cref="Last"/> <see cref="Suffix"/>
@@ -59,6 +59,6 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.Name"/>
         /// </remarks>
-        public virtual string FullName => System.Text.RegularExpressions.Regex.Replace(($"{First} {Middle} {Last} {Suffix}").Trim(), @"\s+", " ");
+        public virtual string? FullName => System.Text.RegularExpressions.Regex.Replace(($"{First} {Middle} {Last} {Suffix}").Trim(), @"\s+", " ");
     }   
 }
