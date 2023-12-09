@@ -39,22 +39,25 @@ namespace OLT.Core
 
             foreach (var en in Enum.GetValues(type))
             {
-                var memInfo = type.GetMember(en.ToString());
-
-                if (memInfo.Length > 0)
+                var name = en.ToString();
+                if (name != null)
                 {
-                    var attrs = memInfo[0].GetCustomAttributes(typeof(CodeAttribute), false);
+                    var memInfo = type.GetMember(name);
 
-                    if (attrs.Length > 0)
+                    if (memInfo.Length > 0)
                     {
-                        var code = ((CodeAttribute)attrs[0]).Code;
-                        if (string.Equals(source, code, StringComparison.OrdinalIgnoreCase))
+                        var attrs = memInfo[0].GetCustomAttributes(typeof(CodeAttribute), false);
+                        if (attrs.Length > 0)
                         {
-                            return (TEnum)en;
+                            var code = ((CodeAttribute)attrs[0]).Code;
+                            if (string.Equals(source, code, StringComparison.OrdinalIgnoreCase))
+                            {
+                                return (TEnum)en;
+                            }
                         }
                     }
-
                 }
+       
             }
 
             return (TEnum)Enum.Parse(type, source, true);

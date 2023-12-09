@@ -140,7 +140,7 @@ namespace OLT.Core
         /// </summary>
         /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
         /// <returns></returns>
-        public virtual bool HasRole(string claimName)
+        public virtual bool HasRole(string? claimName)
         {
             return GetRoles().Exists(p => string.Equals(p.Value, claimName, StringComparison.OrdinalIgnoreCase));
         }

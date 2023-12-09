@@ -24,20 +24,17 @@ namespace OLT.Core
         {
 
 #if NET6_0_OR_GREATER
-            ArgumentNullException.ThrowIfNull(config, nameof(config));
+            ArgumentNullException.ThrowIfNull(config);
+            ArgumentNullException.ThrowIfNull(name);
 #else
+
             if (config == null)
             {
                 throw new ArgumentNullException(nameof(config));
             }
-#endif
-
-#if NET6_0_OR_GREATER
-            ArgumentNullException.ThrowIfNull(name, nameof(name));
-#else
-            if (config == null)
+            if (name == null)
             {
-                throw new ArgumentNullException(nameof(config));
+                throw new ArgumentNullException(nameof(name));
             }
 #endif
 

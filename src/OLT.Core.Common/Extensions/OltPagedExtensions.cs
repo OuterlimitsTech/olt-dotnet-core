@@ -1,7 +1,4 @@
 ﻿using OLT.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace System.Linq
 {
@@ -32,15 +29,13 @@ namespace System.Linq
         /// <exception cref="ArgumentNullException"></exception>
         public static IOltPaged<T> ToPaged<T>(this IQueryable<T> queryable, IOltPagingParams pagingParams, Func<IQueryable<T>, IQueryable<T>>? orderBy)
         {
-            if (queryable == null)
-            {
-                throw new ArgumentNullException(nameof(queryable));
-            }
-
-            if (pagingParams == null)
-            {
-                throw new ArgumentNullException(nameof(pagingParams));
-            }
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(queryable);
+            ArgumentNullException.ThrowIfNull(pagingParams);
+#else
+            OltArgumentNullException.ThrowIfNull(queryable, nameof(queryable));
+            OltArgumentNullException.ThrowIfNull(pagingParams, nameof(pagingParams));            
+#endif
 
             var cnt = queryable.Count();
 

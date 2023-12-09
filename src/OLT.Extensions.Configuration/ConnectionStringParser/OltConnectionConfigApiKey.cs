@@ -47,6 +47,7 @@ namespace OLT.Core
             {
                 Endpoint = $"{Endpoint}/";
             }
+
         }
     }
 }
