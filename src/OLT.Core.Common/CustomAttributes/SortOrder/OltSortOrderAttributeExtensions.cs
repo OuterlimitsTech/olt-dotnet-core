@@ -15,7 +15,7 @@ namespace OLT.Core
         public static short? GetSortOrderEnum(this Enum value, short defaultSortOrder = OltCommonDefaults.SortOrder)
         {
             var attr = value?.GetType().GetField(value.ToString());
-            if (attr == null) return null;
+            if (attr == null) return defaultSortOrder;
 
             var attribute = attr
                 .GetCustomAttributes(typeof(SortOrderAttribute), false)

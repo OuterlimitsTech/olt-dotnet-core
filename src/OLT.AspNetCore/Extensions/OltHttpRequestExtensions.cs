@@ -101,20 +101,7 @@ namespace OLT.Core
                 // Ignore
             }
 
-            try
-            {
-                var values = request.Form?.ToDictionary(k => k.Key, v => v.Value);
-                if (values != null)
-                {
-                    dictionaries.Add(values);
-                }
-
-            }
-            catch
-            {
-                // Ignore
-            }
-
+           
             var merged = Merge(dictionaries).ToDictionary(x => x.Key, y => y.Value.ToString());
 
             return new OltGenericParameter(merged);
