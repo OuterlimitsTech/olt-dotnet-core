@@ -14,8 +14,10 @@ namespace OLT.Core
         /// <returns><see cref="short"/> SortOrder from <see cref="SortOrderAttribute"/> or <see langword="null"/></returns>        
         public static short? GetSortOrderEnum(this Enum value, short defaultSortOrder = OltCommonDefaults.SortOrder)
         {
-            var attribute = value?.GetType()
-                .GetField(value.ToString())
+            var attr = value?.GetType().GetField(value.ToString());
+            if (attr == null) return defaultSortOrder;
+
+            var attribute = attr
                 .GetCustomAttributes(typeof(SortOrderAttribute), false)
                 .Cast<SortOrderAttribute>()
                 .SingleOrDefault();

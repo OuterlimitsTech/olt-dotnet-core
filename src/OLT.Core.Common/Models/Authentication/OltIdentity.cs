@@ -22,13 +22,13 @@ namespace OLT.Core
         /// End-User's Unique Name Id. Should be Used for the unique Id of the User
         /// </summary>
         /// <value><see cref="OltClaimTypes.NameId"/></value>
-        public virtual string NameId => GetClaims(OltClaimTypes.NameId).FirstOrDefault()?.Value;
+        public virtual string? NameId => GetClaims(OltClaimTypes.NameId).FirstOrDefault()?.Value ?? null;
 
         /// <summary>
         /// The "sub" (subject) claim identifies the principal that is the subject of the JWT.
         /// </summary>
         /// <value><see cref="OltClaimTypes.Subject"/></value>
-        public virtual string Subject => GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
+        public virtual string? Subject => GetClaims(OltClaimTypes.Subject).FirstOrDefault()?.Value;
 
         /// <summary>
         /// THIS PROPERTY IS REQUIRED!!!
@@ -37,7 +37,7 @@ namespace OLT.Core
         /// Windows Identities -> <see cref="System.Security.Claims.ClaimTypes.NameIdentifier"/>
         /// </remarks>
         /// <value><see cref="OltClaimTypes.PreferredUsername"/> or <see cref="OltClaimTypes.Username"/></value>
-        public virtual string Username => 
+        public virtual string? Username => 
             GetClaims(OltClaimTypes.PreferredUsername).FirstOrDefault()?.Value ??
             GetClaims(OltClaimTypes.Username).FirstOrDefault()?.Value ??
             GetClaims(System.Security.Claims.ClaimTypes.NameIdentifier).FirstOrDefault()?.Value;  //Support for Legacy Microsoft Identities
@@ -46,32 +46,32 @@ namespace OLT.Core
         /// Given name(s) or first name(s) of the End-User. 
         /// </summary>
         /// <value><see cref="OltClaimTypes.GivenName"/></value>
-        public virtual string FirstName => GetClaims(OltClaimTypes.GivenName).FirstOrDefault()?.Value;
+        public virtual string? FirstName => GetClaims(OltClaimTypes.GivenName).FirstOrDefault()?.Value;
 
         /// <summary>
         /// Middle name(s) of the End-User.
         /// </summary>
         /// <value><see cref="OltClaimTypes.MiddleName"/></value>
-        public virtual string MiddleName => GetClaims(OltClaimTypes.MiddleName).FirstOrDefault()?.Value;
+        public virtual string? MiddleName => GetClaims(OltClaimTypes.MiddleName).FirstOrDefault()?.Value;
 
 
         /// <summary>
         /// Surname(s) or last name(s) of the End-User.
         /// </summary>
         /// <value><see cref="OltClaimTypes.FamilyName"/></value>
-        public virtual string LastName => GetClaims(OltClaimTypes.FamilyName).FirstOrDefault()?.Value;
+        public virtual string? LastName => GetClaims(OltClaimTypes.FamilyName).FirstOrDefault()?.Value;
 
         /// <summary>
         /// End-User's preferred e-mail address.
         /// </summary>
         /// <value><see cref="OltClaimTypes.Email"/></value>
-        public virtual string Email => GetClaims(OltClaimTypes.Email).FirstOrDefault()?.Value;
+        public virtual string? Email => GetClaims(OltClaimTypes.Email).FirstOrDefault()?.Value;
 
         /// <summary>
         /// End-User's preferred telephone number. E.164 [E.164] is RECOMMENDED as the format of this Claim, for example, +1 (425) 555-1212 or +56 (2) 687 2400. 
         /// </summary>
         /// <value><see cref="OltClaimTypes.PhoneNumber"/></value>
-        public virtual string Phone => GetClaims(OltClaimTypes.PhoneNumber).FirstOrDefault()?.Value;
+        public virtual string? Phone => GetClaims(OltClaimTypes.PhoneNumber).FirstOrDefault()?.Value;
 
         /// <summary>
         /// True if the End-User's phone number has been verified; otherwise false. 
@@ -83,7 +83,7 @@ namespace OLT.Core
         /// End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences.
         /// </summary>
         /// <value><see cref="OltClaimTypes.Name"/></value>
-        public virtual string FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
+        public virtual string? FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
 
         /// <summary>
         /// The identifier of the user - Default Claim 
@@ -91,7 +91,7 @@ namespace OLT.Core
         /// -> Falls Back to <see cref="NameId"/>
         /// </summary>
         [Obsolete("Move To NameId - This is a legacy AD claim")]
-        public virtual string UserPrincipalName => 
+        public virtual string? UserPrincipalName => 
             GetClaims(System.Security.Claims.ClaimTypes.Upn).FirstOrDefault()?.Value ?? //Support for Legacy Microsoft Identities
             NameId; 
 
@@ -121,7 +121,7 @@ namespace OLT.Core
         /// <summary>
         /// Returns claim for <see cref="OltClaimTypes.PreferredUsername"/> 
         /// </summary>
-        public virtual string GetDbUsername()
+        public virtual string? GetDbUsername()
         {
             return this.Username ?? FullName;
         }
@@ -140,7 +140,7 @@ namespace OLT.Core
         /// </summary>
         /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
         /// <returns></returns>
-        public virtual bool HasRole(string claimName)
+        public virtual bool HasRole(string? claimName)
         {
             return GetRoles().Exists(p => string.Equals(p.Value, claimName, StringComparison.OrdinalIgnoreCase));
         }

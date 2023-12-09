@@ -36,7 +36,7 @@ namespace OLT.Extensions.Caching.Tests
             var configuration = hostBuilderContext.Configuration;
 
             services.AddLogging(config => config.AddConsole());
-            
+            //services.AddSingleton<CacheConfiguration>(opt => new CacheConfiguration { RedisCacheConnectionString = configuration.GetValue<string>("REDIS_CACHE") ?? Environment.GetEnvironmentVariable("REDIS_CACHE") });
 
             services.Configure<CacheConfiguration>(opt =>
             {

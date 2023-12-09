@@ -45,7 +45,8 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
         [Fact]
         public void Null()
         {
-            Assert.Null(OltKeyValueAttributeExtensions.GetKeyValueAttributes(null));
+            Assert.NotNull(OltKeyValueAttributeExtensions.GetKeyValueAttributes(null));
+            Assert.Empty(OltKeyValueAttributeExtensions.GetKeyValueAttributes(null));
         }
 
     }

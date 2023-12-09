@@ -21,11 +21,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static Task<string> GetRawBodyStringAsync(this HttpRequest request, Encoding? encoding = null)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
+            ArgumentNullException.ThrowIfNull(request);
             return GetRawBodyStringInternalAsync(request, encoding);
         }
 
@@ -43,10 +39,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static Task<byte[]> GetRawBodyBytesAsync(this HttpRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            ArgumentNullException.ThrowIfNull(request);
             return GetRawBodyBytesInternalAsync(request);
         }
 
@@ -68,10 +61,7 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this HttpRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            ArgumentNullException.ThrowIfNull(request);
 
             var dictionaries = new List<Dictionary<string, StringValues>>();
 
@@ -101,20 +91,7 @@ namespace OLT.Core
                 // Ignore
             }
 
-            try
-            {
-                var values = request.Form?.ToDictionary(k => k.Key, v => v.Value);
-                if (values != null)
-                {
-                    dictionaries.Add(values);
-                }
-
-            }
-            catch
-            {
-                // Ignore
-            }
-
+           
             var merged = Merge(dictionaries).ToDictionary(x => x.Key, y => y.Value.ToString());
 
             return new OltGenericParameter(merged);
@@ -128,10 +105,7 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this RouteValueDictionary value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
             return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value?.ToString()));
         }
 
@@ -146,10 +120,7 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this IQueryCollection value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
             return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value.ToString()));
         }
 
@@ -161,10 +132,7 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static OltGenericParameter ToOltGenericParameter(this IFormCollection value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
+            ArgumentNullException.ThrowIfNull(value);
             return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value.ToString()));
         }
 

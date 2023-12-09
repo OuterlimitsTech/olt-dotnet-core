@@ -4,7 +4,7 @@
     {
         string Key { get; }
         bool HasValue(IOltGenericParameter parameters);
-        object GetValue(IOltGenericParameter parameters);
+        object? GetValue(IOltGenericParameter parameters);
     }
 
     public interface IOltGenericFilter<TEntity> : IOltGenericFilter, IOltEntityQueryBuilder<TEntity>  

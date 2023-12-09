@@ -67,11 +67,7 @@ jobs:
           dotnet-version: |
             6.0.x
             7.0.x
-
-      # - name: Setup .NET
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version: 6.0.x
+            8.0.x
 
       - name: Get branch name
         id: branch-name
@@ -81,7 +77,7 @@ jobs:
       # this process reads the .config -> dotnet-tools.json to restore packages
       - name: Sonarqube Begin
         run: |
-          dotnet tool restore          
+          dotnet tool restore
           dotnet tool run dotnet-sonarscanner begin /k:"OuterlimitsTech_olt-dotnet-core" /o:"outerlimitstech" /d:sonar.token=${{ secrets.SONAR_TOKEN }} /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vstest.reportsPaths=**/*.trx /d:sonar.cs.opencover.reportsPaths=**/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs" /d:sonar.branch.name=${{ steps.branch-name.outputs.current_branch }}
 
       - name: Restore dependencies

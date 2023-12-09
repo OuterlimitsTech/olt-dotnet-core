@@ -9,14 +9,14 @@ namespace OLT.Core
     public class OltValidationError : IOltValidationError
     {
 
-        private string _message;
+        private string? _message;
 
         public OltValidationError(string message)
         {
             this.Message = message;
         }
 
-        public string Message 
+        public string? Message 
         {
             get => _message;
             set

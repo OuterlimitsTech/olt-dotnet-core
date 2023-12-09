@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
     <Description>Service Manager, Context/Entity Services, Queryable Extensions, Searchers, Expressions</Description>
     <AssemblyName>OLT.EF.Core.Services</AssemblyName>
     <RootNamespace>OLT.Core</RootNamespace>
     <ProjectGuid>43a16ce6-abae-4d8c-9682-0339703c9590</ProjectGuid>
+		<Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 
 

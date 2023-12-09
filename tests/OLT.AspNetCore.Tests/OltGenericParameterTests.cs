@@ -25,18 +25,18 @@ namespace OLT.AspNetCore.Tests
             var email2 = Faker.Internet.Email();
             var userId = Faker.RandomNumber.Next();
 
-            var formRequest = new Dictionary<string, StringValues>
-            {
-                { "email", email },
-                { "email2", email2 },
-            };
+            ////var formRequest = new Dictionary<string, StringValues>
+            ////{
+            ////    { "email", email },
+            ////    { "email2", email2 },
+            ////};
             var queryRequest = new Dictionary<string, StringValues>
             {
                 { "username", username },
                 { "username2", username2 }
             };
 
-            var dictionaries = new List<Dictionary<string, StringValues>>() {  formRequest, queryRequest };
+            var dictionaries = new List<Dictionary<string, StringValues>>() { queryRequest }; //{  formRequest, queryRequest };
             var expected = dictionaries
                 .SelectMany(dict => dict)
                 .ToLookup(pair => pair.Key, pair => pair.Value)
@@ -44,8 +44,8 @@ namespace OLT.AspNetCore.Tests
             expected.Add("userId", userId.ToString());
             expected.Add("userId2", new StringValues());
 
-            var formCollection = new FormCollection(formRequest);
-            var form = new FormFeature(formCollection);
+            //var formCollection = new FormCollection(formRequest);
+            //var form = new FormFeature(formCollection);
             var queryCollection = new QueryCollection(queryRequest);
             var query = new QueryFeature(queryCollection);
             var routeValues = new RouteValuesFeature();
@@ -54,9 +54,9 @@ namespace OLT.AspNetCore.Tests
 
             var features = new FeatureCollection();
             features.Set<IQueryFeature>(query);
-            features.Set<IFormFeature>(form);
+            //features.Set<IFormFeature>(form);
             features.Set<IRouteValuesFeature>(routeValues);
-            var context = new DefaultHttpContext(features);
+            var context = new DefaultHttpContext(features);            
             //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
@@ -86,37 +86,47 @@ namespace OLT.AspNetCore.Tests
         {
             var username = Faker.Internet.UserName();
             var email = Faker.Internet.Email();
-            var userId = Faker.RandomNumber.Next();
             var fullName = Faker.Name.FullName();
-            var expected = new StringValues(new string[] { fullName, username, userId.ToString() });
+            var expected = new StringValues(new string[] { fullName, username });
 
-            var formRequest = new Dictionary<string, StringValues>
-            {
-                { "email", email },
-                { "username", fullName }
-            };
+
+
+
+            var routeValues = new RouteValuesFeature();
+            routeValues.RouteValues.Add("email", email);
+            routeValues.RouteValues.Add("username", fullName);            
+
+            //var formRequest = new Dictionary<string, StringValues>
+            //{
+            //    { "email", email },
+            //    { "username", fullName }
+            //};
             var queryRequest = new Dictionary<string, StringValues>
             {
-                { "username", username }
+                { "username", username },
             };
 
-            var formCollection = new FormCollection(formRequest);
-            var form = new FormFeature(formCollection);
+            //var formCollection = new FormCollection(formRequest);
+            //var form = new FormFeature(formCollection);
             var queryCollection = new QueryCollection(queryRequest);
-            var query = new QueryFeature(queryCollection);
-            var routeValues = new RouteValuesFeature();
-            routeValues.RouteValues.Add("username", userId.ToString());
+            var query = new QueryFeature(queryCollection);           
+            
 
             var features = new FeatureCollection();
             features.Set<IQueryFeature>(query);
-            features.Set<IFormFeature>(form);
+            //features.Set<IFormFeature>(form);
             features.Set<IRouteValuesFeature>(routeValues);
             var context = new DefaultHttpContext(features);
             //context.Response.Body = new MemoryStream();
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
-            
-            results.Values.Should().ContainValues(expected.ToString(), email);
+
+            results.GetValue<string>("username").Split(",").Should().BeEquivalentTo(expected.ToString().Split(","), opt => opt.WithoutStrictOrdering());
+            results.GetValue<string>("email").Should().BeEquivalentTo(email);
+
+            //results.Values.Should().ContainValues(expected.ToString(), email);
+
+
         }
 
 
@@ -180,31 +190,31 @@ namespace OLT.AspNetCore.Tests
         }
 
 
-        [Fact]
-        public void ParameterFormTests()
-        {
-            var username = Faker.Internet.UserName();
-            var email = Faker.Internet.Email();
-            var userId = Faker.RandomNumber.Next();
-            var dictionary = new Dictionary<string, StringValues>
-            {
-                { "id", new StringValues(new string[] { null }) },
-                { "username", username },
-                { "email", email },
-                { "userId", userId.ToString() }
-            };
+        //[Fact]
+        //public void ParameterFormTests()
+        //{
+        //    var username = Faker.Internet.UserName();
+        //    var email = Faker.Internet.Email();
+        //    var userId = Faker.RandomNumber.Next();
+        //    var dictionary = new Dictionary<string, StringValues>
+        //    {
+        //        { "id", new StringValues(new string[] { null }) },
+        //        { "username", username },
+        //        { "email", email },
+        //        { "userId", userId.ToString() }
+        //    };
 
-            var formCollection = new FormCollection(dictionary);
-            var form = new FormFeature(formCollection);
+        //    var formCollection = new FormCollection(dictionary);
+        //    var form = new FormFeature(formCollection);
 
-            var features = new FeatureCollection();
-            features.Set<IFormFeature>(form);
-            var context = new DefaultHttpContext(features);
-            //context.Response.Body = new MemoryStream();
+        //    var features = new FeatureCollection();
+        //    features.Set<IFormFeature>(form);
+        //    var context = new DefaultHttpContext(features);
+        //    //context.Response.Body = new MemoryStream();
 
-            var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request.Form);
-            results.Values.Should().BeEquivalentTo(dictionary.ToDictionary(v => v.Key, x => x.Value.ToString()));
-        }
+        //    var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request.Form);
+        //    results.Values.Should().BeEquivalentTo(dictionary.ToDictionary(v => v.Key, x => x.Value.ToString()));
+        //}
 
 
         [Fact]
