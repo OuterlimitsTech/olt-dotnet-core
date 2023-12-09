@@ -25,7 +25,7 @@ namespace OLT.Core
             return hasValue;
         }
 
-        public virtual object GetValue(IOltGenericParameter parameters)
+        public virtual object? GetValue(IOltGenericParameter parameters)
         {
             var hasValue = Parser.Parse(parameters);
             if (hasValue)

@@ -20,36 +20,40 @@ namespace OLT.Core
         /// <param name="config"><see cref="IConfiguration"/></param>
         /// <param name="name">Connection String Key Name</param>
         /// <returns>Connection String or <see langword="null"/></returns>
-        public static string GetOltConnectionString(this IConfiguration config, string name)
+        public static string? GetOltConnectionString(this IConfiguration config, string name)
         {
+
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(config, nameof(config));
+#else
             if (config == null)
             {
                 throw new ArgumentNullException(nameof(config));
             }
+#endif
 
-            if (name == null)
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(name, nameof(name));
+#else
+            if (config == null)
             {
-                throw new ArgumentNullException(nameof(name));
+                throw new ArgumentNullException(nameof(config));
             }
+#endif
 
             return config.GetValue<string>($"connection-strings:{name}") ??
                    config.GetConnectionString(name);
         }
 
-        internal static int ToPort(this string self, int defaultValue)
+        internal static int ToPort(this string? self, int defaultValue)
         {
-            if (string.IsNullOrWhiteSpace(self) || !int.TryParse(self, out var value))
+            if (!int.TryParse(self, out var value))
                 return defaultValue;
             return value;
         }
 
-        internal static bool? ToBoolean(this string self, bool? defaultValue)
+        internal static bool? ToBoolean(this string? self, bool? defaultValue)
         {
-            if (string.IsNullOrWhiteSpace(self))
-            {
-                return defaultValue;
-            }
-
             if (bool.TryParse(self, out var val))
             {
                 return val;

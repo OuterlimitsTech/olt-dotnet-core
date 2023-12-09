@@ -109,7 +109,8 @@ namespace OLT.Extensions.Configuration.Tests
         [InlineData("host=localhost;username=guest;password=abc123;workingdir=/root/test", "localhost", "guest", "abc123", 22, "/root/test")]
         [InlineData("host=;port=48;username=guest;password=abc123;workingdir=/root/test", null, "guest", "abc123", 48, "/root/test")]
         [InlineData("port=49;username=guest;password=abc123;workingdir=/root/test", null, "guest", "abc123", 49, "/root/test")]
-        [InlineData("server=serverValue;another=anotherValue;test=testValue", null, null, null, 22, null)]        
+        [InlineData("server=serverValue;another=anotherValue;test=testValue", null, null, null, 22, null)]
+        [InlineData("host=localhost;port=9147483647;username=guest;password=abc123;workingdir=/root/test", "localhost", "guest", "abc123", 22, "/root/test")] //Exceed int.MaxValue
         [InlineData("", null, null, null, 22, null)]
         [InlineData(" ", null, null, null, 22, null)]
         [InlineData(null, null, null, null, 22, null)]
@@ -147,6 +148,8 @@ namespace OLT.Extensions.Configuration.Tests
         [InlineData("host=;port=48;username=guest;password=abc123;ssl=false", null, "guest", "abc123", 48, false)]
         [InlineData("port=49;username=guest;password=abc123;ssl=true", null, "guest", "abc123", 49, true)]
         [InlineData("server=serverValue;another=anotherValue;test=testValue", null, null, null, 587, null)]
+        [InlineData("host=localhost;port=9147483647;username=guest;password=abc123;ssl=true", "localhost", "guest", "abc123", 587, true)]  //Exceed int.MaxValue
+        [InlineData("host=localhost;port=9147483647;username=guest;password=abc123;ssl=abc", "localhost", "guest", "abc123", 587, null)]  //Exceed int.MaxValue
         [InlineData("", null, null, null, 587, null)]
         [InlineData(" ", null, null, null, 587, null)]
         [InlineData(null, null, null, null, 587, null)]

@@ -20,9 +20,9 @@ namespace OLT.Core
     /// </remarks>
     public class OltConnectionConfigWcf
     {
-        public string? Endpoint { get; set; }
-        public string? Username { get; set; }
-        public string? Password { get; set; }
+        public virtual string? Endpoint { get; set; }
+        public virtual string? Username { get; set; }
+        public virtual string? Password { get; set; }
 
         /// <summary>
         /// Parses <paramref name="connString"/> [ endpoint=https://domain.com/wcf-service/service.svc;username=UsernameHere;password=PasswordHere; ]

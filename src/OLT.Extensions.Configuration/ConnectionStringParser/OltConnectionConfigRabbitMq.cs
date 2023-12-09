@@ -24,17 +24,17 @@ namespace OLT.Core
         /// <summary>
         /// key "host"
         /// </summary>
-        public string? Host { get; set; }
+        public virtual string? Host { get; set; }
 
         /// <summary>
         /// key "username"
         /// </summary>
-        public string? Username { get; set; }
+        public virtual string? Username { get; set; }
 
         /// <summary>
         /// key "password"
         /// </summary>
-        public string? Password { get; set; }
+        public virtual string? Password { get; set; }
 
         /// <summary>
         /// Parses <paramref name="connString"/> [ host=rabbitmq://localhost:5672;username=UsernameHere;password=PasswordHere; ]

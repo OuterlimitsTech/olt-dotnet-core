@@ -18,13 +18,10 @@ namespace OLT.Core
     ///   </item>    
     /// </list>
     /// </remarks>
-    public class OltConnectionConfigSmtp
+    public class OltConnectionConfigSmtp : OltConnectionConfigSftp
     {
-        public string? Host { get; set; }
-        public string? Username { get; set; }
-        public string? Password { get; set; }
-        public int Port { get; set; } = 587;
-        public bool? EnableSsl { get; set; }
+        public override int Port { get; set; } = 587;
+        public virtual bool? EnableSsl { get; set; }
 
         /// <summary>
         /// Parses <paramref name="connString"/> [ host=localhost;port=22;username=usernameHere;password=passwordHere; ]
@@ -35,8 +32,8 @@ namespace OLT.Core
         ///   </list>
         /// </remarks>
         /// <param name="connString"></param>
-        public void Parse(string? connString)
-        {
+        public override void Parse(string? connString)
+        {            
             DbConnectionStringBuilder builder = new DbConnectionStringBuilder
             {
                 ConnectionString = connString

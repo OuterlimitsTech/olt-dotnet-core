@@ -31,16 +31,13 @@ namespace OLT.Extensions.Configuration.Tests
 
         [Fact]
         public void OverrideTest()
-        {
-            
+        {            
 
             var myConfiguration = new Dictionary<string, string>
             {
                 {$"connection-strings:{name}", "Value1"},
                 {$"ConnectionStrings:{name}", "Value2"}
-            };
-
-           
+            };           
 
             var configuration = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
@@ -54,7 +51,6 @@ namespace OLT.Extensions.Configuration.Tests
         [Fact]
         public void StandardTest()
         {
-
             var myConfiguration = new Dictionary<string, string>
             {
                 {$"ConnectionStrings:{name}", "Value2"}

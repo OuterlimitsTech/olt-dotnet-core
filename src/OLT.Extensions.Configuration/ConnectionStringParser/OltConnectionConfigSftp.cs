@@ -20,11 +20,11 @@ namespace OLT.Core
     /// </remarks>
     public class OltConnectionConfigSftp
     {
-        public string? Host { get; set; }
-        public string? Username { get; set; }
-        public string? Password { get; set; }
-        public int Port { get; set; } = 22;
-        public string? WorkingDirectory { get; set; }
+        public virtual string? Host { get; set; }
+        public virtual string? Username { get; set; }
+        public virtual string? Password { get; set; }
+        public virtual int Port { get; set; } = 22;
+        public virtual string? WorkingDirectory { get; set; }
 
         /// <summary>
         /// Parses <paramref name="connString"/> [ host=localhost;port=22;username=usernameHere;password=passwordHere;workingdir=/root/test ]
@@ -36,7 +36,7 @@ namespace OLT.Core
         ///   </list>
         /// </remarks>
         /// <param name="connString"></param>
-        public void Parse(string? connString)
+        public virtual void Parse(string? connString)
         {
             DbConnectionStringBuilder builder = new DbConnectionStringBuilder
             {
