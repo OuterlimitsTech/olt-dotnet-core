@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
     <RootNamespace>OLT.Serilog</RootNamespace>
     <Description>Register Serilog Middleware to log all exceptions</Description>
     <ProjectGuid>15400B99-351E-4BA4-AFD1-4573E7964062</ProjectGuid>

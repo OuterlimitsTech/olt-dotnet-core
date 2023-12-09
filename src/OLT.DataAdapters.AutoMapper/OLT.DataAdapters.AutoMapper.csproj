@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFrameworks>net7.0;net6.0;netstandard2.1</TargetFrameworks>
+		<TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>DataAdapters AutoMapper Library</Description>
     <ProjectGuid>07F972FB-E132-4FBF-B52F-DC18A2FFB622</ProjectGuid>
+		<Nullable>enable</Nullable>
+		<LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
@@ -12,6 +14,6 @@
     <ProjectReference Include="..\OLT.DataAdapters\OLT.DataAdapters.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1" />
+    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
 </Project>
