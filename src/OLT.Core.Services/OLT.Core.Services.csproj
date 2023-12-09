@@ -6,7 +6,7 @@
   </PropertyGroup>
 
 	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
-		<Nullable>enable</Nullable>
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
 	
 
