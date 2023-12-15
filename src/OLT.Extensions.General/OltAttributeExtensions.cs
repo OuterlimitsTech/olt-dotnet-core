@@ -18,13 +18,13 @@ namespace OLT.Core
         /// <param name="item"></param>
         /// <returns>First instance of <see cref="Attribute"/></returns>
         /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
-        public static T GetAttributeInstance<T, TEnum>(this TEnum item)
+        public static T? GetAttributeInstance<T, TEnum>(this TEnum item)
             where T : Attribute
             where TEnum : System.Enum
         {            
             var type = item.GetType();
             var field = item.ToString();
-            var attribute = type.GetField(field).GetCustomAttributes(typeof(T), false).Cast<T>().SingleOrDefault();
+            var attribute = type.GetField(field)?.GetCustomAttributes(typeof(T), false).Cast<T>().SingleOrDefault();
             return attribute;
         }
 
@@ -35,12 +35,12 @@ namespace OLT.Core
         /// <param name="item"></param>
         /// <returns>First instance of <see cref="Attribute"/> to search for or <see langword="null"/></returns>
         /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
-        public static T GetAttributeInstance<T>(this Enum item)
+        public static T? GetAttributeInstance<T>(this Enum item)
             where T : Attribute
         {
             if (item == null) return null;
             var type = item.GetType();
-            var attribute = type.GetField(item.ToString()).GetCustomAttributes(typeof(T), false).Cast<T>().SingleOrDefault();
+            var attribute = type.GetField(item.ToString())?.GetCustomAttributes(typeof(T), false).Cast<T>().SingleOrDefault();
             return attribute;
         }
 
@@ -52,7 +52,7 @@ namespace OLT.Core
         /// <param name="inherit">include inherited attributes</param>
         /// <returns>First instance of <see cref="Attribute"/> to search for or <see langword="null"/></returns>
         /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
-        public static T GetAttributeInstance<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
+        public static T? GetAttributeInstance<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
         {
             return property?.GetAttributeInstances<T>(inherit).SingleOrDefault();
         }
@@ -64,7 +64,7 @@ namespace OLT.Core
         /// <param name="property"><see cref="PropertyInfo"/></param>
         /// <param name="inherit">include inherited attributes</param>
         /// <returns>Returns all instances of <see cref="Attribute"/></returns>
-        public static List<T> GetAttributeInstances<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
+        public static List<T>? GetAttributeInstances<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
         {
             return property?.GetCustomAttributes(typeof(T), inherit).Cast<T>().ToList();
         }
@@ -74,7 +74,7 @@ namespace OLT.Core
         /// </summary>
         /// <param name="value"></param>
         /// <returns><see cref="DescriptionAttribute.Description"/> or <seealso cref="Enum"/> ToString() or <see langword="null"/></returns>
-        public static string GetDescription(this Enum value)
+        public static string? GetDescription(this Enum value)
         {
             var attribute = GetAttributeInstance<DescriptionAttribute>(value);
             return attribute?.Description ?? value?.ToString();
