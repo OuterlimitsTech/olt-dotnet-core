@@ -50,7 +50,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="defaultValue">Default value return if null</param>
         /// <returns>return string or default value if null</returns>
-        public static string GetValueOrDefault(this string self, string defaultValue)
+        public static string? GetValueOrDefault(this string? self, string defaultValue)
         {
             return self ?? defaultValue;
         }
@@ -60,7 +60,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>True if the current instance is an empty string or is null.</returns>
-        public static bool IsEmpty(this string self)
+        public static bool IsEmpty(this string? self)
         {
             return string.IsNullOrEmpty(self);
         }
@@ -70,14 +70,14 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>False if the current instance is an empty string or is null.</returns>
-        public static bool IsNotEmpty(this string self)
+        public static bool IsNotEmpty(this string? self)
         {
             return !string.IsNullOrEmpty(self);
         }
 
         #endregion
 
-        public static string RemoveDoubleSpaces(this string self)
+        public static string? RemoveDoubleSpaces(this string? self)
         {
             if (string.IsNullOrEmpty(self))
             {
@@ -91,7 +91,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="replaceWith">What to replace the special character with</param> 
-        public static string RemoveSpecialCharacters(this string self, string replaceWith = "")
+        public static string? RemoveSpecialCharacters(this string? self, string replaceWith = "")
         {
             if (string.IsNullOrEmpty(self))
             {
@@ -100,14 +100,14 @@ namespace System
             return OltRegExPatterns.RemoveSpecialCharacters.Replace(self, replaceWith);
         }
 
-        public static string CleanForSearch(this string self)
+        public static string? CleanForSearch(this string? self)
         {
-            return self?.RemoveSpecialCharacters().Trim().RemoveDoubleSpaces();
+            return self?.RemoveSpecialCharacters()?.Trim().RemoveDoubleSpaces();
         }
 
-        public static List<string> ToWords(this string self)
+        public static List<string>? ToWords(this string? self)
         {
-            return self?.RemoveDoubleSpaces().Split(' ').ToList();
+            return self?.RemoveDoubleSpaces()?.Split(' ')?.ToList();
         }
 
 
@@ -119,7 +119,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="length">Number of characters from the right to return</param>
         /// <returns>string containing only <paramref name="length"/> characters.</returns>
-        public static string Right(this string self, int length)
+        public static string? Right(this string? self, int length)
         {
             return Tail(self, length);
         }
@@ -132,7 +132,7 @@ namespace System
         /// <returns>
         ///   <see cref="string"/>
         /// </returns>
-        public static string Tail(this string self, int length)
+        public static string? Tail(this string? self, int length)
         {
             return length > self?.Length ? self : self?.Substring(self.Length - length);
         }
@@ -144,7 +144,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="length">The length.</param>
         /// <returns></returns>
-        public static string Head(this string self, int length)
+        public static string? Head(this string? self, int length)
         {
             return length > self?.Length ? self : self?.Substring(0, length);
         }
@@ -154,7 +154,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="length">the number of characters to take</param>
-        public static string Left(this string self, int length)
+        public static string? Left(this string? self, int length)
         {
             return Head(self, length);
         }
@@ -167,7 +167,7 @@ namespace System
         /// Checks <see cref="string"/> is a <see cref="System.Guid"/>
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
-        public static bool IsGuid(this string self)
+        public static bool IsGuid(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self))
             {
@@ -183,7 +183,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>Returns converted value to <see cref="System.Guid"/>, if cast fails, Empty Guid </returns>
-        public static Guid? ToGuid(this string self)
+        public static Guid? ToGuid(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self) || !Guid.TryParse(self, out var value))
                 return null;
@@ -196,7 +196,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="defaultValue">value returned if cast fails.</param>
         /// <returns>Returns converted value to <see cref="System.Guid"/>. If cast fails, default value</returns>
-        public static Guid ToGuid(this string self, Guid defaultValue)
+        public static Guid ToGuid(this string? self, Guid defaultValue)
         {
             if (string.IsNullOrWhiteSpace(self) || !Guid.TryParse(self, out var value))
                 return defaultValue;
@@ -211,7 +211,7 @@ namespace System
         /// Checks <see cref="string"/> is of type <see cref="long"/> or <see cref="double"/>
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
-        public static bool IsNumeric(this string self)
+        public static bool IsNumeric(this string? self)
         {
             return long.TryParse(self, out var longVal) || double.TryParse(self, out var doubleVal);
         }
@@ -221,7 +221,7 @@ namespace System
         /// Removes non numeric values from <see cref="string"/> using <see cref="OltRegExPatterns.DigitsOnly"/>
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
-        public static string StripNonNumeric(this string self)
+        public static string? StripNonNumeric(this string? self)
         {
             if (string.IsNullOrEmpty(self))
             {
@@ -236,7 +236,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="allowDecimal">Keep decimals</param>
-        public static string StripNonNumeric(this string self, bool allowDecimal)
+        public static string? StripNonNumeric(this string? self, bool allowDecimal)
         {
             if (string.IsNullOrEmpty(self))
             {
@@ -260,7 +260,7 @@ namespace System
         /// </summary>
         /// <param name="hexString"></param>
         /// <returns></returns>
-        public static bool IsHex(this string hexString)
+        public static bool IsHex(this string? hexString)
         {
             if (hexString == null)
             {
@@ -275,9 +275,9 @@ namespace System
         /// </summary>
         /// <param name="hexString"></param>
         /// <returns>byte array or empty if invalid</returns>
-        public static byte[] FromHexToByte(this string hexString)
+        public static byte[] FromHexToByte(this string? hexString)
         {
-            if (IsHex(hexString))
+            if (hexString != null && IsHex(hexString))
             {
                 var returnBytes = new byte[hexString.Length / 2];
                 for (int i = 0; i < returnBytes.Length; i++)
@@ -295,24 +295,24 @@ namespace System
         public static readonly string[] BoolTrueStrings = { "1", "yes", "y" };
         public static readonly string[] BoolFalseStrings = { "0", "no", "n" };
 
-        public static bool IsBool(this string self)
+        public static bool IsBool(this string? self)
         {
             return ToBoolInternal(self, out var value);
         }
 
-        public static bool? ToBool(this string self)
+        public static bool? ToBool(this string? self)
         {
             ToBoolInternal(self, out var value);
             return value;
         }
 
-        public static bool ToBool(this string self, bool defaultValue)
+        public static bool ToBool(this string? self, bool defaultValue)
         {
             ToBoolInternal(self, out var value);
             return value.GetValueOrDefault(defaultValue);
         }
 
-        private static bool ToBoolInternal(string self, out bool? value)
+        private static bool ToBoolInternal(string? self, out bool? value)
         {
             if (string.IsNullOrWhiteSpace(self))
             {
@@ -353,7 +353,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>Returns converted value to <see cref="decimal"/>, if cast fails, null <see cref="decimal"/></returns>
-        public static decimal? ToDecimal(this string self)
+        public static decimal? ToDecimal(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self) || !decimal.TryParse(self, out var value))
                 return null;
@@ -366,7 +366,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="defaultValue">value returned if cast fails.</param>
         /// <returns>Returns converted value to <see cref="decimal"/>. if cast fails, return defaultValue</returns>
-        public static decimal ToDecimal(this string self, decimal defaultValue)
+        public static decimal ToDecimal(this string? self, decimal defaultValue)
         {
             if (string.IsNullOrWhiteSpace(self) || !decimal.TryParse(self.StripNonNumeric(true), out var value))
                 return defaultValue;
@@ -382,7 +382,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>Returns converted value to <see cref="double"/>, if cast fails, null <see cref="double"/></returns>
-        public static double? ToDouble(this string self)
+        public static double? ToDouble(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self) || !double.TryParse(self, out var value))
                 return null;
@@ -395,7 +395,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="defaultValue">value returned if cast fails.</param>
         /// <returns>Returns converted value to <see cref="double"/>. if cast fails, return defaultValue</returns>
-        public static double ToDouble(this string self, double defaultValue)
+        public static double ToDouble(this string? self, double defaultValue)
         {
             if (string.IsNullOrWhiteSpace(self) || !double.TryParse(self.StripNonNumeric(true), out var value))
                 return defaultValue;
@@ -411,7 +411,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>Returns converted value to <see cref="int"/>, if cast fails, null int</returns>
-        public static int? ToInt(this string self)
+        public static int? ToInt(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self) || !int.TryParse(self, out var value))
                 return null;
@@ -424,7 +424,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="defaultValue">value returned if cast fails.</param>
         /// <returns>Returns converted value to <see cref="int"/>. if cast fails, null int</returns>
-        public static int ToInt(this string self, int defaultValue)
+        public static int ToInt(this string? self, int defaultValue)
         {
             if (string.IsNullOrWhiteSpace(self) || !int.TryParse(self, out var value))
                 return defaultValue;
@@ -441,7 +441,7 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <returns>Returns converted value to <see cref="long"/>, if cast fails, null long</returns>
-        public static long? ToLong(this string self)
+        public static long? ToLong(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self) || !long.TryParse(self, out var value))
                 return null;
@@ -454,7 +454,7 @@ namespace System
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="defaultValue">value returned if cast fails.</param>
         /// <returns>Returns converted value to <see cref="long"/>. if cast fails, defaultValue</returns>
-        public static long ToLong(this string self, long defaultValue)
+        public static long ToLong(this string? self, long defaultValue)
         {
             if (string.IsNullOrWhiteSpace(self) || !long.TryParse(self, out var value))
                 return defaultValue;
@@ -466,19 +466,19 @@ namespace System
         #region [ DateTime ]
 
 
-        public static bool IsDate(this string date)
+        public static bool IsDate(this string? date)
         {
             return DateTime.TryParse(date, out var temp);
         }
 
-        public static DateTime? ToDate(this string self)
+        public static DateTime? ToDate(this string? self)
         {
             if (string.IsNullOrWhiteSpace(self) || !DateTime.TryParse(self, out var value))
                 return null;
             return value;
         }
 
-        public static DateTime? ToDate(this string self, DateTime defaultValue)
+        public static DateTime? ToDate(this string? self, DateTime defaultValue)
         {
             return ToDate(self).GetValueOrDefault(defaultValue);
         }
@@ -489,7 +489,7 @@ namespace System
         /// Reverses String
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
-        public static string Reverse(this string self)
+        public static string? Reverse(this string? self)
         {
             if (string.IsNullOrEmpty(self))
             {
@@ -502,7 +502,7 @@ namespace System
             return new string(charArray);
         }
 
-        public static bool StartsWithAny(this string self, params string[] comparisons)
+        public static bool StartsWithAny(this string? self, params string[] comparisons)
         {
             if (self == null)
             {
@@ -518,7 +518,7 @@ namespace System
             return false;
         }
 
-        public static bool EqualsAny(this string self, params string[] comparisons)
+        public static bool EqualsAny(this string? self, params string[] comparisons)
         {
             if (self == null)
             {
@@ -534,7 +534,7 @@ namespace System
             return false;
         }
 
-        public static object DBNullIfEmpty(this string self)
+        public static object DBNullIfEmpty(this string? self)
         {
             if (string.IsNullOrEmpty(self))
                 return DBNull.Value;
@@ -547,9 +547,9 @@ namespace System
         /// </summary>
         /// <param name="self">Extends <see cref="string"/>.</param>
         /// <param name="maxLength"></param>
-        public static string Slugify(this string self, int maxLength = 50)
+        public static string? Slugify(this string? self, int maxLength = 50)
         {
-            if (self.IsEmpty())
+            if (self == null || self.IsEmpty())
             {
                 return self;
             }
@@ -573,7 +573,7 @@ namespace System
         /// </summary>
         /// <param name="value">Extends <see cref="string"/>.</param>
         /// <returns></returns>
-        public static string DuplicateTicksForSql(this string value)
+        public static string? DuplicateTicksForSql(this string? value)
         {
             return value?.Replace("'", "''");
         }
@@ -586,7 +586,7 @@ namespace System
         /// <returns>
         ///   <see cref="string"/>
         /// </returns>
-        public static string ToSentenceCase(this string self)
+        public static string? ToSentenceCase(this string? self)
         {
             return string.IsNullOrWhiteSpace(self) ? self : Regex.Replace(self, "[a-z][A-Z]", m => m.Value[0] + " " + char.ToLower(m.Value[1]));
         }
@@ -599,7 +599,7 @@ namespace System
         /// <param name="text">Text to append</param>
         /// <param name="separator"></param>
         /// <returns>A <see cref="string"/> containing the joined strings.</returns>
-        public static string Append(this string self, string text, string separator)
+        public static string? Append(this string? self, string text, string separator)
         {
             if (self.IsNotEmpty())
                 self += separator;
@@ -613,7 +613,7 @@ namespace System
         /// </summary>
         /// <param name="input">The <see cref="String" /> to perform the action on</param>
         /// <returns>A Proper cased <see cref="String" /></returns>
-        public static string ToProperCase(this string input)
+        public static string? ToProperCase(this string? input)
         {
             if (input == null) return null;
             if (input.IsEmpty()) return string.Empty;
@@ -624,14 +624,14 @@ namespace System
 
         #region [ Base64 Encode/Decode ]
 
-        public static string Base64Encode(this string plainText)
+        public static string? Base64Encode(this string? plainText)
         {
             if (plainText == null) return null;
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }
 
-        public static string Base64Decode(this string base64EncodedData)
+        public static string? Base64Decode(this string? base64EncodedData)
         {
             if (base64EncodedData == null) return null;
             var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);

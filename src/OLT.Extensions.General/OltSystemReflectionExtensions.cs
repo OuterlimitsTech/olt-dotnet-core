@@ -71,7 +71,11 @@ namespace System.Reflection
                     var assembly = results.Find(p => string.Equals(p.FullName, name, StringComparison.OrdinalIgnoreCase));
                     if (assembly == null)
                     {
-                        results.Add(referencedAssemblies.Find(p => p.FullName == name));
+                        var add = referencedAssemblies.Find(p => p.FullName == name);
+                        if (add != null)
+                        {
+                            results.Add(add);
+                        }                        
                     }
                 });
 
@@ -93,7 +97,7 @@ namespace System.Reflection
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="FileNotFoundException"></exception>
         /// <returns>return stream of embedded resource or null if not found</returns>
-        public static Stream GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
+        public static Stream? GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
         {
             if (resourceName == null)
             {
@@ -184,7 +188,7 @@ namespace System.Reflection
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="FileNotFoundException"></exception>
         /// <returns>return stream of embedded resource or null if not found</returns>
-        public static string GetEmbeddedResourceString(this Assembly assembly, string resourceName)
+        public static string? GetEmbeddedResourceString(this Assembly assembly, string resourceName)
         {
             if (resourceName == null)
             {
@@ -196,7 +200,9 @@ namespace System.Reflection
                 throw new ArgumentException($"{resourceName} cannot be null or whitespace");
             }
 
-            using (StreamReader sr = new StreamReader(GetEmbeddedResourceStream(assembly, resourceName)))
+            var resource = GetEmbeddedResourceStream(assembly, resourceName);
+            if (resource == null) return null;
+            using (StreamReader sr = new StreamReader(resource))
             {
                 string data = sr.ReadToEnd();
                 sr.Close();
@@ -238,7 +244,7 @@ namespace System.Reflection
 
             foreach (var assembly in assemblies)
             {
-                Assembly loaded = null;
+                Assembly? loaded = null;
 
                 try
                 {
