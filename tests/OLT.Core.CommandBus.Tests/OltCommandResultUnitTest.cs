@@ -16,7 +16,7 @@ namespace OLT.Core.CommandBus.Tests
         {
             var nullCommandResult = OltCommandResult.Complete();            
             var addressEntityResult = OltCommandResult.Complete(new TestPersonDto());
-            Assert.Throws<OltCommandResultNullException>(() => nullCommandResult.ToResult<UserEntity>());
+            Assert.Throws<NullReferenceException>(() => nullCommandResult.ToResult<UserEntity>());
             Assert.Throws<InvalidCastException>(() => addressEntityResult.ToResult<UserEntity>());
         }
 

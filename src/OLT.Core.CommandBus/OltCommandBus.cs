@@ -20,10 +20,9 @@ namespace OLT.Core
         }
 
         protected virtual ConcurrentQueue<IOltAfterCommandQueueItem> PostProcessItems { get; } = new ConcurrentQueue<IOltAfterCommandQueueItem>();
-
         protected virtual TContext Context { get; }
         protected virtual List<IOltCommandHandler> Handlers { get; }
-                
+
         /// <summary>
         /// Attempts to locate <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
         /// </summary>
@@ -132,7 +131,7 @@ namespace OLT.Core
                 {
                     await item.PostExecuteAsync(this);  //Run the nested command handlers in order
                 }
-            }
+            }            
         }
 
         /// <summary>
@@ -154,7 +153,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandHandlerMultipleException"></exception>
-        /// <exception cref="OltCommandResultNullException">Thrown is command result is null</exception>
+        /// <exception cref="NullReferenceException">Thrown is command result is null</exception>
         /// <exception cref="InvalidCastException">Thrown if command result can not be cast to <typeparamref name="T"/></exception>
         // [Obsolete("ProcessAsync<T> is deprecated, use IOltCommand<TResult>")] //Issue #149
         public virtual async Task<T> ProcessAsync<T>(IOltCommand command)
@@ -173,7 +172,7 @@ namespace OLT.Core
         /// <typeparam name="TResult"><see cref="IOltCommandHandler"/> Returned Result</typeparam>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
-        /// <exception cref="OltCommandResultNullException">Thrown is command result is null</exception>        
+        /// <exception cref="NullReferenceException">Thrown is command result is null</exception>        
         /// <returns></returns>        
         public virtual async Task<TResult> ProcessAsync<TResult>(IOltCommand<TResult> command) where TResult : notnull
         {

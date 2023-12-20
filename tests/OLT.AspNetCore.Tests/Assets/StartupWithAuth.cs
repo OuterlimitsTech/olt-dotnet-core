@@ -19,7 +19,8 @@ namespace OLT.AspNetCore.Tests.Assets
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
-            services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
+            services
+                .AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
                 .AddApiKeyInHeaderOrQueryParams(options =>
                 {
                     options.Realm = "Unit Test";

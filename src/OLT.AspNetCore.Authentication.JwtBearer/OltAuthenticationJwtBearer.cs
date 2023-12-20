@@ -9,27 +9,17 @@ using OLT.Core;
 
 namespace OLT.AspNetCore.Authentication
 {
-    public class OltAuthenticationJwtBearer : OltAuthenticationSchemeBuilder<JwtBearerOptions>, IOltAuthenticationJwtBearer
+    public class OltAuthenticationJwtBearer : IOltAuthenticationJwtBearer
     {
-        public OltAuthenticationJwtBearer()
-        {
-
-        }
-
         public OltAuthenticationJwtBearer(string jwtSecret)
         {
             JwtSecret = jwtSecret;
         }
 
         /// <summary>
-        /// Default <seealso cref="JwtBearerDefaults.AuthenticationScheme"/>
-        /// </summary>
-        public override string Scheme => JwtBearerDefaults.AuthenticationScheme;
-
-        /// <summary>
         /// Secret used to encrypt/decrypt jwt signature <seealso cref="TokenValidationParameters.IssuerSigningKey"/>
         /// </summary>
-        public string JwtSecret { get; set; }
+        public virtual string JwtSecret { get; }
 
         /// <summary>
         /// Gets or sets if HTTPS is required for the metadata address or authority.
@@ -37,7 +27,7 @@ namespace OLT.AspNetCore.Authentication
         /// <remarks>
         /// The default is true. This should be disabled only in development environments.
         /// </remarks>
-        public bool RequireHttpsMetadata { get; set; } = true;
+        public virtual bool RequireHttpsMetadata { get; set; } = true;
 
 
         /// <summary>
@@ -50,7 +40,7 @@ namespace OLT.AspNetCore.Authentication
         ///  default audience validation. If Microsoft.IdentityModel.Tokens.TokenValidationParameters.AudienceValidator
         ///  is set, it will be called regardless of whether this property is true or false.
         /// </remarks>
-        public bool ValidateIssuer { get; set; }
+        public virtual bool ValidateIssuer { get; set; }
 
         /// <summary>
         /// Gets or sets a boolean to control if the original token should be saved after the security token is validated.
@@ -58,8 +48,7 @@ namespace OLT.AspNetCore.Authentication
         /// <remarks>
         /// The runtime will consult this value and save the original token that was validated.
         /// </remarks>
-        public bool ValidateAudience { get; set; }
-
+        public virtual bool ValidateAudience { get; set; }
 
         /// <summary>
         /// Builds Jwt Bearer Token Authentication Scheme
@@ -68,20 +57,19 @@ namespace OLT.AspNetCore.Authentication
         /// <param name="configureOptions"><seealso cref="JwtBearerOptions"/></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="NullReferenceException"></exception>
-        public override AuthenticationBuilder AddScheme(AuthenticationBuilder builder, Action<JwtBearerOptions> configureOptions)
+        public virtual AuthenticationBuilder AddScheme(AuthenticationBuilder builder, Action<JwtBearerOptions>? configureOptions)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
+            ArgumentNullException.ThrowIfNull(builder);
+            ArgumentNullException.ThrowIfNull(JwtSecret);
 
-            if (string.IsNullOrEmpty(JwtSecret))
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(JwtSecret);
+#else
+            if (string.IsNullOrWhiteSpace(JwtSecret))
             {
-                throw new OltException(nameof(JwtSecret));
+                throw new ArgumentNullException(nameof(JwtSecret));
             }
-
-            var key = Encoding.ASCII.GetBytes(JwtSecret);
+#endif
 
             builder.AddJwtBearer(opt =>
             {
@@ -115,7 +103,7 @@ namespace OLT.AspNetCore.Authentication
                     NameClaimType = OltClaimTypes.Name,
                     RoleClaimType = OltClaimTypes.Role,
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtSecret)),
                     ValidateIssuer = ValidateIssuer,
                     ValidateAudience = ValidateAudience
                 };

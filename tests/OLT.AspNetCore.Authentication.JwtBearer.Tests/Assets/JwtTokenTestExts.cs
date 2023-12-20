@@ -13,9 +13,8 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets
 
         public static OltAuthenticationJwtBearer GetOptions()
         {
-            return new OltAuthenticationJwtBearer
+            return new OltAuthenticationJwtBearer("ABC1234")
             {
-                JwtSecret = "ABC1234",
                 RequireHttpsMetadata = false,
                 ValidateIssuer = true,
                 ValidateAudience = true,

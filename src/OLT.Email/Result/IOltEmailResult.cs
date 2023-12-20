@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using OLT.Core;
 
 namespace OLT.Email
 {
-    public interface IOltEmailResult : IOltResult
+    public interface IOltEmailResult
     {
+        bool Success { get; }
         List<string> Errors { get; set; }
         OltEmailRecipientResult RecipientResults { get; set; }
     }

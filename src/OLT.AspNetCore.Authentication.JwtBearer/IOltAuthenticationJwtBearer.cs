@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
 
 namespace OLT.AspNetCore.Authentication
 {
-    public interface IOltAuthenticationJwtBearer : IOltAuthenticationSchemeBuilder<JwtBearerOptions>
+    public interface IOltAuthenticationJwtBearer 
     {
-
         string JwtSecret { get; }
 
         /// <summary>
@@ -34,5 +35,9 @@ namespace OLT.AspNetCore.Authentication
         /// The runtime will consult this value and save the original token that was validated.
         /// </remarks>
         bool ValidateAudience { get; }
+
+        AuthenticationBuilder AddScheme(AuthenticationBuilder builder, Action<JwtBearerOptions>? configureOptions);
+
     }
+
 }

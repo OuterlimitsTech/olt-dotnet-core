@@ -5,11 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets;
 using OLT.AspNetCore.Authentication.JwtBearer.Tests.Assets.Startups;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -34,8 +30,7 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             Assert.NotNull(schemeOptions);
 
             var options = JwtTokenTestExts.GetOptions();
-
-            Assert.Equal(options.Scheme, scheme.Name);
+            
             Assert.Equal(options.RequireHttpsMetadata, schemeOptions.RequireHttpsMetadata);
             Assert.Equal(options.ValidateIssuer, schemeOptions.TokenValidationParameters.ValidateIssuer);
             Assert.Equal(options.ValidateAudience, schemeOptions.TokenValidationParameters.ValidateAudience);

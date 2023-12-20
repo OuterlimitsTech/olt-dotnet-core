@@ -22,7 +22,7 @@ namespace OLT.Core.CommandBus.Tests
         [Fact]
         public void ExceptionTests()
         {
-            Assert.Throws<OltCommandResultNullException>(() => OltCommandExtensions.ToResult<UserEntity>(OltCommandResult.Complete()));
+            Assert.Throws<NullReferenceException>(() => OltCommandExtensions.ToResult<UserEntity>(OltCommandResult.Complete()));
             Assert.Throws<InvalidCastException>(() => OltCommandExtensions.ToResult<UserEntity>(OltCommandResult.Complete(new TestPersonDto())));
         }
     }

@@ -15,7 +15,7 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
         public void ArgumentExceptions()
         {
             var services = new ServiceCollection();
-            var invalidOptions = new OltAuthenticationJwtBearer();
+            var invalidOptions = new OltAuthenticationJwtBearer(null);
             var validOptions = new OltAuthenticationJwtBearer(Secret);
             var builder = new AuthenticationBuilder(services);
 
@@ -32,23 +32,21 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             };
 
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions));
-            Assert.Throws<ArgumentNullException>("options", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null));
+            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null));
 
 
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions, null));
-            Assert.Throws<ArgumentNullException>("options", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action));
+            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action));
 
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions, action, authAction));
-            Assert.Throws<ArgumentNullException>("options", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action, authAction));
+            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action, authAction));
 
-            Assert.Throws<ArgumentNullException>("builder", () => invalidOptions.AddScheme(null));
-            Assert.Throws<ArgumentNullException>("builder", () => new OltAuthenticationJwtBearer().AddScheme(null, null));
+            Assert.Throws<ArgumentNullException>("builder", () => invalidOptions.AddScheme(null, null));
+            Assert.Throws<ArgumentNullException>("builder", () => new OltAuthenticationJwtBearer(null).AddScheme(null, null));
 
-            Assert.Throws<OltException>(() => new OltAuthenticationJwtBearer().AddScheme(builder, null));
-            Assert.Throws<OltException>(() => new OltAuthenticationJwtBearer().AddScheme(builder, action));            
-            Assert.Throws<OltException>(() => invalidOptions.AddScheme(services.AddAuthentication(invalidOptions.Scheme)));
+            Assert.Throws<ArgumentNullException>("JwtSecret", () => new OltAuthenticationJwtBearer(null).AddScheme(builder, null));
+            Assert.Throws<ArgumentNullException>("JwtSecret", () => new OltAuthenticationJwtBearer(null).AddScheme(builder, action));            
 
-            Assert.Throws<ArgumentNullException>("services", () => invalidOptions.AddAuthentication(null));
 
         }
 
@@ -61,8 +59,7 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             var services = new ServiceCollection();
             var builder = new AuthenticationBuilder(services);
 
-            var model = new OltAuthenticationJwtBearer();
-            Assert.Equal(JwtBearerDefaults.AuthenticationScheme, model.Scheme);
+            var model = new OltAuthenticationJwtBearer(null);            
             Assert.Null(model.JwtSecret);
             Assert.True(model.RequireHttpsMetadata);
             Assert.False(model.ValidateIssuer);
@@ -72,8 +69,7 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             model.RequireHttpsMetadata = false;
             model.ValidateIssuer = true;
             model.ValidateAudience = true;
-
-            Assert.Equal(JwtBearerDefaults.AuthenticationScheme, model.Scheme);
+            
             Assert.Equal(token, model.JwtSecret);
             Assert.False(model.RequireHttpsMetadata);
             Assert.True(model.ValidateIssuer);
