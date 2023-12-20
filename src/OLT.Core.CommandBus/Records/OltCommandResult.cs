@@ -21,7 +21,7 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        /// <exception cref="OltCommandResultNullException"></exception>
+        /// <exception cref="NullReferenceException"></exception>
         /// <exception cref="InvalidCastException"></exception>
         public T GetResult<T>()
         {

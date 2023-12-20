@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using OLT.AspNetCore.Authentication;
 
 namespace OLT.Core
@@ -12,54 +13,58 @@ namespace OLT.Core
         /// <summary>
         /// Adds JWT Bearer Token Authentication
         /// </summary>
-        /// <typeparam name="TOptions"></typeparam>
+        /// <typeparam name="TScheme"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="options"><seealso cref="IOltAuthenticationJwtBearer"/></param>
+        /// <param name="schemeBuilder"><seealso cref="IOltAuthenticationJwtBearer"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
-        public static AuthenticationBuilder AddJwtBearer<TOptions>(this IServiceCollection services, TOptions options)
-            where TOptions : IOltAuthenticationJwtBearer, IOltAuthenticationSchemeBuilder<JwtBearerOptions>
-            => services.AddJwtBearer(options, null, null);
+        /// <exception cref="ArgumentNullException"></exception>
+        public static AuthenticationBuilder AddJwtBearer<TScheme>(this IServiceCollection services, TScheme schemeBuilder)
+            where TScheme : IOltAuthenticationJwtBearer
+            => services.AddJwtBearer(schemeBuilder, null, null);
 
         /// <summary>
         /// Adds JWT Bearer Token Authentication
         /// </summary>
-        /// <typeparam name="TOptions"></typeparam>
+        /// <typeparam name="TScheme"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="options"><seealso cref="IOltAuthenticationJwtBearer"/></param>
+        /// <param name="schemeBuilder"><seealso cref="IOltAuthenticationJwtBearer"/></param>
         /// <param name="configureOptions"><seealso cref="JwtBearerOptions"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
-        public static AuthenticationBuilder AddJwtBearer<TOptions>(this IServiceCollection services, TOptions options, Action<JwtBearerOptions> configureOptions)
-            where TOptions : IOltAuthenticationJwtBearer, IOltAuthenticationSchemeBuilder<JwtBearerOptions>
-            => services.AddJwtBearer(options, configureOptions, null);
+        /// <exception cref="ArgumentNullException"></exception>
+        public static AuthenticationBuilder AddJwtBearer<TScheme>(this IServiceCollection services, TScheme schemeBuilder, Action<JwtBearerOptions>? configureOptions)
+            where TScheme : IOltAuthenticationJwtBearer
+            => services.AddJwtBearer(schemeBuilder, configureOptions, null);
 
         /// <summary>
         /// Adds JWT Bearer Token Authentication
         /// </summary>
-        /// <typeparam name="TOptions"></typeparam>
+        /// <typeparam name="TScheme"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="options"><seealso cref="IOltAuthenticationJwtBearer"/></param>
+        /// <param name="schemeBuilder"><seealso cref="IOltAuthenticationJwtBearer"/></param>
         /// <param name="authOptionsAction"><seealso cref="AuthenticationOptions"/></param>
         /// <param name="schemeOptions"><seealso cref="JwtBearerOptions"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
-        public static AuthenticationBuilder AddJwtBearer<TOptions>(this IServiceCollection services, TOptions options, Action<JwtBearerOptions> schemeOptions, Action<AuthenticationOptions> authOptionsAction)
-            where TOptions : IOltAuthenticationJwtBearer, IOltAuthenticationSchemeBuilder<JwtBearerOptions>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static AuthenticationBuilder AddJwtBearer<TScheme>(this IServiceCollection services, TScheme schemeBuilder, Action<JwtBearerOptions>? schemeOptions, Action<AuthenticationOptions>? authOptionsAction)
+            where TScheme: IOltAuthenticationJwtBearer
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(schemeBuilder);
 
             //But with the Security Token Handler not using the custom RoleClaimType correctly
             //Clearing the DefaultInboundClaimTypeMap before adding the auth fixes the role claims
             //https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1349
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            var builder = options.AddAuthentication(services, authOptionsAction);
-            return options.AddScheme(builder, schemeOptions);
+            var builder = services
+                .AddAuthentication(opt =>
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    authOptionsAction?.Invoke(opt);
+                });
+
+            return schemeBuilder.AddScheme(builder, schemeOptions);            
         }
     }
 

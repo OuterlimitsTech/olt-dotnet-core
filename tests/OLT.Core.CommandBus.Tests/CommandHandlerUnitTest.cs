@@ -35,7 +35,7 @@ namespace OLT.Core.CommandBus.Tests
             {
                 var commandBus = provider.GetService<IOltCommandBus>();
                 var command = new SimpleCommand();
-                await Assert.ThrowsAsync<OltCommandResultNullException>(() => commandBus.ProcessAsync<UserEntity>(command));
+                await Assert.ThrowsAsync<NullReferenceException>(() => commandBus.ProcessAsync<UserEntity>(command));
             }
 
             using (var provider = BuildProvider())
