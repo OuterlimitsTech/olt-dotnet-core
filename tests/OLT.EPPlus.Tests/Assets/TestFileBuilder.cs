@@ -7,11 +7,9 @@ using System.IO;
 
 namespace OLT.EPPlus.Tests.Assets
 {
-    public class TestFileBuilder : OltFileBuilder<TestFileBuilderRequest>
+    public class TestFileBuilder 
     {
-        public override string BuilderName => nameof(TestFileBuilder);
-
-        protected override IOltFileBase64 Build(TestFileBuilderRequest request)
+        public IOltFileBase64 Build(TestFileBuilderRequest request)
         {
             using var excelPackage = new ExcelPackage();
             var worksheet = excelPackage.Workbook.Worksheets.Add($"Count {request.Data.Count:N0}");
@@ -42,7 +40,7 @@ namespace OLT.EPPlus.Tests.Assets
 
             return new OltFileBase64
             {
-                FileName = $"{BuilderName} [{DateTimeOffset.Now:s}].xlsx",
+                FileName = $"{nameof(TestFileBuilder)} [{DateTimeOffset.Now:s}].xlsx",
                 ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 FileBase64 = Convert.ToBase64String(excelPackage.GetAsByteArray())
             };

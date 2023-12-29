@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OLT.Builder.File\OLT.Builder.File.csproj" />
     <ProjectReference Include="..\..\src\OLT.Core.Common\OLT.Core.Common.csproj" />
     <ProjectReference Include="..\..\src\OLT.EPPlus\OLT.EPPlus.csproj" />
   </ItemGroup>

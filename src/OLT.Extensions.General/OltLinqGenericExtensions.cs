@@ -13,7 +13,8 @@ namespace System.Linq
         /// <param name="second"></param>
         /// <param name="comparer"></param>
         /// <returns>A sequence that contains the set difference of the elements of two sequences.</returns>
-        /// <exception cref="ArgumentNullException">first, second, or comparer is null</exception>
+        /// <exception cref="ArgumentNullException">first, second, or comparer is null</exception>        
+        [Obsolete("Move To Enumerable.ExceptBy", UrlFormat = "https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.exceptby")]
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, OltLambdaComparer<TSource> comparer)
         {
             if (first == null)
@@ -48,6 +49,7 @@ namespace System.Linq
         /// </example>
         /// <returns>A sequence that contains the set difference of the elements of two sequences.</returns>
         /// <exception cref="ArgumentNullException">first, second, or comparer is null</exception>
+        [Obsolete("Move To Enumerable.ExceptBy", UrlFormat = "https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.exceptby")]
         public static IEnumerable<TSource> Except<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
         {
             if (first == null)
@@ -77,6 +79,7 @@ namespace System.Linq
         /// <param name="comparer"></param>
         /// <returns>A sequence that contains the elements that form the set intersection of two sequences.</returns>
         /// <exception cref="ArgumentNullException">first, second, or comparer is null</exception>
+        [Obsolete("Move To Enumerable.IntersectBy", UrlFormat = "https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.intersectby")]
         public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, OltLambdaComparer<TSource> comparer)
         {
             if (first == null)
@@ -106,6 +109,7 @@ namespace System.Linq
         /// <param name="comparer"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException">first, second, or comparer is null</exception>
+        [Obsolete("Move To Enumerable.IntersectBy", UrlFormat = "https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.intersectby")]
         public static IEnumerable<TSource> Intersect<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, Func<TSource, TSource, bool> comparer)
         {
             if (first == null)
