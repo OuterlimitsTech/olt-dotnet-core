@@ -43,8 +43,8 @@ namespace OLT.Core
             list.AddClaim(OltClaimTypes.Nickname, model.Name.First);
 
             list.AddRange(model.Name.ToClaims());
-            model.Roles.Where(value => value.IsNotEmpty()).ToList().ForEach(value => list.AddClaim(OltClaimTypes.Role, value));
-            model.Permissions.Where(value => value.IsNotEmpty()).ToList().ForEach(value => list.AddClaim(OltClaimTypes.Role, value));
+            model.Roles.Where(value => !string.IsNullOrWhiteSpace(value)).ToList().ForEach(value => list.AddClaim(OltClaimTypes.Role, value));
+            model.Permissions.Where(value => !string.IsNullOrWhiteSpace(value)).ToList().ForEach(value => list.AddClaim(OltClaimTypes.Role, value));
             return list;
         }
 

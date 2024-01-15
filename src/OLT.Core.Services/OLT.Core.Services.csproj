@@ -10,16 +10,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Core.Services.Abstractions\OLT.Core.Services.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
 	</ItemGroup>
 	
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="Entity\Abstract\" />
-    <Folder Include="Entity\Interface\" />
   </ItemGroup>
 	
 </Project>
