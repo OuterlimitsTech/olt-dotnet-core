@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Core.Common.Tests.Assets
+namespace OLT.Core.Common.Tests.Assets;
+
+public class TestDisposable : OltDisposable
 {
-    public class TestDisposable : OltDisposable
+    public bool IsDisposed()
     {
-        public bool IsDisposed()
-        {
-            return base.Disposed;
-        }
+        return base.Disposed;
     }
 }

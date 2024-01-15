@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Core.Common.Tests.Assets
-{
+namespace OLT.Core.Common.Tests.Assets;
 
-    public class ParameterStringParser : OltGenericParameterParser<string>
+public class ParameterStringParser : OltGenericParameterParser<string>
+{
+    public ParameterStringParser() : base(nameof(ParameterStringParser))
     {
-        public ParameterStringParser() : base(nameof(ParameterStringParser))
-        {
         }
 
-        public override bool HasValue => Value.IsNotEmpty();
+    public override bool HasValue => Value.IsNotEmpty();
 
-        public override bool Parse(IOltGenericParameter parameters)
-        {
+    public override bool Parse(IOltGenericParameter parameters)
+    {
             if (parameters == null)
             {
                 Value = null;
@@ -29,5 +28,4 @@ namespace OLT.Core.Common.Tests.Assets
             return HasValue;
         }
 
-    }
 }

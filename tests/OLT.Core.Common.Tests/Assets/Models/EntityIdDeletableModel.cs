@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OLT.Core.Common.Tests.Assets;
 
-namespace OLT.Core.Services.Tests.Assets.Models
+namespace OLT.Core.Services.Tests.Assets.Models;
+
+public class EntityIdDeletableModel : OltEntityIdDeletable
 {
-    public class EntityIdDeletableModel : OltEntityIdDeletable
+    public static EntityIdDeletableModel FakerData()
     {
-        public static EntityIdDeletableModel FakerData()
-        {
             return new EntityIdDeletableModel
             {
                 Id = Faker.RandomNumber.Next(1000, 10000),
@@ -22,5 +23,4 @@ namespace OLT.Core.Services.Tests.Assets.Models
                 ModifyDate = TestHelper.FakerDateTimePast(),
             };
         }     
-    }
 }

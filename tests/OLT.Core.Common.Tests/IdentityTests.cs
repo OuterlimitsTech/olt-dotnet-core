@@ -4,13 +4,13 @@ using System.Linq;
 using System.Security.Principal;
 using Xunit;
 
-namespace OLT.Core.Common.Tests
+namespace OLT.Core.Common.Tests;
+
+public class IdentityTests
 {
-    public class IdentityTests
+    [Fact]
+    public void IdentityTestEmpty()
     {
-        [Fact]
-        public void IdentityTestEmpty()
-        {
             var model = new TestIdentity();
             Assert.NotNull(model as IOltIdentity);
             Assert.Null(model.Identity);
@@ -35,9 +35,9 @@ namespace OLT.Core.Common.Tests
             Assert.Null(model.PhoneVerified);
         }
 
-        [Fact]
-        public void IsAnonymousTest()
-        {
+    [Fact]
+    public void IsAnonymousTest()
+    {
             var model = new TestIdentity();
             Assert.True(model.IsAnonymous);
 
@@ -52,17 +52,17 @@ namespace OLT.Core.Common.Tests
             Assert.False(model.IsAnonymous);
         }
 
-        [Theory]
-        [InlineData(null, null, null)]
-        [InlineData("Jr.", null, null)]
-        [InlineData("Jr.", null, false)]
-        [InlineData("Sr", "555-867-5309", true)]
-        [InlineData(null, "555-867-5309", true)]
-        [InlineData(" ", "", false)]
-        [InlineData("", " ", false)]
-        [InlineData(" ", " ", false)]
-        public void ClaimsTest(string nameSuffix, string phone, bool? phoneVerified)
-        {
+    [Theory]
+    [InlineData(null, null, null)]
+    [InlineData("Jr.", null, null)]
+    [InlineData("Jr.", null, false)]
+    [InlineData("Sr", "555-867-5309", true)]
+    [InlineData(null, "555-867-5309", true)]
+    [InlineData(" ", "", false)]
+    [InlineData("", " ", false)]
+    [InlineData(" ", " ", false)]
+    public void ClaimsTest(string nameSuffix, string phone, bool? phoneVerified)
+    {
             var user = TestHelper.FakerAuthUserToken(nameSuffix);
 
             var claims = user.ToClaims();
@@ -82,9 +82,9 @@ namespace OLT.Core.Common.Tests
         }
 
 
-        [Fact]
-        public void ClaimRoleTest()
-        {
+    [Fact]
+    public void ClaimRoleTest()
+    {
             var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
             user.Roles.Add(TestSecurityRoles.RoleOne.GetCodeEnum());
             user.Roles.Add(TestSecurityRoles.RoleThree.GetCodeEnum());
@@ -106,9 +106,9 @@ namespace OLT.Core.Common.Tests
             Assert.False(model.HasRole(" "));
         }
 
-        [Fact]
-        public void ClaimRoleEnumTest()
-        {
+    [Fact]
+    public void ClaimRoleEnumTest()
+    {
             var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
             user.Roles.Add(TestSecurityRoles.RoleOne.GetCodeEnum());
             user.Roles.Add(TestSecurityRoles.RoleThree.GetCodeEnum());
@@ -138,8 +138,8 @@ namespace OLT.Core.Common.Tests
         }
 
 
-        private void TestClaims(OltAuthenticatedUserJson<OltPersonName> user, TestIdentity model, string phone, bool? phoneVerified)
-        {
+    private void TestClaims(OltAuthenticatedUserJson<OltPersonName> user, TestIdentity model, string phone, bool? phoneVerified)
+    {
             var lastName = string.IsNullOrWhiteSpace(user.Name.Suffix) ? user.Name.Last : $"{user.Name.Last} {user.Name.Suffix}";
 
             Assert.Equal(user.Name.First, model.FirstName);
@@ -160,6 +160,4 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(phoneVerified, model.PhoneVerified);
         }
 
-    }
 }
-

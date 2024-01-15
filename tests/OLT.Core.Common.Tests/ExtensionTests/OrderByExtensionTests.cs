@@ -5,16 +5,15 @@ using System.Linq;
 using Xunit;
 
 
-namespace OLT.Core.Common.Tests.ExtensionTests
-{  
+namespace OLT.Core.Common.Tests.ExtensionTests;
 
-    public class OrderByExtensionsTests
+public class OrderByExtensionsTests
+{
+    private readonly Func<IQueryable<TestPersonNameModel>, IQueryable<TestPersonNameModel>> _defaultOrder = entity => entity.OrderBy(p => p.NameFirst);
+
+    [Fact]
+    public void OrderByPropertyName()
     {
-        private readonly Func<IQueryable<TestPersonNameModel>, IQueryable<TestPersonNameModel>> _defaultOrder = entity => entity.OrderBy(p => p.NameFirst);
-
-        [Fact]
-        public void OrderByPropertyName()
-        {
             var list = TestPersonNameModel.FakerList(25);
             var queryable = list.AsQueryable();
 
@@ -27,9 +26,9 @@ namespace OLT.Core.Common.Tests.ExtensionTests
                 .BeEquivalentTo(list.OrderByDescending(p => p.NameLast), options => options.WithStrictOrdering());
         }
 
-        [Fact]
-        public void OrderBySortParams()
-        {
+    [Fact]
+    public void OrderBySortParams()
+    {
             var list = TestPersonNameModel.FakerList(25);
             var queryable = list.AsQueryable();
 
@@ -55,9 +54,9 @@ namespace OLT.Core.Common.Tests.ExtensionTests
                 .BeEquivalentTo(list.OrderByDescending(p => p.NameLast), options => options.WithStrictOrdering());
         }
 
-        [Fact]
-        public void OrderBySortParamsWithDefault()
-        {
+    [Fact]
+    public void OrderBySortParamsWithDefault()
+    {
 
             var list = TestPersonNameModel.FakerList(25);
             var queryable = list.AsQueryable();
@@ -80,9 +79,9 @@ namespace OLT.Core.Common.Tests.ExtensionTests
 
         }
 
-        [Fact]
-        public void OrderByExceptions()
-        {
+    [Fact]
+    public void OrderByExceptions()
+    {
 
             var list = TestPersonNameModel.FakerList(25);
             var queryable = list.AsQueryable();
@@ -101,5 +100,4 @@ namespace OLT.Core.Common.Tests.ExtensionTests
             Assert.Throws<ArgumentNullException>(() => OltOrderByExtensions.OrderBy(queryable, sort, null));
             Assert.Throws<ArgumentNullException>(() => OltOrderByExtensions.OrderBy(queryable, null, null));
         }
-    }
 }

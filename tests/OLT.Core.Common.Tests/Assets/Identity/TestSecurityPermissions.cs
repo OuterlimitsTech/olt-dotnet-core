@@ -2,14 +2,13 @@
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OLT.Core.Common.Tests.Assets
-{
-    public enum TestSecurityPermissions
-    {
-        [Code("perm-one")]
-        PermOne = 11000,
+namespace OLT.Core.Common.Tests.Assets;
 
-        [Code("perm-two")]
-        PermTwo = 12000,
-    }
+public enum TestSecurityPermissions
+{
+    [Code("perm-one")]
+    PermOne = 11000,
+
+    [Code("perm-two")]
+    PermTwo = 12000,
 }

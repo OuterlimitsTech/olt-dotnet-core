@@ -6,16 +6,17 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OLT.Core.Common.Tests.Assets;
 using Xunit;
 
-namespace OLT.Core.Services.Tests
-{
-    public class QueryableExtensionsWhereTests
-    {
+namespace OLT.Core.Services.Tests;
 
-        [Fact]
-        public void WhereExtensionTests()
-        {
+public class QueryableExtensionsWhereTests
+{
+
+    [Fact]
+    public void WhereExtensionTests()
+    {
             var firstName = nameof(WhereExtensionTests);
             var searcher = new PersonFirstNameStartsWithSearcher(firstName);
 
@@ -41,9 +42,9 @@ namespace OLT.Core.Services.Tests
             results.Should().BeEquivalentTo(expected);
         }
 
-        [Fact]
-        public void WhereExtensionArrayTests()
-        {
+    [Fact]
+    public void WhereExtensionArrayTests()
+    {
             var firstName = $"First_{nameof(WhereExtensionArrayTests)}";
             var lastName = $"Last_{nameof(WhereExtensionArrayTests)}";
             var searcher1 = new PersonLastNameStartsWithSearcher(lastName);
@@ -73,9 +74,9 @@ namespace OLT.Core.Services.Tests
             results.Should().BeEquivalentTo(expected);
         }
 
-        [Fact]
-        public void WhereExceptions()
-        {
+    [Fact]
+    public void WhereExceptions()
+    {
             var list = PersonEntity.FakerList(20);            
             var queryable = list.AsQueryable();
             IOltSearcher<PersonEntity>[] searchers = null;
@@ -88,5 +89,4 @@ namespace OLT.Core.Services.Tests
             Assert.Throws<ArgumentNullException>(() => OltWhereExtensions.Where<PersonEntity>(null, searcher));
             Assert.Throws<ArgumentNullException>(() => OltWhereExtensions.Where<PersonEntity>(queryable, searcher));            
         }
-    }
 }

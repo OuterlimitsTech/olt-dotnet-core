@@ -6,15 +6,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using OLT.Core.Common.Tests.Assets;
 using Xunit;
 
-namespace OLT.Core.Services.Tests
+namespace OLT.Core.Services.Tests;
+
+public class QueryableExtensionsGeneralTests
 {
-    public class QueryableExtensionsGeneralTests
+    [Fact]
+    public void NonDeletedQueryableTests()
     {
-        [Fact]
-        public void NonDeletedQueryableTests()
-        {
             var entityPersons = EntityPersonModel.FakerList(Faker.RandomNumber.Next(5, 9), false);
             entityPersons.AddRange(EntityPersonModel.FakerList(Faker.RandomNumber.Next(1, 9), true));
             entityPersons.AddRange(EntityPersonModel.FakerList(Faker.RandomNumber.Next(5, 9), false));
@@ -33,5 +34,4 @@ namespace OLT.Core.Services.Tests
         }
 
 
-    }
 }

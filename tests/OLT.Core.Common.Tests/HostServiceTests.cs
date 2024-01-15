@@ -2,14 +2,14 @@
 using System.Linq;
 using Xunit;
 
-namespace OLT.Core.Common.Tests
-{
-    public class HostServiceTests
-    {
+namespace OLT.Core.Common.Tests;
 
-        [Fact]
-        public void ModelTests()
-        {
+public class HostServiceTests
+{
+
+    [Fact]
+    public void ModelTests()
+    {
             var envName = Faker.Lorem.Words(10).Last();
             var appName = Faker.Lorem.Words(15).Last();
             var dir = $"/{envName}/{appName}/";
@@ -24,5 +24,4 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(expected, val);
         }
 
-    }
 }

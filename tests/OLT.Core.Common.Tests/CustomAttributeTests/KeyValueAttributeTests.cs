@@ -2,27 +2,27 @@
 using System.Linq;
 using Xunit;
 
-namespace OLT.Core.Common.Tests.CustomAttributeTests
+namespace OLT.Core.Common.Tests.CustomAttributeTests;
+
+public class KeyValueAttributeTests
 {
-    public class KeyValueAttributeTests
+    public enum TestValue
     {
-        public enum TestValue
-        {
-            [KeyValue("key1", "value1")]
-            Single,
+        [KeyValue("key1", "value1")]
+        Single,
             
-            NoAttribute,
+        NoAttribute,
 
-            [KeyValue("key1", "value1")]
-            [KeyValue("key2", "value2")]
-            [KeyValue("key3", "value3")]
-            Muliple,
+        [KeyValue("key1", "value1")]
+        [KeyValue("key2", "value2")]
+        [KeyValue("key3", "value3")]
+        Muliple,
 
-        }
+    }
 
-        [Fact]
-        public void RawAttributeTest()
-        {
+    [Fact]
+    public void RawAttributeTest()
+    {
             var key = Faker.Lorem.Words(9).Last();
             var value = Faker.Lorem.Words(15).Last();
             var attr = new KeyValueAttribute(key, value);
@@ -33,21 +33,20 @@ namespace OLT.Core.Common.Tests.CustomAttributeTests
             Assert.Null(new KeyValueAttribute(key, null).Value);
         }
 
-        [Theory]
-        [InlineData(1, TestValue.Single)]
-        [InlineData(0, TestValue.NoAttribute)]
-        [InlineData(3, TestValue.Muliple)]
-        public void Count(int expected, TestValue @enum)
-        {
+    [Theory]
+    [InlineData(1, TestValue.Single)]
+    [InlineData(0, TestValue.NoAttribute)]
+    [InlineData(3, TestValue.Muliple)]
+    public void Count(int expected, TestValue @enum)
+    {
             Assert.Equal(expected, OltKeyValueAttributeExtensions.GetKeyValueAttributes(@enum)?.Count);
         }
 
-        [Fact]
-        public void Null()
-        {
+    [Fact]
+    public void Null()
+    {
             Assert.NotNull(OltKeyValueAttributeExtensions.GetKeyValueAttributes(null));
             Assert.Empty(OltKeyValueAttributeExtensions.GetKeyValueAttributes(null));
         }
 
-    }
 }
