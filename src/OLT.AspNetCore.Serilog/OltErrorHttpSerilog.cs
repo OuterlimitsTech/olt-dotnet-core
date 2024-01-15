@@ -10,7 +10,7 @@ namespace OLT.Logging.Serilog
     {
         public Guid? ErrorUid { get; set; }
 
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         public List<string> Errors { get; set; } = new List<string>();
 

@@ -41,7 +41,7 @@ namespace OLT.Logging.Serilog
         /// <param name="app"><seealso cref="IApplicationBuilder"/></param>
         /// <param name="configureOptions"><seealso cref="RequestLoggingOptions"/></param>
         /// <returns><seealso cref="IApplicationBuilder"/></returns>
-        public static IApplicationBuilder UseOltSerilogRequestLogging(this IApplicationBuilder app, Action<RequestLoggingOptions> configureOptions = null)
+        public static IApplicationBuilder UseOltSerilogRequestLogging(this IApplicationBuilder app, Action<RequestLoggingOptions>? configureOptions = null)
         {
             if (app == null)
             {

@@ -13,6 +13,15 @@ namespace OLT.AspNetCore.Authentication
     {
         public OltAuthenticationJwtBearer(string jwtSecret)
         {
+#if NET8_0_OR_GREATER
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(jwtSecret);
+#else
+            if (string.IsNullOrWhiteSpace(jwtSecret))
+            {
+                throw new ArgumentNullException(nameof(jwtSecret));
+            }
+#endif
+
             JwtSecret = jwtSecret;
         }
 
@@ -59,17 +68,7 @@ namespace OLT.AspNetCore.Authentication
         /// <exception cref="ArgumentNullException"></exception>
         public virtual AuthenticationBuilder AddScheme(AuthenticationBuilder builder, Action<JwtBearerOptions>? configureOptions)
         {
-            ArgumentNullException.ThrowIfNull(builder);
-            ArgumentNullException.ThrowIfNull(JwtSecret);
-
-#if NET8_0_OR_GREATER
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(JwtSecret);
-#else
-            if (string.IsNullOrWhiteSpace(JwtSecret))
-            {
-                throw new ArgumentNullException(nameof(JwtSecret));
-            }
-#endif
+            ArgumentNullException.ThrowIfNull(builder);            
 
             builder.AddJwtBearer(opt =>
             {

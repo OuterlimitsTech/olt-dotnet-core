@@ -59,6 +59,6 @@ namespace OLT.Core
         /// <remarks>
         /// Claim <see cref="OltClaimTypes.Name"/>
         /// </remarks>
-        public virtual string? FullName => System.Text.RegularExpressions.Regex.Replace(($"{First} {Middle} {Last} {Suffix}").Trim(), @"\s+", " ");
+        public virtual string? FullName => System.Text.RegularExpressions.Regex.Replace(($"{First} {Middle} {Last} {Suffix}").Trim(), @"\s+", " ", System.Text.RegularExpressions.RegexOptions.None, TimeSpan.FromMilliseconds(100));
     }   
 }

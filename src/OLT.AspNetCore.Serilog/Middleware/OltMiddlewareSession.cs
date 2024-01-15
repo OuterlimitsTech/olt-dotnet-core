@@ -9,9 +9,9 @@ namespace OLT.Logging.Serilog
 
     public class OltMiddlewareSession : IMiddleware
     {
-        private readonly IOltIdentity _identity;
+        private readonly IOltIdentity? _identity;
 
-        public OltMiddlewareSession(IOltIdentity identity = null)
+        public OltMiddlewareSession(IOltIdentity? identity = null)
         {
             _identity = identity;
         }
@@ -19,8 +19,8 @@ namespace OLT.Logging.Serilog
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
 
-            using (LogContext.PushProperty(OltSerilogConstants.Properties.Username, _identity.Username))
-            using (LogContext.PushProperty(OltSerilogConstants.Properties.DbUsername, _identity.GetDbUsername()))
+            using (LogContext.PushProperty(OltSerilogConstants.Properties.Username, _identity?.Username))
+            using (LogContext.PushProperty(OltSerilogConstants.Properties.DbUsername, _identity?.GetDbUsername()))
             {
                 await next(context);
             }

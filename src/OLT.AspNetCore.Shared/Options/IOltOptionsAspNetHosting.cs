@@ -21,7 +21,7 @@ namespace OLT.Core
         /// <summary>
         /// Adds a middleware that extracts the specified path base from request path and postpend it to the request path base.
         /// </summary>
-        string PathBase { get; }
+        string? PathBase { get; }
 
         /// <summary>
         /// Enables UseDeveloperExceptionPage();

@@ -79,7 +79,7 @@ namespace OLT.Logging.Serilog
             await responseBodyStream.CopyToAsync(originalResponseBodyReference);
         }
 
-        private static ILogger BuildLogger(HttpContext context, Guid uid, string requestUri, string requestBodyText, string responseBodyText)
+        private static ILogger BuildLogger(HttpContext context, Guid uid, string requestUri, string? requestBodyText, string? responseBodyText)
         {
             return Log
                 .ForContext(OltSerilogConstants.Properties.AspNetCore.AppRequestUid, uid)
@@ -105,7 +105,7 @@ namespace OLT.Logging.Serilog
         }
 
 
-        private static async Task<string> FormatRequestAsync(HttpRequest request)
+        private static async Task<string?> FormatRequestAsync(HttpRequest request)
         {
             //This line allows us to set the reader for the request back at the beginning of its stream.
             request.EnableBuffering();
@@ -115,7 +115,7 @@ namespace OLT.Logging.Serilog
             return string.IsNullOrWhiteSpace(body) ? null : body;
         }
 
-        private static async Task<string> FormatResponseAsync(HttpResponse response)
+        private static async Task<string?> FormatResponseAsync(HttpResponse response)
         {
             response.Body.Seek(0, SeekOrigin.Begin);
             var body = await new StreamReader(response.Body).ReadToEndAsync();
