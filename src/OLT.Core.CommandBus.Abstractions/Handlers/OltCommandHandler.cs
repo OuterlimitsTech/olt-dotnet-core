@@ -7,7 +7,7 @@ namespace OLT.Core
     public abstract class OltCommandHandler<TCommand> : OltDisposable, IOltCommandHandler
         where TCommand : notnull, IOltCommand
     {
-        public virtual string ActionName => typeof(TCommand).FullName;
+        public virtual string ActionName => typeof(TCommand).FullName ?? throw new NullReferenceException($"{nameof(TCommand)} Full Name");
 
         protected abstract Task<IOltCommandResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
 
@@ -31,7 +31,7 @@ namespace OLT.Core
           where TCommand : notnull, IOltCommand<TResult>
           where TResult : notnull
     {
-        public virtual string ActionName => typeof(TCommand).FullName;
+        public virtual string ActionName => typeof(TCommand).FullName ?? throw new NullReferenceException($"{nameof(TCommand)} Full Name");
 
         protected abstract Task<TResult> ExecuteAsync(IOltCommandBus commandBus, TCommand command);
 

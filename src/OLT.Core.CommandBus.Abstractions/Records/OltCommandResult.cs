@@ -3,7 +3,7 @@
 namespace OLT.Core
 {
 
-    public record OltCommandResult(object Result = null) : IOltCommandResult
+    public record OltCommandResult(object? Result = null) : IOltCommandResult
     {
         public static OltCommandResult Complete()
         {
