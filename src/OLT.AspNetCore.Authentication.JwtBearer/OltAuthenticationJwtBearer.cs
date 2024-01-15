@@ -68,8 +68,8 @@ namespace OLT.AspNetCore.Authentication
         /// <exception cref="ArgumentNullException"></exception>
         public virtual AuthenticationBuilder AddScheme(AuthenticationBuilder builder, Action<JwtBearerOptions>? configureOptions)
         {
-            ArgumentNullException.ThrowIfNull(builder);            
-
+            ArgumentNullException.ThrowIfNull(builder);
+            
             builder.AddJwtBearer(opt =>
             {
 

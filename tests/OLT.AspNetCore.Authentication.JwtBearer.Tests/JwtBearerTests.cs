@@ -15,7 +15,6 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
         public void ArgumentExceptions()
         {
             var services = new ServiceCollection();
-            var invalidOptions = new OltAuthenticationJwtBearer(null);
             var validOptions = new OltAuthenticationJwtBearer(Secret);
             var builder = new AuthenticationBuilder(services);
 
@@ -41,13 +40,7 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions, action, authAction));
             Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action, authAction));
 
-            Assert.Throws<ArgumentNullException>("builder", () => invalidOptions.AddScheme(null, null));
-            Assert.Throws<ArgumentNullException>("builder", () => new OltAuthenticationJwtBearer(null).AddScheme(null, null));
-
-            Assert.Throws<ArgumentNullException>("JwtSecret", () => new OltAuthenticationJwtBearer(null).AddScheme(builder, null));
-            Assert.Throws<ArgumentNullException>("JwtSecret", () => new OltAuthenticationJwtBearer(null).AddScheme(builder, action));            
-
-
+            Assert.Throws<ArgumentNullException>("jwtSecret", () => new OltAuthenticationJwtBearer(null).AddScheme(null, null));
         }
 
 
@@ -59,12 +52,13 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             var services = new ServiceCollection();
             var builder = new AuthenticationBuilder(services);
 
-            var model = new OltAuthenticationJwtBearer(null);            
-            Assert.Null(model.JwtSecret);
+            var model = new OltAuthenticationJwtBearer(token);
+            Assert.Equal(token, model.JwtSecret);
             Assert.True(model.RequireHttpsMetadata);
             Assert.False(model.ValidateIssuer);
             Assert.False(model.ValidateAudience);
 
+            token = Guid.NewGuid().ToString();
             model = new OltAuthenticationJwtBearer(token);
             model.RequireHttpsMetadata = false;
             model.ValidateIssuer = true;
