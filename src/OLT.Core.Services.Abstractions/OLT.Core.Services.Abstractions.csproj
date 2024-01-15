@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>Latest</LangVersion>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
+		<Description>Core Services library for general services architecture and EF Core</Description>
+		<ProjectGuid>{A25A806E-534F-4347-B10C-FAFB00D768AB}</ProjectGuid>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+		<Nullable>annotations</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.1'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'net6.0'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'net7.0'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'net8.0'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	
+	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <PackagePath></PackagePath>
+	    <Pack>True</Pack>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+	</ItemGroup>
+	
+</Project>

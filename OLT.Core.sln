@@ -196,6 +196,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Pipelines", "Pipelines", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OLT.Core.CommandBus.Abstractions", "src\OLT.Core.CommandBus.Abstractions\OLT.Core.CommandBus.Abstractions.csproj", "{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Core.Services.Abstractions", "src\OLT.Core.Services.Abstractions\OLT.Core.Services.Abstractions.csproj", "{A25A806E-534F-4347-B10C-FAFB00D768AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -458,6 +460,10 @@ Global
 		{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A25A806E-534F-4347-B10C-FAFB00D768AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A25A806E-534F-4347-B10C-FAFB00D768AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A25A806E-534F-4347-B10C-FAFB00D768AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A25A806E-534F-4347-B10C-FAFB00D768AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -541,6 +547,7 @@ Global
 		{828461F3-7249-461E-A72D-DAFECFD555E3} = {3E11448E-5ACC-46B8-AD23-3DD96C7F94ED}
 		{F553B28A-C4AF-4215-9535-053132393CDE} = {3E11448E-5ACC-46B8-AD23-3DD96C7F94ED}
 		{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57} = {79FEE994-9D2D-43C1-A223-11078DB0F617}
+		{A25A806E-534F-4347-B10C-FAFB00D768AB} = {D06660AE-9D03-4C1F-8330-329C3C059D5E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B70EDC-6E19-4295-BFA0-9474A97DF56F}

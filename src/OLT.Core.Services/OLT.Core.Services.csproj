@@ -8,12 +8,18 @@
 	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
-	
 
-  <ItemGroup>
-    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\OLT.Core.Services.Abstractions\OLT.Core.Services.Abstractions.csproj" />
+	</ItemGroup>
+	
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Entity\Interface\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+	
 </Project>
