@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text;
+
 
 namespace OLT.Core
 {
@@ -54,7 +54,7 @@ namespace OLT.Core
         /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
         public static T? GetAttributeInstance<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
         {
-            return property?.GetAttributeInstances<T>(inherit).SingleOrDefault();
+            return property?.GetAttributeInstances<T>(inherit)?.SingleOrDefault();
         }
 
         /// <summary>
@@ -95,7 +95,9 @@ namespace OLT.Core
 
             foreach (var en in Enum.GetValues(type))
             {
-                var memInfo = type.GetMember(en.ToString());
+                var member = en.ToString();
+                if (member == null) continue;
+                var memInfo = type.GetMember(member);
 
                 if (memInfo != null && memInfo.Length > 0)
                 {
@@ -135,7 +137,9 @@ namespace OLT.Core
 
             foreach (var en in Enum.GetValues(type))
             {
-                var memInfo = type.GetMember(en.ToString());
+                var member = en.ToString();
+                if (member == null) continue;
+                var memInfo = type.GetMember(member);
 
                 if (memInfo != null && memInfo.Length > 0)
                 {
