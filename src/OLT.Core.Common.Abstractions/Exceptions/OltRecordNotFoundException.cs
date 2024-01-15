@@ -1,4 +1,6 @@
-﻿namespace OLT.Core
+﻿using OLT.Core.Common.Abstractions.Extensions;
+
+namespace OLT.Core
 {
     public class OltRecordNotFoundException : OltException
     {
@@ -12,7 +14,7 @@
 
     public class OltRecordNotFoundException<TServiceMessageEnum> : OltRecordNotFoundException where TServiceMessageEnum : System.Enum
     {
-        public OltRecordNotFoundException(TServiceMessageEnum messageType) : base($"{messageType.GetDescription()} Not Found")
+        public OltRecordNotFoundException(TServiceMessageEnum messageType) : base($"{messageType.GetDescriptionInternal()} Not Found")
         {
 
         }

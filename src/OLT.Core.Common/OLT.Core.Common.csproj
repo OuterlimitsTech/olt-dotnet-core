@@ -27,6 +27,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Models\**" />
+	  <EmbeddedResource Remove="Models\**" />
+	  <None Remove="Models\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Nullable" Version="1.3.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -40,12 +46,5 @@
 	
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <Folder Include="Models\Json\" />
-    <Folder Include="Models\Param\" />
-    <Folder Include="Models\PersonName\" />
-    <Folder Include="Models\ValueList\" />
   </ItemGroup>
 </Project>
