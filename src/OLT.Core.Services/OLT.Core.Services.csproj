@@ -18,6 +18,7 @@
   </ItemGroup>
 	
   <ItemGroup>
+    <Folder Include="Entity\Abstract\" />
     <Folder Include="Entity\Interface\" />
   </ItemGroup>
 	

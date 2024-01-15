@@ -7,6 +7,10 @@
 		<LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
+	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+	
 	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
 		<Nullable>annotations</Nullable>
 	</PropertyGroup>
@@ -39,6 +43,10 @@
 	    <PackagePath></PackagePath>
 	    <Pack>True</Pack>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
 	
 </Project>
