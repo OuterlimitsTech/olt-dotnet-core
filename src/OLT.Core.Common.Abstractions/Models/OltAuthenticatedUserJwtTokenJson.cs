@@ -12,7 +12,7 @@ namespace OLT.Core
         /// <summary>
         /// JWT Token
         /// </summary>
-        public virtual string Token { get; set; }
+        public virtual string? Token { get; set; }
 
         /// <summary>
         /// Token Issued 

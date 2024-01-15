@@ -8,7 +8,7 @@ namespace OLT.EF.Core.Tests.Assets.Entites
     {
         [Key]
         [StringLength(50)]
-        public string TableKey { get; set; }
+        public string TableKey { get; set; } = default!;
 
         private string _title = "  ";
         public string Title

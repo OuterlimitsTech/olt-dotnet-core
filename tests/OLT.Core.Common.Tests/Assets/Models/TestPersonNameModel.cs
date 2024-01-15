@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace OLT.Core.Common.Tests.Assets;
+namespace OLT.Core.Common.Tests.Assets.Models;
 
 public class TestPersonNameModel
 {

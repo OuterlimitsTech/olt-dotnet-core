@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace OLT.Core.Common.Tests.Assets;
+namespace OLT.Core.Common.Tests.Assets.Identity;
 
 public class TestIdentity : OltIdentity
 {

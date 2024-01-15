@@ -1,10 +1,9 @@
-using OLT.Core;
-using OLT.Core.Services.Tests.Assets.Models;
+using OLT.Core.Common.Tests.Assets.Models;
 using System;
 using Xunit;
 using Xunit.Sdk;
 
-namespace OLT.Core.Services.Tests;
+namespace OLT.Core.Common.Tests;
 
 public class EntityModelTests
 {
@@ -16,7 +15,7 @@ public class EntityModelTests
         Assert.Equal(0, model.Id);
         Assert.True(model.CreateDate < DateTimeOffset.UtcNow.AddSeconds(2));
         Assert.True(model.CreateDate > DateTimeOffset.UtcNow.AddSeconds(-2));
-        Assert.Null(model.CreateUser);
+        Assert.Equal(OLT.Constants.OltCommonDefaults.UnknownCreateUser, model.CreateUser);
         Assert.Null(model.ModifyDate);
         Assert.Null(model.ModifyUser);
 
@@ -25,7 +24,7 @@ public class EntityModelTests
         Assert.NotEqual(0, model.Id);
         Assert.NotEqual(DateTimeOffset.MinValue, model.CreateDate);
         Assert.True(model.CreateDate < DateTimeOffset.Now);
-        Assert.NotNull(model.CreateUser);
+        Assert.NotEqual(OLT.Constants.OltCommonDefaults.UnknownCreateUser, model.CreateUser);
         Assert.NotNull(model.ModifyDate);
         Assert.NotNull(model.ModifyUser);
 
@@ -38,12 +37,12 @@ public class EntityModelTests
     [Fact]
     public void EntityIdDeletableTest()
     {
-            
+
         var model = new EntityIdDeletableModel();
         Assert.Equal(0, model.Id);
         Assert.True(model.CreateDate < DateTimeOffset.UtcNow.AddSeconds(2));
         Assert.True(model.CreateDate > DateTimeOffset.UtcNow.AddSeconds(-2));
-        Assert.Null(model.CreateUser);
+        Assert.Equal(OLT.Constants.OltCommonDefaults.UnknownCreateUser, model.CreateUser);
         Assert.Null(model.ModifyDate);
         Assert.Null(model.ModifyUser);
         Assert.Null(model.DeletedBy);
@@ -54,7 +53,7 @@ public class EntityModelTests
         Assert.NotEqual(0, model.Id);
         Assert.NotEqual(DateTimeOffset.MinValue, model.CreateDate);
         Assert.True(model.CreateDate < DateTimeOffset.UtcNow);
-        Assert.NotNull(model.CreateUser);
+        Assert.NotEqual(OLT.Constants.OltCommonDefaults.UnknownCreateUser, model.CreateUser);
         Assert.NotNull(model.ModifyDate);
         Assert.NotNull(model.ModifyUser);
         Assert.NotNull(model.DeletedBy);
@@ -74,7 +73,7 @@ public class EntityModelTests
         var model = new EntityDeletableModel();
         Assert.True(model.CreateDate < DateTimeOffset.UtcNow.AddSeconds(2));
         Assert.True(model.CreateDate > DateTimeOffset.UtcNow.AddSeconds(-2));
-        Assert.Null(model.CreateUser);
+        Assert.Equal(OLT.Constants.OltCommonDefaults.UnknownCreateUser, model.CreateUser);
         Assert.Null(model.ModifyDate);
         Assert.Null(model.ModifyUser);
         Assert.Null(model.DeletedBy);
@@ -84,15 +83,15 @@ public class EntityModelTests
         model = EntityDeletableModel.FakerData();
         Assert.NotEqual(DateTimeOffset.MinValue, model.CreateDate);
         Assert.True(model.CreateDate < DateTimeOffset.UtcNow);
-        Assert.NotNull(model.CreateUser);
+        Assert.NotEqual(OLT.Constants.OltCommonDefaults.UnknownCreateUser, model.CreateUser);
         Assert.NotNull(model.ModifyDate);
         Assert.NotNull(model.ModifyUser);
         Assert.NotNull(model.DeletedBy);
         Assert.NotNull(model.DeletedOn);
-                        
+
         Assert.IsAssignableFrom<IOltEntity>(model);
-        Assert.Throws<IsAssignableFromException>(() => Assert.IsAssignableFrom<IOltEntityId>(model));            
+        Assert.Throws<IsAssignableFromException>(() => Assert.IsAssignableFrom<IOltEntityId>(model));
         Assert.IsAssignableFrom<IOltEntityAudit>(model);
         Assert.IsAssignableFrom<IOltEntityDeletable>(model);
-    }        
+    }
 }

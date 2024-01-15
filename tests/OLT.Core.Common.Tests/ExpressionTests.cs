@@ -1,20 +1,17 @@
 ﻿using FluentAssertions;
-using OLT.Core;
-using OLT.Core.Services.Tests.Assets;
-using OLT.Core.Services.Tests.Assets.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using OLT.Core.Common.Tests.Assets;
 using Xunit;
+using OLT.Core.Common.Tests.Assets.Models;
 
-namespace OLT.Core.Services.Tests;
+namespace OLT.Core.Common.Tests;
 
 public class ExpressionTests
 {
     [Fact]
     public void IntContains()
-    {            
+    {
         var expected = new List<EntityPersonModel>();
         expected.AddRange(EntityPersonModel.FakerList(Faker.RandomNumber.Next(4, 8)));
         var list = TestHelper.BuildTestList(expected);
@@ -108,12 +105,12 @@ public class ExpressionTests
 
         var expected = new List<EntityPersonModel>();
         expected.AddRange(EntityPersonModel.FakerList(Faker.RandomNumber.Next(4, 8)));
-        expected.SetFirstNameStartsWith(firstName);            
+        expected.SetFirstNameStartsWith(firstName);
 
         var seedList = new List<EntityPersonModel>();
         seedList.AddRange(expected);
 
-        for(int i = 0; i < Faker.RandomNumber.Next(5, 10); i++)
+        for (int i = 0; i < Faker.RandomNumber.Next(5, 10); i++)
         {
             var edgeTest = EntityPersonModel.FakerData();
             edgeTest.SetFirstNameContains(firstName);

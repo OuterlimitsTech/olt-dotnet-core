@@ -1,16 +1,13 @@
 ﻿using FluentAssertions;
-using OLT.Core.Services.Tests.Assets;
-using OLT.Core.Services.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using OLT.Core.Common.Tests.Assets;
 using Xunit;
+using OLT.Core.Common.Tests.Assets.Models;
 
-namespace OLT.Core.Services.Tests;
+namespace OLT.Core.Common.Tests;
 
 public class PredicateBuilderTests
 {
@@ -24,11 +21,11 @@ public class PredicateBuilderTests
             $"{nameof(OrTests)}{Guid.NewGuid()}",
             $"{nameof(OrTests)}{Guid.NewGuid()}"
         };
-            
+
         var expected = EntityPersonModel.FakerList(4);
-        for(var i = 0; i < firstNames.Count; i++)
+        for (var i = 0; i < firstNames.Count; i++)
         {
-            expected[i].FirstName = firstNames[i];                
+            expected[i].FirstName = firstNames[i];
         }
         var list = TestHelper.BuildTestList(expected, 1000, 7, 12);
         var queryable = list.AsQueryable();
@@ -41,12 +38,12 @@ public class PredicateBuilderTests
             {
                 expression = p => p.FirstName == firstName;
             }
-            else 
+            else
             {
                 expression = expression.Or(p => p.FirstName == firstName);
             }
         });
-            
+
         var results = queryable.Where(expression).ToList();
         results.Should().HaveCount(firstNames.Count);
         results.Should().BeEquivalentTo(expected);
@@ -58,11 +55,11 @@ public class PredicateBuilderTests
     {
         var firstNamePrefix = nameof(AndTests);
         var person = EntityPersonModel.FakerData();
-            
+
 
         var expected = EntityPersonModel.FakerList(4);
         expected.Add(person);
-            
+
         expected.SetFirstNameStartsWith(firstNamePrefix);
 
         var list = TestHelper.BuildTestList(expected, 1000, 7, 12);
@@ -77,7 +74,7 @@ public class PredicateBuilderTests
 
         expression = p => p.DeletedOn == null;
         expression = expression.And(p => p.FirstName.StartsWith(firstNamePrefix));
-        expression = expression.And(p => p.LastName == person.LastName);            
+        expression = expression.And(p => p.LastName == person.LastName);
         results = queryable.Where(expression).ToList();
         results.Should().HaveCount(1);
         results.FirstOrDefault().Should().BeEquivalentTo(person);

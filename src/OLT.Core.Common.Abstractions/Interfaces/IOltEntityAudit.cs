@@ -8,7 +8,7 @@ namespace OLT.Core
         DateTimeOffset CreateDate { get; set; }
         string CreateUser { get; set; }
         DateTimeOffset? ModifyDate { get; set; }
-        string ModifyUser { get; set; }
+        string? ModifyUser { get; set; }
 
     }
 }

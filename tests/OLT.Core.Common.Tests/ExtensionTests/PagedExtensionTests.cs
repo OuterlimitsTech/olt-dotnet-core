@@ -1,5 +1,5 @@
 ﻿using FluentAssertions;
-using OLT.Core.Common.Tests.Assets;
+using OLT.Core.Common.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using Xunit;
-using static OLT.Core.Common.Tests.CustomAttributeTests.CodeAttributeTests;
 
 namespace OLT.Core.Common.Tests.CustomAttributeTests;
 

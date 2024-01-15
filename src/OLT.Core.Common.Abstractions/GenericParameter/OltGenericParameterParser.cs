@@ -8,7 +8,7 @@
             Key = key;
         }
 
-        public virtual string Key { get; }
+        public virtual string Key { get; } = default!;
         public abstract bool HasValue { get; }
         public abstract bool Parse(IOltGenericParameter parameters);
         public virtual TValueType Value { get; set; }

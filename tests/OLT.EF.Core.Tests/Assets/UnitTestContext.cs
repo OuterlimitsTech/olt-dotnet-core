@@ -47,8 +47,8 @@ namespace OLT.EF.Core.Tests.Assets
             {
                 foreach (var prop in entry.CurrentValues.Properties)
                 {
-                    var val = prop.PropertyInfo.GetValue(entry.Entity);
-                    if (val?.ToString().Length > prop.GetMaxLength())
+                    var val = prop.PropertyInfo?.GetValue(entry.Entity);
+                    if (val != null && val?.ToString()?.Length > prop.GetMaxLength())
                     {
                         throw new DbUpdateException("UnitTest Overflow", entries);
                     }

@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OLT.Core.Common.Tests.Assets;
+﻿namespace OLT.Core.Common.Tests.Assets.Identity;
 
 public enum TestSecurityPermissions
 {

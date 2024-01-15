@@ -9,6 +9,6 @@ namespace OLT.Core
         public virtual DateTimeOffset? DeletedOn { get; set; }
 
         [MaxLength(100)]
-        public virtual string DeletedBy { get; set; }
+        public virtual string? DeletedBy { get; set; }
     }
 }

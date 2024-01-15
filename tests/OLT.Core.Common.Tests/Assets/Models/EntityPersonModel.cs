@@ -1,11 +1,7 @@
-﻿using OLT.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OLT.Core.Services.Tests.Assets.Models;
+namespace OLT.Core.Common.Tests.Assets.Models;
 
 public abstract class BaseEntityPersonModel : IOltEntity
 {
@@ -42,10 +38,10 @@ public class EntityPersonModel : BaseEntityPersonModel, IOltEntityId, IOltEntity
 
     public static List<EntityPersonModel> FakerList(int number, bool deleted = false)
     {
-        var list = new List<EntityPersonModel>(); 
-        for(int i = 0; i < number; i++)
+        var list = new List<EntityPersonModel>();
+        for (int i = 0; i < number; i++)
         {
-            var item = FakerData(deleted);                
+            var item = FakerData(deleted);
             list.Add(item);
         }
         return list;

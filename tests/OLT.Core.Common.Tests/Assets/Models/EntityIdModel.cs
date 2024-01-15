@@ -1,7 +1,4 @@
-﻿using OLT.Core;
-using OLT.Core.Common.Tests.Assets;
-
-namespace OLT.Core.Services.Tests.Assets.Models;
+﻿namespace OLT.Core.Common.Tests.Assets.Models;
 
 public class EntityIdModel : OltEntityId
 {

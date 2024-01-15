@@ -1,4 +1,4 @@
-﻿namespace OLT.Core.Services.Tests.Assets;
+﻿namespace OLT.Core.Common.Tests.Assets;
 
 public class TestServiceManager : OltDisposable, IOltServiceManager
 {

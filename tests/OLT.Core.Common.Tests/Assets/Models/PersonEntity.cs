@@ -1,7 +1,6 @@
-﻿using OLT.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace OLT.Core.Services.Tests.Assets.Models;
+namespace OLT.Core.Common.Tests.Assets.Models;
 
 public class PersonEntity : IOltEntity
 {

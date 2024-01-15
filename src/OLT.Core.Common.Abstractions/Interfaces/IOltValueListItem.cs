@@ -2,7 +2,7 @@
 {
     public interface IOltValueListItem<T>
     {
-        T Value { get; set; }
-        string Label { get; set; }
+        T? Value { get; set; }
+        string? Label { get; set; }
     }
 }

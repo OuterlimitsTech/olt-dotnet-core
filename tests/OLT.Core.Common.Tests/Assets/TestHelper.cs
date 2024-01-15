@@ -1,4 +1,4 @@
-﻿using OLT.Core.Services.Tests.Assets.Models;
+﻿using OLT.Core.Common.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

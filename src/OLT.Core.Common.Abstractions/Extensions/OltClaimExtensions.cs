@@ -85,7 +85,7 @@ namespace OLT.Core
         /// <param name="type"></param>
         /// <param name="value"></param>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public static void AddClaim(this List<System.Security.Claims.Claim> claims, string type, string value)
+        public static void AddClaim(this List<System.Security.Claims.Claim> claims, string type, string? value)
         {
             if (claims == null)
             {
@@ -96,6 +96,7 @@ namespace OLT.Core
             {
                 throw new System.ArgumentNullException(nameof(type));
             }
+
             if (value != null)
             {
                 AddClaim(claims, new System.Security.Claims.Claim(type, value));

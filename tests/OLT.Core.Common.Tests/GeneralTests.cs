@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using OLT.Core.Services.Tests.Assets;
+using OLT.Core.Common.Tests.Assets;
 using Xunit;
 
-namespace OLT.Core.Services.Tests;
+namespace OLT.Core.Common.Tests;
 
 public class GeneralTests
 {
@@ -21,7 +21,7 @@ public class GeneralTests
         {
             var service = provider.GetService<ITestCoreService>();
             Assert.NotNull(service as TestCoreService);
-            Assert.Equal(nameof(TestServiceManager), service.ServiceManagerName);                
+            Assert.Equal(nameof(TestServiceManager), service.ServiceManagerName);
         }
     }
 }

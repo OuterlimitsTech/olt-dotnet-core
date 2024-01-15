@@ -8,10 +8,10 @@ namespace OLT.EF.Core.Tests.Assets.Entites
     {
         [Key]
         [StringLength(50)]
-        public string TableKey { get; set; }
+        public string TableKey { get; set; } = default!;
 
         [StringLength(100)]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         public short SortOrder { get; set; }
 

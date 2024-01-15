@@ -8,7 +8,7 @@ namespace OLT.Core
         public virtual int Page { get; set; }
 
         public virtual int Count { get; set; }
-        public virtual IEnumerable<TModel> Data { get; set; }
+        public virtual IEnumerable<TModel>? Data { get; set; }
 
     }
 }

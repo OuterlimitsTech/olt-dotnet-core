@@ -11,15 +11,15 @@ namespace OLT.Core
 
         Task<TModel> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
 
-        TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new();
+        TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
 
-        TResponseModel Update<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        TResponseModel Update<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
-        Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new();
+        Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
 
-        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 

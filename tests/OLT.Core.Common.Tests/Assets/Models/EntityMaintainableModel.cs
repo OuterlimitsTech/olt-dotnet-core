@@ -1,6 +1,4 @@
-﻿using OLT.Core.Common.Tests.Assets;
-
-namespace OLT.Core.Services.Tests.Assets.Models;
+﻿namespace OLT.Core.Common.Tests.Assets.Models;
 
 public class EntityMaintainableModel : OltEntityId, IOltEntityMaintainable
 {
@@ -10,12 +8,12 @@ public class EntityMaintainableModel : OltEntityId, IOltEntityMaintainable
 
     public static EntityMaintainableModel FakerData()
     {
-            return new EntityMaintainableModel
-            {                
-                CreateUser = Faker.Internet.UserName(),
-                CreateDate = TestHelper.FakerDateTimePast(),
-                ModifyUser = Faker.Internet.UserName(),
-                ModifyDate = TestHelper.FakerDateTimePast(),
-            };
-        }
+        return new EntityMaintainableModel
+        {
+            CreateUser = Faker.Internet.UserName(),
+            CreateDate = TestHelper.FakerDateTimePast(),
+            ModifyUser = Faker.Internet.UserName(),
+            ModifyDate = TestHelper.FakerDateTimePast(),
+        };
+    }
 }

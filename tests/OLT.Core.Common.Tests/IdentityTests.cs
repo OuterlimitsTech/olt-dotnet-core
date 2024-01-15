@@ -1,6 +1,6 @@
 ﻿using OLT.Constants;
 using OLT.Core.Common.Tests.Assets;
-using System.Linq;
+using OLT.Core.Common.Tests.Assets.Identity;
 using System.Security.Principal;
 using Xunit;
 

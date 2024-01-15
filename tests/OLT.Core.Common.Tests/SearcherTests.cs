@@ -1,20 +1,17 @@
 ﻿using FluentAssertions;
-using OLT.Core;
-using OLT.Core.Services.Tests.Assets;
-using OLT.Core.Services.Tests.Assets.Models;
-using System;
 using System.Linq;
 using OLT.Core.Common.Tests.Assets;
 using Xunit;
+using OLT.Core.Common.Tests.Assets.Models;
 
-namespace OLT.Core.Services.Tests;
+namespace OLT.Core.Common.Tests;
 
 public class SearcherTests
 {
 
     [Fact]
     public void SearcherGetById()
-    {            
+    {
         var expected = EntityPersonModel.FakerData();
         var list = TestHelper.BuildTestList(expected);
         var queryable = list.AsQueryable();
@@ -75,5 +72,5 @@ public class SearcherTests
 
 
 
-   
+
 }

@@ -135,8 +135,8 @@ namespace System.Linq
 
         class OltParameterReplacer : ExpressionVisitor
         {
-            public ParameterExpression Source;
-            public Expression Target;
+            public ParameterExpression Source = default!;
+            public Expression Target = default!;
             protected override Expression VisitParameter(ParameterExpression node) => node == Source ? Target : base.VisitParameter(node);
         }
 

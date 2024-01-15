@@ -1,9 +1,7 @@
-﻿using OLT.Core.Services.Tests.Assets.Models;
-using System.ComponentModel;
-using System.Linq;
+﻿using OLT.Core.Common.Tests.Assets.Models;
 using Xunit;
 
-namespace OLT.Core.Services.Tests;
+namespace OLT.Core.Common.Tests;
 
 public class MaintainableAttributeTests
 {
@@ -31,8 +29,8 @@ public class MaintainableAttributeTests
     [InlineData(OltEntityMaintainable.NotSet, null)]
     public void CreateTests(OltEntityMaintainable expected, AttributeTest? value)
     {
-            Assert.Equal(expected, OltMaintainableAttributeExtensions.GetMaintainable(value)?.Create);
-        }
+        Assert.Equal(expected, value.GetMaintainable()?.Create);
+    }
 
 
     [Theory]
@@ -43,8 +41,8 @@ public class MaintainableAttributeTests
     [InlineData(OltEntityMaintainable.NotSet, null)]
     public void UpdateTests(OltEntityMaintainable expected, AttributeTest? value)
     {
-            Assert.Equal(expected, OltMaintainableAttributeExtensions.GetMaintainable(value)?.Update);
-        }
+        Assert.Equal(expected, value.GetMaintainable()?.Update);
+    }
 
     [Theory]
     [InlineData(OltEntityMaintainable.No, AttributeTest.Value1)]
@@ -54,8 +52,8 @@ public class MaintainableAttributeTests
     [InlineData(OltEntityMaintainable.NotSet, null)]
     public void DeleteTests(OltEntityMaintainable expected, AttributeTest? value)
     {
-            Assert.Equal(expected, OltMaintainableAttributeExtensions.GetMaintainable(value)?.Delete);
-        }
+        Assert.Equal(expected, value.GetMaintainable()?.Delete);
+    }
 
     [Theory]
     [InlineData(true, null, false, AttributeTest.Value1)]
@@ -64,12 +62,12 @@ public class MaintainableAttributeTests
     [InlineData(null, true, true, AttributeTest.Value4)]
     public void EntityMaintainableTest(bool? created, bool? updated, bool? deleted, AttributeTest value)
     {
-            var model = EntityMaintainableModel.FakerData();
-            OltMaintainableAttributeExtensions.SetMaintainable<EntityMaintainableModel, AttributeTest>(model, value);
+        var model = EntityMaintainableModel.FakerData();
+        model.SetMaintainable(value);
 
-            Assert.Equal(created, model.MaintAdd);
-            Assert.Equal(updated, model.MaintUpdate);
-            Assert.Equal(deleted, model.MaintDelete);
-        }
+        Assert.Equal(created, model.MaintAdd);
+        Assert.Equal(updated, model.MaintUpdate);
+        Assert.Equal(deleted, model.MaintDelete);
+    }
 
 }

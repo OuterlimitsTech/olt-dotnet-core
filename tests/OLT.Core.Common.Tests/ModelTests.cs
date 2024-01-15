@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
 using OLT.Core.Common.Tests.Assets;
+using OLT.Core.Common.Tests.Assets.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Xunit;
 
 namespace OLT.Core.Common.Tests;

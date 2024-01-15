@@ -13,7 +13,7 @@
             Value = value;
         }
 
-        public T Value { get; set; }
-        public string Label { get; set; }
+        public T? Value { get; set; }
+        public string? Label { get; set; }
     }
 }
