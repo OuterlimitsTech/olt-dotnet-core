@@ -3,9 +3,9 @@
 namespace OLT.Core
 {
 
-    public class OltRouteParamsParserString : OltRouteParamsParser<string>
+    public class OltRouteParamsParserString : OltRouteParamsParser<string?>
     {
-        public override bool TryParse(string param, out string value)
+        public override bool TryParse(string? param, out string? value)
         {
             if (!string.IsNullOrWhiteSpace(param))
             {

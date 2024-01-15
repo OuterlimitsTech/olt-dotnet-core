@@ -6,7 +6,7 @@ namespace OLT.Core
 {
     public interface IOltErrorHttp
     {
-        string Message { get; }
+        string? Message { get; }
         List<string> Errors { get; }
     }
 }

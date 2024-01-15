@@ -1,15 +1,10 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace OLT.Core.Common.Tests.Assets.Identity;
 
-namespace OLT.Core.Common.Tests.Assets
+public enum TestSecurityPermissions
 {
-    public enum TestSecurityPermissions
-    {
-        [Code("perm-one")]
-        PermOne = 11000,
+    [Code("perm-one")]
+    PermOne = 11000,
 
-        [Code("perm-two")]
-        PermTwo = 12000,
-    }
+    [Code("perm-two")]
+    PermTwo = 12000,
 }

@@ -15,26 +15,26 @@ namespace OLT.EF.Core.Tests.Assets.Entites
 
         [MaxLength(50)]
         [Required]
-        public string NameFirst { get; set; }
+        public string NameFirst { get; set; } = default!;
         [MaxLength(50)]
-        public string NameMiddle { get; set; }
+        public string? NameMiddle { get; set; }
         [MaxLength(50)]
         [Required]
-        public string NameLast { get; set; }
+        public string NameLast { get; set; } = default!;
 
         [MaxLength(20)]
-        public string ActionCode { get; set; }
+        public string? ActionCode { get; set; }
 
         [MaxLength(20)]
         [NotMapped]
-        public string NoMapColumn { get; set; }
+        public string? NoMapColumn { get; set; }
 
         [Column("Effective", TypeName = "Date")]
         public DateTime? EffectiveDate { get; set; }  //Used to Test GetColumns<> where the DB type is different from the ClrType
 
 
         public int? StatusTypeId { get; set; }
-        public StatusTypeCodeTableEntity StatusType { get; set; }
+        public StatusTypeCodeTableEntity? StatusType { get; set; }
 
         public List<AddressEntity> Addresses { get; set; } = new List<AddressEntity>();
 

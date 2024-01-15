@@ -34,10 +34,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
     <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
   </ItemGroup>
 	
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Folder Include="Models\Json\" />
+    <Folder Include="Models\Param\" />
+    <Folder Include="Models\PersonName\" />
+    <Folder Include="Models\ValueList\" />
   </ItemGroup>
 </Project>

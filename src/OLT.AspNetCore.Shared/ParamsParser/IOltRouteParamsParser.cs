@@ -2,7 +2,7 @@
 {
     public interface IOltRouteParamsParser<TValue>
     {
-        bool TryParse(string param, out TValue value);
+        bool TryParse(string? param, out TValue value);
     }
 
 

@@ -1,15 +1,14 @@
-﻿namespace OLT.Core.Common.Tests.Assets
+﻿namespace OLT.Core.Common.Tests.Assets.Identity;
+
+public enum TestSecurityRoles
 {
-    public enum TestSecurityRoles
-    {
-        [Code("role-one")]
-        RoleOne = 1000,
+    [Code("role-one")]
+    RoleOne = 1000,
 
-        [Code("role-two")]
-        RoleTwo = 2000,
+    [Code("role-two")]
+    RoleTwo = 2000,
 
-        [Code("role-three")]
-        RoleThree = 3000,
+    [Code("role-three")]
+    RoleThree = 3000,
 
-    }
 }

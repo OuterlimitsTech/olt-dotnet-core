@@ -1,18 +1,16 @@
 ﻿using FluentAssertions;
 using OLT.Core.Common.Tests.Assets;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
-namespace OLT.Core.Common.Tests
-{
-    public class GenericParameterTests
-    {
+namespace OLT.Core.Common.Tests;
 
-        [Fact]
-        public void GetValueTests()
-        {
+public class GenericParameterTests
+{
+
+    [Fact]
+    public void GetValueTests()
+    {
             var numVal = Faker.RandomNumber.Next();
             var values = new Dictionary<string, string>
             {
@@ -43,13 +41,13 @@ namespace OLT.Core.Common.Tests
         }
 
 
-        [Theory]
-        [InlineData("ABC123", "ABC123", true)]
-        [InlineData(null, null, false)]
-        [InlineData("", null, false)]
-        [InlineData(" ", " ", true)]
-        public void OltGenericParameterParserTests(string value, string expected, bool parsed)
-        {            
+    [Theory]
+    [InlineData("ABC123", "ABC123", true)]
+    [InlineData(null, null, false)]
+    [InlineData("", null, false)]
+    [InlineData(" ", " ", true)]
+    public void OltGenericParameterParserTests(string value, string expected, bool parsed)
+    {            
             var values = new Dictionary<string, string>
             {
                 {"FirstName", Faker.Name.First()},
@@ -63,5 +61,4 @@ namespace OLT.Core.Common.Tests
             Assert.Equal(parsed, parser.Parse(parameter));
             Assert.Equal(expected, parser.Value);
         }
-    }
 }

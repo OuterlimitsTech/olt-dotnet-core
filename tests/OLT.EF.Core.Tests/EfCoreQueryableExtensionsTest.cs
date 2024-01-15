@@ -19,6 +19,7 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var context = provider.GetService<UnitTestContext>();
+                if (context == null) throw new Exception("Missing Context");
                 await context.People.AddRangeAsync(PersonEntity.FakerList(35));
                 await context.SaveChangesAsync();
 

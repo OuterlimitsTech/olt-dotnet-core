@@ -1,27 +1,26 @@
 ﻿using System.Collections.Generic;
 
-namespace OLT.Core.Common.Tests.Assets
+namespace OLT.Core.Common.Tests.Assets.Models;
+
+public class TestPersonNameModel
 {
-    public class TestPersonNameModel
+    public string NameFirst { get; set; }
+    public string NameLast { get; set; }
+
+    public static List<TestPersonNameModel> FakerList(int number)
     {
-        public string NameFirst { get; set; }
-        public string NameLast { get; set; }
+        var list = new List<TestPersonNameModel>();
 
-        public static List<TestPersonNameModel> FakerList(int number)
+        for (int i = 0; i < number; i++)
         {
-            var list = new List<TestPersonNameModel>();
-
-            for (int i = 0; i < number; i++)
+            list.Add(new TestPersonNameModel
             {
-                list.Add(new TestPersonNameModel
-                {
-                    NameFirst = Faker.Name.First(),
-                    NameLast = Faker.Name.Last(),
-                });
-            }
-
-            return list;
+                NameFirst = Faker.Name.First(),
+                NameLast = Faker.Name.Last(),
+            });
         }
 
+        return list;
     }
+
 }

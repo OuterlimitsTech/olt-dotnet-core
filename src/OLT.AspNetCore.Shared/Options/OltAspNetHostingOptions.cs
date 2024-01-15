@@ -20,7 +20,7 @@ namespace OLT.Core
         /// <summary>
         /// Adds a middleware that extracts the specified path base from request path and postpend it to the request path base.
         /// </summary>
-        public virtual string PathBase { get; set; }
+        public virtual string? PathBase { get; set; }
 
 
         /// <summary>
