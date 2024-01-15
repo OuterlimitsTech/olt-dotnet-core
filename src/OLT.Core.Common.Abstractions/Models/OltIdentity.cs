@@ -77,7 +77,23 @@ namespace OLT.Core
         /// True if the End-User's phone number has been verified; otherwise false. 
         /// </summary>
         /// <value><see cref="OltClaimTypes.PhoneNumberVerified"/></value>
-        public virtual bool? PhoneVerified => GetClaims(OltClaimTypes.PhoneNumberVerified).FirstOrDefault()?.Value?.ToBool();
+        public virtual bool? PhoneVerified
+        {
+            get
+            {
+                var value = GetClaims(OltClaimTypes.PhoneNumberVerified).FirstOrDefault()?.Value;
+                if (value == null) return null;
+                if (string.IsNullOrWhiteSpace(value)) return null;
+
+
+                if (bool.TryParse(value, out var parsed))
+                {
+                    return parsed;
+                }
+
+                return null;
+            }
+        }
 
         /// <summary>
         /// End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences.
