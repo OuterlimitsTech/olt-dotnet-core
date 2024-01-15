@@ -36,7 +36,7 @@ namespace OLT.Core
             return HasValue;
         }
 
-        public override string Formatted()
+        public override string? Formatted()
         {
             return Value == null ? null : string.Join(",", ValueList.Where(item => Value.Contains(item.Value)).Select(s => s.Label));
         }

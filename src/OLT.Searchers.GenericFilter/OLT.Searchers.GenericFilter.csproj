@@ -33,8 +33,8 @@
 	</ItemGroup>
 
 
-	<ItemGroup>
-    <ProjectReference Include="..\OLT.Core.Services\OLT.Core.Services.csproj" />
+	<ItemGroup>    
+    <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />    
     <ProjectReference Include="..\OLT.Searchers.DateRange\OLT.Searchers.DateRange.csproj" />
   </ItemGroup>
 

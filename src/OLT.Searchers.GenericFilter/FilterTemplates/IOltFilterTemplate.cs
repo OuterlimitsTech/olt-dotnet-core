@@ -4,7 +4,7 @@
     {
         string Label { get; }
         bool Hidden { get; }
-        string Formatted();
+        string? Formatted();
     }
 
     public interface IOltFilterTemplate<out TValueType> : IOltFilterTemplate, IOltGenericParameterParser<TValueType>

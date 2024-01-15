@@ -37,8 +37,9 @@
 		<PackageReference Include="FluentDateTime" Version="2.1.0" />
 	</ItemGroup>
 
+
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Core.Services\OLT.Core.Services.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
