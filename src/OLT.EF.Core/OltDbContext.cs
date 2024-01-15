@@ -19,7 +19,7 @@ namespace OLT.Core
     public abstract class OltDbContext<TContext> : DbContext, IOltDbContext
         where TContext: DbContext, IOltDbContext
     {
-        private IOltDbAuditUser _dbAuditUser;
+        private IOltDbAuditUser? _dbAuditUser;
 
 #pragma warning disable S2743 // Static fields should not be used in generic types
 #pragma warning disable IDE0044 // Add readonly modifier
@@ -58,7 +58,7 @@ namespace OLT.Core
         {
             get
             {
-                var userName = DbAuditUser.GetDbUsername();
+                var userName = DbAuditUser?.GetDbUsername();
                 if (!string.IsNullOrWhiteSpace(userName))
                 {
                     return userName;
