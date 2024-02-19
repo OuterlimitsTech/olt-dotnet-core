@@ -95,6 +95,7 @@ namespace OLT.AspNetCore.Authentication
                 //    }
                 //};
 #pragma warning restore S125
+                opt.MapInboundClaims = false;
                 opt.RequireHttpsMetadata = RequireHttpsMetadata;
                 opt.SaveToken = true;
                 opt.TokenValidationParameters = new TokenValidationParameters
