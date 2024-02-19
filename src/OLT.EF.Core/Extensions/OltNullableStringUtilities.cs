@@ -40,7 +40,7 @@ namespace OLT.Core
             var typeHandle = type.TypeHandle;
 
             // Fast return if we did this already.....
-            List<OltNullableStringPropertyMetaData> existing;
+            List<OltNullableStringPropertyMetaData>? existing;
             if (_entityMetatdataCache.TryGetValue(typeHandle, out existing))
             {
                 return existing;

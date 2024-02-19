@@ -104,22 +104,22 @@ namespace OLT.Core
 
         #region [ Get ]
 
-        protected virtual TModel Get<TEntity, TModel>(IOltSearcher<TEntity> searcher)
+        protected virtual TModel? Get<TEntity, TModel>(IOltSearcher<TEntity> searcher)
             where TModel : class, new()
             where TEntity : class, IOltEntity
             => MapFirst<TEntity, TModel>(this.GetQueryable(searcher));
 
-        protected virtual TModel Get<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual TModel? Get<TEntity, TModel>(IQueryable<TEntity> queryable)
             where TModel : class, new()
             where TEntity : class, IOltEntity
             => MapFirst<TEntity, TModel>(queryable);
 
-        protected virtual async Task<TModel> GetAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher)
+        protected virtual async Task<TModel?> GetAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher)
             where TModel : class, new()
             where TEntity : class, IOltEntity
             => await MapFirstAsync<TEntity, TModel>(this.GetQueryable(searcher));
 
-        protected virtual async Task<TModel> GetAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual async Task<TModel?> GetAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
             where TModel : class, new()
             where TEntity : class, IOltEntity
             => await MapFirstAsync<TEntity, TModel>(queryable);

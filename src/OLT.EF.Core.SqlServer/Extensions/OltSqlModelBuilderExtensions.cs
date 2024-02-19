@@ -8,10 +8,7 @@ namespace OLT.Core
     {
         public static void SetIdentityColumns(this ModelBuilder modelBuilder, int identitySeed, int identityIncrement)
         {
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
+            ArgumentNullException.ThrowIfNull(modelBuilder);
 
             OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(modelBuilder, builder =>
             {

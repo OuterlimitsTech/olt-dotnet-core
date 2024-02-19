@@ -21,6 +21,6 @@ namespace OLT.Core
         public virtual string Key { get; } = default!;
         public abstract bool HasValue { get; }
         public abstract bool Parse(IOltGenericParameter parameters);
-        public virtual TValueType Value { get; set; }
+        public virtual TValueType? Value { get; set; } = default(TValueType);
     }
 }
