@@ -17,7 +17,7 @@ namespace OLT.Core
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            OltSqlModelBuilderHelper.SetIdentityColumns(modelBuilder, IdentitySeed, IdentityIncrement);
+            OltSqlModelBuilderExtensions.SetIdentityColumns(modelBuilder, IdentitySeed, IdentityIncrement);
             base.OnModelCreating(modelBuilder);
         }
     }

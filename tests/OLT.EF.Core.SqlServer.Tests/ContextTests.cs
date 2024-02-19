@@ -51,7 +51,7 @@ namespace OLT.EF.Core.SqlServer.Tests
                     Assert.False(builder.Entity<UserEntity>().Property(p => p.Id).Metadata.GetIdentitySeed().HasValue);
                     Assert.True(builder.Entity<UserEntity>().Property(p => p.Id).Metadata.GetIdentityIncrement().HasValue);  //Defaults to 1
 
-                    OltSqlModelBuilderHelper.SetIdentityColumns(builder, identitySeed, identityIncrement);
+                    OltSqlModelBuilderExtensions.SetIdentityColumns(builder, identitySeed, identityIncrement);
 
 
                     Assert.Equal(identitySeed, builder.Entity<PersonEntity>().Property(p => p.Id).Metadata.GetIdentitySeed());
@@ -60,7 +60,7 @@ namespace OLT.EF.Core.SqlServer.Tests
                     Assert.NotEqual(identityIncrement, builder.Entity<UserEntity>().Property(p => p.Id).Metadata.GetIdentityIncrement());
 
 
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltSqlModelBuilderHelper.SetIdentityColumns(null, 1, 1));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltSqlModelBuilderExtensions.SetIdentityColumns(null, 1, 1));
                 }
             }
 

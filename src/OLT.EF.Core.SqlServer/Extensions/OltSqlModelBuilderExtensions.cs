@@ -1,16 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-    public static class OltSqlModelBuilderHelper
+    public static class OltSqlModelBuilderExtensions
     {
-        public static void SetIdentityColumns(ModelBuilder modelBuilder, int identitySeed, int identityIncrement)
+        public static void SetIdentityColumns(this ModelBuilder modelBuilder, int identitySeed, int identityIncrement)
         {
             if (modelBuilder == null)
             {
