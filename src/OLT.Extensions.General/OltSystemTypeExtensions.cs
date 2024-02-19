@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace System
@@ -37,8 +36,9 @@ namespace System
         /// <returns>True if type implements interface</returns>
         public static bool Implements<TInterface>(this Type type, TInterface @interface) where TInterface : class
         {
-            // ReSharper disable once PossibleNullReferenceException
-            if (!(@interface as Type).IsInterface)
+            if (@interface is not Type typeInterface) return false;
+            
+            if (!typeInterface.IsInterface)
             {
                 throw new InvalidOperationException("Only interfaces can be 'implemented'.");
             }
@@ -46,6 +46,7 @@ namespace System
             return type.GetInterfaces()
                 .Where(i => i.IsGenericType)
                 .Any(i => i.GetGenericTypeDefinition() == (@interface as Type));
+
         }
 
     }

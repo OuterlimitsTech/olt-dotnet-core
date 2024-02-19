@@ -247,7 +247,7 @@ namespace OLT.Core
             return ServiceManager.AdapterResolver.Map<TEntity, TModel>(list);
         }
 
-        protected virtual TModel MapFirst<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual TModel? MapFirst<TEntity, TModel>(IQueryable<TEntity> queryable)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {
@@ -261,7 +261,7 @@ namespace OLT.Core
             return ServiceManager.AdapterResolver.Map(entity, model);
         }
 
-        protected virtual async Task<TModel> MapFirstAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual async Task<TModel?> MapFirstAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {

@@ -1,10 +1,10 @@
 ﻿namespace OLT.Core
 {
-    public class OltPagedSearchJson<T, TC> : OltPagedJson<T>
-        where T : class
-        where TC : class, new()
+    public class OltPagedSearchJson<TModel, TCriteria> : OltPagedJson<TModel>
+        where TModel : class
+        where TCriteria: class
     {
         public virtual string? Key { get; set; }
-        public virtual TC? Criteria { get; set; }
+        public virtual TCriteria? Criteria { get; set; }
     }
 }

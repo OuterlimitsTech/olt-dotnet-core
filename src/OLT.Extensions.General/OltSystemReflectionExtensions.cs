@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace System.Reflection
 {
     public static class OltSystemReflectionExtensions
@@ -113,9 +114,8 @@ namespace System.Reflection
             string[] arrResources = assembly.GetManifestResourceNames();
             var resourceCompare = resourceName.ToLower();
 
-            for (int i = 0; i < arrResources.Length; i++)
+            foreach (var name in arrResources)
             {
-                string name = arrResources[i];
                 if (name.ToLower().Contains(resourceCompare))
                 {
                     return assembly.GetManifestResourceStream(name);
@@ -169,7 +169,7 @@ namespace System.Reflection
             {
                 using (FileStream output = new FileStream(fileName, FileMode.Create))
                 {
-                    stream.CopyTo(output);
+                    stream?.CopyTo(output);
                 }
             }
 
@@ -255,14 +255,12 @@ namespace System.Reflection
                     // ignored
                 }
 
-                if (loaded != null)
+                if (loaded == null) continue;
+                foreach (var ti in loaded.DefinedTypes)
                 {
-                    foreach (var ti in loaded.DefinedTypes)
+                    if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType)
                     {
-                        if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType)
-                        {
-                            yield return (T)assembly.CreateInstance(ti.FullName);
-                        }
+                        if (ti.FullName != null) yield return (T)assembly.CreateInstance(ti.FullName);
                     }
                 }
             }
