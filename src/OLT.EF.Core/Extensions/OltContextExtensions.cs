@@ -59,9 +59,9 @@ namespace OLT.Core
                     logger.LogError("DB Exception: {error}", error);
                 }
             }
-            catch (Exception)
+            catch (Exception) // against null logger
             {
-                var exceptions = errors.Select(s => new OltException(s));
+                var exceptions = errors.Select(error => new OltException(error));
                 if (exceptions.Any())
                 {
                     throw new AggregateException("[DB Field] MaxLength Exceeded", exceptions);
