@@ -113,13 +113,11 @@ namespace System.Reflection
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
             var resourceCompare = resourceName.ToLower();
-
-            foreach (var name in arrResources)
+            foreach (var name in from name in arrResources
+                                 where name.ToLower().Contains(resourceCompare)
+                                 select name)
             {
-                if (name.ToLower().Contains(resourceCompare))
-                {
-                    return assembly.GetManifestResourceStream(name);
-                }
+                return assembly.GetManifestResourceStream(name);
             }
 
             throw new FileNotFoundException("Cannot find embedded resource.", resourceName);
@@ -260,7 +258,14 @@ namespace System.Reflection
                 {
                     if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType)
                     {
-                        if (ti.FullName != null) yield return (T)assembly.CreateInstance(ti.FullName);
+                        if (ti.FullName != null)
+                        {
+                            var instance = assembly.CreateInstance(ti.FullName);
+                            if (instance is T typedInstance)
+                            {
+                                yield return typedInstance;
+                            }
+                        }
                     }
                 }
             }
