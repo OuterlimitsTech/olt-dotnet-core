@@ -113,12 +113,22 @@ namespace System.Reflection
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
             var resourceCompare = resourceName.ToLower();
+
+#if NET6_0_OR_GREATER
+            foreach (var name in from name in arrResources
+                                 where name.Contains(resourceCompare, StringComparison.OrdinalIgnoreCase)
+                                 select name)
+            {
+                return assembly.GetManifestResourceStream(name);
+            }
+#else
             foreach (var name in from name in arrResources
                                  where name.ToLower().Contains(resourceCompare)
                                  select name)
             {
                 return assembly.GetManifestResourceStream(name);
             }
+#endif
 
             throw new FileNotFoundException("Cannot find embedded resource.", resourceName);
         }
@@ -239,33 +249,36 @@ namespace System.Reflection
         /// <returns>Returns an instance for all objects</returns>
         public static IEnumerable<T> GetAllImplements<T>(this List<Assembly> assemblies)
         {
-
+            var result = new List<T>();
+            
             foreach (var assembly in assemblies)
             {
-                Assembly? loaded = null;
-
                 try
                 {
-                    loaded = Assembly.Load(assembly.GetName());
+                    var loaded = Assembly.Load(assembly.GetName());
+                    if (loaded == null) continue;
+                    result.AddRange(GetAllImplements_Internal<T>(loaded));
                 }
                 catch
                 {
                     // ignored
                 }
 
-                if (loaded == null) continue;
-                foreach (var ti in loaded.DefinedTypes)
+            }
+
+            return result;
+        }
+
+        private static IEnumerable<T> GetAllImplements_Internal<T>(Assembly assembly)
+        {
+            foreach (var ti in assembly.DefinedTypes)
+            {
+                if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType && ti.FullName != null)
                 {
-                    if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType)
+                    var instance = assembly.CreateInstance(ti.FullName);
+                    if (instance is T typedInstance)
                     {
-                        if (ti.FullName != null)
-                        {
-                            var instance = assembly.CreateInstance(ti.FullName);
-                            if (instance is T typedInstance)
-                            {
-                                yield return typedInstance;
-                            }
-                        }
+                        yield return typedInstance;
                     }
                 }
             }
