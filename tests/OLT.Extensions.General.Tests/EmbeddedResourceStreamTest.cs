@@ -133,6 +133,9 @@ namespace OLT.Extensions.General.Tests
             Assert.Throws<FileNotFoundException>(() => this.GetType().Assembly.EmbeddedResourceToFile("foobar.txt", "blah.txt"));
             Assert.Throws<FileNotFoundException>(() => this.GetType().Assembly.GetEmbeddedResourceString("foobar.txt"));
 
+            //Should find more than 1 resource
+            var loadEx = Assert.Throws<FileLoadException>(() => this.GetType().Assembly.GetEmbeddedResourceStream("ImportTest"));
+            Assert.Equal("2 embedded resources found.", loadEx.Message);
         }
 
 

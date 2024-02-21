@@ -1,18 +1,26 @@
-﻿namespace OLT.Core
+﻿using System.Linq;
+
+namespace OLT.Core
 {
 
     public abstract class OltGenericParameterParser<TValueType> : IOltGenericParameterParser<TValueType>
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         protected OltGenericParameterParser(string key)
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
+#if NET6_0_OR_GREATER
+            ArgumentNullException.ThrowIfNull(key);
+            ArgumentNullException.ThrowIfNull(key);
+#else
+            OltArgumentNullException.ThrowIfNull(key, nameof(key));
+            OltArgumentNullException.ThrowIfNull(key, nameof(key));
+#endif
+
             Key = key;
         }
 
         public virtual string Key { get; } = default!;
         public abstract bool HasValue { get; }
         public abstract bool Parse(IOltGenericParameter parameters);
-        public virtual TValueType Value { get; set; }
+        public virtual TValueType? Value { get; set; } = default(TValueType);
     }
 }

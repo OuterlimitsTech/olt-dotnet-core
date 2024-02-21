@@ -16,7 +16,7 @@ namespace OLT.Core
         /// </summary>
         public virtual bool IsAnonymous => Identity == null || Username == null;
 
-        public abstract System.Security.Claims.ClaimsPrincipal Identity { get; }
+        public abstract System.Security.Claims.ClaimsPrincipal? Identity { get; }
 
         /// <summary>
         /// End-User's Unique Name Id. Should be Used for the unique Id of the User

@@ -165,7 +165,7 @@ public class ModelTests
 
         var model = new OltPagedSearchJson<TestPersonModel, TestCriteriaModel>();
         Assert.Null(model.Criteria);
-        Assert.Null(model.Data);
+        Assert.Empty(model.Data);
         Assert.Null(model.Key);
         Assert.Null(model as IOltPagingParams);
         Assert.NotNull(model as IOltPaged);

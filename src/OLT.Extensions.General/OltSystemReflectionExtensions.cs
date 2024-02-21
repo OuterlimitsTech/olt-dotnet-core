@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 
+// ReSharper disable once CheckNamespace
 namespace System.Reflection
 {
     public static class OltSystemReflectionExtensions
@@ -95,6 +96,7 @@ namespace System.Reflection
         /// <param name="resourceName"></param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileLoadException"></exception>
         /// <exception cref="FileNotFoundException"></exception>
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static Stream? GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
@@ -112,14 +114,22 @@ namespace System.Reflection
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
             var resourceCompare = resourceName.ToLower();
+            var resources = new List<string>();
 
-            for (int i = 0; i < arrResources.Length; i++)
+#if NET6_0_OR_GREATER
+            resources.AddRange(from resource in arrResources where resource.Contains(resourceCompare, StringComparison.OrdinalIgnoreCase) select resource);
+#else
+            resources.AddRange(from resource in arrResources where resource.ToLower().Contains(resourceCompare) select resource);
+#endif
+
+            var name = resources.FirstOrDefault();
+            if (resources.Count > 1)
             {
-                string name = arrResources[i];
-                if (name.ToLower().Contains(resourceCompare))
-                {
-                    return assembly.GetManifestResourceStream(name);
-                }
+                throw new FileLoadException($"{resources.Count} embedded resources found.", resourceName);
+            }
+            else if (name != null)
+            {
+                return assembly.GetManifestResourceStream(name);
             }
 
             throw new FileNotFoundException("Cannot find embedded resource.", resourceName);
@@ -169,7 +179,7 @@ namespace System.Reflection
             {
                 using (FileStream output = new FileStream(fileName, FileMode.Create))
                 {
-                    stream.CopyTo(output);
+                    stream?.CopyTo(output);
                 }
             }
 
@@ -241,28 +251,36 @@ namespace System.Reflection
         /// <returns>Returns an instance for all objects</returns>
         public static IEnumerable<T> GetAllImplements<T>(this List<Assembly> assemblies)
         {
-
+            var result = new List<T>();
+            
             foreach (var assembly in assemblies)
             {
-                Assembly? loaded = null;
-
                 try
                 {
-                    loaded = Assembly.Load(assembly.GetName());
+                    var loaded = Assembly.Load(assembly.GetName());
+                    if (loaded == null) continue;
+                    result.AddRange(GetAllImplements_Internal<T>(loaded));
                 }
                 catch
                 {
                     // ignored
                 }
 
-                if (loaded != null)
+            }
+
+            return result;
+        }
+
+        private static IEnumerable<T> GetAllImplements_Internal<T>(Assembly assembly)
+        {
+            foreach (var ti in assembly.DefinedTypes)
+            {
+                if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType && ti.FullName != null)
                 {
-                    foreach (var ti in loaded.DefinedTypes)
+                    var instance = assembly.CreateInstance(ti.FullName);
+                    if (instance is T typedInstance)
                     {
-                        if (ti.ImplementedInterfaces.Contains(typeof(T)) && !ti.IsAbstract && !ti.IsInterface && !ti.IsGenericType)
-                        {
-                            yield return (T)assembly.CreateInstance(ti.FullName);
-                        }
+                        yield return typedInstance;
                     }
                 }
             }
