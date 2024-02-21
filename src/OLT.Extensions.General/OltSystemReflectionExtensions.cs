@@ -96,6 +96,7 @@ namespace System.Reflection
         /// <param name="resourceName"></param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileLoadException"></exception>
         /// <exception cref="FileNotFoundException"></exception>
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static Stream? GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
@@ -113,22 +114,23 @@ namespace System.Reflection
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
             var resourceCompare = resourceName.ToLower();
+            var resources = new List<string>();
 
 #if NET6_0_OR_GREATER
-            foreach (var name in from name in arrResources
-                                 where name.Contains(resourceCompare, StringComparison.OrdinalIgnoreCase)
-                                 select name)
-            {
-                return assembly.GetManifestResourceStream(name);
-            }
+            resources.AddRange(from resource in arrResources where resource.Contains(resourceCompare, StringComparison.OrdinalIgnoreCase) select resource);
 #else
-            foreach (var name in from name in arrResources
-                                 where name.ToLower().Contains(resourceCompare)
-                                 select name)
+            resources.AddRange(from resource in arrResources where resource.ToLower().Contains(resourceCompare) select resource);
+#endif
+
+            var name = resources.FirstOrDefault();
+            if (resources.Count > 1)
+            {
+                throw new FileLoadException($"{resources.Count} embedded resources found.", resourceName);
+            }
+            else if (name != null)
             {
                 return assembly.GetManifestResourceStream(name);
             }
-#endif
 
             throw new FileNotFoundException("Cannot find embedded resource.", resourceName);
         }
