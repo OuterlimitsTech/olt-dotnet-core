@@ -12,7 +12,7 @@ namespace OLT.EF.Core.SeedHelpers.Csv.Tests
     {
 
         [Fact]
-        public void CodeValueTypeConfigurationEnumTest()
+        public void ConfigurationTest()
         {
             var serviceProvider = new ServiceCollection()
                 .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
@@ -20,7 +20,7 @@ namespace OLT.EF.Core.SeedHelpers.Csv.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -32,6 +32,56 @@ namespace OLT.EF.Core.SeedHelpers.Csv.Tests
 
 
                     config.Results.Should().HaveCount(3);
+
+                }
+            }
+        }
+
+
+        [Fact]
+        public void NotACsvConfigurationTest()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
+                .BuildServiceProvider();
+
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
+                {
+                    var conventionSet = ConventionSet.CreateConventionSet(context);
+                    var builder = new ModelBuilder(conventionSet);
+                    var entityTypeBuilder = builder.Entity<PersonTypeCodeEntity>();
+
+
+                    var config = new NotACsvResourceConfiguration();
+                    Action act = () => config.Configure(entityTypeBuilder);
+
+                    act.Should().Throw<CsvHelper.HeaderValidationException>();
+                }
+            }
+        }
+
+        [Fact]
+        public void InvalidConfigurationTest()
+        {
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<UnitTestContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()))
+                .BuildServiceProvider();
+
+            using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
+                {
+                    var conventionSet = ConventionSet.CreateConventionSet(context);
+                    var builder = new ModelBuilder(conventionSet);
+                    var entityTypeBuilder = builder.Entity<PersonTypeCodeEntity>();
+
+
+                    var config = new InvalidResourceConfiguration();
+                    Action act = () => config.Configure(entityTypeBuilder);
+
+                    act.Should().Throw<System.IO.FileNotFoundException>();
 
                 }
             }
