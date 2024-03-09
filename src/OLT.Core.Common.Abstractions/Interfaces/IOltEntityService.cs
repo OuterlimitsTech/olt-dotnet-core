@@ -17,13 +17,13 @@ namespace OLT.Core
         Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy) where TModel : class, new();
         Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
-        TModel Get<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
-        TModel Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
-        TModel Get<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+        TModel? Get<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
+        TModel? Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
+        TModel? Get<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
-        Task<TModel> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
-        Task<TModel> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
-        Task<TModel> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
         IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null) where TModel : class, new();
         Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)  where TModel : class, new();
@@ -56,6 +56,14 @@ namespace OLT.Core
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searcher"></param>
+        /// <param name="model"></param>
+        /// <param name="include"></param>
+        /// <typeparam name="TModel"></typeparam>
+        /// <returns></returns>
         TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
         TResponseModel Update<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TSaveModel : class, new()

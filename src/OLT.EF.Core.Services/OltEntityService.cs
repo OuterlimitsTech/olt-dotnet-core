@@ -47,37 +47,60 @@ namespace OLT.Core
 
         #region [ Get ]
 
-        protected virtual TModel Get<TModel>(IQueryable<TEntity> queryable) where TModel : class, new()
+        protected virtual TModel? Get<TModel>(IQueryable<TEntity> queryable) where TModel : class, new()
         {
             return Get<TEntity, TModel>(queryable);
         }
 
-        public virtual TModel Get<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+        public virtual TModel? Get<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
             => this.Get<TModel>(GetQueryable(searcher));
 
-        public virtual TModel Get<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+        public virtual TModel? Get<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
             => this.Get<TModel>(GetQueryable(includeDeleted, searchers));
 
-        public TModel Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+        public TModel? Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
         {
             var queryable = this.GetQueryable().Where(predicate);
             return Get<TModel>(queryable);
         }
 
-        public virtual async Task<TModel> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+        public virtual async Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
             => await this.GetAsync<TModel>(GetQueryable(searcher));
 
-        public virtual async Task<TModel> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+        public virtual async Task<TModel?> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
             => await this.GetAsync<TModel>(GetQueryable(includeDeleted, searchers));
 
-        protected virtual async Task<TModel> GetAsync<TModel>(IQueryable<TEntity> queryable) where TModel : class, new()
+        protected virtual async Task<TModel?> GetAsync<TModel>(IQueryable<TEntity> queryable) where TModel : class, new()
             => await GetAsync<TEntity, TModel>(queryable);
 
-        public async Task<TModel> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+        public async Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
         {
             var queryable = this.GetQueryable().Where(predicate);
             return await GetAsync<TModel>(queryable);
         }
+
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="searcher"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        protected virtual TModel GetSafe<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+            => this.Get<TModel>(GetQueryable(searcher)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="searcher"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        protected virtual async Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+            => await this.GetAsync<TModel>(GetQueryable(searcher)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
 
         #endregion
 
@@ -131,25 +154,25 @@ namespace OLT.Core
 
         
 
-        public virtual IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        public virtual IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
         {
             return this.GetPaged<TModel>(GetQueryable(searcher), pagingParams, orderBy);
         }
 
-        protected virtual IOltPaged<TModel> GetPaged<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        protected virtual IOltPaged<TModel> GetPaged<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
         {
             return MapPaged<TEntity, TModel>(queryable, pagingParams, orderBy);
         }
 
-        public virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        public virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
         {
             return await GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams, orderBy);
         }
 
-        protected virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        protected virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
         {
             return await MapPagedAsync<TEntity, TModel>(queryable, pagingParams, orderBy);
@@ -308,40 +331,40 @@ namespace OLT.Core
         #region [ Update ]
         
 
-        public virtual TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new()
+        public virtual TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new()
         {
             var entity = GetQueryable(searcher).FirstOrDefault();
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
-            return Get<TModel>(searcher);
+            return GetSafe<TModel>(searcher);
         }
 
-        public virtual TResponseModel Update<TResponseModel, TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        public virtual TResponseModel Update<TResponseModel, TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
             var entity = GetQueryable(searcher).FirstOrDefault();
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
-            return Get<TResponseModel>(searcher);
+            return GetSafe<TResponseModel>(searcher);
         }
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null) where TModel : class, new()
+        public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new()
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
             await SaveChangesAsync();
-            return await GetAsync<TModel>(searcher);
+            return await GetSafeAsync<TModel>(searcher);
         }
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TSaveModel : class, new()
             where TResponseModel : class, new()
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
             await SaveChangesAsync();
-            return await GetAsync<TResponseModel>(searcher);
+            return await GetSafeAsync<TResponseModel>(searcher);
         }
 
         #endregion

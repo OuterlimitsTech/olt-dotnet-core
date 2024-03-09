@@ -7,9 +7,9 @@ namespace OLT.Core
     public interface IOltEntityIdService<TEntity> : IOltEntityService<TEntity>
         where TEntity : class, IOltEntityId, IOltEntity
     {
-        TModel Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+        TModel? Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
 
-        Task<TModel> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
 
         TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
 

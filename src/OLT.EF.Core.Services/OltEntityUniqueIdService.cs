@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,9 +25,29 @@ namespace OLT.Core
 
         #region [ Get ]
 
-        public virtual TModel Get<TModel>(Guid uid) where TModel : class, new() => Get<TModel>(GetQueryable(uid));
+        public virtual TModel? Get<TModel>(Guid uid) where TModel : class, new() => Get<TModel>(GetQueryable(uid));
 
-        public virtual async Task<TModel> GetAsync<TModel>(Guid uid) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(uid));
+        public virtual async Task<TModel?> GetAsync<TModel>(Guid uid) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(uid));
+
+        /// <summary>
+        /// Null safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected virtual TModel GetSafe<TModel>(Guid uid) where TModel : class, new() 
+            => Get<TModel>(GetQueryable(uid)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        /// <summary>
+        /// Null safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        protected virtual async Task<TModel> GetSafeAsync<TModel>(Guid uid) where TModel : class, new() 
+            => await GetAsync<TModel>(GetQueryable(uid)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
         #endregion
 
@@ -45,7 +64,7 @@ namespace OLT.Core
             var returnList = new List<TModel>();
             entities.ForEach(entity =>
             {
-                returnList.Add(Get<TModel>(entity.UniqueId));
+                returnList.Add(GetSafe<TModel>(entity.UniqueId));
             });
             return returnList;
         }
@@ -60,7 +79,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             Repository.Add(entity);
             SaveChanges();
-            return Get<TModel>(entity.UniqueId);
+            return GetSafe<TModel>(entity.UniqueId);
         }
 
         public override TResponseModel Add<TResponseModel, TSaveModel>(TSaveModel model)
@@ -69,7 +88,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             Repository.Add(entity);
             SaveChanges();
-            return Get<TResponseModel>(entity.UniqueId);
+            return GetSafe<TResponseModel>(entity.UniqueId);
         }
 
 
@@ -79,7 +98,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             await Repository.AddAsync(entity);
             await SaveChangesAsync();
-            return await GetAsync<TResponseModel>(entity.UniqueId);
+            return await GetSafeAsync<TResponseModel>(entity.UniqueId);
         }
 
         public override async Task<TModel> AddAsync<TModel>(TModel model)
@@ -88,7 +107,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             await Repository.AddAsync(entity);
             await SaveChangesAsync();
-            return await GetAsync<TModel>(entity.UniqueId);
+            return await GetSafeAsync<TModel>(entity.UniqueId);
         }
 
         #endregion
@@ -102,7 +121,7 @@ namespace OLT.Core
             var entity = GetQueryable(uid).FirstOrDefault();
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
-            return Get<TModel>(uid);
+            return GetSafe<TModel>(uid);
         }
 
 
@@ -113,7 +132,7 @@ namespace OLT.Core
             var entity = GetQueryable(uid).FirstOrDefault();
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
-            return Get<TResponseModel>(uid);
+            return GetSafe<TResponseModel>(uid);
         }
 
         public virtual async Task<TModel> UpdateAsync<TModel>(Guid uid, TModel model)
@@ -122,7 +141,7 @@ namespace OLT.Core
             var entity = await GetQueryable(uid).FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
             await SaveChangesAsync();
-            return await GetAsync<TModel>(uid);
+            return await GetSafeAsync<TModel>(uid);
         }
 
         public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(Guid uid, TModel model)
@@ -132,7 +151,7 @@ namespace OLT.Core
             var entity = await GetQueryable(uid).FirstOrDefaultAsync();
             ServiceManager.AdapterResolver.Map(model, entity);
             await SaveChangesAsync();
-            return await GetAsync<TResponseModel>(uid);
+            return await GetSafeAsync<TResponseModel>(uid);
         }
 
         #endregion
