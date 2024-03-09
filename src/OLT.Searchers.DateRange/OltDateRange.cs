@@ -15,7 +15,7 @@ namespace OLT.Core
 
         }
 
-        public OltDateRange(DateTimeOffset start, DateTimeOffset end, string label = null)
+        public OltDateRange(DateTimeOffset start, DateTimeOffset end, string? label = null)
         {
             Start = start;
             End = end;
@@ -26,7 +26,7 @@ namespace OLT.Core
         /// <summary>
         /// Used to describe the date range (Optional)
         /// </summary>
-        public string Label { get; set; }
+        public string? Label { get; set; }
 
 
         /// <summary>
