@@ -91,6 +91,24 @@ namespace System.Reflection
         /// </summary>
         /// <remarks>
         /// Example: MyNamespace.SomeDirectory.TheFile.csv -> this.GetType().Assembly.GetEmbeddedResourceStream("TheFile.csv")
+        /// </remarks>        
+        /// <param name="assembly"></param>
+        /// <param name="resourceName"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileLoadException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>
+        public static Stream GetEmbeddedResourceStreamSafe(this Assembly assembly, string resourceName)
+        {
+            return GetEmbeddedResourceStream(assembly, resourceName) ?? throw new FileNotFoundException("Cannot find embedded resource.", resourceName);
+        }
+
+        /// <summary>
+        /// Searches Assembly for embedded resource. This method does not require the Fully Qualified Name
+        /// </summary>
+        /// <remarks>
+        /// Example: MyNamespace.SomeDirectory.TheFile.csv -> this.GetType().Assembly.GetEmbeddedResourceStream("TheFile.csv")
         /// </remarks>
         /// <param name="assembly"><see cref="Assembly"/></param>
         /// <param name="resourceName"></param>

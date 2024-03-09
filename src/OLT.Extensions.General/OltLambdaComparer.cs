@@ -2,14 +2,14 @@
 {
     public class OltLambdaComparer<T> : IEqualityComparer<T>
     {
-        private readonly Func<T, T, bool> _expression;
+        private readonly Func<T?, T?, bool> _expression;
 
-        public OltLambdaComparer(Func<T, T, bool> lambda)
+        public OltLambdaComparer(Func<T?, T?, bool> lambda)
         {
             _expression = lambda;
         }
 
-        public bool Equals(T x, T y)
+        public bool Equals(T? x, T? y)
         {
             return _expression(x, y);
         }

@@ -23,6 +23,7 @@ namespace OLT.Extensions.General.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void ExceptTests()
         {
             var rnd = new Random();
@@ -74,6 +75,7 @@ namespace OLT.Extensions.General.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void IntersectTests()
         {
             var rnd = new Random();

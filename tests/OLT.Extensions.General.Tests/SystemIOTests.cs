@@ -50,7 +50,7 @@ namespace OLT.Extensions.General.Tests
                     }
                     catch(Exception ex)
                     {
-                        Assert.True(false, ex.ToString());
+                        Assert.Fail(ex.ToString());
                     }
                 }
  
@@ -91,7 +91,7 @@ namespace OLT.Extensions.General.Tests
                     }
                     catch (Exception ex)
                     {
-                        Assert.True(false, ex.ToString());
+                        Assert.Fail(ex.ToString());
                     }
                 }
             }
