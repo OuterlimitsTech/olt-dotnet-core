@@ -14,6 +14,7 @@ namespace OLT.Email.Tests.Smtp
         private readonly string FakeHost = Faker.Internet.DomainName();
 
         [Fact]
+        [Obsolete]
         public void TestRecipients()
         {
             var smtpServer = new OltSmtpServer
@@ -75,6 +76,7 @@ namespace OLT.Email.Tests.Smtp
 
 
         [Fact]
+        [Obsolete]
         public void TestCalendar()
         {
 

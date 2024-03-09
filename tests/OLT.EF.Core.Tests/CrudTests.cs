@@ -27,7 +27,7 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
 
                 var entity = await AddPerson(context);                
                 context.People.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
@@ -47,7 +47,7 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 var address = AddressEntity.FakerEntity();
 
                 var entity = await AddPerson(context);
@@ -70,12 +70,12 @@ namespace OLT.EF.Core.Tests
 
                 entity.NameMiddle = " ";
                 context.SaveChanges();
-                Assert.Null(context.People.FirstOrDefault(p => p.Id == entity.Id).NameMiddle); //Check to see if empty string is set to null
+                Assert.Null(context.People.FirstOrDefault(p => p.Id == entity.Id)?.NameMiddle); //Check to see if empty string is set to null
 
-                entity = context.People.FirstOrDefault(p => p.Id == entity.Id);
+                entity = context.People.FirstOrDefault(p => p.Id == entity.Id) ?? throw new OltRecordNotFoundException("Not Found");
                 entity.NameMiddle = "";
                 context.SaveChanges();
-                Assert.Null(context.People.FirstOrDefault(p => p.Id == entity.Id).NameMiddle); //Check to see if empty string is set to null
+                Assert.Null(context.People.FirstOrDefault(p => p.Id == entity.Id)?.NameMiddle); //Check to see if empty string is set to null
 
 
 
@@ -87,7 +87,7 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProviderWithLogging())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
 
                 var entity = await AddPerson(context);
 
@@ -98,10 +98,10 @@ namespace OLT.EF.Core.Tests
 
             using (var provider = BuildProviderWithLogging())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
 
                 var entity = await AddPerson(context);
-                entity.NameFirst = null;
+                entity.NameFirst = null!;
                 Assert.Throws<Exception>(() => context.SaveChanges());
                 await Assert.ThrowsAsync<Exception>(() => context.SaveChangesAsync());
             }
@@ -114,7 +114,7 @@ namespace OLT.EF.Core.Tests
             {
                 var address1 = AddressEntity.FakerEntity();
                 var address2 = AddressEntity.FakerEntity();
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
 
                 var entity = PersonEntity.FakerEntity();
                 entity.Addresses.Add(AddressEntity.FakerEntity());
@@ -130,7 +130,7 @@ namespace OLT.EF.Core.Tests
                 try
                 {
                     var deleteAddress = context.Addresses.FirstOrDefault(p => p.Id == address1.Id);
-                    context.Addresses.Remove(deleteAddress);
+                    context.Addresses.Remove(deleteAddress!);
                     await context.SaveChangesAsync();
                     Assert.True(true);
                 }
@@ -142,7 +142,7 @@ namespace OLT.EF.Core.Tests
                 try
                 {
                     var deleteAddress = context.Addresses.FirstOrDefault(p => p.Id == address2.Id);
-                    context.Addresses.Remove(deleteAddress);
+                    context.Addresses.Remove(deleteAddress!);
                     context.SaveChanges();
                     Assert.True(true);
                 }
@@ -161,7 +161,7 @@ namespace OLT.EF.Core.Tests
             {
                 var address1 = AddressEntity.FakerEntity();
                 var address2 = AddressEntity.FakerEntity();
-                var context = provider.GetService<UnitTestContext>(); //Cascade Delete disabled
+                var context = provider.GetRequiredService<UnitTestContext>(); //Cascade Delete disabled
 
                 Assert.True(context.DisableCascadeDeleteConvention);
 
@@ -175,7 +175,7 @@ namespace OLT.EF.Core.Tests
                 context.People.Add(entity);
                 await context.SaveChangesAsync();
 
-                var person = context.People.Include(i => i.Addresses).FirstOrDefault(p => p.Id == entity.Id);
+                var person = context.People.Include(i => i.Addresses).FirstOrDefault(p => p.Id == entity.Id) ?? throw new OltRecordNotFoundException("Not Found");
 
                 Assert.Throws<InvalidOperationException>(() => context.Remove(person));
 
@@ -189,7 +189,7 @@ namespace OLT.EF.Core.Tests
             {
                 var address1 = AddressEntity.FakerEntity();
                 var address2 = AddressEntity.FakerEntity();
-                var context = provider.GetService<UnitTestAlternateContext>(); //Cascade Delete disabled
+                var context = provider.GetRequiredService<UnitTestAlternateContext>(); //Cascade Delete disabled
 
                 Assert.False(context.DisableCascadeDeleteConvention);
 
@@ -203,7 +203,7 @@ namespace OLT.EF.Core.Tests
                 context.People.Add(entity);
                 await context.SaveChangesAsync();
 
-                var person = context.People.Include(i => i.Addresses).FirstOrDefault(p => p.Id == entity.Id);
+                var person = context.People.Include(i => i.Addresses).FirstOrDefault(p => p.Id == entity.Id) ?? throw new OltRecordNotFoundException("Not Found");
 
                 try
                 {                    
@@ -228,7 +228,7 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var entity = NoStringEntity.FakerEntity();
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 await context.NoStringEntities.AddAsync(entity);
                 context.SaveChanges();
                 context.NoStringEntities.FirstOrDefault(p => p.Id == entity.Id).Should().BeEquivalentTo(entity);
@@ -251,7 +251,7 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var entity = EmptyExceptionStringEntity.FakerEntity();
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 await context.EmptyExceptionStringEntities.AddAsync(entity);
                 OltException exception = Assert.Throws<OltException>(() => context.SaveChanges()); 
                 Assert.Equal("CheckNullableStringFields: OLT.EF.Core.Tests.Assets.Entites.EmptyExceptionStringEntity -> Title", exception.Message);

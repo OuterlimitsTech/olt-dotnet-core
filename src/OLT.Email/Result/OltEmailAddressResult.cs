@@ -1,8 +1,10 @@
-﻿using OLT.Constants;
+﻿#nullable disable
+using OLT.Constants;
 using System;
 
 namespace OLT.Email
 {
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public class OltEmailAddressResult : OltEmailAddress
     {
         /// <summary>

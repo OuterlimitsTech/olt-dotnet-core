@@ -13,6 +13,7 @@ namespace OLT.Email.SendGrid.Tests
     public class SendGridArgBuilderTests
     {
         [Fact]
+        [Obsolete]
         public void WithApiKey()
         {
             var args = new SendGridTemplateTestArgs();
@@ -32,6 +33,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void WithTemplate()
         {
             var args = new SendGridTemplateTestArgs();
@@ -51,6 +53,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void WithCustomArg()
         {
             var args = new SendGridTemplateTestArgs();
@@ -77,6 +80,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void EnableSandbox()
         {
             var args = new SendGridTemplateTestArgs();
@@ -97,6 +101,7 @@ namespace OLT.Email.SendGrid.Tests
 
 
         [Fact]
+        [Obsolete]
         public void WithUnsubscribeGroupId()
         {
             var args = new SendGridTemplateTestArgs();
@@ -117,6 +122,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void WithoutClickTracking()
         {
             var args = new SendGridTemplateTestArgs();
@@ -136,6 +142,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void TemplateErrors()
         {
             IOltEmailTemplateId template = null;

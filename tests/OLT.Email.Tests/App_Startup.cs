@@ -6,7 +6,7 @@ using OLT.Email.Tests.Smtp.Assets;
 
 namespace OLT.Email.Tests
 {
-
+    [Obsolete]
     public class Startup
     {
         public void ConfigureHost(IHostBuilder hostBuilder)

@@ -10,6 +10,7 @@ namespace OLT.Email.Tests.Common
     public class CommonModelTests
     {
         [Fact]
+        [Obsolete]
         public void EmailAddress()
         {
             var email = Faker.Internet.Email();
@@ -26,6 +27,7 @@ namespace OLT.Email.Tests.Common
         }
 
         [Fact]
+        [Obsolete]
         public void EmailAttachment()
         {            
             var contentType = Faker.Internet.DomainWord();
@@ -54,6 +56,7 @@ namespace OLT.Email.Tests.Common
 
 
         [Fact]
+        [Obsolete]
         public void EmailTag()
         {
             var tag = Faker.Lorem.GetFirstWord();
@@ -93,6 +96,7 @@ namespace OLT.Email.Tests.Common
 
 
         [Fact]
+        [Obsolete]
         public void EmailResults()
         {
             var error = Faker.Lorem.GetFirstWord();

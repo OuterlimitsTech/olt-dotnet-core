@@ -12,6 +12,7 @@ namespace OLT.Email.Tests.Common
     {
 
         [Fact]
+        [Obsolete]
         public void Recipients()
         {
             var args = new TestArgs();
@@ -73,6 +74,7 @@ namespace OLT.Email.Tests.Common
         }
 
         [Fact]
+        [Obsolete]
         public void FromEmail()
         {
             var args = new TestArgs();
@@ -112,6 +114,7 @@ namespace OLT.Email.Tests.Common
         }
 
         [Fact]
+        [Obsolete]
         public void Whitelist()
         {
             var whiteEmail = Faker.Internet.Email();
@@ -187,6 +190,7 @@ namespace OLT.Email.Tests.Common
         }
 
         [Fact]
+        [Obsolete]
         public void Errors()
         {
 

@@ -1,4 +1,6 @@
-﻿using OLT.Constants;
+﻿#nullable disable
+
+using OLT.Constants;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace OLT.Email.SendGrid
 {
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public abstract class OltSendGridSmtpArgs<T> : OltSmtpNetworkCredentialArgs<T>, IOltSmtpClient, IOltApiKeyArgs<T>
         where T : OltSendGridSmtpArgs<T>
     {
-        protected  string ApiKey { get; set; }
+        protected string ApiKey { get; set; }
         
         protected OltSendGridSmtpArgs()
         {
@@ -44,7 +47,7 @@ namespace OLT.Email.SendGrid
             var smtpServer = new OltSmtpServerSendGrid(ApiKey);
 
             base.WithSmtpHost(smtpServer.Host);
-            base.WithSmtpPort(smtpServer.Port.Value);
+            base.WithSmtpPort(smtpServer.Port ?? 587);
             base.WithSmtpNetworkCredentials(smtpServer.Credentials.Username, smtpServer.Credentials.Password);
             SmtpSSLDisabled = false;
 

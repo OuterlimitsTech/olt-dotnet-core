@@ -15,6 +15,7 @@ namespace OLT.Email.Tests.Smtp
         private readonly string FakeHost = Faker.Internet.DomainName();
 
         [Fact]
+        [Obsolete]
         public void PortNumberTests()
         {
 
@@ -51,6 +52,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void CredentialTests()
         {
             var smtpEmail = SmtpHelper.FakerSmtpEmail(2, 2);

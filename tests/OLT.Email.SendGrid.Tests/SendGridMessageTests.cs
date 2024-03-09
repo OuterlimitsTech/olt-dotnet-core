@@ -13,6 +13,7 @@ namespace OLT.Email.SendGrid.Tests
     {
 
         [Fact]
+        [Obsolete]
         public void DisabledRecipientsNonProdTest()
         {
             var template = FakeEmailTagTemplate.FakerData(7, 5);
@@ -52,6 +53,7 @@ namespace OLT.Email.SendGrid.Tests
 
 
         [Fact]
+        [Obsolete]
         public void DisabledRecipientsProdTest()
         {
             var template = FakeEmailTagTemplate.FakerData(7, 5);
@@ -87,6 +89,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void SandboxModeTest()
         {
             var template = FakeEmailTagTemplate.FakerData(7, 5);
@@ -106,6 +109,7 @@ namespace OLT.Email.SendGrid.Tests
 
 
         [Fact]
+        [Obsolete]
         public void UnsubscribeGroupTest()
         {
             var template = FakeEmailTagTemplate.FakerData(7, 5);
@@ -122,6 +126,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void AttachmentTest()
         {
             var attachments = SendGridHelper.FakerAttachment(10);
@@ -142,6 +147,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void ClickTrackingTest()
         {
             var template = FakeEmailTagTemplate.FakerData(7, 5);
@@ -163,6 +169,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void TemplateDataTest()
         {
             var config = SendGridHelper.FakerConfig(true, 0, 0);
@@ -180,6 +187,7 @@ namespace OLT.Email.SendGrid.Tests
 
 
         [Fact]
+        [Obsolete]
         public void TemplateIdTest()
         {
             var template = FakeNoTemplateDataTemplate.FakerData(7, 5);
@@ -191,6 +199,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void FromTest()
         {
             var template = FakeNoTemplateDataTemplate.FakerData(7, 5);
@@ -203,6 +212,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void CustomArgsTest()
         {
             var template = FakeNoTemplateDataTemplate.FakerData(7, 5);

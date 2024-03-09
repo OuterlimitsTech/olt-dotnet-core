@@ -13,6 +13,7 @@ namespace OLT.Email.SendGrid.Tests
     public class SendGridGeneralTests
     {
         [Fact]
+        [Obsolete]
         public void ServerValues()
         {
             var password = Faker.Internet.UserName();
@@ -29,6 +30,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void SmtpClient()
         {
             var password = Faker.Internet.UserName();
@@ -64,6 +66,7 @@ namespace OLT.Email.SendGrid.Tests
         }
 
         [Fact]
+        [Obsolete]
         public void EmailTemplateTests()
         {            
             var data = EmailDataJson.FakerData();

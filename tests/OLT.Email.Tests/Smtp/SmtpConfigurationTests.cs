@@ -10,6 +10,7 @@ using Xunit;
 
 namespace OLT.Email.Tests.Smtp
 {
+    [Obsolete]
     public class SmtpConfigurationTests
     {
         public class AppSettingsJsonDto
@@ -28,6 +29,7 @@ namespace OLT.Email.Tests.Smtp
 
 
         [Fact]
+        [Obsolete]
         public void OltSmtpConfigurationTests()
         {
             var smtpServer = new OltSmtpServer
@@ -67,6 +69,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void OltSmtpServerTests()
         {
             var host = Faker.Internet.DomainName();

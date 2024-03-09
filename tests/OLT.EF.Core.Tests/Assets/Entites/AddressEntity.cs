@@ -12,13 +12,13 @@ namespace OLT.EF.Core.Tests.Assets.Entites
         public override int Id { get; set; }
 
         public int PersonId { get; set; }
-        public PersonEntity Person { get; set; }
+        public PersonEntity Person { get; set; } = default!;
 
         [StringLength(50)]
-        public string Street { get; set; }
+        public string? Street { get; set; }
 
         [StringLength(50)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         public static AddressEntity FakerEntity()
         {

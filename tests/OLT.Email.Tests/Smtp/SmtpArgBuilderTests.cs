@@ -14,6 +14,7 @@ namespace OLT.Email.Tests.Smtp
     {
 
         [Fact]
+        [Obsolete]
         public void WithSmtpHost()
         {
             var args = new SmtpTestArgs();
@@ -28,6 +29,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void WithSmtpSSLDisabled()
         {
             var args = new SmtpTestArgs();
@@ -41,6 +43,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void WithSmtpPort()
         {
             var args = new SmtpTestArgs();
@@ -55,6 +58,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void WithSubject()
         {
             var args = new SmtpTestArgs();
@@ -70,6 +74,7 @@ namespace OLT.Email.Tests.Smtp
 
 
         [Fact]
+        [Obsolete]
         public void WithAppError()
         {
             var args = new SmtpTestArgs();
@@ -89,6 +94,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void WithBody()
         {
             var args = new SmtpTestArgs();
@@ -103,6 +109,7 @@ namespace OLT.Email.Tests.Smtp
         }
 
         [Fact]
+        [Obsolete]
         public void WithSmtpNetworkCredentials()
         {
             var args = new SmtpTestArgs();
@@ -120,6 +127,7 @@ namespace OLT.Email.Tests.Smtp
 
 
         [Fact]
+        [Obsolete]
         public void Errors()
         {
 
@@ -160,6 +168,7 @@ namespace OLT.Email.Tests.Smtp
 
 
         [Fact]
+        [Obsolete]
         public void AllowSendTests()
         {
 
@@ -255,6 +264,7 @@ namespace OLT.Email.Tests.Smtp
             
         }
 
+        [Obsolete]
         private static void TestResult(OltEmailAddressResult result, bool success)
         {
             Assert.Equal(success, result.Success);

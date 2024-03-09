@@ -12,7 +12,7 @@
         /// <summary>
         /// Code value caption.  This is a short description usually used for picklist values.
         /// </summary>
-        string? Name { get; set; }
+        string Name { get; set; }
 
     }
 }

@@ -22,8 +22,8 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestContext>();
-                var altContext = provider.GetService<UnitTestAlternateContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
+                var altContext = provider.GetRequiredService<UnitTestAlternateContext>();
 
                 Assert.Equal(OltContextStringTypes.Varchar, context.DefaultStringType);
                 Assert.Equal(OltContextStringTypes.NVarchar, altContext.DefaultStringType);
@@ -44,8 +44,8 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context1 = provider.GetService<UnitTestContext>();
-                var context2 = provider.GetService<UnitTestAlternateContext>();
+                var context1 = provider.GetRequiredService<UnitTestContext>();
+                var context2 = provider.GetRequiredService<UnitTestAlternateContext>();
                 
                 var entity1 = PersonEntity.FakerEntity();
                 entity1.DeletedBy = Faker.Internet.Email();
@@ -72,7 +72,7 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 var sortOrder = (short)Faker.RandomNumber.Next(1000, 1200);
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
 
                 var entityDefault = NoIdEntity.FakerEntity();
                 context.NoIdentifiers.Add(entityDefault);
@@ -103,8 +103,8 @@ namespace OLT.EF.Core.Tests
             {
                 var now = DateTimeOffset.UtcNow;
 
-                var context = provider.GetService<UnitTestContext>();
-                var auditUser = provider.GetService<IOltDbAuditUser>();
+                var context = provider.GetRequiredService<UnitTestContext>();
+                var auditUser = provider.GetRequiredService<IOltDbAuditUser>();
                 Assert.Equal(OltEFCoreConstants.DefaultAnonymousUser, context.DefaultAnonymousUser);
                 Assert.Equal(auditUser.GetDbUsername(), context.AuditUser);
 
@@ -114,8 +114,8 @@ namespace OLT.EF.Core.Tests
                 context.SaveChanges();
 
                 var compare = context.People.FirstOrDefault(p => p.Id == entity.Id);
-                Assert.Equal(auditUser.GetDbUsername(), compare.CreateUser);
-                Assert.True(compare.CreateDate > now);
+                Assert.Equal(auditUser.GetDbUsername(), compare?.CreateUser);
+                Assert.True(compare?.CreateDate > now);
                 Assert.Equal(auditUser.GetDbUsername(), compare.ModifyUser);
                 Assert.True(compare.ModifyDate?.UtcDateTime >= compare.CreateDate.UtcDateTime);
 
@@ -141,10 +141,10 @@ namespace OLT.EF.Core.Tests
                 context.SaveChanges();
 
                 compare = context.People.FirstOrDefault(p => p.Id == entity2.Id);
-                Assert.NotEqual(createDate, compare.CreateDate);
-                Assert.NotEqual(createUser, compare.CreateUser);
-                Assert.NotEqual(createDate, compare.ModifyDate);
-                Assert.NotEqual(createUser, compare.ModifyUser);
+                Assert.NotEqual(createDate, compare?.CreateDate);
+                Assert.NotEqual(createUser, compare?.CreateUser);
+                Assert.NotEqual(createDate, compare?.ModifyDate);
+                Assert.NotEqual(createUser, compare?.ModifyUser);
 
             }
 
@@ -163,7 +163,7 @@ namespace OLT.EF.Core.Tests
 
             using (var provider = services.BuildServiceProvider())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 Assert.Equal(context.DefaultAnonymousUser, context.AuditUser);
             }
         }
