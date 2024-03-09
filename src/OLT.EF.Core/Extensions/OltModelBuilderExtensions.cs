@@ -79,13 +79,13 @@ namespace OLT.Core
                 var clrType = builder.Metadata.ClrType;
                 var tableName = builder.Metadata.GetDefaultTableName();
 
-                if (tableName != null && clrType != null)
+                if (tableName != null && clrType?.FullName != null)
                 {
                     var discriminatorPropertyName = builder.Metadata.GetDiscriminatorPropertyName();
                     //TPH class?
                     if (discriminatorPropertyName != null)
                     {
-                        if (clrType.FullName.Equals(clrType.BaseType.FullName, StringComparison.OrdinalIgnoreCase))
+                        if (clrType.BaseType != null && clrType.FullName.Equals(clrType.BaseType.FullName, StringComparison.OrdinalIgnoreCase))
                         {
                             //Console.WriteLine($"{tableName}: GetDiscriminatorProperty: {builder.Metadata.GetDiscriminatorPropertyName()} of type {builder.Metadata.ClrType.FullName}");
                             clrType = clrType.BaseType;
