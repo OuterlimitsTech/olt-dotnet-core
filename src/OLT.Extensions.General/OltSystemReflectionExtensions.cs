@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using OLT.Core;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 
 // ReSharper disable once CheckNamespace
 namespace System.Reflection
 {
+
     public static class OltSystemReflectionExtensions
     {
 
@@ -15,75 +18,76 @@ namespace System.Reflection
         /// Gets all referenced assemblies
         /// </summary>
         /// <param name="assembly"></param>
+        /// <param name="filter">Assembly Filter.</param>
         /// <returns></returns>
-        public static List<Assembly> GetAllReferencedAssemblies(this Assembly assembly)
+        public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly assembly, OltAssemblyFilter? filter = null)
         {
-            return GetAllReferencedAssemblies(new List<Assembly> { assembly });
+            return GetAllReferencedAssemblies(new List<Assembly> { assembly }, filter);
         }
 
         /// <summary>
         /// Gets all referenced assemblies for list of assemblies
         /// </summary>
         /// <param name="assembliesToScan"></param>
+        /// <param name="filter">Assembly Filter.</param>
         /// <returns></returns>
-        public static List<Assembly> GetAllReferencedAssemblies(this Assembly[] assembliesToScan)
+        public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly[] assembliesToScan, OltAssemblyFilter? filter = null)
         {
-            return GetAllReferencedAssemblies(assembliesToScan.ToList());
+            return GetAllReferencedAssemblies(assembliesToScan.ToList(), filter);
         }
 
         /// <summary>
         /// Gets all referenced assemblies for provided list of assemblies
         /// </summary>
-        /// <param name="assembliesToScan"></param>
-        /// <returns></returns>
-        public static List<Assembly> GetAllReferencedAssemblies(this List<Assembly> assembliesToScan)
+        /// <param name="assembliesToScan">The assemblies to scan for references.</param>
+        /// <param name="filter">Assembly Filter</param>
+        /// <returns>A filtered collection of assemblies according to the provided OltAssemblyFilter.</returns>
+        public static IEnumerable<Assembly> GetAllReferencedAssemblies(this IEnumerable<Assembly> assembliesToScan, OltAssemblyFilter? filter = null)
         {
-            var results = new List<Assembly>();
-            var referencedAssemblies = new List<Assembly>();
+            filter ??= new OltAssemblyFilter();
 
-            referencedAssemblies.AddRange(assembliesToScan);
+            var allAssemblies = new HashSet<Assembly>(new OltAssemblyFullNameComparer());
+            var toProcess = new Queue<Assembly>(assembliesToScan);
 
-            if (assembliesToScan.Exists(p => p.FullName != Assembly.GetCallingAssembly().FullName))
+            // Add the calling assembly if it's not part of the assemblies to scan and it's not already added
+            var callingAssembly = Assembly.GetCallingAssembly();
+            if (!assembliesToScan.Any(a => a.FullName == callingAssembly.FullName))
             {
-                referencedAssemblies.Add(Assembly.GetCallingAssembly());
+                toProcess.Enqueue(callingAssembly);
             }
 
-            assembliesToScan.ForEach(assembly =>
+            while (toProcess.Count > 0)
             {
-                referencedAssemblies.AddRange(assembly.GetReferencedAssemblies().Select(Assembly.Load));
-            });
-
-            AppDomain.CurrentDomain
-                .GetAssemblies()
-                .ToList()
-                .ForEach(assembly =>
+                var assembly = toProcess.Dequeue();
+                if (allAssemblies.Add(assembly))
                 {
-                    referencedAssemblies.Add(assembly);
-                });
-
-
-            referencedAssemblies
-                .GroupBy(g => g.FullName)
-                .Select(s => s.Key)
-                .OrderBy(o => o)
-                .ToList()
-                .ForEach(name =>
-                {
-                    var assembly = results.Find(p => string.Equals(p.FullName, name, StringComparison.OrdinalIgnoreCase));
-                    if (assembly == null)
+                    // Load and queue referenced assemblies
+                    foreach (var reference in assembly.GetReferencedAssemblies())
                     {
-                        var add = referencedAssemblies.Find(p => p.FullName == name);
-                        if (add != null)
+                        try
                         {
-                            results.Add(add);
-                        }                        
+                            var loadedAssembly = Assembly.Load(reference);
+                            toProcess.Enqueue(loadedAssembly);
+                        }
+                        catch (Exception)
+                        {
+                            // Handle or log exceptions related to loading assemblies, if necessary
+                        }
                     }
-                });
+                }
+            }
+
+            // Include assemblies already loaded in the AppDomain that match the filters
+            foreach (var loadedAssembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                allAssemblies.Add(loadedAssembly);
+            }
 
 
-            return results;
+            return filter.FilterAssemblies(allAssemblies).OrderBy(assembly => assembly.FullName);
         }
 
+        
         #endregion
 
         /// <summary>
@@ -267,7 +271,7 @@ namespace System.Reflection
         /// <typeparam name="T"></typeparam>
         /// <param name="assemblies"></param>
         /// <returns>Returns an instance for all objects</returns>
-        public static IEnumerable<T> GetAllImplements<T>(this List<Assembly> assemblies)
+        public static IEnumerable<T> GetAllImplements<T>(this IEnumerable<Assembly> assemblies)
         {
             var result = new List<T>();
             
@@ -277,7 +281,7 @@ namespace System.Reflection
                 {
                     var loaded = Assembly.Load(assembly.GetName());
                     if (loaded == null) continue;
-                    result.AddRange(GetAllImplements_Internal<T>(loaded));
+                    result.AddRange(GetAllImplementsInternal<T>(loaded));
                 }
                 catch
                 {
@@ -289,7 +293,7 @@ namespace System.Reflection
             return result;
         }
 
-        private static IEnumerable<T> GetAllImplements_Internal<T>(Assembly assembly)
+        private static IEnumerable<T> GetAllImplementsInternal<T>(Assembly assembly)
         {
             foreach (var ti in assembly.DefinedTypes)
             {
