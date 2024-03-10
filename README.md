@@ -22,9 +22,6 @@
 | [OLT.EF.Core.SeedHelpers.Csv](./src/OLT.EF.Core.SeedHelpers.Csv/)                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.EF.Core.SeedHelpers.Csv)](https://www.nuget.org/packages/OLT.EF.Core.SeedHelpers.Csv)                                             |
 | [OLT.EF.Core.Services](./src/OLT.EF.Core.Services/)                                                           | [![Nuget](https://img.shields.io/nuget/v/OLT.EF.Core.Services)](https://www.nuget.org/packages/OLT.EF.Core.Services)                                                           |
 | [OLT.EF.Core.SqlServer](./src/OLT.EF.Core.SqlServer/)                                                         | [![Nuget](https://img.shields.io/nuget/v/OLT.EF.Core.SqlServer)](https://www.nuget.org/packages/OLT.EF.Core.SqlServer)                                                         |
-| [OLT.Email](./src/OLT.Email/)                                                                                 | [![Nuget](https://img.shields.io/nuget/v/OLT.Email)](https://www.nuget.org/packages/OLT.Email)                                                                                 |
-| [OLT.Email.SendGrid](./src/OLT.Email.SendGrid/)                                                               | [![Nuget](https://img.shields.io/nuget/v/OLT.Email.SendGrid)](https://www.nuget.org/packages/OLT.Email.SendGrid)                                                               |
-| [OLT.Email.SendGrid.Shared](./src/OLT.Email.SendGrid.Shared/)                                                 | [![Nuget](https://img.shields.io/nuget/v/OLT.Email.SendGrid.Shared)](https://www.nuget.org/packages/OLT.Email.SendGrid.Shared)                                                 |
 | [OLT.EPPlus](./src/OLT.EPPlus/)                                                                               | [![Nuget](https://img.shields.io/nuget/v/OLT.EPPlus)](https://www.nuget.org/packages/OLT.EPPlus)                                                                               |
 | [OLT.Extensions.Caching.Memory](./src/OLT.Extensions.Caching.Memory/)                                         | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Caching.Memory)](https://www.nuget.org/packages/OLT.Extensions.Caching.Memory)                                         |
 | [OLT.Extensions.Caching.Redis](./src/OLT.Extensions.Caching.Redis/)                                           | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Caching.Redis)](https://www.nuget.org/packages/OLT.Extensions.Caching.Redis)                                           |
@@ -41,6 +38,14 @@
 | [OLT.Searchers.GenericFilter](./src/OLT.Searchers.GenericFilter/)                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.Searchers.GenericFilter)](https://www.nuget.org/packages/OLT.Searchers.GenericFilter)                                             |
 
 ---
+
+## MOVED TO NEW REPO
+
+| Library                                                       | New Repo                                                                                           |
+| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [OLT.Email](./src/OLT.Email/)                                 | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid) |
+| [OLT.Email.SendGrid](./src/OLT.Email.SendGrid/)               | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid) |
+| [OLT.Email.SendGrid.Shared](./src/OLT.Email.SendGrid.Shared/) | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid) |
 
 ## DEPRECATED LIBRARIES
 
