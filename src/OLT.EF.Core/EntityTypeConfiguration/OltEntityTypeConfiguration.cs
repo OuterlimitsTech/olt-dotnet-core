@@ -83,7 +83,7 @@ namespace OLT.Core
             if (entity is IOltEntityCodeValue codeValueEntity)
             {
                 codeValueEntity.Code = GetEnumCode(@enum) ?? Enum.GetName(EnumType, @enum);
-                codeValueEntity.Name = GetEnumDescription(@enum) ?? Enum.GetName(EnumType, @enum);
+                codeValueEntity.Name = GetEnumDescription(@enum) ?? Enum.GetName(EnumType, @enum) ?? string.Empty;
             }
 
             if (entity is IOltEntitySortable sortableEntity)

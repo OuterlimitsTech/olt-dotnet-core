@@ -23,12 +23,12 @@ namespace OLT.DataAdapters.AutoMapper.Tests
                 Assert.Null(adapterResolver.GetAdapter<AdapterObject1, AdapterObject3>(false));
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.GetAdapter<AdapterObject1, AdapterObject3>(true));
 
-
                 Assert.Null(adapterResolver.GetAdapter<AdapterObject2, AdapterObject1>(false));
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.GetAdapter<AdapterObject2, AdapterObject1>(true));
 
                 Assert.Null(adapterResolver.GetAdapter<AdapterObject3, AdapterObject2>(false)); 
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.GetAdapter<AdapterObject3, AdapterObject2>(true));
+
 
             }
         }
@@ -180,6 +180,8 @@ namespace OLT.DataAdapters.AutoMapper.Tests
                 Assert.Equal(obj3.First, obj2Result.Name!.First);
                 Assert.Equal(obj3.Last, obj2Result.Name!.Last);
                 adapterResolver.Map<AdapterObject2, AdapterObject3>(obj2Result, new AdapterObject3()).Should().BeEquivalentTo(obj3);
+
+                Assert.Throws<OltAdapterNotFoundException<NeverAdapterObject, AdapterObject1>>(() => adapterResolver.Map<NeverAdapterObject, AdapterObject1>(new NeverAdapterObject(), new AdapterObject1()));
             }
         }
 
@@ -204,6 +206,9 @@ namespace OLT.DataAdapters.AutoMapper.Tests
                 obj2Result.Select(s => s.Name!.Last).Should().BeEquivalentTo(obj3Values[0].Last, obj3Values[1].Last, obj3Values[2].Last);
 
                 adapterResolver.Map<AdapterObject2, AdapterObject3>(obj2Result).Should().BeEquivalentTo(obj3Values);
+                
+
+                Assert.Throws<OltAdapterNotFoundException<NeverAdapterObject, AdapterObject1>>(() => adapterResolver.Map<NeverAdapterObject, AdapterObject1>(new List<NeverAdapterObject>()));
 
             }
         }

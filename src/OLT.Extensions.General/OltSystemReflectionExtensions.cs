@@ -33,7 +33,7 @@ namespace System.Reflection
         /// <returns></returns>
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly[] assembliesToScan, OltAssemblyFilter? filter = null)
         {
-            return GetAllReferencedAssemblies(assembliesToScan.ToList(), filter);
+            return GetAllReferencedAssemblies(assembliesToScan.AsEnumerable(), filter);
         }
 
         /// <summary>

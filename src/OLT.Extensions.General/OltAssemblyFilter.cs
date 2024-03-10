@@ -20,19 +20,19 @@ namespace OLT.Core
 
         public IEnumerable<Assembly> FilterAssemblies(IEnumerable<Assembly> assemblies)
         {
-            return Filters.Any() ? assemblies.Where(ShouldIncludeAssembly) : assemblies;
+            return Filters.Count > 0 ? assemblies.Where(ShouldIncludeAssembly) : assemblies;
         }
 
         public virtual bool ShouldIncludeAssembly(Assembly assembly)
         {
-            return Filters.Any(filter => MatchesFilter(assembly, filter));
+            return Filters.Exists(filter => MatchesFilter(assembly, filter));
         }
 
         protected virtual bool MatchesFilter(Assembly assembly, string filter)
         {
             if (string.IsNullOrEmpty(filter))
             {
-                return true;
+                return false;
             }
 
             if (assembly.FullName is null)

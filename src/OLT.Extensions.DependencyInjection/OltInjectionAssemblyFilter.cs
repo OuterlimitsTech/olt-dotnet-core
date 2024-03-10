@@ -13,7 +13,7 @@ namespace OLT.Core
             
         }        
 
-        private List<string> _exclude = new List<string>
+        private readonly List<string> _exclude = new List<string>
         {
             "Microsoft.*",
             "System.*"
@@ -24,6 +24,12 @@ namespace OLT.Core
         /// <summary>
         /// Defaults "Microsoft.*" and "System.*" to prevent Microsoft and System Assemblies from loading into the DI scan
         /// </summary>
-        public List<string> ExcludeFilter => _exclude;
+        public List<string> ExcludeFilter 
+        { 
+            get
+            {
+                return _exclude;
+            }
+        }
     }
 }

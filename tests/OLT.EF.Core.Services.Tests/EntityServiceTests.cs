@@ -22,7 +22,7 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 var model = UserModel.FakerEntity();
                 (await service.AddAsync(model)).Should().BeEquivalentTo(model, opt => opt.Excluding(t => t.UserId));
@@ -34,7 +34,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 var model = UserModel.FakerEntity();
                 service.Add(model).Should().BeEquivalentTo(model, opt => opt.Excluding(t => t.UserId));
@@ -50,7 +50,7 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 var list = new List<UserModel>
                 {
@@ -78,7 +78,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 var list = new List<UserModel>
                 {
@@ -113,7 +113,7 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 var model = await service.AddAsync(UserModel.FakerEntity());
                 (await service.GetAsync<UserModel>(p => p.Id == model.UserId.Value)).Should().BeEquivalentTo(model);
@@ -123,7 +123,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 var model = service.Add(UserModel.FakerEntity());
                 service.Get<UserModel>(p => p.Id == model.UserId.Value).Should().BeEquivalentTo(model);
@@ -138,8 +138,8 @@ namespace OLT.EF.Core.Services.Tests
         {
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var service = provider.GetRequiredService<IUserService>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
 
                 var model = await service.AddAsync(UserModel.FakerEntity());
                 (await service.GetAllAsync<UserModel>(p => p.Id == model.UserId.Value)).FirstOrDefault().Should().BeEquivalentTo(model);
@@ -163,8 +163,8 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var service = provider.GetRequiredService<IUserService>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
 
                 var model = service.Add(UserModel.FakerEntity());
                 service.GetAll<UserModel>(p => p.Id == model.UserId.Value).FirstOrDefault().Should().BeEquivalentTo(model);
@@ -198,7 +198,7 @@ namespace OLT.EF.Core.Services.Tests
 
             using (var provider = BuildProvider())
             {
-                var service = provider.GetService<IUserService>();
+                var service = provider.GetRequiredService<IUserService>();
 
                 for (var idx = 0; idx <= 117; idx++)
                 {
@@ -224,6 +224,36 @@ namespace OLT.EF.Core.Services.Tests
             }
 
 
+        }
+
+
+        [Fact]
+        public async Task GetSafeTests()
+        {
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetRequiredService<IUserService>();
+
+                var model = await service.AddAsync(UserModel.FakerEntity());
+                var result = await service.GetSafeTestAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(model.UserGuid));
+                result.Should().BeEquivalentTo(model);
+
+                Func<Task> action = async () => await service.GetSafeTestAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()));
+                await action.Should().ThrowAsync<OltRecordNotFoundException>();
+
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetRequiredService<IUserService>();
+
+                var model = service.Add(UserModel.FakerEntity());
+                var result = service.GetSafeTest<UserModel>(new OltSearcherGetByUid<UserEntity>(model.UserGuid));
+                result.Should().BeEquivalentTo(model);
+
+                Action action = () => service.GetSafeTest<UserModel>(new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()));
+                action.Should().Throw<OltRecordNotFoundException>();
+            }
         }
 
     }

@@ -107,7 +107,7 @@ namespace OLT.Core
             {
                 return adapter.Map(source.AsEnumerable()).ToList();
             }
-            var flipped = GetAdapter<TDestination, TSource>(true);
+            var flipped = GetAdapter<TDestination, TSource>(false);
             if (flipped == null) throw new OltAdapterNotFoundException<TSource, TDestination>();
             return flipped.Map(source.AsEnumerable()).ToList();
         }
@@ -117,7 +117,7 @@ namespace OLT.Core
             var adapter = GetAdapter<TSource, TDestination>(false);
             if (adapter == null)
             {
-                var flipped = GetAdapter<TDestination, TSource>(true);
+                var flipped = GetAdapter<TDestination, TSource>(false);
                 if (flipped == null) throw new OltAdapterNotFoundException<TSource, TDestination>();
                 flipped.Map(source, destination);
             }

@@ -10,6 +10,7 @@ namespace OLT.Extensions.General.Tests
 {
     public class SystemReflectionTest
     {
+
         [Fact]
         public void GetReferencedAssemblies()
         {
@@ -31,7 +32,7 @@ namespace OLT.Extensions.General.Tests
         [Fact]
         public void GetReferencedWithFilterAssemblies()
         {
-            var options = new Core.OltAssemblyFilter("OLT.Extensions.General");
+            var filter = new Core.OltAssemblyFilter("OLT.Extensions.General");
 
             var self = this.GetType().Assembly;
             var list = new List<Assembly>
@@ -39,18 +40,18 @@ namespace OLT.Extensions.General.Tests
                 self,
             };
 
-            Assert.True(options.Filters.Count == 1);
+            Assert.True(filter.Filters.Count == 1);
 
-            Assert.Single(list.GetAllReferencedAssemblies(options));
-            Assert.Single(list.ToArray().GetAllReferencedAssemblies(options));
-            Assert.Single(list.GetAllReferencedAssemblies(options));
+            Assert.Single(list.GetAllReferencedAssemblies(filter));
+            Assert.Single(list.ToArray().GetAllReferencedAssemblies(filter));
+            Assert.Single(list.GetAllReferencedAssemblies(filter));
 
         }
 
         [Fact]
         public void GetReferencedWithWildcardFilterAssemblies()
         {
-            var options = new Core.OltAssemblyFilter("OLT.*");
+            var filter = new Core.OltAssemblyFilter(" ", string.Empty, null, "OLT.*");
 
             var self = this.GetType().Assembly;
             var list = new List<Assembly>
@@ -58,11 +59,11 @@ namespace OLT.Extensions.General.Tests
                 self,
             };
 
-            Assert.True(options.Filters.Count == 1);
-
-            Assert.Equal(2, list.GetAllReferencedAssemblies(options).Count());
-            Assert.Equal(2, list.ToArray().GetAllReferencedAssemblies(options).Count());            
-            Assert.Equal(2, list.GetAllReferencedAssemblies(options).Count());
+            Assert.Equal(4, filter.Filters.Count);
+            //var test = list.GetAllReferencedAssemblies(filter).ToList();
+            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
+            Assert.Equal(2, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
+            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
 
         }
 

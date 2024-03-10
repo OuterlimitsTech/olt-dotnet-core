@@ -8,5 +8,4 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Assets.Models
         public string? StreetAddress { get; set; }
         public OltPersonName? Name { get; set; }
     }
-
 }
