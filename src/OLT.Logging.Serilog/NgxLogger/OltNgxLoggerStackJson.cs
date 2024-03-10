@@ -14,8 +14,8 @@ namespace OLT.Logging.Serilog
     {
         public virtual int? ColumnNumber { get; set; }
         public virtual int? LineNumber { get; set; }
-        public virtual string FileName { get; set; }
-        public virtual string FunctionName { get; set; }
-        public virtual string Source { get; set; }
+        public virtual string? FileName { get; set; }
+        public virtual string? FunctionName { get; set; }
+        public virtual string? Source { get; set; }
     }
 }

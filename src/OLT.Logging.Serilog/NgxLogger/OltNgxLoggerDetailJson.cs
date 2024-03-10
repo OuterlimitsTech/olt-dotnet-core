@@ -1,6 +1,4 @@
 ﻿using OLT.Constants;
-using OLT.Logging.Serilog;
-using Serilog;
 using System;
 using System.Collections.Generic;
 
@@ -14,15 +12,15 @@ namespace OLT.Logging.Serilog
     /// </remarks>
     public class OltNgxLoggerDetailJson
     {        
-        public virtual string Name { get; set; }
-        public virtual string AppId { get; set; }
-        public virtual string User { get; set; }
+        public virtual string? Name { get; set; }
+        public virtual string? AppId { get; set; }
+        public virtual string? User { get; set; }
         public virtual long? Time { get; set; }
-        public virtual string Id { get; set; }
-        public virtual string Url { get; set; }
+        public virtual string? Id { get; set; }
+        public virtual string? Url { get; set; }
         public virtual int? Status { get; set; }
-        public virtual string Message { get; set; }
-        public virtual List<OltNgxLoggerStackJson> Stack { get; set; }
+        public virtual string? Message { get; set; }
+        public virtual List<OltNgxLoggerStackJson>? Stack { get; set; }
 
         public Exception ToException()
         {

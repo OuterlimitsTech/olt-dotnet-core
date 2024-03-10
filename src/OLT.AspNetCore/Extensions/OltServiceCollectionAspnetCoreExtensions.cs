@@ -40,7 +40,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder>? action = null)
         {
-            return AddOltAspNetCore(services, baseAssembly, null, action);
+            return AddOltAspNetCore(services, baseAssembly, new OltInjectionAssemblyFilter(), action);
         }
 
         /// <summary>

@@ -48,8 +48,8 @@ namespace OLT.Logging.Serilog.Tests
             
             var connectionString = "data source=localhost,1433;initial catalog=test;integrated security=False;user id=sa;password=nopass#4U";
 
-            Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null, null, null, null, LogEventLevel.Debug));
-            Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null, connectionString, null, null, LogEventLevel.Debug));
+            Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null!, null, null, null, LogEventLevel.Debug));
+            Assert.Throws<ArgumentNullException>("loggerConfiguration", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(null!, connectionString, null, null, LogEventLevel.Debug));
             Assert.Throws<ArgumentNullException>("connectionString", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(new LoggerConfiguration(), null, null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true));
             Assert.Throws<ArgumentOutOfRangeException>("connectionString", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(new LoggerConfiguration(), " ", null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true));
             Assert.Throws<ArgumentOutOfRangeException>("connectionString", () => OltSerilogMsSqlExtensions.WithOltMSSqlServer(new LoggerConfiguration(), "", null, null, LogEventLevel.Debug, throwInvalidConnectionStringException: true));
