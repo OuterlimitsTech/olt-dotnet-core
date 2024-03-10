@@ -8,7 +8,7 @@ namespace OLT.Core
     {
         IQueryable<TSource> ApplyDefaultOrderBy<TSource, TDestination>(IQueryable<TSource> queryable);
 
-        IOltAdapter<TSource, TDestination> GetAdapter<TSource, TDestination>(bool throwException = true);
+        IOltAdapter<TSource, TDestination>? GetAdapter<TSource, TDestination>(bool throwException = true);
 
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltAdapterNotFoundException"></exception>
         /// <exception cref="OltException"></exception>
-        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction = null);
+        IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig>? configAction = null);
 
         bool CanMap<TSource, TDestination>();
         List<TDestination> Map<TSource, TDestination>(List<TSource> source);

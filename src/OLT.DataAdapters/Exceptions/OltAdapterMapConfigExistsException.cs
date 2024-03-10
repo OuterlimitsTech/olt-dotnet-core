@@ -18,7 +18,7 @@
 #pragma warning restore S3925 // "ISerializable" should be implemented correctly
     {
 
-        public OltAdapterMapConfigExistsException(IOltAdapterMapConfig<TSource, TDestination> configMap) :  base(OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>(), typeof(TSource).FullName,  typeof(TDestination).FullName)
+        public OltAdapterMapConfigExistsException(IOltAdapterMapConfig<TSource, TDestination> configMap) :  base(OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>(), typeof(TSource).FullName ?? "Unknown",  typeof(TDestination).FullName ?? "Unknown")
         {
 
         }

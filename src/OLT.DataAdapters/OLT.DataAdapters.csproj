@@ -4,16 +4,45 @@
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>DataAdapters Library</Description>
     <ProjectGuid>45FC2E6A-863E-40E1-9633-FE9EA30928ED</ProjectGuid>
-		<Nullable>enable</Nullable>
 		<LangVersion>Latest</LangVersion>
   </PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+		<Nullable>annotations</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.1'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'net6.0'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'net7.0'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework) == 'net8.0'">
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Nullable" Version="1.3.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
   </ItemGroup>
+	
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
   </ItemGroup>
+	
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
   </ItemGroup>

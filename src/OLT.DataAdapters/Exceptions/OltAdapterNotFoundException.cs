@@ -17,7 +17,7 @@ namespace OLT.Core
 
     public class OltAdapterNotFoundException<TSource, TDestination> : OltException
     {
-        public OltAdapterNotFoundException() : base($"Adapter Not Found {typeof(TSource).FullName} -> {typeof(TDestination).FullName}")
+        public OltAdapterNotFoundException() : base($"Adapter Not Found {OltAdapterExtensions.BuildAdapterName<TSource, TDestination>()}")
         {
 
         }
