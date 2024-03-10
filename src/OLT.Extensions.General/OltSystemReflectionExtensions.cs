@@ -261,7 +261,7 @@ namespace System.Reflection
         /// <returns>Returns an instance for all objects</returns>
         public static IEnumerable<T> GetAllImplements<T>(this Assembly[] assemblies)
         {
-            return GetAllImplements<T>(assemblies.ToList());
+            return GetAllImplements<T>(assemblies.AsEnumerable());
         }
 
 

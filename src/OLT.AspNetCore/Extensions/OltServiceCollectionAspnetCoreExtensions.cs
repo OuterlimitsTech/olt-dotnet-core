@@ -2,11 +2,22 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualBasic;
 
 namespace OLT.Core
 {
     public static class OltServiceCollectionAspnetCoreExtensions
     {
+        /// <summary>
+        /// Build Default AspNetCore Service and configures Dependency Injection
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="action">Invoked after initialized</param>
+        /// <returns></returns>
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Action<IMvcBuilder>? action = null)
+        {
+            return AddOltAspNetCore(services, new OltInjectionAssemblyFilter(), action);
+        }
 
         /// <summary>
         /// Build Default AspNetCore Service and configures Dependency Injection
@@ -15,9 +26,21 @@ namespace OLT.Core
         /// <param name="action">Invoked after initialized</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Action<IMvcBuilder>? action = null, OltInjectionAssemblyFilter? filter = null)
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
-            return AddOltAspNetCore(services, new List<Assembly>(), action, filter);
+            return AddOltAspNetCore(services, new List<Assembly>(), filter, action);
+        }
+
+        /// <summary>
+        /// Build Default AspNetCore Service and configures Dependency Injection
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="baseAssembly">Assembly to include in scan for interfaces</param>
+        /// <param name="action">Invoked after initialized</param>
+        /// <returns></returns>
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder>? action = null)
+        {
+            return AddOltAspNetCore(services, baseAssembly, null, action);
         }
 
         /// <summary>
@@ -28,14 +51,27 @@ namespace OLT.Core
         /// <param name="action">Invoked after initialized</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder>? action = null, OltInjectionAssemblyFilter? filter = null)
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
             if (baseAssembly == null)
             {
                 throw new ArgumentNullException(nameof(baseAssembly));
             }
-            return AddOltAspNetCore(services, new List<Assembly>() { baseAssembly }, action, filter);
+            return AddOltAspNetCore(services, new List<Assembly>() { baseAssembly }, filter, action);
         }
+
+        /// <summary>
+        /// Build Default AspNetCore Service and configures Dependency Injection
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="baseAssemblies">List of assemblies to include in scan for interfaces</param>
+        /// <param name="action">Invoked after initialized</param>
+        /// <returns></returns>
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, Action<IMvcBuilder>? action = null)
+        {
+            return AddOltAspNetCore(services, baseAssemblies, new OltInjectionAssemblyFilter(), action);
+        }
+
 
         /// <summary>
         /// Build Default AspNetCore Service and configures Dependency Injection
@@ -45,7 +81,7 @@ namespace OLT.Core
         /// <param name="action">Invoked after initialized</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns></returns>
-        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, Action<IMvcBuilder>? action = null, OltInjectionAssemblyFilter? filter = null)
+        public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
 
             if (services == null)
@@ -78,9 +114,6 @@ namespace OLT.Core
 
             return services;
         }
-
-
-
           
     }
 }
