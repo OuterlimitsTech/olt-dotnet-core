@@ -17,7 +17,7 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.NotNull(adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>(false));
                 Assert.NotNull(adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>(true));
                 Assert.Null(adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject3>(false));
@@ -40,10 +40,10 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                Assert.Equal($"{typeof(BasicAdapterObject1).FullName}->{typeof(BasicAdapterObject2).FullName}", adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>().Name);
-                Assert.Equal(OltAdapterExtensions.BuildAdapterName<BasicAdapterObject1, BasicAdapterObject2>(), adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>().Name);
-                Assert.NotEqual($"{typeof(BasicAdapterObject2)}->{typeof(BasicAdapterObject1).FullName}", adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>().Name);
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
+                Assert.Equal($"{typeof(BasicAdapterObject1).FullName}->{typeof(BasicAdapterObject2).FullName}", adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>()?.Name);
+                Assert.Equal(OltAdapterExtensions.BuildAdapterName<BasicAdapterObject1, BasicAdapterObject2>(), adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>()?.Name);
+                Assert.NotEqual($"{typeof(BasicAdapterObject2)}->{typeof(BasicAdapterObject1).FullName}", adapterResolver.GetAdapter<BasicAdapterObject1, BasicAdapterObject2>()?.Name);
             }
         }
 
@@ -52,7 +52,7 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.True(adapterResolver.CanMap<BasicAdapterObject1, BasicAdapterObject2>());
                 Assert.True(adapterResolver.CanMap<BasicAdapterObject2, BasicAdapterObject1>());
                 Assert.True(adapterResolver.CanMap<BasicAdapterObject2, BasicAdapterObject3>());
@@ -69,7 +69,7 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.False(adapterResolver.CanProjectTo<BasicAdapterObject1, BasicAdapterObject2>());
                 Assert.False(adapterResolver.CanProjectTo<BasicAdapterObject1, BasicAdapterObject3>());
 
@@ -86,7 +86,7 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<BasicAdapterObject1, BasicAdapterObject2>(BasicAdapterObject1.FakerList(3).AsQueryable()));
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<BasicAdapterObject2, BasicAdapterObject3>(BasicAdapterObject2.FakerList(3).AsQueryable()));
             }
@@ -97,19 +97,19 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj1 = BasicAdapterObject1.FakerData();
                 
                 var obj2Result = adapterResolver.Map<BasicAdapterObject1, BasicAdapterObject2>(obj1, new BasicAdapterObject2());
-                Assert.Equal(obj1.FirstName, obj2Result.Name.First);
-                Assert.Equal(obj1.LastName, obj2Result.Name.Last);
+                Assert.Equal(obj1.FirstName, obj2Result.Name?.First);
+                Assert.Equal(obj1.LastName, obj2Result.Name?.Last);
                 adapterResolver.Map<BasicAdapterObject2, BasicAdapterObject1>(obj2Result, new BasicAdapterObject1()).Should().BeEquivalentTo(obj1);
 
 
                 var obj3 = BasicAdapterObject3.FakerData();
                 obj2Result = adapterResolver.Map<BasicAdapterObject3, BasicAdapterObject2>(obj3, new BasicAdapterObject2());
-                Assert.Equal(obj3.First, obj2Result.Name.First);
-                Assert.Equal(obj3.Last, obj2Result.Name.Last);
+                Assert.Equal(obj3.First, obj2Result.Name?.First);
+                Assert.Equal(obj3.Last, obj2Result.Name?.Last);
                 adapterResolver.Map<BasicAdapterObject2, BasicAdapterObject3>(obj2Result, new BasicAdapterObject3()).Should().BeEquivalentTo(obj3);
             }
         }
@@ -119,20 +119,20 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj1Values = BasicAdapterObject1.FakerList(3);
                 var obj2Result = adapterResolver.Map<BasicAdapterObject1, BasicAdapterObject2>(obj1Values);
                 obj2Result.Should().HaveCount(obj1Values.Count);
-                obj2Result.Select(s => s.Name.First).Should().BeEquivalentTo(obj1Values[0].FirstName, obj1Values[1].FirstName, obj1Values[2].FirstName);
-                obj2Result.Select(s => s.Name.Last).Should().BeEquivalentTo(obj1Values[0].LastName, obj1Values[1].LastName, obj1Values[2].LastName);
+                obj2Result.Select(s => s.Name?.First).Should().BeEquivalentTo(obj1Values[0].FirstName, obj1Values[1].FirstName, obj1Values[2].FirstName);
+                obj2Result.Select(s => s.Name?.Last).Should().BeEquivalentTo(obj1Values[0].LastName, obj1Values[1].LastName, obj1Values[2].LastName);
                 adapterResolver.Map<BasicAdapterObject2, BasicAdapterObject1>(obj2Result).Should().BeEquivalentTo(obj1Values);
 
 
                 var obj3Values = BasicAdapterObject3.FakerList(3);
                 obj2Result = adapterResolver.Map<BasicAdapterObject3, BasicAdapterObject2>(obj3Values);
                 obj2Result.Should().HaveCount(obj3Values.Count);
-                obj2Result.Select(s => s.Name.First).Should().BeEquivalentTo(obj3Values[0].First, obj3Values[1].First, obj3Values[2].First);
-                obj2Result.Select(s => s.Name.Last).Should().BeEquivalentTo(obj3Values[0].Last, obj3Values[1].Last, obj3Values[2].Last);
+                obj2Result.Select(s => s.Name?.First).Should().BeEquivalentTo(obj3Values[0].First, obj3Values[1].First, obj3Values[2].First);
+                obj2Result.Select(s => s.Name?.Last).Should().BeEquivalentTo(obj3Values[0].Last, obj3Values[1].Last, obj3Values[2].Last);
 
                 adapterResolver.Map<BasicAdapterObject2, BasicAdapterObject3>(obj2Result).Should().BeEquivalentTo(obj3Values);
 

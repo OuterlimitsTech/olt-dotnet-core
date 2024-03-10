@@ -101,7 +101,7 @@ namespace OLT.EF.Core.SqlServer.Tests
         {
             var word = Faker.Name.First();
             var firstName = OltFullTextSearchUtil.FreeText(word);
-            Assert.True(firstName.Equals(word.CleanForSearch()));
+            Assert.Equal(firstName, word.CleanForSearch());
         }
 
     }

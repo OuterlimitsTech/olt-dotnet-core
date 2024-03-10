@@ -7,10 +7,12 @@
 
   <ItemGroup>
     <None Remove="Assets\person_type.csv" />
+    <None Remove="Assets\person_type.pdf" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Assets\person_type.csv" />
+    <EmbeddedResource Include="Assets\person_type.pdf" />
   </ItemGroup>
 
   <ItemGroup>

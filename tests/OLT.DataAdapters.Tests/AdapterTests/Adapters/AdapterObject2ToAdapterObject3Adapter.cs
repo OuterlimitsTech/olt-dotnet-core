@@ -8,9 +8,10 @@ namespace OLT.DataAdapters.Tests.AdapterTests
     {
         public override void Map(BasicAdapterObject2 source, BasicAdapterObject3 destination)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             destination.First = source.Name.First;
             destination.Last = source.Name.Last;
-
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         public override void Map(BasicAdapterObject3 source, BasicAdapterObject2 destination)

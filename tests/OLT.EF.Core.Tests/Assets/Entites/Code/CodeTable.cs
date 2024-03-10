@@ -12,10 +12,10 @@ namespace OLT.EF.Core.Tests.Assets.Entites.Code
     public abstract class BaseCodeValueEntity : OltEntityIdDeletable, IOltEntityCodeValue, IOltEntitySortable
     {
         [StringLength(50)]
-        public virtual string Code { get; set; }
+        public virtual string? Code { get; set; }
 
         [StringLength(255), Required]
-        public virtual string Name { get; set; }
+        public virtual string Name { get; set; } = default!;
 
         public short SortOrder { get; set; } = 9999;
     }

@@ -25,7 +25,7 @@ namespace OLT.AspNetCore.Serilog.Tests.ThrowError
                 using (var logger = new LoggerConfiguration().WriteTo.Sink(new TestCorrelatorSink()).Enrich.FromLogContext().CreateLogger())
                 {
                     Log.Logger = logger;
-                    var identity = testServer.Services.GetService<IOltIdentity>();
+                    var identity = testServer.Services.GetRequiredService<IOltIdentity>();
 
                     var request = testServer.CreateRequest("/api/throw-error");
                     request.AddHeader("header-one", "value-one");

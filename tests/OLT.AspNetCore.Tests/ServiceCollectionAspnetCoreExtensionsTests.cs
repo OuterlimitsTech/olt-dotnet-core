@@ -1,16 +1,11 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.TestHost;
+﻿using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.AspNetCore.Tests.Assets;
-using OLT.Constants;
 using OLT.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Reflection;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace OLT.AspNetCore.Tests
@@ -25,7 +20,7 @@ namespace OLT.AspNetCore.Tests
         {
             using (var testServer = new TestServer(TestHelper.WebHostBuilder<Startup>()))
             {
-                var hostService = testServer.Services.GetService<IOltHostService>();
+                var hostService = testServer.Services.GetRequiredService<IOltHostService>();
                 Assert.NotNull(hostService);
                 var result = hostService.ResolveRelativePath("~/test");
                 Assert.Equal(Path.Combine(AppContext.BaseDirectory, "test"), result);
@@ -39,10 +34,10 @@ namespace OLT.AspNetCore.Tests
         {
             using (var testServer = new TestServer(TestHelper.WebHostBuilder<Startup>()))
             {                
-                var identity = testServer.Services.GetService<IOltIdentity>();
+                var identity = testServer.Services.GetRequiredService<IOltIdentity>();
                 Assert.NotNull(identity);
                 Assert.True(identity.IsAnonymous);
-                var dbAuditUser = testServer.Services.GetService<IOltDbAuditUser>();
+                var dbAuditUser = testServer.Services.GetRequiredService<IOltDbAuditUser>();
                 Assert.NotNull(dbAuditUser);
                 Assert.Null(dbAuditUser.GetDbUsername());                
             }
@@ -52,23 +47,33 @@ namespace OLT.AspNetCore.Tests
         public void ArgumentExceptions()
         {
             var services = new ServiceCollection();
-            Action<IMvcBuilder> nullAction = null;
-            Assembly nullAssembly = null;
-            List<Assembly> nullAssemblies = null;
+            Action<IMvcBuilder>? nullAction = null;
+            Assembly? nullAssembly = null;
+            List<Assembly>? nullAssemblies = null;
             List<Assembly> baseAssemblies = new List<Assembly> { this.GetType().Assembly };
+            OltInjectionAssemblyFilter? nullFilter = null;
 
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, nullAction));
-            
-
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, this.GetType().Assembly, nullAction));
-            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssembly, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, nullFilter!, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, new OltInjectionAssemblyFilter(), nullAction));
 
 
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null, baseAssemblies, nullAction));
-            
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, this.GetType().Assembly, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, this.GetType().Assembly, nullFilter!, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, this.GetType().Assembly, new OltInjectionAssemblyFilter(), nullAction));
+
+            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssembly!, nullAction));
+            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssembly!, nullFilter!, nullAction));
+            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssembly!, new OltInjectionAssemblyFilter(), nullAction));
+
+
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, baseAssemblies, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, baseAssemblies, nullFilter!, nullAction));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(null!, baseAssemblies, new OltInjectionAssemblyFilter(), nullAction));
+
             try
             {
-                OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssemblies, nullAction);
+                OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services, nullAssemblies!, nullAction);
                 Assert.True(true);
             }
             catch (Exception)

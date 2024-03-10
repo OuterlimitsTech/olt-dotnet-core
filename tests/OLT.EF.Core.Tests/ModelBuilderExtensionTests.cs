@@ -9,7 +9,6 @@ using OLT.EF.Core.Tests.Assets.Entites.Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using Xunit;
 
@@ -32,7 +31,7 @@ namespace OLT.EF.Core.Tests
             var count = 0;
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -41,14 +40,14 @@ namespace OLT.EF.Core.Tests
                         count++;
                     });
 
-                    Action<EntityTypeBuilder> nullAction = null;
+                    Action<EntityTypeBuilder>? nullAction = null;
 
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(null, opt => {  }));
-                    Assert.Throws<ArgumentNullException>("buildAction", () => OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(builder, nullAction));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(null!, opt => {  }));
+                    Assert.Throws<ArgumentNullException>("buildAction", () => OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(builder, nullAction!));
 
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.EntitiesOfType(null, typeof(IOltEntityId), opt => { }));
-                    Assert.Throws<ArgumentNullException>("type", () => OltModelBuilderExtensions.EntitiesOfType(builder, null, opt => { }));
-                    Assert.Throws<ArgumentNullException>("buildAction", () => OltModelBuilderExtensions.EntitiesOfType(builder, typeof(IOltEntityId), null));                    
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.EntitiesOfType(null!, typeof(IOltEntityId), opt => { }));
+                    Assert.Throws<ArgumentNullException>("type", () => OltModelBuilderExtensions.EntitiesOfType(builder, null!, opt => { }));
+                    Assert.Throws<ArgumentNullException>("buildAction", () => OltModelBuilderExtensions.EntitiesOfType(builder, typeof(IOltEntityId), null!));                    
                 }
             }
             Assert.Equal(expected, count);
@@ -106,19 +105,19 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
 
                     OltModelBuilderExtensions.SetSoftDeleteGlobalFilter(builder);
 
-                    Assert.Contains("DeletedOn == null", builder.Entity<PersonEntity>().Metadata.GetQueryFilter().ToString());
-                    Assert.Contains("DeletedOn == null", builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter().ToString());
+                    Assert.Contains("DeletedOn == null", builder.Entity<PersonEntity>().Metadata.GetQueryFilter()?.ToString());
+                    Assert.Contains("DeletedOn == null", builder.Entity<StatusTypeCodeTableEntity>().Metadata.GetQueryFilter()?.ToString());
                     Assert.Null(builder.Entity<CodeTableEntity>().Metadata.GetQueryFilter());
 
                     
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.SetSoftDeleteGlobalFilter(null));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderExtensions.SetSoftDeleteGlobalFilter(null!));
 
                 }
             }

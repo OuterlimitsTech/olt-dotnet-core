@@ -22,12 +22,18 @@ namespace OLT.Core
 
             OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(modelBuilder, builder =>
                 {
-                    var prop = builder.Property<int>(nameof(IOltEntityId.Id));
-                    if (prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(builder.Metadata.GetTableName(), builder.Metadata.GetSchema())).Equals("Id", StringComparison.OrdinalIgnoreCase))
+                    var tableName = builder.Metadata.GetTableName();
+                    if (tableName != null)
                     {
-                        var columnName = $"{builder.Metadata.GetTableName()}Id";
-                        builder.Property<int>(nameof(IOltEntityId.Id)).HasColumnName(columnName);
+                        var prop = builder.Property<int>(nameof(IOltEntityId.Id));
+                        var eval = prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(tableName, builder.Metadata.GetSchema()));
+                        if (eval != null && eval.Equals("Id", StringComparison.OrdinalIgnoreCase))
+                        {
+                            var columnName = $"{builder.Metadata.GetTableName()}Id";
+                            builder.Property<int>(nameof(IOltEntityId.Id)).HasColumnName(columnName);
+                        }
                     }
+        
                 });
         }
 

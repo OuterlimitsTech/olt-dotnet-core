@@ -26,7 +26,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
             var status = Faker.RandomNumber.Next(200, 600);
 
-            Result = new Dictionary<string, string>
+            Result = new Dictionary<string, string?>
             {
                 { "Name", Faker.Name.FullName(NameFormats.WithSuffix) },
                 { "AppId", Faker.Lorem.GetFirstWord() },
@@ -59,12 +59,12 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
         public long? UnixTime { get; }
         public DateTimeOffset? Timestamp { get; }
-        public Dictionary<string, string> Result { get; }
+        public Dictionary<string, string?> Result { get; }
         public List<OltNgxLoggerStackJson> Stack { get; }
         public OltNgxLoggerDetailJson Detail { get; }
 
 
-        public OltNgxLoggerMessageJson BuildMessage(OltNgxLoggerLevel? level, OltNgxLoggerDetailJson detail)
+        public OltNgxLoggerMessageJson BuildMessage(OltNgxLoggerLevel? level, OltNgxLoggerDetailJson? detail)
         {
             var msg = new OltNgxLoggerMessageJson
             {

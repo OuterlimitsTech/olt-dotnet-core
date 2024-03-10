@@ -2,6 +2,6 @@
 {
     public class AdapterObject4 : AdapterObject2
     {
-        public string Value => $"{ObjectId}={Name.FullName}";
+        public string Value => $"{ObjectId}={Name?.FullName}";
     }
 }

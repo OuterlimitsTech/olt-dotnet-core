@@ -59,17 +59,17 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         [Fact]
         public void BeforeMapExtensionTests()
         {
-            AdapterObject3ToAdapterObject6QueryableAdapter adapter = null;
-            IOltBeforeMap<QueryableAdapterObject3, QueryableAdapterObject6> beforeMap = null;
-            Func<IQueryable<QueryableAdapterObject3>, IOrderedQueryable<QueryableAdapterObject3>> func = null;
+            AdapterObject3ToAdapterObject6QueryableAdapter? adapter = null;
+            IOltBeforeMap<QueryableAdapterObject3, QueryableAdapterObject6>? beforeMap = null;
+            Func<IQueryable<QueryableAdapterObject3>, IOrderedQueryable<QueryableAdapterObject3>>? func = null;
 
-            Assert.Throws<ArgumentNullException>(nameof(beforeMap), () => OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), beforeMap));
-            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));            
+            Assert.Throws<ArgumentNullException>(nameof(beforeMap), () => OltAdapterExtensions.BeforeMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), beforeMap!));
+            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), func!));
 
             var orderBy = new OltBeforeMapOrderBy<QueryableAdapterObject3, QueryableAdapterObject6>(p => p.OrderBy(t => t.First));
 
-            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.WithOrderBy(adapter, p => p.OrderBy(p => p.Last)));
-            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.BeforeMap(adapter, orderBy));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.WithOrderBy(adapter!, p => p.OrderBy(p => p.Last)));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.BeforeMap(adapter!, orderBy));
 
             try
             {
@@ -86,17 +86,17 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         [Fact]
         public void AfterMapExtensionTests()
         {
-            AdapterObject3ToAdapterObject6QueryableAdapter adapter = null;
-            IOltAfterMap<QueryableAdapterObject3, QueryableAdapterObject6> afterMap = null;
-            Func<IQueryable<QueryableAdapterObject6>, IOrderedQueryable<QueryableAdapterObject6>> func = null;
+            AdapterObject3ToAdapterObject6QueryableAdapter? adapter = null;
+            IOltAfterMap<QueryableAdapterObject3, QueryableAdapterObject6>? afterMap = null;
+            Func<IQueryable<QueryableAdapterObject6>, IOrderedQueryable<QueryableAdapterObject6>>? func = null;
 
-            Assert.Throws<ArgumentNullException>(nameof(afterMap), () => OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), afterMap));
-            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), func));
+            Assert.Throws<ArgumentNullException>(nameof(afterMap), () => OltAdapterExtensions.AfterMap(new AdapterObject3ToAdapterObject6QueryableAdapter(), afterMap!));
+            Assert.Throws<ArgumentNullException>(nameof(func), () => OltAdapterExtensions.WithOrderBy(new AdapterObject3ToAdapterObject6QueryableAdapter(), func!));
 
             var orderBy = new OltAfterMapOrderBy<QueryableAdapterObject3, QueryableAdapterObject6>(p => p.OrderBy(t => t.FirstName));
 
-            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.WithOrderBy(adapter, p => p.OrderBy(p => p.LastName)));
-            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.AfterMap(adapter, orderBy));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.WithOrderBy(adapter!, p => p.OrderBy(p => p.LastName)));
+            Assert.Throws<ArgumentNullException>(nameof(adapter), () => OltAdapterExtensions.AfterMap(adapter!, orderBy));
 
             try
             {

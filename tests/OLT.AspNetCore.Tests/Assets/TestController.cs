@@ -22,7 +22,7 @@ namespace OLT.AspNetCore.Tests.Assets
         }
 
         [HttpGet, Route("throw-error")]
-        public ActionResult TestInternalServerError(string value)
+        public ActionResult TestInternalServerError(string? value = null)
         {
             if (value == null)
             {
@@ -33,7 +33,7 @@ namespace OLT.AspNetCore.Tests.Assets
 
 
         [HttpGet, Route("bad-request")]
-        public ActionResult TestBadRequest(string value)
+        public ActionResult TestBadRequest(string? value = null)
         {
             if (value == null)
             {

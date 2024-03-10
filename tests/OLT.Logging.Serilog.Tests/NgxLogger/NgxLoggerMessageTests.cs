@@ -93,15 +93,15 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 new object[] { OltNgxLoggerLevel.Error, true, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Fatal, true, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Information, true, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { null, true, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { null!, true, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Trace, true, false, new HelperNgxExceptionTest(null) },
                 new object[] { OltNgxLoggerLevel.Warning, true, false, new HelperNgxExceptionTest(null) },
 
                 new object[] { OltNgxLoggerLevel.Error, false, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Fatal, false, true, new HelperNgxExceptionTest(DateTimeOffset.Now) },
                 new object[] { OltNgxLoggerLevel.Warning, false, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { null, false, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
-                new object[] { null, false, false, new HelperNgxExceptionTest(null) },
+                new object[] { null!, false, false, new HelperNgxExceptionTest(DateTimeOffset.Now) },
+                new object[] { null!, false, false, new HelperNgxExceptionTest(null) },
                 new object[] { OltNgxLoggerLevel.Debug, false, false, new HelperNgxExceptionTest(null) },
                 new object[] { OltNgxLoggerLevel.Log, false, false, new HelperNgxExceptionTest(null) },
 
@@ -116,7 +116,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             string fileName = "ngx-sample.json";
             var filePath = Path.Combine(AppContext.BaseDirectory, "NgxLogger", fileName);
 
-            OltNgxLoggerMessageJson result;
+            OltNgxLoggerMessageJson? result;
 
             var options = new JsonSerializerOptions
             {
@@ -129,7 +129,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
                 result = await JsonSerializer.DeserializeAsync<OltNgxLoggerMessageJson>(openStream, options);
             }
 
-            return result;
+            return result ?? new OltNgxLoggerMessageJson();
         }
 
 
@@ -180,7 +180,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
 
             using (var scope = services.BuildServiceProvider().CreateScope())
             {
-                using (var loggerFactory = scope.ServiceProvider.GetService<ILoggerFactory>())
+                using (var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>())
                 {
                     var msLogger = loggerFactory.CreateLogger<NgxLoggerMessageTests>();
                     msLogger.Write(model);

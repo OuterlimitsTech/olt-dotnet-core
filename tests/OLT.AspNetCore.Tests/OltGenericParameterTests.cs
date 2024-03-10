@@ -121,7 +121,7 @@ namespace OLT.AspNetCore.Tests
 
             var results = OltHttpRequestExtensions.ToOltGenericParameter(context.Request);
 
-            results.GetValue<string>("username").Split(",").Should().BeEquivalentTo(expected.ToString().Split(","), opt => opt.WithoutStrictOrdering());
+            results.GetValue<string>("username")!.Split(",").Should().BeEquivalentTo(expected.ToString().Split(","), opt => opt.WithoutStrictOrdering());
             results.GetValue<string>("email").Should().BeEquivalentTo(email);
 
             //results.Values.Should().ContainValues(expected.ToString(), email);
@@ -141,7 +141,7 @@ namespace OLT.AspNetCore.Tests
             {
                 { "username", username },
                 { "userId", userId.ToString() },
-                { "email", new StringValues(new string[] { email2, null, email }) },
+                { "email", new StringValues(new string[] { email2, null!, email }) },
             };
 
             
@@ -169,7 +169,7 @@ namespace OLT.AspNetCore.Tests
             {
                 { "username", username },
                 { "userId", userId.ToString() },
-                { "id", null },
+                { "id", string.Empty },
                 { "email", email },
             };
 
@@ -255,17 +255,17 @@ namespace OLT.AspNetCore.Tests
         [Fact]
         public async Task ExceptionTests()
         {
-            HttpRequest httpContext = null;
-            Assert.Throws<ArgumentNullException>("request", () => OltHttpRequestExtensions.ToOltGenericParameter(httpContext));
-            await Assert.ThrowsAsync<ArgumentNullException>("request", () => OltHttpRequestExtensions.GetRawBodyStringAsync(httpContext, null));
-            await Assert.ThrowsAsync<ArgumentNullException>("request", () => OltHttpRequestExtensions.GetRawBodyBytesAsync(httpContext));
+            HttpRequest? httpContext = null;
+            Assert.Throws<ArgumentNullException>("request", () => OltHttpRequestExtensions.ToOltGenericParameter(httpContext!));
+            await Assert.ThrowsAsync<ArgumentNullException>("request", () => OltHttpRequestExtensions.GetRawBodyStringAsync(httpContext!, null));
+            await Assert.ThrowsAsync<ArgumentNullException>("request", () => OltHttpRequestExtensions.GetRawBodyBytesAsync(httpContext!));
 
-            RouteValueDictionary routeValue = null;
-            QueryCollection queryCollection = null;
-            FormCollection formCollection = null;
-            Assert.Throws<ArgumentNullException>("value", () => OltHttpRequestExtensions.ToOltGenericParameter(routeValue));
-            Assert.Throws<ArgumentNullException>("value", () => OltHttpRequestExtensions.ToOltGenericParameter(queryCollection));
-            Assert.Throws<ArgumentNullException>("value", () => OltHttpRequestExtensions.ToOltGenericParameter(formCollection));
+            RouteValueDictionary? routeValue = null;
+            QueryCollection? queryCollection = null;
+            FormCollection? formCollection = null;
+            Assert.Throws<ArgumentNullException>("value", () => OltHttpRequestExtensions.ToOltGenericParameter(routeValue!));
+            Assert.Throws<ArgumentNullException>("value", () => OltHttpRequestExtensions.ToOltGenericParameter(queryCollection!));
+            Assert.Throws<ArgumentNullException>("value", () => OltHttpRequestExtensions.ToOltGenericParameter(formCollection!));
 
         }
     }

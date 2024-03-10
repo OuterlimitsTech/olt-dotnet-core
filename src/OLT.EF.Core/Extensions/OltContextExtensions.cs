@@ -70,7 +70,7 @@ namespace OLT.Core
 
         }
 
-        public static string GetTableName<TEntity>(this DbContext context) where TEntity : class
+        public static string? GetTableName<TEntity>(this DbContext context) where TEntity : class
         {
             if (context == null)
             {
@@ -78,11 +78,19 @@ namespace OLT.Core
             }
 
             var entityType = context.Model.FindEntityType(typeof(TEntity));
-            var schema = entityType.GetSchema();
-            var tableName = entityType.GetTableName();
+            var schema = entityType?.GetSchema();
+            var tableName = entityType?.GetTableName();            
             return string.IsNullOrEmpty(schema) ? tableName : $"{schema}.{tableName}";
         }
 
+        /// <summary>
+        /// Get Columns 
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="dbContext"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
         public static IEnumerable<OltDbColumnInfo> GetColumns<TEntity>(this DbContext dbContext)
             where TEntity : class
         {
@@ -94,9 +102,13 @@ namespace OLT.Core
             var cols = new List<OltDbColumnInfo>();
             var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
 
+            if (entityType == null) throw new InvalidOperationException("Unable to locate entity type");
+
             // Table info 
             var tableName = entityType.GetTableName();
             var tableSchema = entityType.GetSchema();
+
+            if (tableName == null) throw new InvalidOperationException("Unable locate table name");
 
             // Column info 
             foreach (var property in entityType.GetProperties())

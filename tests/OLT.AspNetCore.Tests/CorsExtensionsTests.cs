@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿#nullable disable
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -69,17 +70,17 @@ namespace OLT.AspNetCore.Tests
             List<Assembly> nullAssemblies = null;
             List<Assembly> baseAssemblies = new List<Assembly> { this.GetType().Assembly };
 
-            Assert.Throws<ArgumentNullException>("services", () => OltCorsExtensions.AddCors(null, baseAssemblies));
-            Assert.Throws<ArgumentNullException>("assembliesToScan", () => OltCorsExtensions.AddCors(services, nullAssemblies));
+            Assert.Throws<ArgumentNullException>("services", () => OltCorsExtensions.AddCors(null!, baseAssemblies));
+            Assert.Throws<ArgumentNullException>("assembliesToScan", () => OltCorsExtensions.AddCors(services, nullAssemblies!));
 
-            Assert.Throws<ArgumentNullException>("services", () => OltCorsExtensions.AddCors(null, nullPolicy));
-            Assert.Throws<ArgumentNullException>("policy", () => OltCorsExtensions.AddCors(services, nullPolicy));
+            Assert.Throws<ArgumentNullException>("services", () => OltCorsExtensions.AddCors(null!, nullPolicy!));
+            Assert.Throws<ArgumentNullException>("policy", () => OltCorsExtensions.AddCors(services, nullPolicy!));
 
             var app = new ApplicationBuilder(services.BuildServiceProvider());
             OltAspNetHostingOptions nullOptions = null;
 
 
-            Assert.Throws<ArgumentNullException>("app", () => OltCorsExtensions.UseCors(null, nullOptions));
+            Assert.Throws<ArgumentNullException>("app", () => OltCorsExtensions.UseCors(null!, nullOptions));
             Assert.Throws<ArgumentNullException>("options", () => OltCorsExtensions.UseCors(app, nullOptions));
 
         }

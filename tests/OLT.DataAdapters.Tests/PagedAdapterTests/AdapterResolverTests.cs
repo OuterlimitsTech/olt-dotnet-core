@@ -17,7 +17,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.NotNull(adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>(false));
                 Assert.NotNull(adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>(true));
                 Assert.Null(adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject3>(false));
@@ -30,10 +30,10 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
-                Assert.Equal($"{typeof(PagedAdapterObject1).FullName}->{typeof(PagedAdapterObject2).FullName}", adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>().Name);
-                Assert.Equal(OltAdapterExtensions.BuildAdapterName<PagedAdapterObject1, PagedAdapterObject2>(), adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>().Name);
-                Assert.NotEqual($"{typeof(PagedAdapterObject2)}->{typeof(PagedAdapterObject1).FullName}", adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>().Name);
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
+                Assert.Equal($"{typeof(PagedAdapterObject1).FullName}->{typeof(PagedAdapterObject2).FullName}", adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>()?.Name);
+                Assert.Equal(OltAdapterExtensions.BuildAdapterName<PagedAdapterObject1, PagedAdapterObject2>(), adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>()?.Name);
+                Assert.NotEqual($"{typeof(PagedAdapterObject2)}->{typeof(PagedAdapterObject1).FullName}", adapterResolver.GetAdapter<PagedAdapterObject1, PagedAdapterObject2>()?.Name);
             }
         }
 
@@ -42,7 +42,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.True(adapterResolver.CanMap<PagedAdapterObject1, PagedAdapterObject2>());
                 Assert.True(adapterResolver.CanMap<PagedAdapterObject2, PagedAdapterObject1>());
                 Assert.False(adapterResolver.CanMap<PagedAdapterObject2, PagedAdapterObject3>());
@@ -59,7 +59,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.True(adapterResolver.CanProjectTo<PagedAdapterObject1, PagedAdapterObject2>());
                 Assert.False(adapterResolver.CanProjectTo<PagedAdapterObject1, PagedAdapterObject3>());
 
@@ -76,7 +76,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.Throws<OltAdapterNotFoundException>(() => adapterResolver.ProjectTo<PagedAdapterObject2, PagedAdapterObject3>(PagedAdapterObject2.FakerList(3).AsQueryable()));
 
                 var obj1Values = PagedAdapterObject1.FakerList(5).AsQueryable();
@@ -94,7 +94,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
 
 
                 var results = obj2ResultQueryable.ToList();
-                var expected2 = expected.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ToList();
+                var expected2 = expected.OrderBy(p => p.Name!.Last).ThenBy(p => p.Name!.First).ToList();
 
                 results.Should().BeEquivalentTo(expected2, opt => opt.WithStrictOrdering());
 
@@ -122,7 +122,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj1Values = PagedAdapterObject1.FakerList(56);
                 var obj2Result = adapterResolver.ApplyDefaultOrderBy<PagedAdapterObject1, PagedAdapterObject2>(obj1Values.AsQueryable()).ToList();
                 obj2Result.Should().BeEquivalentTo(obj1Values.OrderBy(p => p.LastName).ThenBy(p => p.FirstName), opt => opt.WithStrictOrdering());
@@ -134,12 +134,12 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj1 = PagedAdapterObject1.FakerData();
 
                 var obj2Result = adapterResolver.Map<PagedAdapterObject1, PagedAdapterObject2>(obj1, new PagedAdapterObject2());
-                Assert.Equal(obj1.FirstName, obj2Result.Name.First);
-                Assert.Equal(obj1.LastName, obj2Result.Name.Last);
+                Assert.Equal(obj1.FirstName, obj2Result.Name!.First);
+                Assert.Equal(obj1.LastName, obj2Result.Name!.Last);
                 adapterResolver.Map<PagedAdapterObject2, PagedAdapterObject1>(obj2Result, new PagedAdapterObject1()).Should().BeEquivalentTo(obj1);
             }
         }
@@ -149,12 +149,12 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj1Values = PagedAdapterObject1.FakerList(3);
                 var obj2Result = adapterResolver.Map<PagedAdapterObject1, PagedAdapterObject2>(obj1Values);
                 obj2Result.Should().HaveCount(obj1Values.Count);
-                obj2Result.Select(s => s.Name.First).Should().BeEquivalentTo(obj1Values[0].FirstName, obj1Values[1].FirstName, obj1Values[2].FirstName);
-                obj2Result.Select(s => s.Name.Last).Should().BeEquivalentTo(obj1Values[0].LastName, obj1Values[1].LastName, obj1Values[2].LastName);
+                obj2Result.Select(s => s.Name!.First).Should().BeEquivalentTo(obj1Values[0].FirstName, obj1Values[1].FirstName, obj1Values[2].FirstName);
+                obj2Result.Select(s => s.Name!.Last).Should().BeEquivalentTo(obj1Values[0].LastName, obj1Values[1].LastName, obj1Values[2].LastName);
                 adapterResolver.Map<PagedAdapterObject2, PagedAdapterObject1>(obj2Result).Should().BeEquivalentTo(obj1Values);
             }
         }
@@ -165,7 +165,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj3Values = PagedAdapterObject3.FakerList(10);
                 var queryable = obj3Values.AsQueryable();
 

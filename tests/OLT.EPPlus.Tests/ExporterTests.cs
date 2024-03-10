@@ -1,5 +1,6 @@
 using OfficeOpenXml;
 using OLT.EPPlus.Tests.Assets;
+using System;
 using Xunit;
 
 namespace OLT.EPPlus.Tests
@@ -8,6 +9,7 @@ namespace OLT.EPPlus.Tests
     {
 
         [Fact]
+        [Obsolete]
         public void FileBuilder()
         {
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.Commercial;

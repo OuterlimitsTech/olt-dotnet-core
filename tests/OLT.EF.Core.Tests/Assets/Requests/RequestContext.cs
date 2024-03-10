@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OLT.EF.Core.Tests.Assets.Requests
 {
+    [Obsolete]
     public class RequestContext : OltRequestContext<UnitTestContext>
     {
         public RequestContext(UnitTestContext context) : base(context)
@@ -14,6 +15,7 @@ namespace OLT.EF.Core.Tests.Assets.Requests
         }
     }
 
+    [Obsolete]
     public class RequestContextModel : OltRequestContext<UnitTestContext, OltPersonName>
     {
         public RequestContextModel(UnitTestContext context, OltPersonName value) : base(context, value)

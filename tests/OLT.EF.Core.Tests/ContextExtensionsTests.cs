@@ -17,11 +17,11 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 Assert.Equal($"{context.DefaultSchema}.{nameof(PersonEntity)}", OltContextExtensions.GetTableName<PersonEntity>(context));
-                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.GetTableName<PersonEntity>(null));
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.GetTableName<PersonEntity>(null!));
 
-                var context2 = provider.GetService<UnitTestAlternateContext>();
+                var context2 = provider.GetRequiredService<UnitTestAlternateContext>();
                 Assert.Equal($"{nameof(PersonEntity)}", OltContextExtensions.GetTableName<PersonEntity>(context2));
             }
         }
@@ -32,7 +32,7 @@ namespace OLT.EF.Core.Tests
             using (var provider = BuildProvider())
             {
                 const string expected = "PersonEntityId";
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 
                 var columns = OltContextExtensions.GetColumns<PersonEntity>(context).ToList();
                 //columns.ForEach(col =>
@@ -57,7 +57,7 @@ namespace OLT.EF.Core.Tests
                     );
 
 
-                Assert.Throws<ArgumentNullException>("dbContext", () => OltContextExtensions.GetColumns<PersonEntity>(null));
+                Assert.Throws<ArgumentNullException>("dbContext", () => OltContextExtensions.GetColumns<PersonEntity>(null!));
 
             }
         }
@@ -68,7 +68,7 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestContext>();
+                var context = provider.GetRequiredService<UnitTestContext>();
                 var entity = PersonEntity.FakerEntity();
                 entity.DeletedOn = DateTime.UtcNow;
 
@@ -86,9 +86,9 @@ namespace OLT.EF.Core.Tests
                 OltContextExtensions.InitializeQueryable<PersonEntity>(context, false).Should().BeEquivalentTo(list.Where(p => p.DeletedOn == null));
 
 
-                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null));
-                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null, true));
-                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null, false));
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null!));
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null!, true));
+                Assert.Throws<ArgumentNullException>("context", () => OltContextExtensions.InitializeQueryable<PersonEntity>(null!, false));
 
             }
         }
@@ -98,7 +98,7 @@ namespace OLT.EF.Core.Tests
         {
             using (var provider = BuildProvider())
             {
-                var context = provider.GetService<UnitTestAlternateContext>();
+                var context = provider.GetRequiredService<UnitTestAlternateContext>();
                 var entity = PersonEntity.FakerEntity();
                 entity.DeletedOn = DateTime.UtcNow;
 

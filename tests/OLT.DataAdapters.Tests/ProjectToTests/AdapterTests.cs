@@ -34,7 +34,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var adapter = new AdapterObject1ToAdapterObject2QueryableAdapter();
 
                 Assert.Throws<NotImplementedException>(() => adapter.Map(QueryableAdapterObject1.FakerData(), new QueryableAdapterObject2()));
@@ -51,7 +51,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var adapter = new AdapterObject1ToAdapterObject2QueryableAdapter();
                 var queryableObj1 = QueryableAdapterObject1.FakerList(3).AsQueryable();
 

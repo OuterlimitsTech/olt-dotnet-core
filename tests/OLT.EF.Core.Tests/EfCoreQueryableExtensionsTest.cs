@@ -38,8 +38,8 @@ namespace OLT.EF.Core.Tests
                 Assert.Equal(paged.Count, paged.Count);
                 Assert.Equal(@params.Size, paged.Data.Count());
 
-                await Assert.ThrowsAsync<ArgumentNullException>("queryable", () => OltEfCoreQueryableExtensions.ToPagedAsync<PersonEntity>(null, @params));
-                await Assert.ThrowsAsync<ArgumentNullException>("pagingParams", () => OltEfCoreQueryableExtensions.ToPagedAsync(queryable, null));
+                await Assert.ThrowsAsync<ArgumentNullException>("queryable", () => OltEfCoreQueryableExtensions.ToPagedAsync<PersonEntity>(null!, @params));
+                await Assert.ThrowsAsync<ArgumentNullException>("pagingParams", () => OltEfCoreQueryableExtensions.ToPagedAsync(queryable, null!));
             }
         }
 

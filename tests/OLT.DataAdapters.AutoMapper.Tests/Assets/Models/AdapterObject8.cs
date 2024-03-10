@@ -6,7 +6,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Assets.Models
     public class AdapterObject8 : IAdapterObject
     {
         public int ObjectId { get; set; }
-        public string Street { get; set; }
+        public string? Street { get; set; }
         public List<OltPersonName> Names { get; set; } = new List<OltPersonName>();
 
         public static AdapterObject8 FakerData(int numberNames)

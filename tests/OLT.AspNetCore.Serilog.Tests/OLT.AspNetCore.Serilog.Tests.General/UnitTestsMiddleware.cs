@@ -25,24 +25,24 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             RequestDelegate next = (HttpContext hc) => Task.FromException(expectedException);
 
             var response = await InvokeMiddlewareAsync(GetOptions(true), next, HttpStatusCode.InternalServerError);
-            Assert.Equal(expectedMsg, response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal(expectedMsg, response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.NotEmpty(response.Errors);
 
 
             response = await InvokeMiddlewareAsync(GetOptions(true, overrideMsg), next, HttpStatusCode.InternalServerError);
-            Assert.Equal(overrideMsg, response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal(overrideMsg, response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.NotEmpty(response.Errors);
 
             response = await InvokeMiddlewareAsync(GetOptions(), next, HttpStatusCode.InternalServerError);
-            Assert.Equal(expectedMsg, response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal(expectedMsg, response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.Empty(response.Errors);
 
             response = await InvokeMiddlewareAsync(GetOptions(false, overrideMsg), next, HttpStatusCode.InternalServerError);
-            Assert.Equal(overrideMsg, response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal(overrideMsg, response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.Empty(response.Errors);
 
         }
@@ -56,8 +56,8 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             RequestDelegate next = (HttpContext hc) => Task.FromException(expectedException);
             var response = await InvokeMiddlewareAsync(GetOptions(true), next, HttpStatusCode.BadRequest);
 
-            Assert.Equal(expectedException.Message, response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal(expectedException.Message, response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.Empty(response.Errors);
         }
 
@@ -68,8 +68,8 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             RequestDelegate next = (HttpContext hc) => Task.FromException(expectedException);
             var response = await InvokeMiddlewareAsync(GetOptions(true), next, HttpStatusCode.BadRequest);
 
-            Assert.Equal("Please correct the validation errors", response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal("Please correct the validation errors", response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.NotEmpty(response.Errors);
             Assert.Collection(response.Errors, item => Assert.Equal("Test Validation", item));
         }
@@ -80,8 +80,8 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             var expectedException = new OltRecordNotFoundException("Person");
             RequestDelegate next = (HttpContext hc) => Task.FromException(expectedException);
             var response = await InvokeMiddlewareAsync(GetOptions(true), next, HttpStatusCode.BadRequest);
-            Assert.Equal(expectedException.Message, response.Message);
-            Assert.NotNull(response.ErrorUid);
+            Assert.Equal(expectedException.Message, response?.Message);
+            Assert.NotNull(response?.ErrorUid);
             Assert.Empty(response.Errors);
         }
 
@@ -106,7 +106,7 @@ namespace OLT.AspNetCore.Serilog.Tests.General
         }
 
 
-        private static IOptions<OltSerilogOptions> GetOptions(bool showExceptionDetails = false, string errorMsg = null)
+        private static IOptions<OltSerilogOptions> GetOptions(bool showExceptionDetails = false, string? errorMsg = null)
         {
             var settings = new OltSerilogOptions
             {
@@ -120,12 +120,12 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             return Options.Create(settings);
         }
 
-        private static async Task<OltErrorHttpSerilog> InvokeMiddlewareAsync(IOptions<OltSerilogOptions> options, RequestDelegate next, HttpStatusCode expectedStatusCode)
+        private static async Task<OltErrorHttpSerilog?> InvokeMiddlewareAsync(IOptions<OltSerilogOptions> options, RequestDelegate next, HttpStatusCode expectedStatusCode)
         {
             return await InvokeMiddlewareAsync<OltErrorHttpSerilog>(options, next, expectedStatusCode);
         }
 
-        private static async Task<T> InvokeMiddlewareAsync<T>(IOptions<OltSerilogOptions> options, RequestDelegate next, HttpStatusCode expectedStatusCode)
+        private static async Task<T?> InvokeMiddlewareAsync<T>(IOptions<OltSerilogOptions> options, RequestDelegate next, HttpStatusCode expectedStatusCode)
         {
             var exceptionHandlingMiddleware = new OltMiddlewarePayload(options);
             var bodyStream = new MemoryStream();
@@ -136,7 +136,7 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             //act
             await exceptionHandlingMiddleware.InvokeAsync(httpContext, next);
 
-            T response;
+            T? response;
             bodyStream.Seek(0, SeekOrigin.Begin);
             using (var sr = new StreamReader(bodyStream))
             {

@@ -1,7 +1,4 @@
 ﻿using FluentAssertions;
-using FluentAssertions.Common;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,8 +26,8 @@ namespace Seriolog
     {
         public static IWebHostBuilder UseSerilog_local(this IWebHostBuilder builder, Serilog.ILogger? logger = null, bool dispose = false, LoggerProviderCollection? providers = null)
         {
-            LoggerProviderCollection providers2 = providers;
-            Serilog.ILogger logger2 = logger;
+            LoggerProviderCollection? providers2 = providers;
+            Serilog.ILogger? logger2 = logger;
             if (builder == null)
             {
                 throw new ArgumentNullException("builder");

@@ -186,11 +186,15 @@ public class ModelTests
         Assert.NotNull(model.Name as IOltPersonName);
         Assert.NotNull(model as OltAuthenticatedUserJson<OltPersonName>);
 
+#pragma warning disable CS0618 // Type or member is obsolete
         Assert.Null(model.UserPrincipalName);
+#pragma warning restore CS0618 // Type or member is obsolete
         Assert.Null(model.Username);
         Assert.Null(model.Email);
         Assert.Equal("", model.FullName);
+#pragma warning disable CS0618 // Type or member is obsolete
         Assert.Null(model.AuthenticationType);
+#pragma warning restore CS0618 // Type or member is obsolete
         Assert.Null(model.Token);
         Assert.Null(model.Issued);
         Assert.Null(model.Expires);
@@ -216,11 +220,15 @@ public class ModelTests
         var expires = DateTimeOffset.Now.AddMinutes(Faker.RandomNumber.Next(20, 40));
 
         var model = new OltAuthenticatedUserJwtTokenJson<OltPersonName>();
+#pragma warning disable CS0618 // Type or member is obsolete
         model.UserPrincipalName = upn;
+#pragma warning restore CS0618 // Type or member is obsolete
         model.Username = userName;
         model.Email = emailAddress;
         model.Name = name;
+#pragma warning disable CS0618 // Type or member is obsolete
         model.AuthenticationType = authenticationType;
+#pragma warning restore CS0618 // Type or member is obsolete
         model.Token = token;
         model.Issued = issued;
         model.Expires = expires;
@@ -228,7 +236,9 @@ public class ModelTests
         model.Permissions = permissions;
             
 
+#pragma warning disable CS0618 // Type or member is obsolete
         Assert.Equal(upn, model.UserPrincipalName);
+#pragma warning restore CS0618 // Type or member is obsolete
         Assert.Equal(userName, model.Username);
         Assert.Equal(emailAddress, model.Email);
         Assert.Equal(token, model.Token);

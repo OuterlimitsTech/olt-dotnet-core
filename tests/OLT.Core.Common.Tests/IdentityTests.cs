@@ -29,7 +29,9 @@ public class IdentityTests
             Assert.Null(model.Email);
             Assert.Null(model.Phone);
             Assert.Null(model.FullName);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Null(model.UserPrincipalName);
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.Null(model.NameId);
             Assert.Null(model.Subject);
             Assert.Null(model.PhoneVerified);
@@ -149,7 +151,9 @@ public class IdentityTests
 
             Assert.Equal(user.Username, model.Username);
             Assert.Equal(user.Email, model.Email);
+#pragma warning disable CS0618 // Type or member is obsolete
             Assert.Equal(user.UserPrincipalName, model.UserPrincipalName);
+#pragma warning restore CS0618 // Type or member is obsolete
             Assert.Equal(user.NameId, model.NameId);
 
             if (!string.IsNullOrWhiteSpace(phone))

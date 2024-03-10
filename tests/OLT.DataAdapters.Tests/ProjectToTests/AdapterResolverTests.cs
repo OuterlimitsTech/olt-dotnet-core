@@ -18,7 +18,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.NotNull(adapterResolver.GetAdapter<QueryableAdapterObject1, QueryableAdapterObject2>(false));
                 Assert.NotNull(adapterResolver.GetAdapter<QueryableAdapterObject1, QueryableAdapterObject2>(true));
                 Assert.Null(adapterResolver.GetAdapter<QueryableAdapterObject1, QueryableAdapterObject3>(false));
@@ -43,7 +43,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.True(adapterResolver.CanProjectTo<QueryableAdapterObject1, QueryableAdapterObject2>());
                 Assert.False(adapterResolver.CanProjectTo<QueryableAdapterObject1, QueryableAdapterObject3>());
 
@@ -60,7 +60,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 var obj1Values = QueryableAdapterObject1.FakerList(23);
 
                 var obj2ResultQueryable = adapterResolver.ProjectTo<QueryableAdapterObject1, QueryableAdapterObject2>(obj1Values.AsQueryable());
@@ -76,7 +76,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
                         }
                     }).ToList();
 
-                obj2ResultQueryable.Should().BeEquivalentTo(expected.OrderBy(p => p.Name.First).ThenBy(p => p.Name.Last), opt => opt.WithStrictOrdering());
+                obj2ResultQueryable.Should().BeEquivalentTo(expected.OrderBy(p => p.Name!.First).ThenBy(p => p.Name!.Last), opt => opt.WithStrictOrdering());
 
                 
                 adapterResolver
@@ -92,7 +92,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.True(adapterResolver.CanMap<QueryableAdapterObject1, QueryableAdapterObject2>());
                 Assert.True(adapterResolver.CanMap<QueryableAdapterObject2, QueryableAdapterObject1>());
                 Assert.True(adapterResolver.CanMap<QueryableAdapterObject2, QueryableAdapterObject3>());
@@ -108,7 +108,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.Throws<NotImplementedException>(() => adapterResolver.Map<QueryableAdapterObject1, QueryableAdapterObject2>(QueryableAdapterObject1.FakerData(), new QueryableAdapterObject2()));
                 Assert.Throws<NotImplementedException>(() => adapterResolver.Map<QueryableAdapterObject2, QueryableAdapterObject3>(QueryableAdapterObject2.FakerData(), new QueryableAdapterObject3()));
             }
@@ -119,7 +119,7 @@ namespace OLT.DataAdapters.Tests.ProjectToTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();
                 Assert.Throws<AggregateException>(() => adapterResolver.Map<QueryableAdapterObject1, QueryableAdapterObject2>(QueryableAdapterObject1.FakerList(3)));
                 Assert.Throws<AggregateException>(() => adapterResolver.Map<QueryableAdapterObject2, QueryableAdapterObject3>(QueryableAdapterObject2.FakerList(3)));
             }

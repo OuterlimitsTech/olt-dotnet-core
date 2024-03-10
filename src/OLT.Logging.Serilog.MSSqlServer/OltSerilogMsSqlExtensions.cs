@@ -25,7 +25,7 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static LoggerConfiguration WithOltMSSqlServer(this LoggerConfiguration loggerConfiguration, 
-            string connectionString, 
+            string? connectionString, 
             MSSqlServerSinkOptions? options = null, 
             ColumnOptions? columnOptions = null, 
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,

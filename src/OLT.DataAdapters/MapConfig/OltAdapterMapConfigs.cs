@@ -23,7 +23,8 @@ namespace OLT.Core
                 if (IsRegistered<TSource, TDestination>())
                 {
                     var name = OltAdapterExtensions.BuildBeforeMapName<TSource, TDestination>();
-                    queryable = (_mapConfigs[name] as IOltBeforeMap<TSource, TDestination>).BeforeMap(queryable);
+                    var mapConfig = _mapConfigs[name] as IOltBeforeMap<TSource, TDestination> ?? throw new InvalidCastException("IOltBeforeMap");
+                    queryable = mapConfig.BeforeMap(queryable);
                 }
                 return queryable;
             }
@@ -67,7 +68,8 @@ namespace OLT.Core
                 if (IsRegistered<TSource, TDestination>())
                 {
                     var name = OltAdapterExtensions.BuildAfterMapName<TSource, TDestination>();
-                    queryable = (_mapConfigs[name] as IOltAfterMap<TSource, TDestination>).AfterMap(queryable);
+                    var mapConfig = _mapConfigs[name] as IOltAfterMap<TSource, TDestination> ?? throw new InvalidCastException("IOltAfterMap");
+                    queryable = mapConfig.AfterMap(queryable);
                 }                
                 return queryable;
             }

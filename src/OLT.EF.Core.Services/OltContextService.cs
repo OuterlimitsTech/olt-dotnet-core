@@ -196,7 +196,7 @@ namespace OLT.Core
 
         #region [ Mapping ]
 
-        protected virtual IOltPaged<TModel> MapPaged<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        protected virtual IOltPaged<TModel> MapPaged<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {
@@ -209,7 +209,7 @@ namespace OLT.Core
             throw new OltAdapterNotFoundException(OltAdapterExtensions.BuildAdapterName<TEntity, TModel>());
         }
 
-        protected virtual async Task<IOltPaged<TModel>> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy = null)
+        protected virtual async Task<IOltPaged<TModel>> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {

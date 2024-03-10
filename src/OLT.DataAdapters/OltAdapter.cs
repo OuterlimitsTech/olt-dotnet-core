@@ -19,7 +19,9 @@ namespace OLT.Core
             ConcurrentBag<TObj2> result = new ConcurrentBag<TObj2>();
             Parallel.ForEach(sourceItems, obj1 =>
             {
-                var obj2 = (TObj2)Activator.CreateInstance(typeof(TObj2));
+                var instance = Activator.CreateInstance(typeof(TObj2));
+                if (instance == null) throw new OltException($"Unable to create instance of {typeof(TObj2).Name}");
+                var obj2 = (TObj2)instance;
                 Map(obj1, obj2);
                 result.Add(obj2);
             });
@@ -31,7 +33,9 @@ namespace OLT.Core
             ConcurrentBag<TObj1> result = new ConcurrentBag<TObj1>();
             Parallel.ForEach(sourceItems, obj2 =>
             {
-                var obj1 = (TObj1)Activator.CreateInstance(typeof(TObj1));
+                var instance = Activator.CreateInstance(typeof(TObj1));
+                if (instance == null) throw new OltException($"Unable to create instance of {typeof(TObj1).Name}");
+                var obj1 = (TObj1)instance;
                 Map(obj2, obj1);
                 result.Add(obj1);
             });

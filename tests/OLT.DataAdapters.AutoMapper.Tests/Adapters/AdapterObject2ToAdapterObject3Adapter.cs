@@ -8,8 +8,8 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
         public override void Map(AdapterObject2 source, AdapterObject3 destination)
         {
             destination.ObjectId = source.ObjectId;
-            destination.First = source.Name.First;
-            destination.Last = source.Name.Last;
+            destination.First = source.Name?.First;
+            destination.Last = source.Name?.Last;
         }
 
         public override void Map(AdapterObject3 source, AdapterObject2 destination)

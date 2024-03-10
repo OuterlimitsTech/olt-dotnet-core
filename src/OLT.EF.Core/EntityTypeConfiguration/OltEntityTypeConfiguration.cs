@@ -25,13 +25,13 @@ namespace OLT.Core
         }
 
 
-        protected virtual string GetEnumDescription<TEnum>(TEnum item)
+        protected virtual string? GetEnumDescription<TEnum>(TEnum item)
             where TEnum : System.Enum
         {
             return OltAttributeExtensions.GetAttributeInstance<DescriptionAttribute, TEnum>(item)?.Description;
         }
 
-        protected virtual string GetEnumCode<TEnum>(TEnum item)
+        protected virtual string? GetEnumCode<TEnum>(TEnum item)
             where TEnum : System.Enum
         {
             return OltAttributeExtensions.GetAttributeInstance<CodeAttribute, TEnum>(item)?.Code;
@@ -43,12 +43,12 @@ namespace OLT.Core
             return OltAttributeExtensions.GetAttributeInstance<UniqueIdAttribute, TEnum>(item)?.UniqueId;
         }
 
-        protected virtual string GetColumnName(PropertyInfo item)
+        protected virtual string? GetColumnName(PropertyInfo item)
         {
             return OltAttributeExtensions.GetAttributeInstance<ColumnAttribute>(item)?.Name;
         }
 
-        protected virtual string GetEnumMember<TEnum>(TEnum item)
+        protected virtual string? GetEnumMember<TEnum>(TEnum item)
             where TEnum : System.Enum
         {
             return OltAttributeExtensions.GetAttributeInstance<EnumMemberAttribute, TEnum>(item)?.Value;
@@ -83,7 +83,7 @@ namespace OLT.Core
             if (entity is IOltEntityCodeValue codeValueEntity)
             {
                 codeValueEntity.Code = GetEnumCode(@enum) ?? Enum.GetName(EnumType, @enum);
-                codeValueEntity.Name = GetEnumDescription(@enum) ?? Enum.GetName(EnumType, @enum);
+                codeValueEntity.Name = GetEnumDescription(@enum) ?? Enum.GetName(EnumType, @enum) ?? string.Empty;
             }
 
             if (entity is IOltEntitySortable sortableEntity)

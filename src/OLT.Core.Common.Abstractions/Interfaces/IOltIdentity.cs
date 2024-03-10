@@ -35,7 +35,7 @@ namespace OLT.Core
         /// </summary>
         /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
         /// <returns></returns>
-        bool HasRole(string claimName);
+        bool HasRole(string? claimName);
 
         /// <summary>
         /// Checks if claim <see cref="OltClaimTypes.Role"/> exists this Enum <see cref="CodeAttribute"/> 

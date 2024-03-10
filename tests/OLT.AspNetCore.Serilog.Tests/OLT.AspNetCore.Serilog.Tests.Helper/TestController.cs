@@ -37,7 +37,7 @@ namespace OLT.AspNetCore.Serilog.Tests
         }
 
         [HttpGet, Route("validation-error")]
-        public ActionResult TestValidation(string value)
+        public ActionResult TestValidation(string? value = null)
         {
             var errors = new List<IOltValidationError>
             {

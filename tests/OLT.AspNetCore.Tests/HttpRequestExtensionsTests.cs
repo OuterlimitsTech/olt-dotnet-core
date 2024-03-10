@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿#nullable disable
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using OLT.AspNetCore.Tests.Assets;
 using OLT.Core;
@@ -25,7 +26,7 @@ namespace OLT.AspNetCore.Tests
             };
 
             var result = await OltHttpRequestExtensions.GetRawBodyStringAsync(httpContext.Request);
-            Assert.True(result.Equals(json));
+            Assert.Equal(result, json);
         }
 
 

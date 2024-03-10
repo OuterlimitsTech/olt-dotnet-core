@@ -6,6 +6,6 @@ namespace OLT.Core
     {
         T? GetValue<T>(string key) where T : IConvertible;
         T GetValue<T>(string key, T defaultValue) where T : IConvertible;
-        object GetValue(string key);
+        string GetValue(string key);
     }
 }

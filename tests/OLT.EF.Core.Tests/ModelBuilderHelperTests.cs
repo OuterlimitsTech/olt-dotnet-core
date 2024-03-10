@@ -24,7 +24,7 @@ namespace OLT.EF.Core.Tests
             
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -33,10 +33,10 @@ namespace OLT.EF.Core.Tests
 
                     var entity = builder.Entity<PersonEntity>().Metadata;
                     var prop = builder.Entity<PersonEntity>().Property(p => p.Id);
-                    var result = prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(entity.GetTableName(), entity.GetSchema()));
+                    var result = prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(entity.GetTableName()!, entity.GetSchema()));
                     Assert.Equal("PersonEntityId", result);
 
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.EntityIdColumnName(null));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.EntityIdColumnName(null!));
                 }
             }
         }
@@ -50,7 +50,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -58,8 +58,8 @@ namespace OLT.EF.Core.Tests
                     OltModelBuilderHelper.RestrictDeleteBehavior(builder); //Should disable all the Cascade
                     Assert.False(OltModelBuilderHelper.GetAllCascadeDelete(builder).Any());  //There should not be any now
 
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.GetAllCascadeDelete(null));
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.RestrictDeleteBehavior(null));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.GetAllCascadeDelete(null!));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.RestrictDeleteBehavior(null!));
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -82,8 +82,8 @@ namespace OLT.EF.Core.Tests
                     OltModelBuilderHelper.DisableUnicodeProperties(builder); //Should disable all unicode string properties
                     Assert.False(OltModelBuilderHelper.GetAllUnicodeProperties(builder).Any());  //There should not be any now
 
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.GetAllUnicodeProperties(null));
-                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.DisableUnicodeProperties(null));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.GetAllUnicodeProperties(null!));
+                    Assert.Throws<ArgumentNullException>("modelBuilder", () => OltModelBuilderHelper.DisableUnicodeProperties(null!));
                 }
             }
         }

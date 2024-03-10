@@ -43,14 +43,15 @@ namespace OLT.Core
                 return search;
             }
 
-            search = search.CleanForSearch();
-
-            if (!search.Contains(' '))
+            var clean = search.CleanForSearch();
+            if (clean == null) return search;
+            
+            if (!clean.Contains(' '))
             {
                 return FormatWordWildCard(search, wildCardType);
             }
 
-            var words = search.Split(' ', '　', StringSplitOptions.None).ToList();
+            var words = clean.Split(' ', '　', StringSplitOptions.None).ToList();
 
             return matchAllWords
                 ? string.Join(" and ", words.Where(c => c != "and").Select(word => FormatWordWildCard(word, wildCardType)))

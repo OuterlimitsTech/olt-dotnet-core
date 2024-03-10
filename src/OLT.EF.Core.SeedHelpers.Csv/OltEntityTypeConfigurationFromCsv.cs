@@ -18,9 +18,17 @@ namespace OLT.Core
         protected abstract string ResourceName { get; }
         protected abstract Assembly ResourceAssembly { get; }
 
+        /// <summary>
+        /// Loads embedded resource using <seealso cref="CsvReader"/>
+        /// </summary>
+        /// <returns>Csv Records</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="FileLoadException"></exception>
+        /// <exception cref="FileNotFoundException"></exception>        
         public virtual List<TCsvModel> Load()
         {
-            using Stream stream = ResourceAssembly.GetEmbeddedResourceStream(ResourceName);
+            using Stream stream = ResourceAssembly.GetEmbeddedResourceStreamSafe(ResourceName);
             using StreamReader reader = new StreamReader(stream, Encoding.UTF8);
             CsvReader csvReader = new CsvReader(reader, CultureInfo.CurrentCulture);
             return csvReader.GetRecords<TCsvModel>().ToList();

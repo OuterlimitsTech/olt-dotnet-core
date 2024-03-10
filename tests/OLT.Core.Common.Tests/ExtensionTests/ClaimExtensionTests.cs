@@ -63,9 +63,13 @@ public class ClaimExtensionTests
         Assert.Contains(claims, p => p.Type == OltClaimTypes.Name && p.Value == model.FullName);
         Assert.Contains(claims, p => p.Type == OltClaimTypes.Email && p.Value == model.Email);
         Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.TokenType);
+#pragma warning disable CS0618 // Type or member is obsolete
         Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.AuthenticationType);  //Legacy Check
+#pragma warning restore CS0618 // Type or member is obsolete
         Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.NameId);
+#pragma warning disable CS0618 // Type or member is obsolete
         Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.UserPrincipalName);  //Legacy Check
+#pragma warning restore CS0618 // Type or member is obsolete
         Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername && p.Value == model.Username);
         Assert.Contains(claims, p => p.Type == OltClaimTypes.Nickname && p.Value == model.Name.First);
 

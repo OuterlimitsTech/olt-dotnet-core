@@ -25,10 +25,30 @@ namespace OLT.Core
         #endregion
 
         #region [ Get ]
-        
-        public virtual TModel Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted));
 
-        public virtual async Task<TModel> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted));
+        public virtual TModel? Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted));
+
+        public virtual async Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted));
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="includeDeleted"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        protected virtual TModel GetSafe<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="includeDeleted"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        protected virtual async Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
         #endregion
 
@@ -45,7 +65,7 @@ namespace OLT.Core
             var returnList = new List<TModel>();
             entities.ForEach(entity =>
             {
-                returnList.Add(Get<TModel>(entity.Id));
+                returnList.Add(GetSafe<TModel>(entity.Id));
             });
             return returnList;
         }
@@ -60,7 +80,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             Repository.Add(entity);
             SaveChanges();
-            return Get<TModel>(entity.Id);
+            return GetSafe<TModel>(entity.Id);
         }
 
         public override TResponseModel Add<TResponseModel, TSaveModel>(TSaveModel model)
@@ -69,7 +89,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             Repository.Add(entity);
             SaveChanges();
-            return Get<TResponseModel>(entity.Id);
+            return GetSafe<TResponseModel>(entity.Id);
         }
 
 
@@ -79,7 +99,7 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             await Repository.AddAsync(entity);
             await SaveChangesAsync();
-            return await GetAsync<TResponseModel>(entity.Id);
+            return await GetSafeAsync<TResponseModel>(entity.Id);
         }
 
         public override async Task<TModel> AddAsync<TModel>(TModel model)
@@ -88,14 +108,14 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             await Repository.AddAsync(entity);
             await SaveChangesAsync();
-            return await GetAsync<TModel>(entity.Id);
+            return await GetSafeAsync<TModel>(entity.Id);
         }
 
         #endregion
 
         #region [ Update ]
 
-        protected virtual void UpdateInternal<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        protected virtual void UpdateInternal<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
         {
             var queryable = GetQueryable(id);
             if (include != null)
@@ -107,23 +127,23 @@ namespace OLT.Core
             SaveChanges();
         }
 
-        public virtual TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        public virtual TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
         {
             UpdateInternal(id, model, include);
-            return Get<TModel>(id);
+            return GetSafe<TModel>(id);
         }
 
 
-        public virtual TResponseModel Update<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        public virtual TResponseModel Update<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
             UpdateInternal(id, model, include);
-            return Get<TResponseModel>(id);
+            return GetSafe<TResponseModel>(id);
         }
 
-        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
         {
             var queryable = GetQueryable(id);
             if (include != null)
@@ -135,19 +155,19 @@ namespace OLT.Core
             await SaveChangesAsync();
         }
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
         {
             await UpdateInternalAsync(id, model, include);
-            return await GetAsync<TModel>(id);
+            return await GetSafeAsync<TModel>(id);
         }
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include = null)
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
             await UpdateInternalAsync(id, model, include);
-            return await GetAsync<TResponseModel>(id);
+            return await GetSafeAsync<TResponseModel>(id);
         }
 
         #endregion

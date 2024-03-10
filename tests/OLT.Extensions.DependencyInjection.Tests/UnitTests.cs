@@ -17,15 +17,15 @@ namespace OLT.Extensions.DependencyInjection.Tests
             Assembly? nullRef = null;
             List<Assembly>? nullList = null;
 
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionExtensions.AddOltInjection(null));
-            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionExtensions.AddOltInjection(null, nullRef));
-            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionExtensions.AddOltInjection(null, nullList));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionExtensions.AddOltInjection(null!));
+            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionExtensions.AddOltInjection(null!, nullRef!));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionExtensions.AddOltInjection(null!, nullList!));
 
-            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionExtensions.AddOltInjection(services, nullRef));
+            Assert.Throws<ArgumentNullException>("baseAssembly", () => OltServiceCollectionExtensions.AddOltInjection(services, nullRef!));
 
             try
             {
-                OltServiceCollectionExtensions.AddOltInjection(services, nullList);
+                OltServiceCollectionExtensions.AddOltInjection(services, nullList!);
                 Assert.True(true);
             }
             catch

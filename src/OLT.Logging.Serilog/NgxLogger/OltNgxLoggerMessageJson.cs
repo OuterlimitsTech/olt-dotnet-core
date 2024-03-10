@@ -1,7 +1,4 @@
 ﻿using OLT.Constants;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +11,11 @@ namespace OLT.Logging.Serilog
     /// </summary>
     public class OltNgxLoggerMessageJson
     {
-        public virtual string Message { get; set; }
+        public virtual string? Message { get; set; }
         public virtual List<List<OltNgxLoggerDetailJson>> Additional { get; set; } = new List<List<OltNgxLoggerDetailJson>>();
         public virtual OltNgxLoggerLevel? Level { get; set; }
         public virtual DateTimeOffset? Timestamp { get; set; }
-        public virtual string FileName { get; set; }
+        public virtual string? FileName { get; set; }
         public virtual int? LineNumber { get; set; }
         public virtual int? ColumnNumber { get; set; }
         public virtual bool IsError => Level.GetValueOrDefault(OltNgxLoggerLevel.Information) == OltNgxLoggerLevel.Fatal || Level.GetValueOrDefault(OltNgxLoggerLevel.Information) == OltNgxLoggerLevel.Error;
@@ -28,7 +25,7 @@ namespace OLT.Logging.Serilog
             return Additional.FirstOrDefault()?.FirstOrDefault()?.User ?? "Unknown";
         }
 
-        public string FormatMessage()
+        public string? FormatMessage()
         {
             return ToException().Message;
         }

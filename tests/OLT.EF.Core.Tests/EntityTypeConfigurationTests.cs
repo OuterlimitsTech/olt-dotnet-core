@@ -30,7 +30,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -55,7 +55,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -84,7 +84,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -112,7 +112,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);
@@ -135,7 +135,7 @@ namespace OLT.EF.Core.Tests
 
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                using (var context = serviceScope.ServiceProvider.GetService<UnitTestContext>())
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UnitTestContext>())
                 {
                     var conventionSet = ConventionSet.CreateConventionSet(context);
                     var builder = new ModelBuilder(conventionSet);

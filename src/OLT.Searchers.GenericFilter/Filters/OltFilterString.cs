@@ -3,10 +3,10 @@ using System.Linq.Expressions;
 
 namespace OLT.Core
 {
-    public class OltFilterString<TEntity> : OltGenericFilterTemplate<TEntity, string>, IOltGenericFilterTemplate
+    public class OltFilterString<TEntity> : OltGenericFilterTemplate<TEntity, string?>, IOltGenericFilterTemplate
       where TEntity : class, IOltEntity
     {
-        public OltFilterString(OltFilterTemplateString filterTemplate, IOltEntityExpression<TEntity, string> fieldExpression) : base(filterTemplate, fieldExpression)
+        public OltFilterString(OltFilterTemplateString filterTemplate, IOltEntityExpression<TEntity, string?> fieldExpression) : base(filterTemplate, fieldExpression)
         {
         }
     }

@@ -62,14 +62,14 @@ namespace OLT.Core
             return false;
         }
 
-        public virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction = null)
+        public virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig>? configAction = null)
         {
             var name = GetAdapterName<TSource, TDestination>();
             var adapter = GetAdapter(name, false);
             return ProjectTo<TSource, TDestination>(source, configAction, adapter);
         }
 
-        protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction, IOltAdapter adapter)
+        protected virtual IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig>? configAction, IOltAdapter? adapter)
         {
             if (adapter is IOltAdapterQueryable<TSource, TDestination> queryableAdapter)
             {
@@ -88,7 +88,7 @@ namespace OLT.Core
 
         #region [ Paged ]
 
-        protected virtual IOltAdapterPaged<TSource, TDestination> GetPagedAdapter<TSource, TDestination>()
+        protected virtual IOltAdapterPaged<TSource, TDestination>? GetPagedAdapter<TSource, TDestination>()
         {
             var adapterName = GetAdapterName<TSource, TDestination>();
             var adapter = GetAdapter(adapterName, false);
@@ -102,8 +102,14 @@ namespace OLT.Core
 
         public virtual List<TDestination> Map<TSource, TDestination>(List<TSource> source)
         {
-            var adapter = GetAdapter<TSource, TDestination>(false);            
-            return adapter == null ? GetAdapter<TDestination, TSource>(true).Map(source.AsEnumerable()).ToList() : adapter.Map(source.AsEnumerable()).ToList();
+            var adapter = GetAdapter<TSource, TDestination>(false);
+            if (adapter != null)
+            {
+                return adapter.Map(source.AsEnumerable()).ToList();
+            }
+            var flipped = GetAdapter<TDestination, TSource>(false);
+            if (flipped == null) throw new OltAdapterNotFoundException<TSource, TDestination>();
+            return flipped.Map(source.AsEnumerable()).ToList();
         }
 
         public virtual TDestination Map<TSource, TDestination>(TSource source, TDestination destination)
@@ -111,7 +117,9 @@ namespace OLT.Core
             var adapter = GetAdapter<TSource, TDestination>(false);
             if (adapter == null)
             {
-                GetAdapter<TDestination, TSource>(true).Map(source, destination);
+                var flipped = GetAdapter<TDestination, TSource>(false);
+                if (flipped == null) throw new OltAdapterNotFoundException<TSource, TDestination>();
+                flipped.Map(source, destination);
             }
             else
             {
@@ -130,14 +138,13 @@ namespace OLT.Core
                    GetAdapter(this.GetAdapterName<TDestination, TSource>(), false) is IOltAdapter<TDestination, TSource>;
         }
 
-
-        public virtual IOltAdapter<TSource, TDestination> GetAdapter<TSource, TDestination>(bool throwException = true)
+        public virtual IOltAdapter<TSource, TDestination>? GetAdapter<TSource, TDestination>(bool throwException = true)
         {
             var name = this.GetAdapterName<TSource, TDestination>();
             return GetAdapter(name, throwException) as IOltAdapter<TSource, TDestination>;
         }
 
-        protected virtual IOltAdapter GetAdapter(string adapterName, bool throwException = true)
+        protected virtual IOltAdapter? GetAdapter(string adapterName, bool throwException = true)
         {
             var adapter = Adapters.Find(p => p.Name == adapterName);
             if (adapter == null && throwException)

@@ -19,11 +19,13 @@ namespace OLT.DataAdapters.Tests.ProjectToTests.Adapters
 
         public IQueryable<QueryableAdapterObject3> Map(IQueryable<QueryableAdapterObject2> queryable)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return queryable.Select(entity => new QueryableAdapterObject3
             {
                 First = entity.Name.First,
                 Last = entity.Name.Last,
             });
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
     }
 }

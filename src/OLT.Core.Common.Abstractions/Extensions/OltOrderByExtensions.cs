@@ -41,7 +41,7 @@ namespace System.Linq
         /// <returns></returns>
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable, IOltSortParams sortParams)
         {
-            if (sortParams == null)
+            if (sortParams?.PropertyName == null)
             {
                 throw new ArgumentNullException(nameof(sortParams));
             }

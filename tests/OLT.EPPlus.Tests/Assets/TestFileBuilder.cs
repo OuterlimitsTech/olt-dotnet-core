@@ -7,6 +7,7 @@ using System.IO;
 
 namespace OLT.EPPlus.Tests.Assets
 {
+    [Obsolete]
     public class TestFileBuilder 
     {
         public IOltFileBase64 Build(TestFileBuilderRequest request)

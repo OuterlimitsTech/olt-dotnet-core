@@ -13,7 +13,7 @@ namespace OLT.Core
         public OltAdapterResolverAutoMapper(
             IServiceProvider serviceProvider) : base(serviceProvider)
         {
-            Mapper = serviceProvider.GetService<IMapper>();
+            Mapper = serviceProvider.GetRequiredService<IMapper>();
         }
 
         protected virtual IMapper Mapper { get; }
@@ -44,7 +44,7 @@ namespace OLT.Core
             return HasAutoMap<TSource, TDestination>() || base.CanProjectTo<TSource, TDestination>();
         }
 
-        public override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig> configAction = null)
+        public override IQueryable<TDestination> ProjectTo<TSource, TDestination>(IQueryable<TSource> source, Action<OltAdapterActionConfig>? configAction = null)
         {
 
             if (HasAutoMap<TSource, TDestination>())
@@ -67,7 +67,6 @@ namespace OLT.Core
         }
 
         #endregion
-
 
         #region [ Maps ]
 
