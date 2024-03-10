@@ -32,10 +32,10 @@ namespace OLT.Extensions.DependencyInjection.Tests.Assets
         }
 
         public override string Username => nameof(TestIdentity);
-        public override string UserPrincipalName => $"{nameof(TestIdentity)}@unittest.com";
+        public override string NameId => $"{nameof(TestIdentity)}@unittest.com";
         public override string Email => $"{nameof(TestIdentity)}@unittesting.com";
 
-        public override bool HasRole(string claimName)
+        public override bool HasRole(string? claimName)
         {
             return true;
         }

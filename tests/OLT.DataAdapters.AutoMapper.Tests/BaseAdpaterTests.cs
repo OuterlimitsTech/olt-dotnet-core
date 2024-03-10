@@ -18,7 +18,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests
             });
         }
 
-        protected ServiceProvider BuildProvider(List<Profile> maps = null)
+        protected ServiceProvider BuildProvider(List<Profile>? maps = null)
         {
             var services = new ServiceCollection();
             services.AddSingleton<IOltAdapterResolver, OltAdapterResolverAutoMapper>();

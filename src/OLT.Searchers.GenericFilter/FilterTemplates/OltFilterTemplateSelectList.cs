@@ -40,7 +40,7 @@ namespace OLT.Core
 
         }
 
-        public override string Formatted()
+        public override string? Formatted()
         {
             return ValueList.Find(p => p.Value == Value)?.Label ?? ValueList.Find(p => p.Value == _defaultValue.Value)?.Label; 
         }

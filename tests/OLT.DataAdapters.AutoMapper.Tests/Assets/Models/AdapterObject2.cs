@@ -7,7 +7,7 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Assets.Models
     public class AdapterObject2 : IAdapterObject
     {
         public int ObjectId { get; set; }
-        public OltPersonName Name { get; set; }
+        public OltPersonName? Name { get; set; }
 
         public static AdapterObject2 FakerData()
         {

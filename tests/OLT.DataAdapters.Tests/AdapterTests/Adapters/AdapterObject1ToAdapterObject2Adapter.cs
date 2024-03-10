@@ -1,11 +1,5 @@
 ﻿using OLT.Core;
 using OLT.DataAdapters.Tests.AdapterTests.Models;
-using OLT.DataAdapters.Tests.Assets.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.DataAdapters.Tests.AdapterTests
 {
@@ -22,8 +16,10 @@ namespace OLT.DataAdapters.Tests.AdapterTests
 
         public override void Map(BasicAdapterObject2 source, BasicAdapterObject1 destination)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             destination.FirstName = source.Name.First;
             destination.LastName = source.Name.Last;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
     }
 }

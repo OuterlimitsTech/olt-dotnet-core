@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace OLT.Email
 {
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public abstract class OltRecipientsArgs<T> : OltEmailArgsWhitelist<T>
       where T : OltRecipientsArgs<T>
     {
@@ -40,7 +41,8 @@ namespace OLT.Email
 
             return (T)this;
         }
-        
+
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public override OltEmailRecipientResult BuildRecipients()
         {
             var recipientResult = new OltEmailRecipientResult();

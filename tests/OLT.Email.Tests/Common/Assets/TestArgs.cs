@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Email.Tests.Common.Assets
 {
+    [Obsolete]
     public class TestArgs : OltFromEmailArgs<TestArgs>
     {
 

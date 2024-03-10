@@ -25,7 +25,7 @@ namespace OLT.AspNetCore.Serilog.Tests.BadRequest
                 using (var logger = new LoggerConfiguration().WriteTo.Sink(new TestCorrelatorSink()).Enrich.FromLogContext().CreateLogger())
                 {
                     Log.Logger = logger;
-                    var identity = testServer.Services.GetService<IOltIdentity>();
+                    var identity = testServer.Services.GetRequiredService<IOltIdentity>();
 
                     var request = testServer.CreateRequest("/api/bad-request");
                     var response = await request.GetAsync();

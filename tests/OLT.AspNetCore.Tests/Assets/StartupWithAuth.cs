@@ -1,4 +1,5 @@
-﻿using AspNetCore.Authentication.ApiKey;
+﻿#nullable disable
+using AspNetCore.Authentication.ApiKey;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -29,6 +29,7 @@ namespace OLT.EPPlus.Tests
 
     
         [Fact]
+        [Obsolete]
         public void ConvertToCsvTest()
         {
             string exportDirectory = String.Empty;

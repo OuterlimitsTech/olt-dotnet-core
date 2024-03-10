@@ -26,7 +26,7 @@ namespace OLT.AspNetCore.Serilog.Tests.RecordNotFound
                 using (var logger = new LoggerConfiguration().WriteTo.Sink(new TestCorrelatorSink()).Enrich.FromLogContext().CreateLogger())
                 {
                     Log.Logger = logger;
-                    var identity = testServer.Services.GetService<IOltIdentity>();
+                    var identity = testServer.Services.GetRequiredService<IOltIdentity>();
 
                     var request = testServer.CreateRequest("/api/record-not-found");
                     var response = await request.GetAsync();

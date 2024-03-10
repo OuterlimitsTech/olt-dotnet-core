@@ -18,7 +18,7 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();                
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();                
                 var adapter = new AdapterObject1ToAdapterObject2PagedAdapter();
                 var obj1 = PagedAdapterObject1.FakerData();
 

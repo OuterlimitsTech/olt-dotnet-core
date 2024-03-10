@@ -25,7 +25,7 @@ namespace OLT.AspNetCore.Serilog.Tests.Identity
                 using (var logger = new LoggerConfiguration().WriteTo.Sink(new TestCorrelatorSink()).Enrich.FromLogContext().CreateLogger())
                 {
                     Log.Logger = logger;
-                    var identity = testServer.Services.GetService<IOltIdentity>();
+                    var identity = testServer.Services.GetRequiredService<IOltIdentity>();
 
                     var response = await testServer.CreateRequest("/api").SendAsync("GET");
                     Assert.Equal(HttpStatusCode.OK, response.StatusCode);

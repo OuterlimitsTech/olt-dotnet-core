@@ -23,14 +23,16 @@ namespace OLT.DataAdapters.AutoMapper.Tests.Adapters
             return queryable.Select(entity => new AdapterObject5
             {
                 ObjectId = entity.ObjectId,
-                First = entity.Name.First, 
-                Last = entity.Name.Last,
+                First = entity.Name!.First, 
+                Last = entity.Name!.Last,
             });
         }
 
         public override IOrderedQueryable<AdapterObject2> DefaultOrderBy(IQueryable<AdapterObject2> queryable)
         {
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             return queryable.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First).ThenBy(p => p.ObjectId);
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
   

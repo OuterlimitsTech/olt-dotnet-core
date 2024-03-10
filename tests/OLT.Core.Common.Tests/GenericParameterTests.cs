@@ -16,7 +16,7 @@ public class GenericParameterTests
         var values = new Dictionary<string, string>
             {
                 {"Key1", Faker.Name.First()},
-                {"Key2", null },
+                {"Key2", string.Empty },
                 {"Key3", numVal.ToString() }
             };
 

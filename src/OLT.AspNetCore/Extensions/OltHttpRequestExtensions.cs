@@ -122,7 +122,8 @@ namespace OLT.Core
         public static OltGenericParameter ToOltGenericParameter(this IQueryCollection value)
         {
             ArgumentNullException.ThrowIfNull(value);
-            return new OltGenericParameter(value.ToDictionary(k => k.Key, v => v.Value.ToString()));
+            var values = value.ToDictionary(k => k.Key, v => v.Value.ToString());
+            return new OltGenericParameter(values);
         }
 
         /// <summary>

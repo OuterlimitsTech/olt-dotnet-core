@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace OLT.Email
 {
-
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public abstract class OltEmailBuilderArgs : IOltEmailClient 
     {
         
@@ -26,6 +26,7 @@ namespace OLT.Email
             return new List<string>();
         }
 
+        [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
         public abstract OltEmailRecipientResult BuildRecipients();        
         
     }

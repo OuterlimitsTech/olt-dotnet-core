@@ -21,11 +21,11 @@ namespace OLT.AspNetCore.Serilog.Tests.General
                 opts.ShowExceptionDetails = true;
             };
 
-            Assert.Throws<ArgumentNullException>("services", () => OltSerilogAspNetCoreExtensions.AddOltSerilog(null, null));
+            Assert.Throws<ArgumentNullException>("services", () => OltSerilogAspNetCoreExtensions.AddOltSerilog(null!, null!));
 
             try
             {
-                OltSerilogAspNetCoreExtensions.AddOltSerilog(services, null);
+                OltSerilogAspNetCoreExtensions.AddOltSerilog(services, null!);
                 OltSerilogAspNetCoreExtensions.AddOltSerilog(services, action);
                 Assert.True(true);
             }
@@ -47,7 +47,7 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             };
 
             var app = new ApplicationBuilder(services.BuildServiceProvider());
-            Assert.Throws<ArgumentNullException>("app", () => OltSerilogAspNetCoreExtensions.UseOltSerilogRequestLogging(null, null));
+            Assert.Throws<ArgumentNullException>("app", () => OltSerilogAspNetCoreExtensions.UseOltSerilogRequestLogging(null!, null));
 
 
             try

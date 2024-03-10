@@ -13,7 +13,7 @@ namespace OLT.DataAdapters.Tests.AdapterTests
         {
             using (var provider = BuildProvider())
             {
-                var adapterResolver = provider.GetService<IOltAdapterResolver>();                
+                var adapterResolver = provider.GetRequiredService<IOltAdapterResolver>();                
                 var adapter = new AdapterObject1ToAdapterObject2Adapter();
                 var obj1 = BasicAdapterObject1.FakerData();
 

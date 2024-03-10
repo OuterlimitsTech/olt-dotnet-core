@@ -9,7 +9,7 @@
 
     public interface IOltGenericParameterParser<out TValueType> : IOltGenericParameterParser
     {        
-        TValueType? Value { get; }
+        TValueType Value { get; }
     }
 
 }

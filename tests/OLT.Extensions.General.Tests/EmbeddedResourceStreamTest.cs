@@ -139,19 +139,6 @@ namespace OLT.Extensions.General.Tests
         }
 
 
-        [Fact]
-        public void GetReferencedAssemblies()
-        {
-            var self = this.GetType().Assembly;
-            var list = new List<Assembly>
-            {
-                self,
-                self,
-            };
-
-            Assert.True(self.GetAllReferencedAssemblies().Count > 0);
-            Assert.True(list.ToArray().GetAllReferencedAssemblies().Count > 0);
-            Assert.True(list.GetAllReferencedAssemblies().Count > 0);
-        }
+       
     }
 }

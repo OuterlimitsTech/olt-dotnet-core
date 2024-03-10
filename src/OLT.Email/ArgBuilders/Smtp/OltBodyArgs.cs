@@ -1,10 +1,12 @@
-﻿using OLT.Constants;
+﻿#nullable disable
+using OLT.Constants;
 using System;
 using System.Collections.Generic;
 using System.Net.Mail;
 
 namespace OLT.Email
 {
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public abstract class OltBodyArgs<T> : OltSubjectLineArgs<T>
         where T : OltBodyArgs<T>
     {

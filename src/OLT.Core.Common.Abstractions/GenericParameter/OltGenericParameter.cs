@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public class OltGenericParameter : IOltGenericParameter
     {
@@ -28,7 +24,7 @@ namespace OLT.Core
                     // Do Nothing
                 }
             }
-            return default(T);
+            return default;
         }
 
 
@@ -50,7 +46,7 @@ namespace OLT.Core
             return defaultValue;
         }
 
-        public object GetValue(string key)
+        public string GetValue(string key)
         {
             return Values.FirstOrDefault(p => p.Key.Equals(key, StringComparison.OrdinalIgnoreCase)).Value;
         }

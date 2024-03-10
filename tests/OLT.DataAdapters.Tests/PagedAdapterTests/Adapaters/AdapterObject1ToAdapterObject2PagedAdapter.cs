@@ -24,8 +24,8 @@ namespace OLT.DataAdapters.Tests.PagedAdapterTests.Adapters
 
         public override void Map(PagedAdapterObject2 source, PagedAdapterObject1 destination)
         {
-            destination.FirstName = source.Name.First;
-            destination.LastName = source.Name.Last;
+            destination.FirstName = source.Name?.First;
+            destination.LastName = source.Name?.Last;
         }
 
         public override IQueryable<PagedAdapterObject2> Map(IQueryable<PagedAdapterObject1> queryable)

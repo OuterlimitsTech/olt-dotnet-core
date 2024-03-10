@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿#nullable disable
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using OLT.Constants;
 using SendGrid.Helpers.Mail;
@@ -9,7 +10,8 @@ using System.Net;
 using System.Threading.Tasks;
 
 namespace OLT.Email.SendGrid
-{    
+{
+    [Obsolete("OLT.Email is being deprecated in favor of jcamp.FluentEmail")]
     public abstract class OltTemplateArgs<T> : OltEnableSandboxArgs<T>
         where T : OltTemplateArgs<T>
     {

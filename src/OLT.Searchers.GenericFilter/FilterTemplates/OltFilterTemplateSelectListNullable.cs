@@ -27,7 +27,7 @@ namespace OLT.Core
             return HasValue;
         }
 
-        public override string Formatted()
+        public override string? Formatted()
         {
             return Value == null ? null : ValueList.Find(p => p.Value == Value.Value)?.Label;
         }
