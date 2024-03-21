@@ -15,6 +15,7 @@
 | [OLT.AspNetCore.Versioning](./src/OLT.AspNetCore.Versioning/)                                                 | [![Nuget](https://img.shields.io/nuget/v/OLT.AspNetCore.Versioning)](https://www.nuget.org/packages/OLT.AspNetCore.Versioning)                                                 |
 | [OLT.Core.CommandBus](./src/OLT.Core.CommandBus/)                                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.Core.CommandBus)](https://www.nuget.org/packages/OLT.Core.CommandBus)                                                             |
 | [OLT.Core.Common](./src/OLT.Core.Common/)                                                                     | [![Nuget](https://img.shields.io/nuget/v/OLT.Core.Common)](https://www.nuget.org/packages/OLT.Core.Common)                                                                     |
+| [OLT.Core.Common.Abstractions](./src/OLT.Core.Common.Abstractions/)                                           | [![Nuget](https://img.shields.io/nuget/v/OOLT.Core.Common.Abstractions)](https://www.nuget.org/packages/OLT.Core.Common.Abstractions)                                          |
 | [OLT.Core.Services](./src/OLT.Core.Services/)                                                                 | [![Nuget](https://img.shields.io/nuget/v/OLT.Core.Services)](https://www.nuget.org/packages/OLT.Core.Services)                                                                 |
 | [OLT.DataAdapters](./src/OLT.DataAdapters/)                                                                   | [![Nuget](https://img.shields.io/nuget/v/OLT.DataAdapters)](https://www.nuget.org/packages/OLT.DataAdapters)                                                                   |
 | [OLT.DataAdapters.AutoMapper](./src/OLT.DataAdapters.AutoMapper/)                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.DataAdapters.AutoMapper)](https://www.nuget.org/packages/OLT.DataAdapters.AutoMapper)                                             |
@@ -22,7 +23,6 @@
 | [OLT.EF.Core.SeedHelpers.Csv](./src/OLT.EF.Core.SeedHelpers.Csv/)                                             | [![Nuget](https://img.shields.io/nuget/v/OLT.EF.Core.SeedHelpers.Csv)](https://www.nuget.org/packages/OLT.EF.Core.SeedHelpers.Csv)                                             |
 | [OLT.EF.Core.Services](./src/OLT.EF.Core.Services/)                                                           | [![Nuget](https://img.shields.io/nuget/v/OLT.EF.Core.Services)](https://www.nuget.org/packages/OLT.EF.Core.Services)                                                           |
 | [OLT.EF.Core.SqlServer](./src/OLT.EF.Core.SqlServer/)                                                         | [![Nuget](https://img.shields.io/nuget/v/OLT.EF.Core.SqlServer)](https://www.nuget.org/packages/OLT.EF.Core.SqlServer)                                                         |
-| [OLT.EPPlus](./src/OLT.EPPlus/)                                                                               | [![Nuget](https://img.shields.io/nuget/v/OLT.EPPlus)](https://www.nuget.org/packages/OLT.EPPlus)                                                                               |
 | [OLT.Extensions.Caching.Memory](./src/OLT.Extensions.Caching.Memory/)                                         | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Caching.Memory)](https://www.nuget.org/packages/OLT.Extensions.Caching.Memory)                                         |
 | [OLT.Extensions.Caching.Redis](./src/OLT.Extensions.Caching.Redis/)                                           | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Caching.Redis)](https://www.nuget.org/packages/OLT.Extensions.Caching.Redis)                                           |
 | [OLT.Extensions.Caching.Shared](./src/OLT.Extensions.Caching.Shared/)                                         | [![Nuget](https://img.shields.io/nuget/v/OLT.Extensions.Caching.Shared)](https://www.nuget.org/packages/OLT.Extensions.Caching.Shared)                                         |
@@ -41,11 +41,12 @@
 
 ## MOVED TO NEW REPO
 
-| Library                                                       | New Repo                                                                                           |
-| ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| [OLT.Email](./src/OLT.Email/)                                 | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid) |
-| [OLT.Email.SendGrid](./src/OLT.Email.SendGrid/)               | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid) |
-| [OLT.Email.SendGrid.Shared](./src/OLT.Email.SendGrid.Shared/) | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid) |
+| Library                   | New Repo                                                                                                                           |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| OLT.EPPlus                | [https://github.com/OuterlimitsTech/olt-dotnet-extensions-epplus](https://github.com/OuterlimitsTech/olt-dotnet-extensions-epplus) |
+| OLT.Email                 | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid)                                 |
+| OLT.Email.SendGrid        | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid)                                 |
+| OLT.Email.SendGrid.Shared | [https://github.com/OuterlimitsTech/olt-sendgrid](https://github.com/OuterlimitsTech/olt-sendgrid)                                 |
 
 ## DEPRECATED LIBRARIES
 
