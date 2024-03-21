@@ -31,6 +31,7 @@ namespace System.Collections.Generic
         /// <param name="insertSpaces">Whether to insert a space after each separator</param>
         /// <returns>A delimited string</returns>
         /// <remarks>This was implemented pre-linq and <see cref="StringBuilder"/> is faster with a large amount of data</remarks>
+        [Obsolete("Removed in 9.x")]
         public static string ToDelimitedString(this List<string> list, string delimiter = ":", bool insertSpaces = false, string qualifier = "")
         {
             var result = new StringBuilder();
