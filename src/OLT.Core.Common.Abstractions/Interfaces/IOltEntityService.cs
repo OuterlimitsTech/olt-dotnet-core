@@ -25,6 +25,24 @@ namespace OLT.Core
         Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
         Task<TModel?> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="searcher"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        TModel GetSafe<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="searcher"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
+
         IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null) where TModel : class, new();
         Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)  where TModel : class, new();
 

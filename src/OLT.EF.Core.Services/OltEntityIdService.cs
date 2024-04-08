@@ -30,25 +30,11 @@ namespace OLT.Core
 
         public virtual async Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted));
 
-        /// <summary>
-        /// Null Safe Get
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="includeDeleted"></param>
-        /// <returns></returns>
-        /// <exception cref="OltRecordNotFoundException"></exception>
-        protected virtual TModel GetSafe<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
-        /// <summary>
-        /// Null Safe Get
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="id"></param>
-        /// <param name="includeDeleted"></param>
-        /// <returns></returns>
-        /// <exception cref="OltRecordNotFoundException"></exception>
-        protected virtual async Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+        public virtual TModel GetSafe<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+
+        public virtual async Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
         #endregion
 
