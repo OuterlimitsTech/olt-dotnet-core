@@ -79,28 +79,12 @@ namespace OLT.Core
             return await GetAsync<TModel>(queryable);
         }
 
-
-        /// <summary>
-        /// Null Safe Get
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="searcher"></param>
-        /// <returns></returns>
-        /// <exception cref="OltRecordNotFoundException"></exception>
-        protected virtual TModel GetSafe<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+        public virtual TModel GetSafe<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
             => this.Get<TModel>(GetQueryable(searcher)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
 
-        /// <summary>
-        /// Null Safe Get
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="searcher"></param>
-        /// <returns></returns>
-        /// <exception cref="OltRecordNotFoundException"></exception>
-        protected virtual async Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+        public virtual async Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
             => await this.GetAsync<TModel>(GetQueryable(searcher)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
-
 
         #endregion
 

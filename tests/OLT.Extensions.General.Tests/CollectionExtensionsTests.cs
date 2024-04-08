@@ -43,6 +43,7 @@ namespace OLT.Extensions.General.Tests
 
         [Theory]
         [MemberData(nameof(DelimitedStringData))]
+        [Obsolete]
         public void DelimitedString(HelperToDelimitedString request)
         {
             Assert.Equal(request.Expected, request.Values.ToDelimitedString(request.Delimiter, request.InsertSpaces, request.Qualifier));

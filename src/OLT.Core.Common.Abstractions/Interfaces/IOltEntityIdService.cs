@@ -11,6 +11,26 @@ namespace OLT.Core
 
         Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
 
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="includeDeleted"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        TModel GetSafe<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="includeDeleted"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+
         TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
 
         TResponseModel Update<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)

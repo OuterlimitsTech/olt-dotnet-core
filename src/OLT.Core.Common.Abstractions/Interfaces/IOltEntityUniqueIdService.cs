@@ -9,6 +9,24 @@ namespace OLT.Core
         TModel? Get<TModel>(Guid uid) where TModel : class, new();
         Task<TModel?> GetAsync<TModel>(Guid uid) where TModel : class, new();
 
+        /// <summary>
+        /// Null safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        TModel GetSafe<TModel>(Guid uid) where TModel : class, new();
+
+        /// <summary>
+        /// Null safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        Task<TModel> GetSafeAsync<TModel>(Guid uid) where TModel : class, new();
+
         TModel Update<TModel>(Guid uid, TModel model) where TModel : class, new();
 
         TResponseModel Update<TResponseModel, TSaveModel>(Guid uid, TSaveModel model)

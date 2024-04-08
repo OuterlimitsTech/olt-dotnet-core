@@ -237,6 +237,11 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.NotNull(await service.GetAsync<PersonDto>(model.PersonId.Value, true));
                 Assert.Null(await service.GetAsync<PersonDto>(model.PersonId.Value));
                 Assert.Null(await service.GetAsync<PersonDto>(model.PersonId.Value, false));
+
+                //Get Safe
+                Assert.NotNull(await service.GetSafeAsync<PersonDto>(model.PersonId.Value, true));
+                await Assert.ThrowsAsync<OltRecordNotFoundException>(() => service.GetSafeAsync<PersonDto>(model.PersonId.Value, false));
+
             }
 
             using (var provider = BuildProvider())
@@ -258,6 +263,13 @@ namespace OLT.EF.Core.Services.Tests
                 Assert.NotNull(service.Get<PersonDto>(model.PersonId.Value, true));
                 Assert.Null(service.Get<PersonDto>(model.PersonId.Value));
                 Assert.Null(service.Get<PersonDto>(model.PersonId.Value, false));
+
+
+                //Get Safe
+                Assert.NotNull(service.GetSafe<PersonDto>(model.PersonId.Value, true));
+                Assert.Throws<OltRecordNotFoundException>(() => service.GetSafe<PersonDto>(model.PersonId.Value, false));
+
+
             }
         }
 
@@ -278,8 +290,32 @@ namespace OLT.EF.Core.Services.Tests
                 var service = provider.GetRequiredService<IPersonService>();
 
                 var expected = service.Add(PersonDto.FakerEntity());
+                var subject = await service.GetSafeAsync<PersonDto>(expected.PersonId.GetValueOrDefault());
+                subject.Should().BeEquivalentTo(expected);
+
+                await Assert.ThrowsAsync<OltRecordNotFoundException>(() => service.GetSafeAsync<PersonDto>(Faker.RandomNumber.Next(-100, -1), false));
+                await Assert.ThrowsAsync<OltRecordNotFoundException>(() => service.GetSafeAsync<PersonDto>(Faker.RandomNumber.Next(-100, -1), true));
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetRequiredService<IPersonService>();
+
+                var expected = service.Add(PersonDto.FakerEntity());
                 var subject = service.Get<PersonDto>(expected.PersonId.GetValueOrDefault());
                 subject.Should().BeEquivalentTo(expected);
+            }
+
+            using (var provider = BuildProvider())
+            {
+                var service = provider.GetRequiredService<IPersonService>();
+
+                var expected = service.Add(PersonDto.FakerEntity());
+                var subject = service.GetSafe<PersonDto>(expected.PersonId.GetValueOrDefault());
+                subject.Should().BeEquivalentTo(expected);
+
+                Assert.Throws<OltRecordNotFoundException>(() => service.GetSafe<PersonDto>(Faker.RandomNumber.Next(-100, -1), false));
+                Assert.Throws<OltRecordNotFoundException>(() => service.GetSafe<PersonDto>(Faker.RandomNumber.Next(-100, -1), true));
             }
 
         }

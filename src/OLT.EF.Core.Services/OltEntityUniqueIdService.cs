@@ -29,24 +29,11 @@ namespace OLT.Core
 
         public virtual async Task<TModel?> GetAsync<TModel>(Guid uid) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(uid));
 
-        /// <summary>
-        /// Null safe Get
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="uid"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        protected virtual TModel GetSafe<TModel>(Guid uid) where TModel : class, new() 
+
+        public virtual TModel GetSafe<TModel>(Guid uid) where TModel : class, new() 
             => Get<TModel>(GetQueryable(uid)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
-        /// <summary>
-        /// Null safe Get
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="uid"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        protected virtual async Task<TModel> GetSafeAsync<TModel>(Guid uid) where TModel : class, new() 
+        public virtual async Task<TModel> GetSafeAsync<TModel>(Guid uid) where TModel : class, new() 
             => await GetAsync<TModel>(GetQueryable(uid)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
         #endregion
