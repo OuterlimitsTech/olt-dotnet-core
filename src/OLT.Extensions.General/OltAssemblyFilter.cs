@@ -36,8 +36,14 @@ namespace OLT.Core
         public List<string> ExcludeFilters { get; set; } = new List<string>();
 
         public virtual IEnumerable<Assembly> FilterAssemblies(IEnumerable<Assembly> assemblies)
-        {
-            return Filters.Count > 0 ? assemblies.Where(ShouldIncludeAssembly) : assemblies;
+        {            
+            if (Filters.Count > 0 || ExcludeFilters.Count > 0)
+            {
+                var filtered = Filters.Count > 0 ? assemblies.Where(ShouldIncludeAssembly) : assemblies;
+                return ExcludeFilters.Count > 0 ? filtered.Where(p => ShouldExcludeAssembly(p) == false) : filtered;
+            }
+
+            return assemblies;            
         }        
 
       
