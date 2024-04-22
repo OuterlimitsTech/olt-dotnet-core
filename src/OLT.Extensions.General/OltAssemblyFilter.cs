@@ -4,12 +4,9 @@ using System.Linq;
 using System.Reflection;
 
 namespace OLT.Core
-{
-    
+{    
     public class OltAssemblyFilter
     {
-
-
         /// <summary>
         /// OLT.*, MyApp.*
         /// </summary>
@@ -34,15 +31,6 @@ namespace OLT.Core
             this.ExcludeFilters = new List<string> { "Microsoft.*", "System.*" };
             return this;
         }
-
-     
-        //public static TFilter DefaultForInjection<TFilter>() where TFilter: OltAssemblyFilter, new ()
-        //{
-        //    return new TFilter()
-        //    {
-        //        ExcludeFilters = new List<string> { "Microsoft.*", "System.*" }
-        //    };
-        //}
 
         public List<string> Filters { get; set; } = new List<string>();
         public List<string> ExcludeFilters { get; set; } = new List<string>();
@@ -95,16 +83,7 @@ namespace OLT.Core
 
         public virtual void RemoveAll(List<Assembly> assemblies, string excludeName)
         {
-            if (excludeName.EndsWith("*"))
-            {
-                var wildCard = excludeName.Replace("*", string.Empty);
-                assemblies.RemoveAll(p => p.FullName != null && p.FullName.StartsWith(wildCard, StringComparison.OrdinalIgnoreCase));
-                return;
-            }
-
-            assemblies.RemoveAll(p => p.FullName != null && p.FullName.Equals(excludeName, StringComparison.OrdinalIgnoreCase));
+            assemblies.RemoveAll(p => MatchesFilter(p, excludeName));
         }
-
     }
-
 }

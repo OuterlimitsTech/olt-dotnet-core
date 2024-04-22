@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Xunit;
+using FluentAssertions;
 
 namespace OLT.Extensions.DependencyInjection.AutoMapper.Tests
 {
@@ -19,41 +20,24 @@ namespace OLT.Extensions.DependencyInjection.AutoMapper.Tests
             Action<IMapperConfigurationExpression> configAction = null;
 
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null));
+
             Assert.Throws<ArgumentNullException>("includeAssemblyScan", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullRef));
+            Assert.Throws<ArgumentNullException>("includeAssemblyScan", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullRef, new OltAutoMapperAssemblyFilter()));
+
             Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullList));
+            Assert.Throws<ArgumentNullException>("services", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(null, nullList, new OltAutoMapperAssemblyFilter()));
 
             Assert.Throws<ArgumentNullException>("includeAssemblyScan", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, nullRef));
+            Assert.Throws<ArgumentNullException>("includeAssemblyScan", () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, nullRef, new OltAutoMapperAssemblyFilter()));
 
-            try
-            {
-                OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, nullList);
-                Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            var act = () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, nullList);
+            act.Should().NotThrow<ArgumentNullException>();
 
-            try
-            {
-                OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, new List<Assembly>() { this.GetType().Assembly }, configAction);
-                Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
+            act = () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, new List<Assembly>() { this.GetType().Assembly }, configAction);
+            act.Should().NotThrow<ArgumentNullException>();
 
-            try
-            {
-                OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, new List<Assembly>() { this.GetType().Assembly }, cfg => cfg.DisableConstructorMapping(), ServiceLifetime.Scoped);
-                Assert.True(true);
-            }
-            catch
-            {
-                Assert.True(false);
-            }
-
+            act = () => OltServiceCollectionAutoMapperExtensions.AddOltInjectionAutoMapper(services, new List<Assembly>() { this.GetType().Assembly }, cfg => cfg.DisableConstructorMapping(), ServiceLifetime.Scoped);
+            act.Should().NotThrow<ArgumentNullException>();
         }
 
         [Fact]
