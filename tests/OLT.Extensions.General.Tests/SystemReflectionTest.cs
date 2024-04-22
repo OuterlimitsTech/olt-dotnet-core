@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using FluentAssertions;
 using OLT.Core;
 using OLT.Extensions.General.Tests.Assets.Interface;
 using Xunit;
@@ -60,6 +61,7 @@ namespace OLT.Extensions.General.Tests
             };
 
             Assert.Equal(4, filter.Filters.Count);
+            Assert.Empty(filter.ExcludeFilters);
             //var test = list.GetAllReferencedAssemblies(filter).ToList();
             Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
             Assert.Equal(2, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
@@ -100,5 +102,30 @@ namespace OLT.Extensions.General.Tests
             Assert.Throws<InvalidOperationException>(() => new TestIterface4().GetType().Implements(typeof(TestIterface5<>)));
             
         }
+
+        [Fact]
+        public void GetReferencedWithExcludeFilterAssemblies()
+        {
+            var filter = new Core.OltAssemblyFilter().WithDefaultDIExclusionFilters();
+
+            var self = this.GetType().Assembly;
+            var list = new List<Assembly>
+            {
+                self,
+            };
+
+            Assert.Empty(filter.Filters);
+            Assert.Equal(2, filter.ExcludeFilters.Count);
+            var filtered = list.GetAllReferencedAssemblies(filter).ToList();
+
+            filtered.Should().NotContain(p => p.FullName.StartsWith("Microsoft"));
+            filtered.Should().NotContain(p => p.FullName.StartsWith("System"));
+
+            //By including and excluding the same filter should result in zero results
+            filtered = list.GetAllReferencedAssemblies(new OltAssemblyFilter("Microsoft.*", "System.*").WithDefaultDIExclusionFilters()).ToList();
+            Assert.Empty(filtered);
+        }
+
+        
     }
 }

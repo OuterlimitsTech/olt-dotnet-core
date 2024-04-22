@@ -40,7 +40,7 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
   </ItemGroup>
 	
   <ItemGroup>
