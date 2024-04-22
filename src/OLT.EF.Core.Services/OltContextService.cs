@@ -22,7 +22,7 @@ namespace OLT.Core
         #region [ Save Changes ]
 
         protected virtual int SaveChanges() => Context.SaveChanges();
-        protected virtual async Task<int> SaveChangesAsync() => await Context.SaveChangesAsync(CancellationToken.None);
+        protected virtual async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => await Context.SaveChangesAsync(cancellationToken);
 
         #endregion
 
@@ -84,20 +84,20 @@ namespace OLT.Core
             where TModel : class, new()
             => MapList<TEntity, TModel>(queryable);
 
-        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy)
+        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken = default)
             where TEntity : class, IOltEntity
             where TModel : class, new()
-            => await this.GetAllAsync<TEntity, TModel>(this.GetQueryable(searcher, orderBy));
+            => await this.GetAllAsync<TEntity, TModel>(this.GetQueryable(searcher, orderBy), cancellationToken);
 
-        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher)
+        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default)
             where TEntity : class, IOltEntity
             where TModel : class, new()
-            => await this.GetAllAsync<TEntity, TModel>(this.GetQueryable(searcher));
+            => await this.GetAllAsync<TEntity, TModel>(this.GetQueryable(searcher), cancellationToken);
 
-        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TEntity, TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default)
             where TEntity : class, IOltEntity
             where TModel : class, new()
-            => await MapListAsync<TEntity, TModel>(queryable);
+            => await MapListAsync<TEntity, TModel>(queryable, cancellationToken);
 
 
         #endregion
@@ -114,15 +114,15 @@ namespace OLT.Core
             where TEntity : class, IOltEntity
             => MapFirst<TEntity, TModel>(queryable);
 
-        protected virtual async Task<TModel?> GetAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher)
+        protected virtual async Task<TModel?> GetAsync<TEntity, TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default)
             where TModel : class, new()
             where TEntity : class, IOltEntity
-            => await MapFirstAsync<TEntity, TModel>(this.GetQueryable(searcher));
+            => await MapFirstAsync<TEntity, TModel>(this.GetQueryable(searcher), cancellationToken);
 
-        protected virtual async Task<TModel?> GetAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual async Task<TModel?> GetAsync<TEntity, TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default)
             where TModel : class, new()
             where TEntity : class, IOltEntity
-            => await MapFirstAsync<TEntity, TModel>(queryable);
+            => await MapFirstAsync<TEntity, TModel>(queryable, cancellationToken);
 
 
         #endregion
@@ -144,14 +144,14 @@ namespace OLT.Core
 
         }
 
-        protected virtual async Task<bool> MarkDeletedAsync<TEntity>(TEntity entity)
+        protected virtual async Task<bool> MarkDeletedAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
             where TEntity : class, IOltEntity
         {
             if (entity is IOltEntityDeletable deletableEntity)
             {
                 deletableEntity.DeletedOn = DateTimeOffset.Now;
                 deletableEntity.DeletedBy = Context.AuditUser;
-                await SaveChangesAsync();
+                await SaveChangesAsync(cancellationToken);
                 return true;
             }
 
@@ -170,10 +170,10 @@ namespace OLT.Core
             return queryable.Count();
         }
 
-        protected virtual async Task<int> CountAsync<TEntity>(IQueryable<TEntity> queryable)
+        protected virtual async Task<int> CountAsync<TEntity>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default)
             where TEntity : class, IOltEntity
         {
-            return await queryable.CountAsync();
+            return await queryable.CountAsync(cancellationToken);
         }
 
         #endregion
@@ -186,10 +186,10 @@ namespace OLT.Core
             return queryable.Any();
         }
 
-        protected virtual async Task<bool> AnyAsync<TEntity>(IQueryable<TEntity> queryable)
+        protected virtual async Task<bool> AnyAsync<TEntity>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default)
             where TEntity : class, IOltEntity
         {
-            return await queryable.AnyAsync();
+            return await queryable.AnyAsync(cancellationToken);
         }
 
         #endregion
@@ -209,7 +209,7 @@ namespace OLT.Core
             throw new OltAdapterNotFoundException(OltAdapterExtensions.BuildAdapterName<TEntity, TModel>());
         }
 
-        protected virtual async Task<IOltPaged<TModel>> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
+        protected virtual async Task<IOltPaged<TModel>> MapPagedAsync<TEntity, TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {
@@ -217,7 +217,7 @@ namespace OLT.Core
             {
                 queryable = orderBy == null ? ServiceManager.AdapterResolver.ApplyDefaultOrderBy<TEntity, TModel>(queryable) : orderBy(queryable);
                 var mapped = ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable, config => config.DisableBeforeMap = true);
-                return await OltEfCoreQueryableExtensions.ToPagedAsync(mapped, pagingParams);
+                return await OltEfCoreQueryableExtensions.ToPagedAsync(mapped, pagingParams, cancellationToken);
             }
             throw new OltAdapterNotFoundException(OltAdapterExtensions.BuildAdapterName<TEntity, TModel>());
         }
@@ -234,16 +234,16 @@ namespace OLT.Core
             return ServiceManager.AdapterResolver.Map<TEntity, TModel>(list);
         }
 
-        protected virtual async Task<IEnumerable<TModel>> MapListAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual async Task<IEnumerable<TModel>> MapListAsync<TEntity, TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {
             if (ServiceManager.AdapterResolver.CanProjectTo<TEntity, TModel>())
             {
-                return await ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable).ToListAsync();
+                return await ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable).ToListAsync(cancellationToken);
             }
 
-            var list = await queryable.ToListAsync();
+            var list = await queryable.ToListAsync(cancellationToken);
             return ServiceManager.AdapterResolver.Map<TEntity, TModel>(list);
         }
 
@@ -261,17 +261,17 @@ namespace OLT.Core
             return ServiceManager.AdapterResolver.Map(entity, model);
         }
 
-        protected virtual async Task<TModel?> MapFirstAsync<TEntity, TModel>(IQueryable<TEntity> queryable)
+        protected virtual async Task<TModel?> MapFirstAsync<TEntity, TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default)
             where TModel : class, new()
             where TEntity : class, IOltEntity
         {
             if (ServiceManager.AdapterResolver.CanProjectTo<TEntity, TModel>())
             {
-                return await ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable).FirstOrDefaultAsync();
+                return await ServiceManager.AdapterResolver.ProjectTo<TEntity, TModel>(queryable).FirstOrDefaultAsync(cancellationToken);
             }
 
             var model = new TModel();
-            var entity = await queryable.FirstOrDefaultAsync();
+            var entity = await queryable.FirstOrDefaultAsync(cancellationToken);
             return ServiceManager.AdapterResolver.Map(entity, model);
         }
 
@@ -279,26 +279,26 @@ namespace OLT.Core
 
         #region [ DB Transaction ]
 
-        protected virtual async Task<TResult> WithDbTransactionAsync<TResult>(Func<Task<TResult>> action)
+        protected virtual async Task<TResult> WithDbTransactionAsync<TResult>(Func<Task<TResult>> action, CancellationToken cancellationToken = default)
         {
             if (Context.Database.CurrentTransaction == null)
             {
-                using var transaction = await Context.Database.BeginTransactionAsync();
+                using var transaction = await Context.Database.BeginTransactionAsync(cancellationToken);
                 try
                 {
-                    var result = await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(transaction, action);
-                    await transaction.CommitAsync();
+                    var result = await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(transaction, action, cancellationToken);
+                    await transaction.CommitAsync(cancellationToken);
                     return result;
                 }
                 catch (Exception)
                 {
-                    await transaction.RollbackAsync();
+                    await transaction.RollbackAsync(cancellationToken);
                     throw;
                 }
             }
             else
             {
-                return await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
+                return await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action, cancellationToken);
             }
         }
 

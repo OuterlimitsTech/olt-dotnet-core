@@ -7,7 +7,7 @@ namespace OLT.Core
         where TEntity : class, IOltEntityUniqueId, IOltEntity
     {
         TModel? Get<TModel>(Guid uid) where TModel : class, new();
-        Task<TModel?> GetAsync<TModel>(Guid uid) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(Guid uid, CancellationToken cancellationToken = default) where TModel : class, new();
 
         /// <summary>
         /// Null safe Get
@@ -23,9 +23,10 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="uid"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="OltRecordNotFoundException"></exception>
-        Task<TModel> GetSafeAsync<TModel>(Guid uid) where TModel : class, new();
+        Task<TModel> GetSafeAsync<TModel>(Guid uid, CancellationToken cancellationToken = default) where TModel : class, new();
 
         TModel Update<TModel>(Guid uid, TModel model) where TModel : class, new();
 
@@ -33,16 +34,16 @@ namespace OLT.Core
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
-        Task<TModel> UpdateAsync<TModel>(Guid uid, TModel model) where TModel : class, new();
+        Task<TModel> UpdateAsync<TModel>(Guid uid, TModel model, CancellationToken cancellationToken = default) where TModel : class, new();
 
-        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(Guid uid, TSaveModel model)
+        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(Guid uid, TSaveModel model, CancellationToken cancellationToken = default)
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
         bool SoftDelete(Guid uid);
-        Task<bool> SoftDeleteAsync(Guid uid);
+        Task<bool> SoftDeleteAsync(Guid uid, CancellationToken cancellationToken = default);
 
         bool Any(Guid uid);
-        Task<bool> AnyAsync(Guid uid);
+        Task<bool> AnyAsync(Guid uid, CancellationToken cancellationToken = default);
     }
 }

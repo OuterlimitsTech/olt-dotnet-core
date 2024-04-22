@@ -9,7 +9,8 @@ namespace OLT.Core
     {
         TModel? Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
 
-        Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(int id, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false, CancellationToken cancellationToken = default) where TModel : class, new();
 
         /// <summary>
         /// Null Safe Get
@@ -26,10 +27,21 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="id"></param>
-        /// <param name="includeDeleted"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="OltRecordNotFoundException"></exception>
-        Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new();
+        Task<TModel> GetSafeAsync<TModel>(int id, CancellationToken cancellationToken = default) where TModel : class, new();
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="includeDeleted"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false, CancellationToken cancellationToken = default) where TModel : class, new();
 
         TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
 
@@ -37,16 +49,16 @@ namespace OLT.Core
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
-        Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
+        Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default) where TModel : class, new();
 
-        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
         bool SoftDelete(int id);
-        Task<bool> SoftDeleteAsync(int id);
+        Task<bool> SoftDeleteAsync(int id, CancellationToken cancellationToken = default);
 
         bool Any(int id);
-        Task<bool> AnyAsync(int id);
+        Task<bool> AnyAsync(int id, CancellationToken cancellationToken = default);
     }
 }
