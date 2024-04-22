@@ -76,7 +76,7 @@ namespace OLT.Core
             }
             
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
-            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies();
+            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies().ToList();
 
 
             filter.ExcludeFilter.ForEach(excludeName => RemoveExclusions(assembliesToScan, excludeName));
@@ -98,16 +98,16 @@ namespace OLT.Core
             return services.AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
         }
 
-        private static void RemoveExclusions(IEnumerable<Assembly> assemblies, string excludeName)
+        public static void RemoveExclusions(List<Assembly> assemblies, string excludeName)
         {
             if (excludeName.EndsWith("*")) 
             {
                 var wildCard = excludeName.Replace("*", string.Empty);
-                assemblies.ToList().RemoveAll(p => p.FullName != null && p.FullName.StartsWith(wildCard, StringComparison.OrdinalIgnoreCase));
+                assemblies.RemoveAll(p => p.FullName != null && p.FullName.StartsWith(wildCard, StringComparison.OrdinalIgnoreCase));
                 return;
             }
 
-            assemblies.ToList().RemoveAll(p => p.FullName != null && p.FullName.Equals(excludeName, StringComparison.OrdinalIgnoreCase));
+            assemblies.RemoveAll(p => p.FullName != null && p.FullName.Equals(excludeName, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
