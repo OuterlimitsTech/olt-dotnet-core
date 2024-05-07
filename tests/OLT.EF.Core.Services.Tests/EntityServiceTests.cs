@@ -238,7 +238,19 @@ namespace OLT.EF.Core.Services.Tests
                 var result = await service.GetSafeTestAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(model.UserGuid));
                 result.Should().BeEquivalentTo(model);
 
+                result = await service.GetSafeTestAsync<UserModel>(p => p.UniqueId == model.UserGuid);
+                result.Should().BeEquivalentTo(model);
+
+                result = await service.GetSafeTestAsync<UserModel>(false, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value));
+                result.Should().BeEquivalentTo(model);
+
                 Func<Task> action = async () => await service.GetSafeTestAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()));
+                await action.Should().ThrowAsync<OltRecordNotFoundException>();
+
+                action = async () => await service.GetSafeTestAsync<UserModel>(p => p.UniqueId == Guid.NewGuid());
+                await action.Should().ThrowAsync<OltRecordNotFoundException>();
+
+                action = async () => await service.GetSafeTestAsync<UserModel>(false, new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()), new OltSearcherGetById<UserEntity>(model.UserId.Value));
                 await action.Should().ThrowAsync<OltRecordNotFoundException>();
 
             }
@@ -251,7 +263,19 @@ namespace OLT.EF.Core.Services.Tests
                 var result = service.GetSafeTest<UserModel>(new OltSearcherGetByUid<UserEntity>(model.UserGuid));
                 result.Should().BeEquivalentTo(model);
 
+                result = service.GetSafeTest<UserModel>(p => p.UniqueId == model.UserGuid);
+                result.Should().BeEquivalentTo(model);
+
+                result = service.GetSafeTest<UserModel>(false, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value));
+                result.Should().BeEquivalentTo(model);
+
                 Action action = () => service.GetSafeTest<UserModel>(new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()));
+                action.Should().Throw<OltRecordNotFoundException>();
+
+                action = () => service.GetSafeTest<UserModel>(p => p.UniqueId == Guid.NewGuid());
+                action.Should().Throw<OltRecordNotFoundException>();
+
+                action = () => service.GetSafeTest<UserModel>(false, new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()), new OltSearcherGetById<UserEntity>(model.UserId.Value));
                 action.Should().Throw<OltRecordNotFoundException>();
             }
         }

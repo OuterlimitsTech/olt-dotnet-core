@@ -38,12 +38,52 @@ namespace OLT.Core
         /// Null Safe Get
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        TModel GetSafe<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="includeDeleted"></param>
+        /// <param name="searchers"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        TModel GetSafe<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
         /// <param name="searcher"></param>
         /// <returns></returns>
         /// <exception cref="OltRecordNotFoundException"></exception>
         Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
 
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        Task<TModel> GetSafeAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="includeDeleted"></param>
+        /// <param name="searchers"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        Task<TModel> GetSafeAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+
+
         IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null) where TModel : class, new();
+
         Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)  where TModel : class, new();
 
         TModel Add<TModel>(TModel model) where TModel : class, new();

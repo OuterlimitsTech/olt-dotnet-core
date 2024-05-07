@@ -27,7 +27,18 @@ namespace System
         /// <returns> age e.g. 26</returns>  
         public static int CalculateAge(this DateTime dateOfBirth)
         {
-            return (int)((DateTime.Now - dateOfBirth).TotalDays / 365.242199);
+            return CalculateAge(dateOfBirth, DateTime.Today);
+        }
+
+        /// <summary>  
+        /// For calculating only age  
+        /// </summary>  
+        /// <param name="dateOfBirth">Date of birth</param>  
+        /// <param name="fromDate">Age from Date</param>
+        /// <returns> age e.g. 26</returns>  
+        public static int CalculateAge(this DateTime dateOfBirth, DateTime fromDate)
+        {
+            return (int)((fromDate - dateOfBirth).TotalDays / 365.242199);
         }
 
         /// <summary>

@@ -1,12 +1,7 @@
 ﻿using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OLT.Core
 {
-    public interface IOltAfterCommandQueueItem
-    {   
-        Task PostExecuteAsync(IOltCommandBus commandBus);
-    }
 
     public record OltAfterCommandQueueItem(IOltPostCommandHandler Handler, IOltCommand Command, IOltCommandResult Result) : IOltAfterCommandQueueItem
     {

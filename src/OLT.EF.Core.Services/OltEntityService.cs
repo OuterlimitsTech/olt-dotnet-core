@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace OLT.Core
 {
@@ -25,7 +24,6 @@ namespace OLT.Core
         protected virtual DbSet<TEntity> Repository => Context.Set<TEntity>();
 
         #region [ Queryable Methods ]
-
 
         /// <summary>
         /// Initializes Queryable for Methods.  Override this for things like Inlude.
@@ -58,7 +56,7 @@ namespace OLT.Core
         public virtual TModel? Get<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
             => this.Get<TModel>(GetQueryable(includeDeleted, searchers));
 
-        public TModel? Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+        public virtual TModel? Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
         {
             var queryable = this.GetQueryable().Where(predicate);
             return Get<TModel>(queryable);
@@ -73,18 +71,31 @@ namespace OLT.Core
         protected virtual async Task<TModel?> GetAsync<TModel>(IQueryable<TEntity> queryable) where TModel : class, new()
             => await GetAsync<TEntity, TModel>(queryable);
 
-        public async Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+        public virtual async Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
         {
             var queryable = this.GetQueryable().Where(predicate);
             return await GetAsync<TModel>(queryable);
         }
 
         public virtual TModel GetSafe<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
-            => this.Get<TModel>(GetQueryable(searcher)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+            => this.Get<TModel>(searcher) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        public virtual TModel GetSafe<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+            => this.Get<TModel>(predicate) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        public virtual TModel GetSafe<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => this.Get<TModel>(includeDeleted, searchers) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
 
         public virtual async Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
-            => await this.GetAsync<TModel>(GetQueryable(searcher)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+            => await this.GetAsync<TModel>(searcher) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        public virtual async Task<TModel> GetSafeAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+            => await this.GetAsync<TModel>(predicate) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        public virtual async Task<TModel> GetSafeAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => await this.GetAsync<TModel>(includeDeleted, searchers) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
 
         #endregion
 
@@ -135,8 +146,6 @@ namespace OLT.Core
         #endregion
 
         #region [ Get Paged ]
-
-        
 
         public virtual IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)
             where TModel : class, new()
@@ -275,12 +284,12 @@ namespace OLT.Core
             return response;
         }
 
-        public async Task<List<TModel>> AddAsync<TModel>(List<TModel> list) where TModel : class, new()
+        public virtual async Task<List<TModel>> AddAsync<TModel>(List<TModel> list) where TModel : class, new()
         {
             return BuildResultList<TModel>(await AddFromListAsync(list));
         }
 
-        public async Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection) where TModel : class, new()
+        public virtual async Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection) where TModel : class, new()
         {
             return await AddAsync(collection.ToList());
         }
@@ -416,6 +425,6 @@ namespace OLT.Core
         }
 
         #endregion
-        
+
     }
 }
