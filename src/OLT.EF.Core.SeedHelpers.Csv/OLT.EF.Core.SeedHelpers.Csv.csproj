@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>Adds OltEntityTypeConfigurationFromCsv to allow seeding from a CSV embedded resource</Description>
     <ProjectGuid>e418066f-c034-4d88-8972-ea3874abedcb</ProjectGuid>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="30.0.1" />
+    <PackageReference Include="CsvHelper" Version="32.0.2" />
   </ItemGroup>
 
   <ItemGroup>
