@@ -63,20 +63,50 @@ namespace OLT.Core
             return Get<TModel>(queryable);
         }
 
-        public virtual async Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default) where TModel : class, new()
-            => await this.GetAsync<TModel>(GetQueryable(searcher), cancellationToken);
+        #endregion
 
-        public virtual async Task<TModel?> GetAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
-            => await this.GetAsync<TModel>(GetQueryable(includeDeleted, searchers), cancellationToken);
+        #region [ Get Async ]
 
-        protected virtual async Task<TModel?> GetAsync<TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default) where TModel : class, new()
-            => await GetAsync<TEntity, TModel>(queryable, cancellationToken);
+        protected virtual Task<TModel?> GetAsync<TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default) where TModel : class, new()
+            => GetAsync<TEntity, TModel>(queryable, cancellationToken);
 
-        public async Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) where TModel : class, new()
+        #region [Group]
+
+        public virtual Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+            => this.GetAsync<TModel>(GetQueryable(searcher), CancellationToken.None);
+
+        public virtual Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken) where TModel : class, new()
+            => this.GetAsync<TModel>(GetQueryable(searcher), cancellationToken);
+
+        #endregion
+
+        #region [Group ]
+
+        public virtual Task<TModel?> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => GetAsync<TModel>(includeDeleted, searchers);
+
+        public virtual Task<TModel?> GetAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => this.GetAsync<TModel>(GetQueryable(includeDeleted, searchers), cancellationToken);
+
+        #endregion
+
+        #region [Group]
+
+        public virtual Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+            => GetAsync<TModel>(predicate, CancellationToken.None);
+
+        public async Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken) where TModel : class, new()
         {
             var queryable = this.GetQueryable().Where(predicate);
             return await GetAsync<TModel>(queryable, cancellationToken);
         }
+
+        #endregion
+
+
+        #endregion
+
+        #region [ Get Safe ]
 
         /// <summary>
         /// Null Safe Get
@@ -108,6 +138,10 @@ namespace OLT.Core
         /// <exception cref="OltRecordNotFoundException"></exception>
         public virtual TModel GetSafe<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
             => this.Get<TModel>(includeDeleted, searchers) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        #endregion
+
+        #region [ Get Safe Async ]
 
         /// <summary>
         /// Null Safe Get
@@ -168,27 +202,64 @@ namespace OLT.Core
             return GetAll<TModel>(queryable);
         }
 
+        #endregion
 
-        protected virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default) where TModel : class, new()
-            => await GetAllAsync<TEntity, TModel>(queryable, cancellationToken);
+        #region [ Get All Async ]
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken = default) where TModel : class, new()
-            => await this.GetAllAsync<TModel>(GetQueryable(searcher, orderBy), cancellationToken);
+        protected virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(IQueryable<TEntity> queryable, CancellationToken cancellationToken = default) where TModel : class, new()
+            => GetAllAsync<TEntity, TModel>(queryable, cancellationToken);
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default) where TModel : class, new()
-            => await this.GetAllAsync<TModel>(GetQueryable(searcher), cancellationToken);
+        #region [Group]
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken = default, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
-            => await this.GetAllAsync<TModel>(GetQueryable(includeDeleted, searchers), cancellationToken);
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy) where TModel : class, new()
+            => this.GetAllAsync<TModel>(searcher, orderBy, CancellationToken.None);
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken = default, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
-            => await this.GetAllAsync<TModel>(GetQueryable(includeDeleted, orderBy, searchers), cancellationToken);
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken) where TModel : class, new()
+            => this.GetAllAsync<TModel>(GetQueryable(searcher, orderBy), cancellationToken);
 
-        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) where TModel : class, new()
+        #endregion
+
+        #region [Group]
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new()
+            => this.GetAllAsync<TModel>(searcher, CancellationToken.None);
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken) where TModel : class, new()
+            => this.GetAllAsync<TModel>(GetQueryable(searcher), cancellationToken);
+
+        #endregion
+
+        #region [Group]
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+           => GetAllAsync<TModel>(includeDeleted, CancellationToken.None, searchers);
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => this.GetAllAsync<TModel>(GetQueryable(includeDeleted, searchers), cancellationToken);
+
+        #endregion
+
+        #region [Group]
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => this.GetAllAsync<TModel>(includeDeleted, orderBy, searchers);
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new()
+            => this.GetAllAsync<TModel>(GetQueryable(includeDeleted, orderBy, searchers), cancellationToken);
+
+        #endregion
+
+        #region [Group]
+
+        public virtual Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new()
+            => this.GetAllAsync<TModel>(predicate, CancellationToken.None);
+
+        public virtual async Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken) where TModel : class, new()
         {
             var queryable = this.GetQueryable().Where(predicate);
             return await GetAllAsync<TModel>(queryable, cancellationToken);
         }
+        #endregion
 
         #endregion
 
@@ -206,16 +277,23 @@ namespace OLT.Core
             return MapPaged<TEntity, TModel>(queryable, pagingParams, orderBy);
         }
 
-        public virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
+        #endregion
+
+        #region [ Get Paged Async ]
+
+        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null) where TModel : class, new()
+            => GetPagedAsync<TModel>(searcher, pagingParams, orderBy, CancellationToken.None);
+
+        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
             where TModel : class, new()
         {
-            return await GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams, orderBy, cancellationToken);
+            return GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams, orderBy, cancellationToken);
         }
 
-        protected virtual async Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
+        protected virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
             where TModel : class, new()
         {
-            return await MapPagedAsync<TEntity, TModel>(queryable, pagingParams, orderBy, cancellationToken);
+            return MapPagedAsync<TEntity, TModel>(queryable, pagingParams, orderBy, cancellationToken);
         }
 
         #endregion
@@ -274,7 +352,7 @@ namespace OLT.Core
 
         #endregion
 
-        #region [ Add  ]
+        #region [ Add ]
 
         public virtual TModel Add<TModel>(TModel model)
                    where TModel : class, new()
@@ -319,8 +397,17 @@ namespace OLT.Core
             return BuildResultList<TResponseModel>(AddFromList(list.ToList()));
         }
 
+        #endregion
 
-        public virtual async Task<TModel> AddAsync<TModel>(TModel model, CancellationToken cancellationToken = default) where TModel : class, new()
+        #region [ Add Async ]
+
+
+        public virtual Task<TModel> AddAsync<TModel>(TModel model) where TModel : class, new()
+        {
+            return AddAsync<TModel>(model, CancellationToken.None);
+        }     
+
+        public virtual async Task<TModel> AddAsync<TModel>(TModel model, CancellationToken cancellationToken) where TModel : class, new()
         {
             var entity = new TEntity();
             ServiceManager.AdapterResolver.Map(model, entity);
@@ -331,17 +418,34 @@ namespace OLT.Core
             return response;
         }
 
-        public async Task<List<TModel>> AddAsync<TModel>(List<TModel> list, CancellationToken cancellationToken = default) where TModel : class, new()
+        public virtual Task<List<TModel>> AddAsync<TModel>(List<TModel> list) where TModel : class, new()
+        {
+            return AddAsync<TModel>(list, CancellationToken.None);
+        }
+
+        public virtual async Task<List<TModel>> AddAsync<TModel>(List<TModel> list, CancellationToken cancellationToken) where TModel : class, new()
         {
             return BuildResultList<TModel>(await AddFromListAsync(list, cancellationToken));
         }
 
-        public async Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection, CancellationToken cancellationToken = default) where TModel : class, new()
+        public virtual Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection) where TModel : class, new()
+        {
+            return AddAsync<TModel>(collection, CancellationToken.None);
+        }
+
+        public virtual async Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection, CancellationToken cancellationToken) where TModel : class, new()
         {
             return await AddAsync(collection.ToList(), cancellationToken);
         }
 
-        public virtual async Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model, CancellationToken cancellationToken = default)
+        public virtual Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+        {
+            return AddAsync<TResponseModel, TSaveModel>(model, CancellationToken.None);
+        }
+
+        public virtual async Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model, CancellationToken cancellationToken )
             where TSaveModel : class, new()
             where TResponseModel : class, new()
         {
@@ -354,22 +458,40 @@ namespace OLT.Core
             return response;
         }
 
-        public virtual async Task<List<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(List<TSaveModel> list, CancellationToken cancellationToken = default) 
+        public virtual Task<List<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(List<TSaveModel> list)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+        {
+            return AddAsync<TResponseModel, TSaveModel>(list, CancellationToken.None);
+        }
+
+        public virtual async Task<List<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(List<TSaveModel> list, CancellationToken cancellationToken) 
             where TResponseModel : class, new()
             where TSaveModel : class, new()
         {
             return BuildResultList<TResponseModel>(await AddFromListAsync(list.ToList(), cancellationToken));
         }
 
-        public virtual async Task<IEnumerable<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(IEnumerable<TSaveModel> collection, CancellationToken cancellationToken = default) where TResponseModel : class, new() where TSaveModel : class, new()
+        public virtual Task<IEnumerable<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(IEnumerable<TSaveModel> collection)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+        {
+            return AddAsync<TResponseModel, TSaveModel>(collection, CancellationToken.None);
+        }
+
+        public virtual async Task<IEnumerable<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(IEnumerable<TSaveModel> collection, CancellationToken cancellationToken) where TResponseModel : class, new() where TSaveModel : class, new()
         {
             return await this.AddAsync<TResponseModel, TSaveModel>(collection.ToList(), cancellationToken);
         }
 
+       
+
+
+
+
         #endregion
-        
-        #region [ Update ]
-        
+
+        #region [ Update ]        
 
         public virtual TModel Update<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new()
         {
@@ -389,6 +511,16 @@ namespace OLT.Core
             return GetSafe<TResponseModel>(searcher);
         }
 
+        #endregion
+
+        #region [ Update Async ]
+
+        public virtual Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new()
+        {
+            return UpdateAsync<TModel>(searcher, model, include, CancellationToken.None);
+        }
+
+
         public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default) where TModel : class, new()
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync(cancellationToken);
@@ -396,6 +528,14 @@ namespace OLT.Core
             await SaveChangesAsync(cancellationToken);
             return await GetSafeAsync<TModel>(searcher, cancellationToken);
         }
+
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+        {
+            return UpdateAsync<TResponseModel, TSaveModel>(searcher, model, include, CancellationToken.None);
+        }
+
 
         public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
             where TSaveModel : class, new()
@@ -417,7 +557,9 @@ namespace OLT.Core
             return entity != null && MarkDeleted(entity);
         }
 
-        public virtual async Task<bool> SoftDeleteAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default)
+        public virtual Task<bool> SoftDeleteAsync(IOltSearcher<TEntity> searcher) => SoftDeleteAsync(searcher, CancellationToken.None);
+
+        public virtual async Task<bool> SoftDeleteAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken)
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync(cancellationToken);
             return entity != null && await MarkDeletedAsync(entity, cancellationToken);
@@ -437,12 +579,16 @@ namespace OLT.Core
             return Count(this.GetQueryable().Where(predicate));
         }
 
-        public virtual async Task<int> CountAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default)
+        public virtual Task<int> CountAsync(IOltSearcher<TEntity> searcher) => CountAsync(searcher, CancellationToken.None);
+
+        public virtual async Task<int> CountAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken)
         {
             return await CountAsync(GetQueryable(searcher), cancellationToken);
         }
 
-        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        public virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate) => CountAsync(predicate, CancellationToken.None);
+
+        public virtual async Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
         {
             return await CountAsync(this.GetQueryable().Where(predicate), cancellationToken);
         }
@@ -461,17 +607,22 @@ namespace OLT.Core
             return Any(this.GetQueryable().Where(predicate));
         }
 
-        public virtual async Task<bool> AnyAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default)
+        public virtual Task<bool> AnyAsync(IOltSearcher<TEntity> searcher) => AnyAsync(searcher, CancellationToken.None);
+
+        public virtual async Task<bool> AnyAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken)
         {
             return await AnyAsync(GetQueryable(searcher), cancellationToken);
         }
 
-        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate) => AnyAsync(predicate, CancellationToken.None);
+
+        public virtual async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
         {
             return await AnyAsync(this.GetQueryable().Where(predicate), cancellationToken);
         }
 
         #endregion
+       
 
     }
 }
