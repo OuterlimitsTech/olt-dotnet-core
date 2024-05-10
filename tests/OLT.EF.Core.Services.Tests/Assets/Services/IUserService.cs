@@ -3,6 +3,7 @@ using OLT.EF.Core.Services.Tests.Assets.Entites;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Services
@@ -17,6 +18,6 @@ namespace OLT.EF.Core.Services.Tests.Assets.Services
 
         Task<TModel> GetSafeTestAsync<TModel>(IOltSearcher<UserEntity> searcher) where TModel : class, new();
         Task<TModel> GetSafeTestAsync<TModel>(Expression<Func<UserEntity, bool>> predicate) where TModel : class, new();
-        Task<TModel> GetSafeTestAsync<TModel>(bool includeDeleted, params IOltSearcher<UserEntity>[] searchers) where TModel : class, new();
+        Task<TModel> GetSafeTestAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<UserEntity>[] searchers) where TModel : class, new();
     }
 }

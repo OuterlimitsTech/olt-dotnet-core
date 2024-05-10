@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,14 +28,14 @@ namespace OLT.Core
 
         public virtual TModel? Get<TModel>(Guid uid) where TModel : class, new() => Get<TModel>(GetQueryable(uid));
 
-        public virtual async Task<TModel?> GetAsync<TModel>(Guid uid) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(uid));
+        public virtual async Task<TModel?> GetAsync<TModel>(Guid uid, CancellationToken cancellationToken = default) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(uid), cancellationToken);
 
 
         public virtual TModel GetSafe<TModel>(Guid uid) where TModel : class, new() 
             => Get<TModel>(GetQueryable(uid)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
-        public virtual async Task<TModel> GetSafeAsync<TModel>(Guid uid) where TModel : class, new() 
-            => await GetAsync<TModel>(GetQueryable(uid)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+        public virtual async Task<TModel> GetSafeAsync<TModel>(Guid uid, CancellationToken cancellationToken = default) where TModel : class, new() 
+            => await GetAsync<TModel>(GetQueryable(uid), cancellationToken) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
         #endregion
 
@@ -79,22 +80,22 @@ namespace OLT.Core
         }
 
 
-        public override async Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model)
+        public override async Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model, CancellationToken cancellationToken = default)
         {
             var entity = new TEntity();
             ServiceManager.AdapterResolver.Map(model, entity);
-            await Repository.AddAsync(entity);
-            await SaveChangesAsync();
-            return await GetSafeAsync<TResponseModel>(entity.UniqueId);
+            await Repository.AddAsync(entity, cancellationToken);
+            await SaveChangesAsync(cancellationToken);
+            return await GetSafeAsync<TResponseModel>(entity.UniqueId, cancellationToken);
         }
 
-        public override async Task<TModel> AddAsync<TModel>(TModel model)
+        public override async Task<TModel> AddAsync<TModel>(TModel model, CancellationToken cancellationToken = default)
         {
             var entity = new TEntity();
             ServiceManager.AdapterResolver.Map(model, entity);
-            await Repository.AddAsync(entity);
-            await SaveChangesAsync();
-            return await GetSafeAsync<TModel>(entity.UniqueId);
+            await Repository.AddAsync(entity, cancellationToken);
+            await SaveChangesAsync(cancellationToken);
+            return await GetSafeAsync<TModel>(entity.UniqueId, cancellationToken);
         }
 
         #endregion
@@ -122,23 +123,23 @@ namespace OLT.Core
             return GetSafe<TResponseModel>(uid);
         }
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(Guid uid, TModel model)
+        public virtual async Task<TModel> UpdateAsync<TModel>(Guid uid, TModel model, CancellationToken cancellationToken = default)
             where TModel : class, new()
         {
-            var entity = await GetQueryable(uid).FirstOrDefaultAsync();
+            var entity = await GetQueryable(uid).FirstOrDefaultAsync(cancellationToken);
             ServiceManager.AdapterResolver.Map(model, entity);
-            await SaveChangesAsync();
-            return await GetSafeAsync<TModel>(uid);
+            await SaveChangesAsync(cancellationToken);
+            return await GetSafeAsync<TModel>(uid, cancellationToken);
         }
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(Guid uid, TModel model)
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(Guid uid, TModel model, CancellationToken cancellationToken = default)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
-            var entity = await GetQueryable(uid).FirstOrDefaultAsync();
+            var entity = await GetQueryable(uid).FirstOrDefaultAsync(cancellationToken);
             ServiceManager.AdapterResolver.Map(model, entity);
-            await SaveChangesAsync();
-            return await GetSafeAsync<TResponseModel>(uid);
+            await SaveChangesAsync(cancellationToken);
+            return await GetSafeAsync<TResponseModel>(uid, cancellationToken);
         }
 
         #endregion
@@ -151,10 +152,10 @@ namespace OLT.Core
             return entity != null && MarkDeleted(entity);
         }
 
-        public virtual async Task<bool> SoftDeleteAsync(Guid uid)
+        public virtual async Task<bool> SoftDeleteAsync(Guid uid, CancellationToken cancellationToken = default)
         {
-            var entity = await GetQueryable(uid).FirstOrDefaultAsync();
-            return entity != null && await MarkDeletedAsync(entity);
+            var entity = await GetQueryable(uid).FirstOrDefaultAsync(cancellationToken);
+            return entity != null && await MarkDeletedAsync(entity, cancellationToken);
         }
 
         #endregion
@@ -166,9 +167,9 @@ namespace OLT.Core
             return Any(GetQueryable(uid));
         }
 
-        public virtual async Task<bool> AnyAsync(Guid uid)
+        public virtual async Task<bool> AnyAsync(Guid uid, CancellationToken cancellationToken = default)
         {
-            return await AnyAsync(GetQueryable(uid));
+            return await AnyAsync(GetQueryable(uid), cancellationToken);
         }
 
         #endregion

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -118,7 +119,7 @@ namespace OLT.EF.Core.Services.Tests
                 var model = await service.AddAsync(UserModel.FakerEntity());
                 (await service.GetAsync<UserModel>(p => p.Id == model.UserId.Value)).Should().BeEquivalentTo(model);
                 (await service.GetAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(model.UserGuid))).Should().BeEquivalentTo(model);
-                (await service.GetAsync<UserModel>(false, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value))).Should().BeEquivalentTo(model);
+                (await service.GetAsync<UserModel>(false, CancellationToken.None, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value))).Should().BeEquivalentTo(model);
             }
 
             using (var provider = BuildProvider())
@@ -147,7 +148,7 @@ namespace OLT.EF.Core.Services.Tests
                 adapterResolver.Map(service.GetRepository().Where(p => p.Id == model.UserId.Value).FirstOrDefault(), new UserModel()).Should().BeEquivalentTo(model);
 
                 (await service.GetAllAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(model.UserGuid))).FirstOrDefault().Should().BeEquivalentTo(model);
-                (await service.GetAllAsync<UserModel>(false, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value))).FirstOrDefault().Should().BeEquivalentTo(model);
+                (await service.GetAllAsync<UserModel>(false, CancellationToken.None, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value))).FirstOrDefault().Should().BeEquivalentTo(model);
 
                 var model2 = await service.AddAsync(UserModel.FakerEntity());
                 var compareTo = new List<UserModel>();
@@ -157,7 +158,7 @@ namespace OLT.EF.Core.Services.Tests
                 var compareList = await service.GetAllAsync<UserModel>(new IdListSearcher<UserEntity>(model.UserId.Value, model2.UserId.Value), p => p.OrderBy(t => t.LastName).ThenBy(t => t.FirstName));
                 compareList.Should().BeEquivalentTo(compareTo.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First), options => options.WithStrictOrdering());
 
-                var compareList2 = await service.GetAllAsync<UserModel>(false, p => p.OrderBy(t => t.LastName).ThenBy(t => t.FirstName), new IdListSearcher<UserEntity>(model.UserId.Value, model2.UserId.Value), new OltSearcherGetAll<UserEntity>());
+                var compareList2 = await service.GetAllAsync<UserModel>(false, p => p.OrderBy(t => t.LastName).ThenBy(t => t.FirstName), CancellationToken.None, new IdListSearcher<UserEntity>(model.UserId.Value, model2.UserId.Value), new OltSearcherGetAll<UserEntity>());
                 compareList2.Should().BeEquivalentTo(compareTo.OrderBy(p => p.Name.Last).ThenBy(p => p.Name.First), options => options.WithStrictOrdering());
             }
 
@@ -241,7 +242,7 @@ namespace OLT.EF.Core.Services.Tests
                 result = await service.GetSafeTestAsync<UserModel>(p => p.UniqueId == model.UserGuid);
                 result.Should().BeEquivalentTo(model);
 
-                result = await service.GetSafeTestAsync<UserModel>(false, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value));
+                result = await service.GetSafeTestAsync<UserModel>(false, CancellationToken.None, new OltSearcherGetByUid<UserEntity>(model.UserGuid), new OltSearcherGetById<UserEntity>(model.UserId.Value));
                 result.Should().BeEquivalentTo(model);
 
                 Func<Task> action = async () => await service.GetSafeTestAsync<UserModel>(new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()));
@@ -250,7 +251,7 @@ namespace OLT.EF.Core.Services.Tests
                 action = async () => await service.GetSafeTestAsync<UserModel>(p => p.UniqueId == Guid.NewGuid());
                 await action.Should().ThrowAsync<OltRecordNotFoundException>();
 
-                action = async () => await service.GetSafeTestAsync<UserModel>(false, new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()), new OltSearcherGetById<UserEntity>(model.UserId.Value));
+                action = async () => await service.GetSafeTestAsync<UserModel>(false, CancellationToken.None, new OltSearcherGetByUid<UserEntity>(Guid.NewGuid()), new OltSearcherGetById<UserEntity>(model.UserId.Value));
                 await action.Should().ThrowAsync<OltRecordNotFoundException>();
 
             }

@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 
 namespace OLT.Core
 {
@@ -11,19 +11,19 @@ namespace OLT.Core
         IEnumerable<TModel> GetAll<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy) where TModel : class, new();
         IEnumerable<TModel> GetAll<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
-        Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
-        Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
-        Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
-        Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy) where TModel : class, new();
-        Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+        Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+        Task<IEnumerable<TModel>> GetAllAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<IEnumerable<TModel>> GetAllAsync<TModel>(IOltSearcher<TEntity> searcher, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<IEnumerable<TModel>> GetAllAsync<TModel>(bool includeDeleted, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
         TModel? Get<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
         TModel? Get<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
         TModel? Get<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
-        Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
-        Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
-        Task<TModel?> GetAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<TModel?> GetAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
         /// <summary>
         /// Null Safe Get
@@ -58,18 +58,20 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="searcher"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="OltRecordNotFoundException"></exception>
-        Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher) where TModel : class, new();
+        Task<TModel> GetSafeAsync<TModel>(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default) where TModel : class, new();
 
         /// <summary>
         /// Null Safe Get
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
         /// <param name="predicate"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="OltRecordNotFoundException"></exception>
-        Task<TModel> GetSafeAsync<TModel>(Expression<Func<TEntity, bool>> predicate) where TModel : class, new();
+        Task<TModel> GetSafeAsync<TModel>(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default) where TModel : class, new();
 
         /// <summary>
         /// Null Safe Get
@@ -77,14 +79,14 @@ namespace OLT.Core
         /// <typeparam name="TModel"></typeparam>
         /// <param name="includeDeleted"></param>
         /// <param name="searchers"></param>
+        /// <param name="cancellationToken"></param>
         /// <returns></returns>
         /// <exception cref="OltRecordNotFoundException"></exception>
-        Task<TModel> GetSafeAsync<TModel>(bool includeDeleted, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
+        Task<TModel> GetSafeAsync<TModel>(bool includeDeleted, CancellationToken cancellationToken, params IOltSearcher<TEntity>[] searchers) where TModel : class, new();
 
 
         IOltPaged<TModel> GetPaged<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null) where TModel : class, new();
-
-        Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null)  where TModel : class, new();
+        Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)  where TModel : class, new();
 
         TModel Add<TModel>(TModel model) where TModel : class, new();
         List<TModel> Add<TModel>(List<TModel> list) where TModel : class, new();
@@ -98,19 +100,19 @@ namespace OLT.Core
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
-        Task<TModel> AddAsync<TModel>(TModel model) where TModel : class, new();
-        Task<List<TModel>> AddAsync<TModel>(List<TModel> list) where TModel : class, new();
-        Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection) where TModel : class, new();
+        Task<TModel> AddAsync<TModel>(TModel model, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<List<TModel>> AddAsync<TModel>(List<TModel> list, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<IEnumerable<TModel>> AddAsync<TModel>(IEnumerable<TModel> collection, CancellationToken cancellationToken = default) where TModel : class, new();
 
-        Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model)
+        Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model, CancellationToken cancellationToken = default)
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
-        Task<List<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(List<TSaveModel> list)
+        Task<List<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(List<TSaveModel> list, CancellationToken cancellationToken = default)
             where TResponseModel : class, new()
             where TSaveModel : class, new();
 
-        Task<IEnumerable<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(IEnumerable<TSaveModel> collection)
+        Task<IEnumerable<TResponseModel>> AddAsync<TResponseModel, TSaveModel>(IEnumerable<TSaveModel> collection, CancellationToken cancellationToken = default)
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
@@ -127,23 +129,23 @@ namespace OLT.Core
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
-        Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new();
-        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+        Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default) where TModel : class, new();
+        Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
             where TSaveModel : class, new()
             where TResponseModel : class, new();
 
 
         bool SoftDelete(IOltSearcher<TEntity> searcher);
-        Task<bool> SoftDeleteAsync(IOltSearcher<TEntity> searcher);
+        Task<bool> SoftDeleteAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default);
 
         int Count(IOltSearcher<TEntity> searcher);
         int Count(Expression<Func<TEntity, bool>> predicate);
-        Task<int> CountAsync(IOltSearcher<TEntity> searcher);
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<int> CountAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
 
         bool Any(IOltSearcher<TEntity> searcher);
         bool Any(Expression<Func<TEntity, bool>> predicate);
-        Task<bool> AnyAsync(IOltSearcher<TEntity> searcher);
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<bool> AnyAsync(IOltSearcher<TEntity> searcher, CancellationToken cancellationToken = default);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
     }
 }
