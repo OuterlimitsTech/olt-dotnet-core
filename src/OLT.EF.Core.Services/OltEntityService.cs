@@ -281,20 +281,25 @@ namespace OLT.Core
 
         #region [ Get Paged Async ]
 
-        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null) where TModel : class, new()
+        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams) where TModel : class, new()
+            => GetPagedAsync<TModel>(searcher, pagingParams, null, CancellationToken.None);
+
+        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, CancellationToken cancellationToken) where TModel : class, new()
+            => GetPagedAsync<TModel>(searcher, pagingParams, null, cancellationToken);
+
+        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy) where TModel : class, new()
             => GetPagedAsync<TModel>(searcher, pagingParams, orderBy, CancellationToken.None);
 
-        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
+        public virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IOltSearcher<TEntity> searcher, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>> orderBy, CancellationToken cancellationToken)
             where TModel : class, new()
-        {
-            return GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams, orderBy, cancellationToken);
-        }
+            => GetPagedAsync<TModel>(GetQueryable(searcher), pagingParams, orderBy, cancellationToken);
+
 
         protected virtual Task<IOltPaged<TModel>> GetPagedAsync<TModel>(IQueryable<TEntity> queryable, IOltPagingParams pagingParams, Func<IQueryable<TEntity>, IQueryable<TEntity>>? orderBy = null, CancellationToken cancellationToken = default)
             where TModel : class, new()
         {
             return MapPagedAsync<TEntity, TModel>(queryable, pagingParams, orderBy, cancellationToken);
-        }
+        } 
 
         #endregion
 
@@ -401,7 +406,6 @@ namespace OLT.Core
 
         #region [ Add Async ]
 
-
         public virtual Task<TModel> AddAsync<TModel>(TModel model) where TModel : class, new()
         {
             return AddAsync<TModel>(model, CancellationToken.None);
@@ -483,11 +487,7 @@ namespace OLT.Core
         {
             return await this.AddAsync<TResponseModel, TSaveModel>(collection.ToList(), cancellationToken);
         }
-
        
-
-
-
 
         #endregion
 
@@ -515,13 +515,16 @@ namespace OLT.Core
 
         #region [ Update Async ]
 
-        public virtual Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new()
-        {
-            return UpdateAsync<TModel>(searcher, model, include, CancellationToken.None);
-        }
+        public Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model) where TModel : class, new()
+            => UpdateAsync<TModel>(searcher, model, null, CancellationToken.None);
 
+        public virtual Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, CancellationToken cancellationToken) where TModel : class, new()
+            => UpdateAsync<TModel>(searcher, model, null, cancellationToken);
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default) where TModel : class, new()
+        public virtual Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include) where TModel : class, new()
+            => UpdateAsync<TModel>(searcher, model, include, CancellationToken.None);
+
+        public virtual async Task<TModel> UpdateAsync<TModel>(IOltSearcher<TEntity> searcher, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include, CancellationToken cancellationToken) where TModel : class, new()
         {
             var entity = await GetQueryable(searcher).FirstOrDefaultAsync(cancellationToken);
             ServiceManager.AdapterResolver.Map(model, entity);
@@ -529,15 +532,22 @@ namespace OLT.Core
             return await GetSafeAsync<TModel>(searcher, cancellationToken);
         }
 
-        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model)
             where TResponseModel : class, new()
             where TSaveModel : class, new()
-        {
-            return UpdateAsync<TResponseModel, TSaveModel>(searcher, model, include, CancellationToken.None);
-        }
+                => UpdateAsync<TResponseModel, TSaveModel>(searcher, model, null, CancellationToken.None);
 
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, CancellationToken cancellationToken)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+                => UpdateAsync<TResponseModel, TSaveModel>(searcher, model, null, cancellationToken);
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+                => UpdateAsync<TResponseModel, TSaveModel>(searcher, model, include, CancellationToken.None);
+
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(IOltSearcher<TEntity> searcher, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include, CancellationToken cancellationToken)
             where TSaveModel : class, new()
             where TResponseModel : class, new()
         {
@@ -622,7 +632,6 @@ namespace OLT.Core
         }
 
         #endregion
-       
 
     }
 }

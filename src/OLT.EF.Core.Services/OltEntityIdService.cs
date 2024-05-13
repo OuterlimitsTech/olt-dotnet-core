@@ -132,7 +132,7 @@ namespace OLT.Core
 
         #endregion
 
-        #region [ Update ]
+        #region [ Update Internal ]
 
         protected virtual void UpdateInternal<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
         {
@@ -145,6 +145,23 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
         }
+
+        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
+        {
+            var queryable = GetQueryable(id);
+            if (include != null)
+            {
+                queryable = include(queryable);
+            }
+            var entity = await queryable.FirstOrDefaultAsync(cancellationToken);
+            ServiceManager.AdapterResolver.Map(model, entity);
+            await SaveChangesAsync(cancellationToken);
+        }
+
+        #endregion
+
+        #region [ Update ]
+
 
         public virtual TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
@@ -162,37 +179,42 @@ namespace OLT.Core
             return GetSafe<TResponseModel>(id);
         }
 
-        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
-        {
-            var queryable = GetQueryable(id);
-            if (include != null)
-            {
-                queryable = include(queryable);
-            }
-            var entity = await queryable.FirstOrDefaultAsync(cancellationToken);
-            ServiceManager.AdapterResolver.Map(model, entity);
-            await SaveChangesAsync(cancellationToken);
-        }
+        #endregion
 
-        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null) where TModel : class, new()
+        #region [ Update Async ]
+
+        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model) where TModel : class, new()
+            => UpdateAsync<TModel>(id, model, null, CancellationToken.None);
+
+        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model, CancellationToken cancellationToken) where TModel : class, new()
+            => UpdateAsync<TModel>(id, model, null, cancellationToken);
+
+        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include) where TModel : class, new()
             => UpdateAsync<TModel>(id, model, include, CancellationToken.None);
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
+        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include, CancellationToken cancellationToken)
             where TModel : class, new()
         {
             await UpdateInternalAsync(id, model, include, cancellationToken);
             return await GetSafeAsync<TModel>(id, cancellationToken);
         }
 
-
-        public Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model)
             where TResponseModel : class, new()
             where TSaveModel : class, new()
-        {
-            return UpdateAsync<TResponseModel, TSaveModel>(id, model, include, CancellationToken.None);
-        }
+            => UpdateAsync<TResponseModel, TSaveModel>(id, model, null, CancellationToken.None);
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, CancellationToken cancellationToken)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+            => UpdateAsync<TResponseModel, TSaveModel>(id, model, null, cancellationToken);
+
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+            => UpdateAsync<TResponseModel, TSaveModel>(id, model, include, CancellationToken.None);
+
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include, CancellationToken cancellationToken)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
