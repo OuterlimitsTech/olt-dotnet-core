@@ -76,7 +76,7 @@ namespace OLT.Core
             }
             
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
-            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies().ToList();
+            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies(filter).ToList();
 
             filter.RemoveAllExclusions(assembliesToScan);
 
