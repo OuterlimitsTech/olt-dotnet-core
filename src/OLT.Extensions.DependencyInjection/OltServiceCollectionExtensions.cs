@@ -67,7 +67,7 @@ namespace OLT.Core
                 baseAssemblies = new List<Assembly>();
             }
 
-            filter = filter ?? new OltInjectionAssemblyFilter();            
+            filter = filter ?? new OltInjectionAssemblyFilter();
 
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null)
