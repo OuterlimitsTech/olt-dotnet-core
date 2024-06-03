@@ -23,18 +23,18 @@ namespace OLT.Core
         /// <summary>
         /// key "endpoint"
         /// </summary>
-        public string? Endpoint { get; set; }
+        public virtual string? Endpoint { get; set; }
 
         /// <summary>
         /// key "apikey"
         /// </summary>
-        public string? ApiKey { get; set; }
+        public virtual string? ApiKey { get; set; }
 
         /// <summary>
         /// Parses <paramref name="connString"/> [ endpoint=https://api.domain.com;apikey=APK_KEY_HERE; ]
         /// </summary>
         /// <param name="connString"></param>    
-        public void Parse(string? connString)
+        public virtual void Parse(string? connString)
         {
             DbConnectionStringBuilder builder = new DbConnectionStringBuilder
             {

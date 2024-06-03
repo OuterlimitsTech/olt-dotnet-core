@@ -67,7 +67,7 @@ namespace OLT.Core
                 baseAssemblies = new List<Assembly>();
             }
 
-            filter = filter ?? new OltInjectionAssemblyFilter();            
+            filter = filter ?? new OltInjectionAssemblyFilter();
 
             var entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null)
@@ -76,7 +76,7 @@ namespace OLT.Core
             }
             
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
-            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies().ToList();
+            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies(filter).ToList();
 
             filter.RemoveAllExclusions(assembliesToScan);
 

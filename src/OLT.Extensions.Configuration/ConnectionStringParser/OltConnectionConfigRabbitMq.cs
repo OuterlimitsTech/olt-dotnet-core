@@ -40,7 +40,7 @@ namespace OLT.Core
         /// Parses <paramref name="connString"/> [ host=rabbitmq://localhost:5672;username=UsernameHere;password=PasswordHere; ]
         /// </summary>
         /// <param name="connString"></param>
-        public void Parse(string? connString)
+        public virtual void Parse(string? connString)
         {
             DbConnectionStringBuilder builder = new DbConnectionStringBuilder
             {

@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net6.0;netstandard2.0</TargetFrameworks>
     <RootNamespace>OLT.Core</RootNamespace>
     <Description>Abstract Caching Library</Description>
     <ProjectGuid>6155F10A-0E8E-4E90-A7C3-E995CE67E3AF</ProjectGuid>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />

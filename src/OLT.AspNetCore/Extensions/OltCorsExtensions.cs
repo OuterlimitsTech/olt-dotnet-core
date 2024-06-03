@@ -14,9 +14,10 @@ namespace OLT.Core
         /// Scans provided assemblies and thier referenced assemblies looking for <seealso cref="IOltAspNetCoreCorsPolicy"/> and adds the Cors policy
         /// </summary>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="assembliesToScan">List of Asse</param>
+        /// <param name="assembliesToScan">List of Assemblies to scan</param>
+        /// <param name="filter"></param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
-        public static IServiceCollection AddCors(this IServiceCollection services, List<Assembly> assembliesToScan)
+        public static IServiceCollection AddCors(this IServiceCollection services, List<Assembly> assembliesToScan, OltAssemblyFilter? filter = null)
         {
             if (services == null)
             {
@@ -29,7 +30,7 @@ namespace OLT.Core
             }
 
             assembliesToScan
-                .GetAllReferencedAssemblies()
+                .GetAllReferencedAssemblies(filter)
                 .GetAllImplements<IOltAspNetCoreCorsPolicy>()
                 .ToList()
                 .ForEach(policy => services.AddCors(policy));
