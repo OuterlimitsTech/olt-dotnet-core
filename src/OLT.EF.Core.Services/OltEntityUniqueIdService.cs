@@ -29,7 +29,7 @@ namespace OLT.Core
             => Get<TModel>(GetQueryable(uid));
 
         public virtual Task<TModel?> GetAsync<TModel>(Guid uid) where TModel : class, new()
-            => GetAsync<TModel>(uid);
+            => GetAsync<TModel>(uid, CancellationToken.None);
 
         public virtual Task<TModel?> GetAsync<TModel>(Guid uid, CancellationToken cancellationToken = default) where TModel : class, new() 
             => GetAsync<TModel>(GetQueryable(uid), cancellationToken);
