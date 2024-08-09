@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.Extensions.EF.Core.Tests.Assets;
 using OLT.Extensions.EF.Core.Tests.Assets.Entites;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -20,7 +21,7 @@ namespace OLT.Extensions.EF.Core.Tests
                     await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(tran, () =>
                     {
                         return Task.CompletedTask;
-                    });
+                    }, CancellationToken.None);
                 }
             }
 
@@ -31,7 +32,7 @@ namespace OLT.Extensions.EF.Core.Tests
                 {
                     try
                     {
-                        await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(tran, () => { throw new System.Exception("Test"); });
+                        await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(tran, () => { throw new System.Exception("Test"); }, CancellationToken.None);
                         Assert.True(false);
                     }
                     catch
@@ -50,7 +51,7 @@ namespace OLT.Extensions.EF.Core.Tests
                     await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync<UserEntity>(tran, () =>
                     {
                         return Task.FromResult(new UserEntity());
-                    });
+                    }, CancellationToken.None);
                 }
             }
 
@@ -61,7 +62,7 @@ namespace OLT.Extensions.EF.Core.Tests
                 {
                     try
                     {
-                        await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync<UserEntity>(tran, () => { throw new System.Exception("Test"); });
+                        await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync<UserEntity>(tran, () => { throw new System.Exception("Test"); }, CancellationToken.None);
                         Assert.True(false);
                     }
                     catch
@@ -82,7 +83,7 @@ namespace OLT.Extensions.EF.Core.Tests
                 await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, async () =>
                 {
                     await SubTran(context);
-                });
+                }, CancellationToken.None);
             }
 
 
@@ -91,7 +92,7 @@ namespace OLT.Extensions.EF.Core.Tests
                 var context = provider.GetService<UnitTestContext>();
                 try
                 {
-                    await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () => { throw new System.Exception("Test"); });
+                    await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () => { throw new System.Exception("Test"); }, CancellationToken.None);
                     Assert.True(false);
                 }
                 catch
@@ -109,7 +110,7 @@ namespace OLT.Extensions.EF.Core.Tests
                 await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, async () =>
                 {
                     return await UserEntityTran(context);
-                });
+                }, CancellationToken.None);
             }
 
 
@@ -118,7 +119,7 @@ namespace OLT.Extensions.EF.Core.Tests
                 var context = provider.GetService<UnitTestContext>();
                 try
                 {
-                    await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () => { throw new System.Exception("Test"); });
+                    await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () => { throw new System.Exception("Test"); }, CancellationToken.None);
                     Assert.True(false);
                 }
                 catch
@@ -133,7 +134,7 @@ namespace OLT.Extensions.EF.Core.Tests
             await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync(context.Database, () =>
             {
                 return Task.CompletedTask;
-            });
+            }, CancellationToken.None);
         }
 
         private async Task<UserEntity> UserEntityTran(UnitTestContext context)
@@ -141,7 +142,7 @@ namespace OLT.Extensions.EF.Core.Tests
             return await OltEntityFrameworkCoreExtensions.UsingDbTransactionAsync<UserEntity>(context.Database, () =>
             {
                 return Task.FromResult(new UserEntity());
-            });
+            }, CancellationToken.None);
         }
     }
 }

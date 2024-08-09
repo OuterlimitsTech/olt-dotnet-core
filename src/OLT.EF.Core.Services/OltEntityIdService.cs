@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,15 +27,47 @@ namespace OLT.Core
 
         #region [ Get ]
 
-        public virtual TModel? Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted));
+        public virtual TModel? Get<TModel>(int id, bool includeDeleted = false) where TModel : class, new() 
+            => Get<TModel>(GetQueryable(id, includeDeleted));
 
-        public virtual async Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted));
+        public virtual Task<TModel?> GetAsync<TModel>(int id) where TModel : class, new() 
+            => GetAsync<TModel>(GetQueryable(id, false), CancellationToken.None);
+        public virtual Task<TModel?> GetAsync<TModel>(int id, CancellationToken cancellationToken) where TModel : class, new() 
+            => GetAsync<TModel>(GetQueryable(id, false), cancellationToken);
+        public virtual Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted, CancellationToken cancellationToken) where TModel : class, new() 
+            => GetAsync<TModel>(GetQueryable(id, includeDeleted), cancellationToken);
+        public virtual Task<TModel?> GetAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new()
+            => GetAsync<TModel>(id, includeDeleted, CancellationToken.None);
 
+        #endregion 
 
-        public virtual TModel GetSafe<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => Get<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+        #region [ Get Safe ]
 
+        public virtual TModel GetSafe<TModel>(int id, bool includeDeleted = false) where TModel : class, new() 
+            => Get<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
-        public virtual async Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted = false) where TModel : class, new() => await GetAsync<TModel>(GetQueryable(id, includeDeleted)) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        public virtual async Task<TModel> GetSafeAsync<TModel>(int id, CancellationToken cancellationToken = default) where TModel : class, new() 
+            => await GetAsync<TModel>(GetQueryable(id, false), cancellationToken) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
+
+        /// <summary>
+        /// Null Safe Get
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="id"></param>
+        /// <param name="includeDeleted"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        /// <exception cref="OltRecordNotFoundException"></exception>
+        public virtual async Task<TModel> GetSafeAsync<TModel>(int id, bool includeDeleted, CancellationToken cancellationToken = default) where TModel : class, new() 
+            => await GetAsync<TModel>(GetQueryable(id, includeDeleted), cancellationToken) ?? throw new OltRecordNotFoundException($"{typeof(TEntity).Name} not found");
 
         #endregion
 
@@ -79,27 +112,27 @@ namespace OLT.Core
         }
 
 
-        public override async Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model)
+        public override async Task<TResponseModel> AddAsync<TResponseModel, TSaveModel>(TSaveModel model, CancellationToken cancellationToken)
         {
             var entity = new TEntity();
             ServiceManager.AdapterResolver.Map(model, entity);
-            await Repository.AddAsync(entity);
-            await SaveChangesAsync();
-            return await GetSafeAsync<TResponseModel>(entity.Id);
+            await Repository.AddAsync(entity, cancellationToken);
+            await SaveChangesAsync(cancellationToken);
+            return await GetSafeAsync<TResponseModel>(entity.Id, false, cancellationToken);
         }
 
-        public override async Task<TModel> AddAsync<TModel>(TModel model)
+        public override async Task<TModel> AddAsync<TModel>(TModel model, CancellationToken cancellationToken)
         {
             var entity = new TEntity();
             ServiceManager.AdapterResolver.Map(model, entity);
-            await Repository.AddAsync(entity);
-            await SaveChangesAsync();
-            return await GetSafeAsync<TModel>(entity.Id);
+            await Repository.AddAsync(entity, cancellationToken);
+            await SaveChangesAsync(cancellationToken);
+            return await GetSafeAsync<TModel>(entity.Id, false, cancellationToken);
         }
 
         #endregion
 
-        #region [ Update ]
+        #region [ Update Internal ]
 
         protected virtual void UpdateInternal<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
         {
@@ -112,6 +145,23 @@ namespace OLT.Core
             ServiceManager.AdapterResolver.Map(model, entity);
             SaveChanges();
         }
+
+        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null, CancellationToken cancellationToken = default)
+        {
+            var queryable = GetQueryable(id);
+            if (include != null)
+            {
+                queryable = include(queryable);
+            }
+            var entity = await queryable.FirstOrDefaultAsync(cancellationToken);
+            ServiceManager.AdapterResolver.Map(model, entity);
+            await SaveChangesAsync(cancellationToken);
+        }
+
+        #endregion
+
+        #region [ Update ]
+
 
         public virtual TModel Update<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
             where TModel : class, new()
@@ -129,31 +179,47 @@ namespace OLT.Core
             return GetSafe<TResponseModel>(id);
         }
 
-        protected virtual async Task UpdateInternalAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
-        {
-            var queryable = GetQueryable(id);
-            if (include != null)
-            {
-                queryable = include(queryable);
-            }
-            var entity = await queryable.FirstOrDefaultAsync();
-            ServiceManager.AdapterResolver.Map(model, entity);
-            await SaveChangesAsync();
-        }
+        #endregion
 
-        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+        #region [ Update Async ]
+
+        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model) where TModel : class, new()
+            => UpdateAsync<TModel>(id, model, null, CancellationToken.None);
+
+        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model, CancellationToken cancellationToken) where TModel : class, new()
+            => UpdateAsync<TModel>(id, model, null, cancellationToken);
+
+        public virtual Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include) where TModel : class, new()
+            => UpdateAsync<TModel>(id, model, include, CancellationToken.None);
+
+        public virtual async Task<TModel> UpdateAsync<TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include, CancellationToken cancellationToken)
             where TModel : class, new()
         {
-            await UpdateInternalAsync(id, model, include);
-            return await GetSafeAsync<TModel>(id);
+            await UpdateInternalAsync(id, model, include, cancellationToken);
+            return await GetSafeAsync<TModel>(id, cancellationToken);
         }
 
-        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include = null)
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+            => UpdateAsync<TResponseModel, TSaveModel>(id, model, null, CancellationToken.None);
+
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, CancellationToken cancellationToken)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+            => UpdateAsync<TResponseModel, TSaveModel>(id, model, null, cancellationToken);
+
+        public virtual Task<TResponseModel> UpdateAsync<TResponseModel, TSaveModel>(int id, TSaveModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include)
+            where TResponseModel : class, new()
+            where TSaveModel : class, new()
+            => UpdateAsync<TResponseModel, TSaveModel>(id, model, include, CancellationToken.None);
+
+        public virtual async Task<TResponseModel> UpdateAsync<TResponseModel, TModel>(int id, TModel model, Func<IQueryable<TEntity>, IQueryable<TEntity>>? include, CancellationToken cancellationToken)
             where TModel : class, new()
             where TResponseModel : class, new()
         {
-            await UpdateInternalAsync(id, model, include);
-            return await GetSafeAsync<TResponseModel>(id);
+            await UpdateInternalAsync(id, model, include, cancellationToken);
+            return await GetSafeAsync<TResponseModel>(id, cancellationToken);
         }
 
         #endregion
@@ -166,10 +232,12 @@ namespace OLT.Core
             return entity != null && MarkDeleted(entity);
         }
 
-        public virtual async Task<bool> SoftDeleteAsync(int id)
+        public virtual Task<bool> SoftDeleteAsync(int id) => SoftDeleteAsync(id, CancellationToken.None);
+
+        public virtual async Task<bool> SoftDeleteAsync(int id, CancellationToken cancellationToken)
         {
-            var entity = await GetQueryable(id).FirstOrDefaultAsync();
-            return entity != null && await MarkDeletedAsync(entity);
+            var entity = await GetQueryable(id).FirstOrDefaultAsync(cancellationToken);
+            return entity != null && await MarkDeletedAsync(entity, cancellationToken);
         }
 
         #endregion
@@ -181,11 +249,14 @@ namespace OLT.Core
             return Any(GetQueryable(id, true));
         }
 
-        public virtual async Task<bool> AnyAsync(int id)
+        public virtual Task<bool> AnyAsync(int id) => AnyAsync(id, CancellationToken.None);
+
+        public virtual async Task<bool> AnyAsync(int id, CancellationToken cancellationToken)
         {
-            return await AnyAsync(GetQueryable(id, true));
+            return await AnyAsync(GetQueryable(id, true), cancellationToken);
         }
 
         #endregion
+
     }
 }

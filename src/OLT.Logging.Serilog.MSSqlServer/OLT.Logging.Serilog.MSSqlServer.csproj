@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFrameworks>net8.0;net7.0;net6.0;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net8.0;net6.0;netstandard2.0</TargetFrameworks>
 		<LangVersion>Latest</LangVersion>
 	</PropertyGroup>
 
@@ -17,10 +17,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework) == 'net7.0'">
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="$(TargetFramework) == 'net8.0'">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -33,7 +29,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.5.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="6.6.1" />
   </ItemGroup>
 
   <ItemGroup>
