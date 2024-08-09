@@ -102,7 +102,7 @@ namespace OLT.Core
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
 
             services
-                .AddCors(baseAssemblies)    
+                .AddCors(baseAssemblies, filter)    
                 .AddOltInjection(baseAssemblies, filter)
                 .AddSingleton<IOltHostService, OltHostAspNetCoreService>()
                 .AddScoped<IOltIdentity, OltIdentityAspNetCore>()

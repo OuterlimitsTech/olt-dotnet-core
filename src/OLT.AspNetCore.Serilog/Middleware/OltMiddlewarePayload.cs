@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace OLT.Logging.Serilog
             var result = new OltErrorHttpSerilog { ErrorUid = uid, Message = _options.ErrorMessage };
             if (_options.ShowExceptionDetails)
             {
-                result.Errors = exception.GetInnerExceptions().Select(s => s.Message).ToList();
+                result.Errors = GetInnerExceptions(exception).Select(s => s.Message).ToList();
             }
             return result;
         }
@@ -122,5 +123,17 @@ namespace OLT.Logging.Serilog
             response.Body.Seek(0, SeekOrigin.Begin);
             return string.IsNullOrWhiteSpace(body) ? null : body;
         }
+
+        private static IEnumerable<Exception> GetInnerExceptions(Exception ex)
+        {
+            var innerException = ex;
+            do
+            {
+                yield return innerException;
+                innerException = innerException.InnerException;
+            }
+            while (innerException != null);
+        }
+
     }
 }

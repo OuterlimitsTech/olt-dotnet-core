@@ -24,25 +24,25 @@ namespace OLT.Core
         /// <summary>
         /// key "region"
         /// </summary>
-        public string? Region { get; set; }
+        public virtual string? Region { get; set; }
 
         /// <summary>
         /// key "accessKey"
         /// </summary>
 
-        public string? AccessKey { get; set; }
+        public virtual string? AccessKey { get; set; }
 
         /// <summary>
         /// key "secretKey"
         /// </summary>
-        public string? SecretKey { get; set; }
+        public virtual string? SecretKey { get; set; }
 
         /// <summary>
         /// Parses <paramref name="connString"/> [ host=rabbitmq://localhost:5672;username=UserNameHere;password=PasswordHere; ]
         /// </summary>
         /// <param name="connString"></param>
         /// <param name="defaultRegion">example: us-east-2,us-west-1</param>
-        public void Parse(string? connString, string? defaultRegion)
+        public virtual void Parse(string? connString, string? defaultRegion)
         {
             DbConnectionStringBuilder builder = new DbConnectionStringBuilder
             {
