@@ -13,7 +13,8 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
+		<ProjectReference Include="..\OLT.Exception.Abstractions\OLT.Exception.Abstractions.csproj" />
+		<!--<ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />-->
 	</ItemGroup>
 	
 	<ItemGroup>

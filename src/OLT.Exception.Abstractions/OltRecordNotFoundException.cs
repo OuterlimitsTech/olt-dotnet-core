@@ -1,7 +1,8 @@
-﻿using OLT.Core.Common.Abstractions.Extensions;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
+    /// <summary>
+    /// Record Not Found
+    /// </summary>
     public class OltRecordNotFoundException : OltException
     {
 

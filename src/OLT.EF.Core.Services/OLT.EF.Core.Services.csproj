@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\OLT.DataAdapters\OLT.DataAdapters.csproj" />
     <ProjectReference Include="..\OLT.EF.Core\OLT.EF.Core.csproj" />
+    <ProjectReference Include="..\OLT.Exception.Abstractions\OLT.Exception.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

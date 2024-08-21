@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
-namespace OLT.Core.Common.Abstractions.Extensions
+namespace OLT.Core
 {
     internal static class OltInteralExtensions
     {
@@ -26,4 +21,5 @@ namespace OLT.Core.Common.Abstractions.Extensions
         }
 
     }
+
 }

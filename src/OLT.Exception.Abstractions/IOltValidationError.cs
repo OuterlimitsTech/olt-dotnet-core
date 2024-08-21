@@ -1,8 +1,7 @@
 ﻿namespace OLT.Core
 {
-
     /// <summary>
-    /// Defines general validtion error
+    /// Defines general validation error
     /// </summary>
     public interface IOltValidationError
     {

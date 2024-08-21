@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-
     /// <summary>
-    /// Validtion error message
+    /// General validation error message class
     /// </summary>
     public class OltValidationError : IOltValidationError
     {

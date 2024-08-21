@@ -167,7 +167,7 @@ namespace OLT.Core
         /// <typeparam name="TRoleEnum"></typeparam>
         /// <param name="roles"></param>
         /// <returns></returns>
-        public bool HasRole<TRoleEnum>(params TRoleEnum[] roles) where TRoleEnum : System.Enum
+        public virtual bool HasRole<TRoleEnum>(params TRoleEnum[] roles) where TRoleEnum : System.Enum
         {
             return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
         }
