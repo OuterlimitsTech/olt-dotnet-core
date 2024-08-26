@@ -14,6 +14,7 @@ namespace OLT.AspNetCore.Serilog.Tests.General
         {
             var options = new OltSerilogOptions();
             Assert.False(options.ShowExceptionDetails);
+            Assert.Equal(0.25, options.BodyPayloadLimit);
             Assert.Equal("An error has occurred.", options.ErrorMessage);
         }
 

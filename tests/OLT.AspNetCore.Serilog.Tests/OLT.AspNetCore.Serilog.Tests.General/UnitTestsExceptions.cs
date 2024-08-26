@@ -19,6 +19,7 @@ namespace OLT.AspNetCore.Serilog.Tests.General
             {
                 opts.ErrorMessage = "Test";
                 opts.ShowExceptionDetails = true;
+                opts.BodyPayloadLimit = 1.0;
             };
 
             Assert.Throws<ArgumentNullException>("services", () => OltSerilogAspNetCoreExtensions.AddOltSerilog(null!, null!));
