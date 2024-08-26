@@ -26,7 +26,7 @@ namespace OLT.Logging.Serilog
         {
             Guid uid = Guid.NewGuid();
             var requestUri = $"{context.Request.Scheme}//{context.Request.Host}{context.Request.Path}{context.Request.QueryString}";
-            var requestBodyText = await FormatRequestAsync(context.Request);
+            var requestBodyText = await FormatRequestAsync(context.Request, _options.BodyPayloadLimit);
             var logLevel = LogEventLevel.Debug;
 
             await using MemoryStream responseBodyStream = new MemoryStream();
@@ -73,7 +73,7 @@ namespace OLT.Logging.Serilog
                 await context.Response.WriteAsync(msg.ToJson());
             }
 
-            var responseBodyText = await FormatResponseAsync(context.Response);
+            var responseBodyText = await FormatResponseAsync(context.Response, _options.BodyPayloadLimit);
             var logger = BuildLogger(context, uid, requestUri, requestBodyText, responseBodyText);
             logger.Write(logLevel, OltSerilogConstants.Templates.AspNetCore.Payload, uid, context.Request.Method, context.Request.Path, context.Response.StatusCode);
 
@@ -105,25 +105,6 @@ namespace OLT.Logging.Serilog
             return result;
         }
 
-
-        private static async Task<string?> FormatRequestAsync(HttpRequest request)
-        {
-            //This line allows us to set the reader for the request back at the beginning of its stream.
-            request.EnableBuffering();
-            var reader = new StreamReader(request.Body);
-            string body = await reader.ReadToEndAsync();
-            request.Body.Seek(0, SeekOrigin.Begin);
-            return string.IsNullOrWhiteSpace(body) ? null : body;
-        }
-
-        private static async Task<string?> FormatResponseAsync(HttpResponse response)
-        {
-            response.Body.Seek(0, SeekOrigin.Begin);
-            var body = await new StreamReader(response.Body).ReadToEndAsync();
-            response.Body.Seek(0, SeekOrigin.Begin);
-            return string.IsNullOrWhiteSpace(body) ? null : body;
-        }
-
         private static IEnumerable<Exception> GetInnerExceptions(Exception ex)
         {
             var innerException = ex;
@@ -134,6 +115,94 @@ namespace OLT.Logging.Serilog
             }
             while (innerException != null);
         }
+
+        private static async Task<string?> FormatRequestAsync(HttpRequest request, double bodyPayloadLimit)
+        {
+            //This line allows us to set the reader for the request back at the beginning of its stream.
+            request.EnableBuffering();
+            var reader = new StreamReader(request.Body);
+            string body = await reader.ReadToEndAsync();
+            request.Body.Seek(0, SeekOrigin.Begin);
+
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return null;
+            }
+
+            var byteCount = System.Text.ASCIIEncoding.ASCII.GetByteCount(body);
+            var mb = ConvertBytesToMegabytes(byteCount);
+            if (mb > bodyPayloadLimit)
+            {
+                var size = ToSizeString(byteCount);
+                return $"Truncated [{size}]";
+            }
+
+            return body;
+        }
+
+        private static async Task<string?> FormatResponseAsync(HttpResponse response, double bodyPayloadLimit)
+        {
+            response.Body.Seek(0, SeekOrigin.Begin);
+            var body = await new StreamReader(response.Body).ReadToEndAsync();
+            response.Body.Seek(0, SeekOrigin.Begin);
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return null;
+            }
+
+            var byteCount = System.Text.ASCIIEncoding.ASCII.GetByteCount(body);
+            var mb = ConvertBytesToMegabytes(byteCount);
+            if (mb > bodyPayloadLimit)
+            {
+                var size = ToSizeString(byteCount);
+                return $"Truncated [{size}]";
+            }
+
+            return body;
+        }
+
+
+
+        static double ConvertBytesToMegabytes(int bytes)
+        {
+            var mb = 1024f * 1024f;
+            return Convert.ToDouble(bytes) / mb;
+            //return (bytes / 1024f) / 1024f;
+        }
+
+        private static string ToSizeString(long value)
+        {
+            long KB = 1024;
+            long MB = KB * 1024;
+            long GB = MB * 1024;
+            long TB = GB * 1024;
+            double size = value;
+            if (value >= TB)
+            {
+                size = Math.Round((double)value / TB, 2);
+                return $"{size} TB";
+            }
+            else if (value >= GB)
+            {
+                size = Math.Round((double)value / GB, 2);
+                return $"{size} GB";
+            }
+            else if (value >= MB)
+            {
+                size = Math.Round((double)value / MB, 2);
+                return $"{size} MB";
+            }
+            else if (value >= KB)
+            {
+                size = Math.Round((double)value / KB, 2);
+                return $"{size} KB";
+            }
+            else
+            {
+                return $"{size} Bytes";
+            }
+        }
+
 
     }
 }
