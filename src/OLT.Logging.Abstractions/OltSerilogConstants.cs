@@ -1,5 +1,8 @@
 ﻿namespace OLT.Constants
 {
+    /// <summary>
+    /// Serilog constants for propeties, templates
+    /// </summary>
     public static class OltSerilogConstants
     {
         public static class FormatString
@@ -7,7 +10,9 @@
             public const string ISO8601 = "yyyy-MM-ddTHH:mm:ss.fffZ";
         }
 
-
+        /// <summary>
+        /// Properties used for Serilog
+        /// </summary>
         public static class Properties
         {
             public const string Username = "Username";

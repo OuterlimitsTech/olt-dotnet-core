@@ -32,7 +32,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.1" />
     <PackageReference Include="murmurhash" Version="1.0.3" />
-		<ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
+		<!--<ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />-->
+		<ProjectReference Include="..\OLT.Logging.Abstractions\OLT.Logging.Abstractions.csproj" />
     <PackageReference Include="Serilog" Version="4.0.0" />
   </ItemGroup>
 	

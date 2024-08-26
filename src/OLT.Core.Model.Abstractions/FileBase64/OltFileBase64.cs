@@ -1,5 +1,8 @@
 ﻿namespace OLT.Core
 {
+    /// <summary>
+    /// Represents a file encoded as a base64 string
+    /// </summary>
     public class OltFileBase64 : IOltFileBase64
     {
         public virtual string? FileBase64 { get; set; }

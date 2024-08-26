@@ -19,6 +19,7 @@
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\OLT.Extensions.General\OLT.Extensions.General.csproj" />
+	  <ProjectReference Include="..\..\..\src\OLT.Identity.Abstractions\OLT.Identity.Abstractions.csproj" />
 	</ItemGroup>
 
 	<PropertyGroup>

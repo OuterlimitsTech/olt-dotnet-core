@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\OLT.Core.Common\OLT.Core.Common.csproj" />
+    <ProjectReference Include="..\..\src\OLT.Identity.Abstractions\OLT.Identity.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>
