@@ -63,9 +63,9 @@ namespace OLT.Extensions.General.Tests
             Assert.Equal(4, filter.Filters.Count);
             Assert.Empty(filter.ExcludeFilters);
             //var test = list.GetAllReferencedAssemblies(filter).ToList();
-            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
-            Assert.Equal(2, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
-            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
+            Assert.Equal(3, list.GetAllReferencedAssemblies(filter).Count());
+            Assert.Equal(3, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
+            Assert.Equal(3, list.GetAllReferencedAssemblies(filter).Count());
 
         }
 

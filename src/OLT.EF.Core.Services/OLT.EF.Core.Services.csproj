@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
     <ProjectReference Include="..\OLT.DataAdapters\OLT.DataAdapters.csproj" />
     <ProjectReference Include="..\OLT.EF.Core\OLT.EF.Core.csproj" />
 		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />

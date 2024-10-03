@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Xsl;
 
 namespace OLT.Core
 {
@@ -20,7 +21,7 @@ namespace OLT.Core
             Parallel.ForEach(sourceItems, obj1 =>
             {
                 var instance = Activator.CreateInstance(typeof(TObj2));
-                if (instance == null) throw new OltException($"Unable to create instance of {typeof(TObj2).Name}");
+                if (instance == null) throw new OltAdapterException($"Unable to create instance of {typeof(TObj2).Name}");
                 var obj2 = (TObj2)instance;
                 Map(obj1, obj2);
                 result.Add(obj2);
@@ -34,7 +35,7 @@ namespace OLT.Core
             Parallel.ForEach(sourceItems, obj2 =>
             {
                 var instance = Activator.CreateInstance(typeof(TObj1));
-                if (instance == null) throw new OltException($"Unable to create instance of {typeof(TObj1).Name}");
+                if (instance == null) throw new OltAdapterException($"Unable to create instance of {typeof(TObj1).Name}");
                 var obj1 = (TObj1)instance;
                 Map(obj2, obj1);
                 result.Add(obj1);

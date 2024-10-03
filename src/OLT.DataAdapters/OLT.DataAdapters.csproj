@@ -36,8 +36,7 @@
   </ItemGroup>
 	
   <ItemGroup>
-    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
-		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
   </ItemGroup>
 	
   <ItemGroup>
