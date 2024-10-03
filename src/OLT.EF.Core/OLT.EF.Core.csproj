@@ -23,7 +23,7 @@
 	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
 		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj" />
-	  <ProjectReference Include="..\OLT.Identity.Abstractions\OLT.Identity.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

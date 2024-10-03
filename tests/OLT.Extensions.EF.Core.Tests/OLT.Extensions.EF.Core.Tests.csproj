@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.EF.Core\OLT.EF.Core.csproj" />
-    <ProjectReference Include="..\..\src\OLT.Identity.Abstractions\OLT.Identity.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

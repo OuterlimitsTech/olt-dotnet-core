@@ -39,7 +39,7 @@
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
     <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
-    <ProjectReference Include="..\OLT.Identity.Abstractions\OLT.Identity.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>

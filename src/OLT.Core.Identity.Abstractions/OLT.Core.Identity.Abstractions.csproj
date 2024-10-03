@@ -35,21 +35,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Core.Abstractions\OLT.Core.Abstractions.csproj" />
-	  <ProjectReference Include="..\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
-	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.Abstractions\OLT.Core.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
-  </ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+		<None Update="README.md">
+			<PackagePath></PackagePath>
+			<Pack>True</Pack>
+		</None>
 	</ItemGroup>
 
-	
 </Project>
