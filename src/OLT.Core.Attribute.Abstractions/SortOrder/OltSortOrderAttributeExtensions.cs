@@ -1,8 +1,4 @@
-﻿using OLT.Constants;
-using System;
-using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public static class OltSortOrderAttributeExtensions
     {
@@ -12,7 +8,7 @@ namespace OLT.Core
         /// <param name="value"></param>
         /// <param name="defaultSortOrder"></param>
         /// <returns><see cref="short"/> SortOrder from <see cref="SortOrderAttribute"/> or <see langword="null"/></returns>        
-        public static short? GetSortOrderEnum(this Enum value, short defaultSortOrder = OltCommonDefaults.SortOrder)
+        public static short? GetSortOrderEnum(this Enum value, short defaultSortOrder = 9999)
         {
             var attr = value?.GetType().GetField(value.ToString());
             if (attr == null) return defaultSortOrder;

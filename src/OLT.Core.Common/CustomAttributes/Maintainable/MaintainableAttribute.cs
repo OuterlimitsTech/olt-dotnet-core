@@ -2,7 +2,8 @@
 
 namespace OLT.Core
 {
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+    [Obsolete("Being Removed in 9.x")]
+    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]    
     public class MaintainableAttribute : Attribute
     {
 

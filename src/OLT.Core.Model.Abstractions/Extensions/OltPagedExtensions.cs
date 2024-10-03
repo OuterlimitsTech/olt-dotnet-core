@@ -1,6 +1,4 @@
-﻿using OLT.Core;
-
-namespace System.Linq
+﻿namespace OLT.Core
 {
     public static class OltPagedExtensions
     {
@@ -61,3 +59,4 @@ namespace System.Linq
 
     }
 }
+

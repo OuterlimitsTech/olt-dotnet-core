@@ -30,8 +30,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+    <ProjectReference Include="..\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
     <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
-    <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
   </ItemGroup>
 	
   <ItemGroup>

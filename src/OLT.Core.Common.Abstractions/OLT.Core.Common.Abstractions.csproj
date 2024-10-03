@@ -42,6 +42,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 	</ItemGroup>
 
@@ -54,6 +55,10 @@
 
 	<ItemGroup>
 		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Models\" />
 	</ItemGroup>
 	
 </Project>

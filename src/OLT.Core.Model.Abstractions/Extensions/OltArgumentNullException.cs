@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 #if NETSTANDARD
+
 namespace OLT.Core
 {
-
-    public static class OltArgumentNullException
+    internal static class OltArgumentNullException
     {
         public static void ThrowIfNull([NotNull] object? argument, string paramName = null)
         {
@@ -15,4 +15,5 @@ namespace OLT.Core
         }
     }
 }
+
 #endif
