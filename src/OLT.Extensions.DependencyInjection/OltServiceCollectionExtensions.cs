@@ -93,7 +93,8 @@ namespace OLT.Core
                         .AsImplementedInterfaces()
                         .WithSingletonLifetime());
 
-            return services.AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
+            //return services.AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
+            return services;
         }
 
     }
