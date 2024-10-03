@@ -1,57 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<TargetFrameworks>net8.0;net6.0;netstandard2.0</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+		<Description>Infrastructure Interfaces and Abstract Classes</Description>
+		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>Latest</LangVersion>
-  </PropertyGroup>
+	</PropertyGroup>
 
 	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
 		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
 	</ItemGroup>
-	
+
 	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
 		<Nullable>annotations</Nullable>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.1'">
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
+	
 	<PropertyGroup Condition="$(TargetFramework) == 'net6.0'">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(TargetFramework) == 'net8.0'">
 		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Exceptions\**" />
-	  <EmbeddedResource Remove="Exceptions\**" />
-	  <None Remove="Exceptions\**" />
-	</ItemGroup>
+	</PropertyGroup>	
 
 	<ItemGroup>
 		<PackageReference Include="Nullable" Version="1.3.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-	</ItemGroup>
+	</ItemGroup>	
 
 	<ItemGroup>
-		<ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
-		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
-	  <ProjectReference Include="..\OLT.Core.Service.Abstractions\OLT.Core.Service.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="README.md">
-	    <PackagePath></PackagePath>
-	    <Pack>True</Pack>
-	  </None>
+		<None Update="README.md">
+			<PackagePath></PackagePath>
+			<Pack>True</Pack>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>

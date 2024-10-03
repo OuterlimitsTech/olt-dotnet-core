@@ -9,10 +9,6 @@
 		<Nullable>annotations</Nullable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.1'">
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="$(TargetFramework) == 'net6.0'">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
