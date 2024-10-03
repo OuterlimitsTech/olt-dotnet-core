@@ -141,6 +141,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandHandlerMultipleException"></exception>
+        /// <exception cref="OltValidationException"></exception>
         public virtual Task ProcessAsync(IOltCommand command)
         {
             return ExecuteAsync(GetHandler(command), command);
@@ -153,6 +154,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandHandlerMultipleException"></exception>
+        /// <exception cref="OltValidationException"></exception>
         /// <exception cref="NullReferenceException">Thrown is command result is null</exception>
         /// <exception cref="InvalidCastException">Thrown if command result can not be cast to <typeparamref name="T"/></exception>
         // [Obsolete("ProcessAsync<T> is deprecated, use IOltCommand<TResult>")] //Issue #149
@@ -173,6 +175,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="NullReferenceException">Thrown is command result is null</exception>        
+        /// <exception cref="OltValidationException"></exception>
         /// <returns></returns>        
         public virtual async Task<TResult> ProcessAsync<TResult>(IOltCommand<TResult> command) where TResult : notnull
         {

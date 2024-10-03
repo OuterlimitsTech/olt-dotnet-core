@@ -1,7 +1,5 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using Microsoft.Extensions.Logging;
-using OLT.Constants;
 using OLT.Logging.Serilog;
 using OLT.Logging.Serilog.Enricher;
 using Serilog;

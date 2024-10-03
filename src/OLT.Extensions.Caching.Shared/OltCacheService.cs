@@ -13,7 +13,7 @@ namespace OLT.Core
                 throw new ArgumentNullException(nameof(key));
             }
 
-            if (key.IsEmpty())
+            if (string.IsNullOrEmpty(key))
             {
                 throw new ArgumentException(nameof(key));
             }

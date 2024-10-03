@@ -5,6 +5,7 @@ using Serilog.Sinks.MSSqlServer;
 using System.Collections.Generic;
 using System.Data;
 using OLT.Constants;
+using OLT.Logging.Serilog;
 
 namespace OLT.Core
 {

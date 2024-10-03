@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
@@ -73,8 +72,6 @@ namespace OLT.Logging.Serilog
                 public const string Template = "ngx-message: {ngx-message}";
             }
         }
-
-
 
     }
 

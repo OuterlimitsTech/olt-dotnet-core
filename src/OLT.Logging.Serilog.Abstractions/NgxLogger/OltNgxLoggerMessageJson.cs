@@ -1,10 +1,4 @@
-﻿using OLT.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-
-namespace OLT.Logging.Serilog
+﻿namespace OLT.Logging.Serilog
 {
     /// <summary>
     /// ngx-logger <see href="https://www.npmjs.com/package/ngx-logger"/> Log JSON model

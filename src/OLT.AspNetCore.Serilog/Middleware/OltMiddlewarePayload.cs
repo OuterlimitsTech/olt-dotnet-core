@@ -201,7 +201,5 @@ namespace OLT.Logging.Serilog
                 return $"{size} Bytes";
             }
         }
-
-
     }
 }

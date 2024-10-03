@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OLT.Logging.Serilog
+﻿namespace OLT.Logging.Serilog
 {
-
     /// <summary>
     /// ngx-logger <see href="https://www.npmjs.com/package/ngx-logger"/> Log Stack JSON model
     /// </summary>

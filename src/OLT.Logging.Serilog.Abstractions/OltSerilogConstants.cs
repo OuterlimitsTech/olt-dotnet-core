@@ -1,4 +1,4 @@
-﻿namespace OLT.Constants
+﻿namespace OLT.Logging.Serilog
 {
     /// <summary>
     /// Serilog constants for propeties, templates

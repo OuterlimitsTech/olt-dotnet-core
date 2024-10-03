@@ -2,10 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
 using OLT.Extensions.Caching.Tests.Assets;
-using StackExchange.Redis;
 using StackExchange.Redis.Extensions.Core.Configuration;
 using Microsoft.Extensions.Logging;
 

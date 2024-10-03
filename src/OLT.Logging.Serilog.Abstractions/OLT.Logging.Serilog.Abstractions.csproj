@@ -2,14 +2,11 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net8.0;net6.0;netstandard2.0</TargetFrameworks>
+		<Description>Adds EventType Enricher, NGX Logger</Description>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
 		<LangVersion>Latest</LangVersion>
 	</PropertyGroup>
 
-	<ItemGroup Condition="$(TargetFramework) == 'netstandard2.0'">
-		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
 		<Nullable>annotations</Nullable>
@@ -35,18 +32,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Exception.Abstractions\OLT.Exception.Abstractions.csproj" />
+	  <None Update="README.md">
+	    <PackagePath></PackagePath>
+	    <Pack>True</Pack>
+	  </None>
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="README.md">
-			<PackagePath></PackagePath>
-			<Pack>True</Pack>
-		</None>
-	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
-
+	
 </Project>

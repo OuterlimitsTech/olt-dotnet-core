@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OLT.Logging.Serilog\OLT.Logging.Serilog.csproj" />
+    <ProjectReference Include="..\OLT.Logging.Serilog.Abstractions\OLT.Logging.Serilog.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
