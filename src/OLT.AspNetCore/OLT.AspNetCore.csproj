@@ -15,7 +15,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-	  <ProjectReference Include="..\OLT.Exception.Abstractions\OLT.Exception.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Extensions.DependencyInjection\OLT.Extensions.DependencyInjection.csproj" />
 	</ItemGroup>
 
