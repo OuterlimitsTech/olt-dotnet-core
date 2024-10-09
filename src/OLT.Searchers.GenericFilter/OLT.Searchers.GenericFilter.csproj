@@ -26,6 +26,7 @@
 
 
 	<ItemGroup>    
+    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />    
     <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />    
     <ProjectReference Include="..\OLT.Searchers.DateRange\OLT.Searchers.DateRange.csproj" />
   </ItemGroup>

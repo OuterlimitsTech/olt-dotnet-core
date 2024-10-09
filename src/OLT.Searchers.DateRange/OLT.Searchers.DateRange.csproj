@@ -24,14 +24,11 @@
 		</PackageReference>
 	</ItemGroup>
 
-
 	<ItemGroup>
 		<PackageReference Include="FluentDateTime" Version="3.0.0" />
 	</ItemGroup>
 
-
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Service.Abstractions\OLT.Core.Service.Abstractions.csproj" />
 	</ItemGroup>
 
