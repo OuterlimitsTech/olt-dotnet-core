@@ -18,6 +18,7 @@
   <ItemGroup>
 		<ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Logging.Serilog.Abstractions\OLT.Logging.Serilog.Abstractions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
