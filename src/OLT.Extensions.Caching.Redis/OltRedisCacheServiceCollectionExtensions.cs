@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
+﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis.Extensions.Core;
 using StackExchange.Redis.Extensions.Core.Abstractions;
 using StackExchange.Redis.Extensions.Core.Configuration;
@@ -63,17 +63,19 @@ namespace OLT.Core
 
             redisConfiguration.Name = redisConfiguration.Name ?? redisConfiguration.ConfigurationOptions.ClientName;
 
-            services.AddSingleton((provider) => provider
-                .GetRequiredService<IRedisClientFactory>()
-                .GetDefaultRedisClient());
-
-            services.AddSingleton((provider) => provider
-                .GetRequiredService<IRedisClientFactory>()
-                .GetDefaultRedisClient()
-                .GetDefaultDatabase());
+            services.AddSingleton((provider) => provider.GetRequiredService<IRedisClientFactory>().GetDefaultRedisClient());
+            services.AddSingleton((provider) => provider.GetRequiredService<IRedisClientFactory>().GetDefaultRedisClient().GetDefaultDatabase());
+            
+            services
+                .AddMemoryCache(opt => new MemoryCacheEntryOptions().SetAbsoluteExpiration(defaultAbsoluteExpiration))
+                .AddSingleton<IOltMemoryCache, OltMemoryCache>();
 
             return services
-                .AddSingleton<IOltCacheService, OltRedisCache>()
+                .Configure<OltCacheOptions>(opt =>
+                {
+                    opt.DefaultAbsoluteExpiration = defaultAbsoluteExpiration;
+                })
+                .AddSingleton<IOltCacheService, OltRedisCache>()                
                 .AddSingleton(redisConfiguration)
                 .AddSingleton<IRedisClientFactory, RedisClientFactory>()
                 .AddSingleton<IRedisConnectionPoolManager, RedisConnectionPoolManager>()

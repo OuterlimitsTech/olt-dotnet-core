@@ -1,11 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-
-// ReSharper disable once CheckNamespace
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-
-    public interface IOltCacheService : IOltInjectableSingleton
+    public interface IOltCacheService 
     {
         /// <summary>
         /// A generic method for getting and setting objects to the cache

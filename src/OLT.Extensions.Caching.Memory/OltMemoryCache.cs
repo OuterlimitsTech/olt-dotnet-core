@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-    public class OltMemoryCache : OltCacheService
+    public class OltMemoryCache : OltCacheService, IOltMemoryCache
     {
         private readonly IMemoryCache _memoryCache;
         private readonly OltCacheOptions _cacheOptions;

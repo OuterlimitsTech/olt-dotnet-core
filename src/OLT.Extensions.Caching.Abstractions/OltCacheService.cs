@@ -1,10 +1,6 @@
-﻿using System;
-using System.Threading.Tasks;
-
-// ReSharper disable once CheckNamespace
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-    public abstract class OltCacheService : OltDisposable, IOltCacheService
+    public abstract class OltCacheService : IOltCacheService
     {
         protected virtual string ToCacheKey(string key)
         {

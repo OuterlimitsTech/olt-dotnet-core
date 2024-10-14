@@ -1,9 +1,6 @@
-﻿using Microsoft.Extensions.Options;
-using System;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-    public class OltCacheOptions : IOptions<OltCacheOptions>
+    public class OltCacheOptions 
     {
         /// <summary>
         /// Default value for cache entry expiration

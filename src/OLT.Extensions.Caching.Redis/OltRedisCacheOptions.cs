@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 
 namespace OLT.Core
 {
-    public class OltRedisCacheOptions : OltCacheOptions, IOptions<OltRedisCacheOptions>
+    public class OltRedisCacheOptions : OltCacheOptions
     {
         public OltRedisCacheOptions() { }
 
