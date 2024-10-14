@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using OLT.Constants;
 using OLT.Core;
 using Serilog;
 using Serilog.Events;
@@ -202,7 +201,5 @@ namespace OLT.Logging.Serilog
                 return $"{size} Bytes";
             }
         }
-
-
     }
 }

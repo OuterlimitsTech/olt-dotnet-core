@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.CommandBus.Abstractions\OLT.Core.CommandBus.Abstractions.csproj" />
-    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
     <ProjectReference Include="..\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj" />
   </ItemGroup>
 

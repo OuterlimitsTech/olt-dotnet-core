@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 
 namespace OLT.Core
 {
+    [Obsolete("Being Removed in 9.x")]
     public static class OltMaintainableAttributeExtensions
     {
 
@@ -13,6 +11,7 @@ namespace OLT.Core
         /// </summary>
         /// <param name="enum"></param>
         /// <returns></returns>
+        [Obsolete("Being Removed in 9.x")]
         public static MaintainableAttribute GetMaintainable(this Enum @enum)
         {
             return OltAttributeExtensions.GetAttributeInstance<MaintainableAttribute>(@enum) ?? new MaintainableAttribute();
@@ -25,6 +24,7 @@ namespace OLT.Core
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="entity"></param>
         /// <param name="enum"></param>
+        [Obsolete("Being Removed in 9.x")]
         public static void SetMaintainable<TEntity, TEnum>(this TEntity entity, TEnum @enum)
             where TEntity : class, IOltEntityMaintainable
             where TEnum : System.Enum

@@ -33,11 +33,11 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Scrutor" Version="4.2.2" />		
+		<PackageReference Include="Scrutor" Version="5.0.1" />		
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
     <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
   </ItemGroup>
 

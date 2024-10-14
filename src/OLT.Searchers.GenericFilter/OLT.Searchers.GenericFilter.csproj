@@ -9,10 +9,6 @@
 		<Nullable>annotations</Nullable>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="$(TargetFramework) == 'netstandard2.1'">
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
 	<PropertyGroup Condition="$(TargetFramework) == 'net6.0'">
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
@@ -30,6 +26,7 @@
 
 
 	<ItemGroup>    
+    <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />    
     <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />    
     <ProjectReference Include="..\OLT.Searchers.DateRange\OLT.Searchers.DateRange.csproj" />
   </ItemGroup>

@@ -23,7 +23,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Faker.Net" Version="2.0.163" />
-		<PackageReference Include="FluentAssertions" Version="6.12.0" />
+		<PackageReference Include="FluentAssertions" Version="6.12.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
@@ -40,6 +40,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\src\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
 		<ProjectReference Include="..\..\src\OLT.Extensions.General\OLT.Extensions.General.csproj" />
 	</ItemGroup>
 

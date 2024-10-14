@@ -39,7 +39,9 @@ namespace OLT.Extensions.DependencyInjection.Tests
         {
             var services = new ServiceCollection();
             OltServiceCollectionExtensions.AddOltInjection(services)
-                .AddScoped<IOltIdentity, TestIdentity>();
+                .AddScoped<IOltIdentity, TestIdentity>()
+                .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>())
+                ;
             
             using (var provider = services.BuildServiceProvider())
             {
@@ -52,7 +54,8 @@ namespace OLT.Extensions.DependencyInjection.Tests
         {
             var services = new ServiceCollection();
             OltServiceCollectionExtensions.AddOltInjection(services, this.GetType().Assembly)
-                .AddScoped<IOltIdentity, TestIdentity>();
+                .AddScoped<IOltIdentity, TestIdentity>()
+                .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
 
             using (var provider = services.BuildServiceProvider())
             {
@@ -65,7 +68,8 @@ namespace OLT.Extensions.DependencyInjection.Tests
         {
             var services = new ServiceCollection();
             OltServiceCollectionExtensions.AddOltInjection(services, new List<Assembly>() { this.GetType().Assembly })
-                .AddScoped<IOltIdentity, TestIdentity>();
+                .AddScoped<IOltIdentity, TestIdentity>()
+                .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
 
             using (var provider = services.BuildServiceProvider())
             {
