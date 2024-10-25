@@ -1,6 +1,6 @@
 ﻿namespace OLT.Core.Common.Tests.Assets;
 
-public class TestHostService : OltHostServiceBase
+public class TestHostService : OltHostServiceBase, IOltHostService
 {
     public TestHostService(string envName, string appName)
     {

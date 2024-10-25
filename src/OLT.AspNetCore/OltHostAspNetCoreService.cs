@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace OLT.Core
 {
-    public class OltHostAspNetCoreService : OltHostServiceBase
+    public class OltHostAspNetCoreService : IOltHostService
     {
         private readonly IWebHostEnvironment _hostEnvironment;
 
@@ -12,12 +12,12 @@ namespace OLT.Core
             _hostEnvironment = environment;            
         }
 
-        public override string ResolveRelativePath(string filePath)
+        public string ResolveRelativePath(string filePath)
         {
             return Path.Combine(_hostEnvironment.WebRootPath, filePath.Replace("~/", string.Empty));
         }
                
-        public override string EnvironmentName => _hostEnvironment.EnvironmentName;
-        public override string ApplicationName => _hostEnvironment.ApplicationName;
+        public string EnvironmentName => _hostEnvironment.EnvironmentName;
+        public string ApplicationName => _hostEnvironment.ApplicationName;
     }
 }

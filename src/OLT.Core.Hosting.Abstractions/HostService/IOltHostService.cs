@@ -1,6 +1,6 @@
 ﻿namespace OLT.Core
 {
-    public interface IOltHostService : IOltInjectableSingleton
+    public interface IOltHostService 
     {
         string ResolveRelativePath(string filePath);
         string EnvironmentName { get; }

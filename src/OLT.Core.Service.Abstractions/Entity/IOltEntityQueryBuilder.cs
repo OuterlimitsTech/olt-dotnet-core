@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public interface IOltEntityQueryBuilder<TEntity>
         where TEntity : class, IOltEntity
