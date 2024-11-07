@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -61,7 +58,7 @@ namespace OLT.Core
             }
             catch (Exception) // against null logger
             {
-                var exceptions = errors.Select(error => new OltException(error));
+                var exceptions = errors.Select(error => new Exception(error));
                 if (exceptions.Any())
                 {
                     throw new AggregateException("[DB Field] MaxLength Exceeded", exceptions);

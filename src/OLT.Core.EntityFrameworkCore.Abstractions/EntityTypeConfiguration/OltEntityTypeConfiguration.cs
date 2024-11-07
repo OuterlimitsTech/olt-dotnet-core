@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OLT.Constants;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace OLT.Core
 {
@@ -75,7 +72,7 @@ namespace OLT.Core
 
             if (id < MinimumValue)
             {
-                throw new OltException($"Enum underlying value must be greater or equal to {MinimumValue}");
+                throw new Exception($"Enum underlying value must be greater or equal to {MinimumValue}");
             }
 
             entity.Id = id;

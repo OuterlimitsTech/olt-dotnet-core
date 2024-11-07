@@ -20,6 +20,7 @@ namespace System.Reflection
         /// <param name="assembly"></param>
         /// <param name="filter">Assembly Filter.</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly assembly, OltAssemblyFilter? filter = null)
         {
             return GetAllReferencedAssemblies(new List<Assembly> { assembly }, filter);
@@ -30,7 +31,8 @@ namespace System.Reflection
         /// </summary>
         /// <param name="assembliesToScan"></param>
         /// <param name="filter">Assembly Filter.</param>
-        /// <returns></returns>
+        /// <returns></returns>\
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly[] assembliesToScan, OltAssemblyFilter? filter = null)
         {
             return GetAllReferencedAssemblies(assembliesToScan.AsEnumerable(), filter);
@@ -42,6 +44,7 @@ namespace System.Reflection
         /// <param name="assembliesToScan">The assemblies to scan for references.</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns>A filtered collection of assemblies according to the provided OltAssemblyFilter.</returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this IEnumerable<Assembly> assembliesToScan, OltAssemblyFilter? filter = null)
         {
             filter ??= new OltAssemblyFilter();

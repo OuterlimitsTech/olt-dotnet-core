@@ -8,11 +8,11 @@ namespace System
         /// <summary>
         /// Determines if a type implements the <typeparamref name="TInterface"/> interface.        
         /// </summary>
+        /// <remarks>
+        /// <see href="https://gist.github.com/chrisstraw/212626e76c9eafedec24df4c2d106cea"/> for example
+        /// </remarks>
         /// <typeparam name="TInterface">Interface</typeparam>
         /// <param name="type">Extends <see cref="Type"/>.</param>
-        /// <example>
-        /// <see href="https://gist.github.com/chrisstraw/212626e76c9eafedec24df4c2d106cea"/>
-        /// </example>      
         /// <returns>True if type implements interface</returns>
         public static bool Implements<TInterface>(this Type type) where TInterface : class
         {
@@ -27,12 +27,12 @@ namespace System
         /// <summary>
         /// Determines if a type implements the <typeparamref name="TInterface"/> interface.
         /// </summary>
+        /// <remarks>
+        /// <see href="https://gist.github.com/chrisstraw/212626e76c9eafedec24df4c2d106cea"/> for example
+        /// </remarks>
         /// <typeparam name="TInterface">Interface</typeparam>
         /// <param name="type">Extends <see cref="Type"/>.</param>
         /// <param name="interface"></param>
-        /// <example>
-        /// <see href="https://gist.github.com/chrisstraw/212626e76c9eafedec24df4c2d106cea"/>
-        /// </example>
         /// <returns>True if type implements interface</returns>
         public static bool Implements<TInterface>(this Type type, TInterface @interface) where TInterface : class
         {

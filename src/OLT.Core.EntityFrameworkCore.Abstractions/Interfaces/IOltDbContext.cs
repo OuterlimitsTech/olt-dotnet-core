@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-    public interface IOltDbContext : IDisposable //IOltDbContext<DatabaseFacade>
+    public interface IOltDbContext : IDisposable
     {
         string DefaultAnonymousUser { get; }
         string AuditUser { get; }
@@ -16,6 +13,5 @@ namespace OLT.Core
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         DbSet<TEntity> Set<TEntity>() where TEntity : class;
     }
-
 
 }

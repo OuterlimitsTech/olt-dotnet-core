@@ -1,5 +1,4 @@
 ﻿using OLT.Core;
-using System.Linq.Expressions;
 
 namespace System.Linq
 {
@@ -26,8 +25,11 @@ namespace System.Linq
                 throw new ArgumentNullException(nameof(searchers));
             }
 
-            var list = searchers.ToList();
-            list.ForEach(searcher => { queryable = queryable.Where(searcher); });
+            foreach(var searcher in searchers)
+            {
+                queryable = queryable.Where(searcher);
+            }
+
             return queryable;
         }
 

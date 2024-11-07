@@ -4,7 +4,4 @@
     {
         public abstract bool TryParse(string? param, out TValue value);
     }
-
-
-
 }

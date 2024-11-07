@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OLT.Core
 {
@@ -21,20 +18,20 @@ namespace OLT.Core
             }
 
             OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(modelBuilder, builder =>
+            {
+                var tableName = builder.Metadata.GetTableName();
+                if (tableName != null)
                 {
-                    var tableName = builder.Metadata.GetTableName();
-                    if (tableName != null)
+                    var prop = builder.Property<int>(nameof(IOltEntityId.Id));
+                    var eval = prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(tableName, builder.Metadata.GetSchema()));
+                    if (eval != null && eval.Equals("Id", StringComparison.OrdinalIgnoreCase))
                     {
-                        var prop = builder.Property<int>(nameof(IOltEntityId.Id));
-                        var eval = prop.Metadata.GetColumnName(StoreObjectIdentifier.Table(tableName, builder.Metadata.GetSchema()));
-                        if (eval != null && eval.Equals("Id", StringComparison.OrdinalIgnoreCase))
-                        {
-                            var columnName = $"{builder.Metadata.GetTableName()}Id";
-                            builder.Property<int>(nameof(IOltEntityId.Id)).HasColumnName(columnName);
-                        }
+                        var columnName = $"{builder.Metadata.GetTableName()}Id";
+                        builder.Property<int>(nameof(IOltEntityId.Id)).HasColumnName(columnName);
                     }
+                }
         
-                });
+            });
         }
 
         /// <summary>

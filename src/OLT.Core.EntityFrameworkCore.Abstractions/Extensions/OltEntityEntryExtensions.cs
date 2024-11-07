@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using OLT.Constants;
 
@@ -72,7 +71,7 @@ namespace OLT.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new OltException($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
+                    throw new Exception($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
                 }
             }
         }

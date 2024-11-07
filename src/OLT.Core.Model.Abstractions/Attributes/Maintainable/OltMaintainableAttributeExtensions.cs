@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace OLT.Core
 {
@@ -14,7 +15,7 @@ namespace OLT.Core
         [Obsolete("Being Removed in 9.x")]
         public static MaintainableAttribute GetMaintainable(this Enum @enum)
         {
-            return OltAttributeExtensions.GetAttributeInstance<MaintainableAttribute>(@enum) ?? new MaintainableAttribute();
+            return GetAttributeInstance(@enum);
         }
 
         /// <summary>
@@ -33,6 +34,22 @@ namespace OLT.Core
             entity.MaintAdd = MaintainableAttribute.ToBool(value.Create);            
             entity.MaintUpdate = MaintainableAttribute.ToBool(value.Update);
             entity.MaintDelete = MaintainableAttribute.ToBool(value.Delete);
+        }
+
+        /// <summary>
+        /// Returns first instance of <typeparamref name="T"/> attribute on <seealso cref="Enum"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns>First instance of <see cref="Attribute"/> to search for or <see langword="null"/></returns>
+        /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
+        private static MaintainableAttribute GetAttributeInstance(Enum item)            
+        {
+            if (item == null) return new MaintainableAttribute();
+
+            var type = item.GetType();
+            var attribute = type.GetField(item.ToString())?.GetCustomAttributes(typeof(MaintainableAttribute), false).Cast<MaintainableAttribute>().SingleOrDefault();
+            return attribute ?? new MaintainableAttribute();
         }
 
     }
