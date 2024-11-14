@@ -19,10 +19,7 @@ namespace OLT.Logging.Serilog
         /// <returns></returns>
         public static IServiceCollection AddOltSerilog(this IServiceCollection services, Action<OltSerilogOptions> configOptions)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             return services
                 .Configure<OltSerilogOptions>(binding => configOptions(binding))
@@ -38,10 +35,7 @@ namespace OLT.Logging.Serilog
         /// <returns><seealso cref="IApplicationBuilder"/></returns>
         public static IApplicationBuilder UseOltSerilogRequestLogging(this IApplicationBuilder app, Action<RequestLoggingOptions>? configureOptions = null)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
 
             return app
                 //.UseSerilogRequestLogging(configureOptions)

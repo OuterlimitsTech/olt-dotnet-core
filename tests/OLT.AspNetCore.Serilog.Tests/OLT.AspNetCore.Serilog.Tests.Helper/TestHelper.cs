@@ -28,10 +28,7 @@ namespace Seriolog
         {
             LoggerProviderCollection? providers2 = providers;
             Serilog.ILogger? logger2 = logger;
-            if (builder == null)
-            {
-                throw new ArgumentNullException("builder");
-            }
+            ArgumentNullException.ThrowIfNull(builder);
 
             builder.ConfigureServices(delegate (IServiceCollection collection)
             {
@@ -60,10 +57,7 @@ namespace Seriolog
 
         private static void ConfigureServices_local(IServiceCollection collection, Serilog.ILogger? logger)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException("collection");
-            }
+            ArgumentNullException.ThrowIfNull(collection);
 
             if (logger != null)
             {

@@ -6,16 +6,8 @@ namespace OLT.Core
     {
         public static Task<IOltPaged<TDestination>> ToPagedAsync<TDestination>(this IQueryable<TDestination> queryable, IOltPagingParams pagingParams, CancellationToken cancellationToken = default)
         {
-            if (queryable == null)
-            {
-                throw new ArgumentNullException(nameof(queryable));
-            }
-
-            if (pagingParams == null)
-            {
-                throw new ArgumentNullException(nameof(pagingParams));
-            }
-
+            ArgumentNullException.ThrowIfNull(queryable);
+            ArgumentNullException.ThrowIfNull(pagingParams);
             return ToPagedInternalAsync(queryable, pagingParams, cancellationToken);
         }
 

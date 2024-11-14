@@ -71,7 +71,7 @@ namespace OLT.Core
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
+                    throw new ApplicationException($"CheckNullableStringFields: {entityEntry.Entity.GetType().FullName} -> {nullableStringField.PropertyName}", ex);
                 }
             }
         }

@@ -16,20 +16,10 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public OltAwsConfigurationOptions(OltAwsBasicProfile profile, string rootPath, string environmentName, string fallbackDefault = "Common")
         {
-            if (profile == null)
-            {
-                throw new ArgumentNullException(nameof(profile));
-            }
+            ArgumentNullException.ThrowIfNull(profile);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(rootPath);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(environmentName);
 
-            if (string.IsNullOrWhiteSpace(rootPath))
-            {
-                throw new ArgumentNullException(nameof(rootPath));
-            }
-
-            if (string.IsNullOrWhiteSpace(environmentName))
-            {
-                throw new ArgumentNullException(nameof(environmentName));
-            }
 
             if (string.IsNullOrWhiteSpace(fallbackDefault))
             {

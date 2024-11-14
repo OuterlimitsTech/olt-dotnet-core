@@ -16,21 +16,10 @@ namespace OLT.Core
         }
 
         public static ModelBuilder EntitiesOfType(this ModelBuilder modelBuilder, Type type, Action<EntityTypeBuilder> buildAction)
-        {         
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
-
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            if (buildAction == null)
-            {
-                throw new ArgumentNullException(nameof(buildAction));
-            }
+        {
+            ArgumentNullException.ThrowIfNull(modelBuilder);
+            ArgumentNullException.ThrowIfNull(type);
+            ArgumentNullException.ThrowIfNull(buildAction);            
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes().Where(entityType => type.IsAssignableFrom(entityType.ClrType)))
             {
@@ -62,15 +51,8 @@ namespace OLT.Core
         public static void ApplyGlobalFilters<TEntity>(this ModelBuilder modelBuilder, Expression<Func<TEntity, bool>> expression)
         {
 
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
-
-            if (expression == null)
-            {
-                throw new ArgumentNullException(nameof(expression));
-            }
+            ArgumentNullException.ThrowIfNull(modelBuilder);
+            ArgumentNullException.ThrowIfNull(expression);
 
 #pragma warning disable S125
 

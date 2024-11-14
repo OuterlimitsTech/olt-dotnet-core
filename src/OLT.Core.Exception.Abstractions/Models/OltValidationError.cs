@@ -1,4 +1,6 @@
-﻿namespace OLT.Core
+﻿using System.Reflection.Emit;
+
+namespace OLT.Core
 {
     /// <summary>
     /// General validation error message class
@@ -18,10 +20,7 @@
             get => _message;
             set
             {
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    throw new ArgumentNullException(nameof(value));
-                }
+                ArgumentNullException.ThrowIfNullOrWhiteSpace(value);
                 _message = value;
             }
         }

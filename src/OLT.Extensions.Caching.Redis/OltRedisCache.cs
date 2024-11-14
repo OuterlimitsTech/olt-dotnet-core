@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis.Extensions.Core.Abstractions;
-using System;
-using System.Threading.Tasks;
 
 namespace OLT.Core
 {
@@ -29,18 +27,14 @@ namespace OLT.Core
 
         public override TEntry Get<TEntry>(string key, Func<TEntry> factory, TimeSpan? absoluteExpiration = null)
         {
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }            
-
+            ArgumentNullException.ThrowIfNull(factory);
             try
             {
                 var cacheKey = ToCacheKey(key);
                 var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
                 if (redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult())
                 {
-                    return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
+                    return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult() ?? factory();
                 }
 
                 TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
@@ -48,7 +42,7 @@ namespace OLT.Core
                 var value = factory();
                 redisDatabase.AddAsync(cacheKey, value, expireAt.Value).GetAwaiter().GetResult();
 
-                return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
+                return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult() ?? throw new ApplicationException("Invalid Cache Requests");
             }
             catch
             {
@@ -58,10 +52,7 @@ namespace OLT.Core
 
         public override async Task<TEntry> GetAsync<TEntry>(string key, Func<Task<TEntry>> factory, TimeSpan? absoluteExpiration = null)
         {
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }
+            ArgumentNullException.ThrowIfNull(factory);
 
             try
             {
@@ -70,7 +61,7 @@ namespace OLT.Core
 
                 if (await redisDatabase.ExistsAsync(cacheKey))
                 {
-                    return await redisDatabase.GetAsync<TEntry>(cacheKey);
+                    return await redisDatabase.GetAsync<TEntry>(cacheKey) ?? await factory();
                 }
 
                 TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
@@ -78,7 +69,7 @@ namespace OLT.Core
                 var value = await factory();
                 await redisDatabase.AddAsync(cacheKey, value, expireAt.Value);
 
-                return await redisDatabase.GetAsync<TEntry>(cacheKey);
+                return await redisDatabase.GetAsync<TEntry>(cacheKey) ?? throw new ApplicationException("Invalid Cache Requests");
             }
             catch
             {
@@ -158,7 +149,7 @@ namespace OLT.Core
             }
             catch
             {
-                
+                //Do Nothing (Eat Error)
             }
             
         }

@@ -16,15 +16,9 @@ namespace System.Linq
         public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> queryable, params IOltSearcher<TSource>[] searchers)
             where TSource : class, IOltEntity
         {
-            if (queryable == null)
-            {
-                throw new ArgumentNullException(nameof(queryable));
-            }
-            if (searchers == null)
-            {
-                throw new ArgumentNullException(nameof(searchers));
-            }
-
+            ArgumentNullException.ThrowIfNull(queryable);
+            ArgumentNullException.ThrowIfNull(searchers);
+  
             foreach(var searcher in searchers)
             {
                 queryable = queryable.Where(searcher);
@@ -45,14 +39,8 @@ namespace System.Linq
         public static IQueryable<TSource> Where<TSource>(this IQueryable<TSource> queryable, IOltSearcher<TSource> searcher)
             where TSource : class, IOltEntity
         {
-            if (queryable == null)
-            {
-                throw new ArgumentNullException(nameof(queryable));
-            }
-            if (searcher == null)
-            {
-                throw new ArgumentNullException(nameof(searcher));
-            }
+            ArgumentNullException.ThrowIfNull(queryable);
+            ArgumentNullException.ThrowIfNull(searcher);
 
             return searcher.BuildQueryable(queryable);
         }

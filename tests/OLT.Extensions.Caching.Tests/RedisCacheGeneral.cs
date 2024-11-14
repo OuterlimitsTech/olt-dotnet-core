@@ -58,14 +58,14 @@ namespace OLT.Extensions.Caching.Tests
             Assert.Throws<ArgumentNullException>("services", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(null, TimeSpan.FromSeconds(15), null, "abc-123"));
             Assert.Throws<ArgumentNullException>("services", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(null, TimeSpan.FromSeconds(15), "", "abc-123"));
 
-            Assert.Throws<ArgumentNullException>("cacheKeyPrefix", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), "", "abc-123"));
-            Assert.Throws<ArgumentNullException>("cacheKeyPrefix", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), " ", "abc-123"));
+            Assert.Throws<ArgumentException>("cacheKeyPrefix", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), "", "abc-123"));
+            Assert.Throws<ArgumentException>("cacheKeyPrefix", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), " ", "abc-123"));
             Assert.Throws<ArgumentNullException>("cacheKeyPrefix", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), null, "abc-123"));
 
-            Assert.Throws<ArgumentNullException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(null, TimeSpan.FromSeconds(15), cacheKeyPrefix, ""));
+            Assert.Throws<ArgumentException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(null, TimeSpan.FromSeconds(15), cacheKeyPrefix, ""));
             Assert.Throws<ArgumentNullException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), cacheKeyPrefix, connectionString));
-            Assert.Throws<ArgumentNullException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), cacheKeyPrefix, ""));
-            Assert.Throws<ArgumentNullException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), cacheKeyPrefix, " "));
+            Assert.Throws<ArgumentException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), cacheKeyPrefix, ""));
+            Assert.Throws<ArgumentException>("connectionString", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), cacheKeyPrefix, " "));
 
             StackExchange.Redis.Extensions.Core.Configuration.RedisConfiguration options = null;
             Assert.Throws<ArgumentNullException>("redisConfiguration", () => OltRedisCacheServiceCollectionExtensions.AddOltCacheRedis(services, TimeSpan.FromSeconds(15), cacheKeyPrefix, options));

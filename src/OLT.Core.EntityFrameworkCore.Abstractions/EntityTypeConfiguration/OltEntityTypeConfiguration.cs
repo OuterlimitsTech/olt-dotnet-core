@@ -72,7 +72,7 @@ namespace OLT.Core
 
             if (id < MinimumValue)
             {
-                throw new Exception($"Enum underlying value must be greater or equal to {MinimumValue}");
+                throw new ApplicationException($"Enum underlying value must be greater or equal to {MinimumValue}");
             }
 
             entity.Id = id;

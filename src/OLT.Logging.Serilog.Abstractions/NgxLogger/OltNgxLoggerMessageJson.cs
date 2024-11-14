@@ -27,7 +27,7 @@
         public virtual Exception ToException()
         {
             var detail = Additional.FirstOrDefault()?.FirstOrDefault();
-            var ex = detail != null ? detail.ToException() : new Exception(Message);
+            var ex = detail != null ? detail.ToException() : new ApplicationException(Message);
             ex.Data.Add("Username", GetUsername());
             ex.Data.Add("Level", Level?.ToString());
             ex.Data.Add("FileName", FileName);

@@ -18,10 +18,7 @@ namespace OLT.Core
         /// <returns><seealso cref="IServiceCollection"/></returns>
         public static IServiceCollection AddOltCacheMemory(this IServiceCollection services, TimeSpan defaultAbsoluteExpiration)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             return services
                 .AddSingleton<IOltCacheService, OltMemoryCache>()

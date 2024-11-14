@@ -17,7 +17,7 @@ namespace System
     {
         public static byte[] ToBytes<T>(this string value) where T : System.Text.Encoding, new()
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentNullException.ThrowIfNull(value);            
             var encoding = new T();
             return encoding.GetBytes(value);
         }

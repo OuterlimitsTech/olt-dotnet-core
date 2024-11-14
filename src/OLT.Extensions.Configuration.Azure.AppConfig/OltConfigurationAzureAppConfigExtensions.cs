@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Net;
 using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OLT.Core
 {
@@ -22,16 +24,8 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static AzureAppConfigurationOptions Connect(this AzureAppConfigurationOptions options, string endpoint, TokenCredential credential = null)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-
-            if (endpoint == null)
-            {
-                throw new ArgumentNullException(nameof(endpoint));
-            }
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(endpoint);
 
             credential = credential ?? new ManagedIdentityCredential();
             return options.Connect(new Uri(endpoint), credential);
@@ -47,15 +41,8 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static AzureAppConfigurationOptions OltAzureConfigDefault(this AzureAppConfigurationOptions options, OltOptionsAzureConfig config)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(config);
 
             var keyFilter = $"{config.KeyPrefix}*";
 

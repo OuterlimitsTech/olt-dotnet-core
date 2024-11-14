@@ -12,10 +12,7 @@ namespace OLT.Core
         /// <param name="modelBuilder"></param>
         public static void EntityIdColumnName(ModelBuilder modelBuilder)
         {
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
+            ArgumentNullException.ThrowIfNull(modelBuilder);
 
             OltModelBuilderExtensions.EntitiesOfType<IOltEntityId>(modelBuilder, builder =>
             {
@@ -41,10 +38,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static IEnumerable<IMutableForeignKey> GetAllCascadeDelete(ModelBuilder modelBuilder)
         {
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
+            ArgumentNullException.ThrowIfNull(modelBuilder);
 
             return modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())
@@ -72,10 +66,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static IEnumerable<IMutableProperty> GetAllUnicodeProperties(ModelBuilder modelBuilder)
         {
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
+            ArgumentNullException.ThrowIfNull(modelBuilder);
 
             return modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetProperties())

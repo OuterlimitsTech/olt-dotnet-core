@@ -14,4 +14,4 @@ namespace OLT.Core
             base.WithDefaultDIExclusionFilters();
         }
     }
-}
+}   

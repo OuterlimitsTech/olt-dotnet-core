@@ -7,10 +7,7 @@ namespace OLT.Core
     {
         public KeyValueAttribute(string key, string value)
         {
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
+            ArgumentNullException.ThrowIfNull(key);
             this.Key = key;
             this.Value = value;
         }

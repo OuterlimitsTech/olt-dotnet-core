@@ -17,8 +17,6 @@
 	  <ProjectReference Include="..\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
 		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
-		<!--This can be removed once the IRequest is removed-->
-	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Service.Abstractions\OLT.Core.Service.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
 	</ItemGroup>

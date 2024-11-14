@@ -125,10 +125,7 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static TEnum FromEnumMember<TEnum>(this string source) where TEnum : System.Enum, IConvertible
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            ArgumentNullException.ThrowIfNull(source);
 
             var type = typeof(TEnum);
 

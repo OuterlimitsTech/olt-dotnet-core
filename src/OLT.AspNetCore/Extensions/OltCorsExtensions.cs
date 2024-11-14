@@ -21,15 +21,8 @@ namespace OLT.Core
         [Obsolete("Removing 9.x, provides little value")]
         public static IServiceCollection AddCors(this IServiceCollection services, List<Assembly> assembliesToScan, OltAssemblyFilter? filter = null)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (assembliesToScan == null)
-            {
-                throw new ArgumentNullException(nameof(assembliesToScan));
-            }
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(assembliesToScan);
 
             assembliesToScan
                 .GetAllReferencedAssemblies(filter)
@@ -50,15 +43,8 @@ namespace OLT.Core
         [Obsolete("Removing 9.x, provides little value")]
         public static IServiceCollection AddCors(this IServiceCollection services, IOltAspNetCoreCorsPolicy policy)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (policy == null)
-            {
-                throw new ArgumentNullException(nameof(policy));
-            }
+            ArgumentNullException.ThrowIfNull(services);
+            ArgumentNullException.ThrowIfNull(policy);
 
             return policy.AddCors(services);
         }
@@ -74,15 +60,9 @@ namespace OLT.Core
         public static IApplicationBuilder UseCors<TOptions>(this IApplicationBuilder app, TOptions options)
             where TOptions : OltAspNetHostingOptions
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
+            ArgumentNullException.ThrowIfNull(options);
 
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
             return string.IsNullOrWhiteSpace(options.CorsPolicyName) ? app : app.UseCors(options.CorsPolicyName);
         }
     }

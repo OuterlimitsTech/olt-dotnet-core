@@ -58,7 +58,7 @@ namespace OLT.Core
             }
             catch (Exception) // against null logger
             {
-                var exceptions = errors.Select(error => new Exception(error));
+                var exceptions = errors.Select(error => new ApplicationException(error));
                 if (exceptions.Any())
                 {
                     throw new AggregateException("[DB Field] MaxLength Exceeded", exceptions);
@@ -69,11 +69,7 @@ namespace OLT.Core
 
         public static string? GetTableName<TEntity>(this DbContext context) where TEntity : class
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
+            ArgumentNullException.ThrowIfNull(context);
             var entityType = context.Model.FindEntityType(typeof(TEntity));
             var schema = entityType?.GetSchema();
             var tableName = entityType?.GetTableName();            
@@ -91,10 +87,7 @@ namespace OLT.Core
         public static IEnumerable<OltDbColumnInfo> GetColumns<TEntity>(this DbContext dbContext)
             where TEntity : class
         {
-            if (dbContext == null)
-            {
-                throw new ArgumentNullException(nameof(dbContext));
-            }
+            ArgumentNullException.ThrowIfNull(dbContext);
 
             var cols = new List<OltDbColumnInfo>();
             var entityType = dbContext.Model.FindEntityType(typeof(TEntity));
@@ -138,10 +131,7 @@ namespace OLT.Core
         public static IQueryable<TEntity> InitializeQueryable<TEntity>(this IOltDbContext context, bool includeDeleted)
             where TEntity : class, IOltEntity
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            ArgumentNullException.ThrowIfNull(context);
 
             var query = context.Set<TEntity>().AsQueryable();
             if (context.ApplyGlobalDeleteFilter)

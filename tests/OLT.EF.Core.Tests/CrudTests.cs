@@ -253,13 +253,13 @@ namespace OLT.EF.Core.Tests
                 var entity = EmptyExceptionStringEntity.FakerEntity();
                 var context = provider.GetRequiredService<UnitTestContext>();
                 await context.EmptyExceptionStringEntities.AddAsync(entity);
-                var exception = Assert.Throws<Exception>(() => context.SaveChanges()); 
+                var exception = Assert.Throws<ApplicationException>(() => context.SaveChanges()); 
                 Assert.Equal("CheckNullableStringFields: OLT.EF.Core.Tests.Assets.Entites.EmptyExceptionStringEntity -> Title", exception.Message);
 
 
                 entity = EmptyExceptionStringEntity.FakerEntity();
                 await context.EmptyExceptionStringEntities.AddAsync(entity);
-                var asyncException = await Assert.ThrowsAsync<Exception>(() => context.SaveChangesAsync());
+                var asyncException = await Assert.ThrowsAsync<ApplicationException>(() => context.SaveChangesAsync());
                 Assert.Equal("CheckNullableStringFields: OLT.EF.Core.Tests.Assets.Entites.EmptyExceptionStringEntity -> Title", asyncException.Message);
             }
         }

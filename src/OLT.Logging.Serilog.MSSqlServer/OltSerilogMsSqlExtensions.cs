@@ -1,11 +1,9 @@
-﻿using System;
+﻿using OLT.Constants;
+using OLT.Logging.Serilog;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
-using System.Collections.Generic;
 using System.Data;
-using OLT.Constants;
-using OLT.Logging.Serilog;
 
 namespace OLT.Core
 {
@@ -32,16 +30,13 @@ namespace OLT.Core
             LogEventLevel restrictedToMinimumLevel = LogEventLevel.Information,
             bool throwInvalidConnectionStringException = false)
         {
-            if (loggerConfiguration == null)
-            {
-                throw new ArgumentNullException(nameof(loggerConfiguration));
-            }
+            ArgumentNullException.ThrowIfNull(loggerConfiguration);
 
             if (connectionString == null)
             {
                 if (throwInvalidConnectionStringException)
                 {
-                    throw new ArgumentNullException(nameof(connectionString), "connectionString is null");
+                    ArgumentNullException.ThrowIfNull(connectionString);
                 }
                 return loggerConfiguration;
             }

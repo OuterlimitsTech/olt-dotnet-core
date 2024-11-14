@@ -4,16 +4,7 @@
     {
         protected virtual string ToCacheKey(string key)
         {
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
-            if (string.IsNullOrEmpty(key))
-            {
-                throw new ArgumentException(nameof(key));
-            }
-
+            ArgumentNullException.ThrowIfNullOrEmpty(key);
             return key.ToLower();
         }
 

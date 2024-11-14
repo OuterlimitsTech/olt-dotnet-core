@@ -53,10 +53,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
-            if (baseAssembly == null)
-            {
-                throw new ArgumentNullException(nameof(baseAssembly));
-            }
+            ArgumentNullException.ThrowIfNull(baseAssembly);
             return AddOltAspNetCore(services, new List<Assembly>() { baseAssembly }, filter, action);
         }
 
@@ -83,11 +80,7 @@ namespace OLT.Core
         /// <returns></returns>
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
-
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             if (baseAssemblies == null)
             {

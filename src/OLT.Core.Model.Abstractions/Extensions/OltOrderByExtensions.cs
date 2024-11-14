@@ -1,5 +1,6 @@
 ﻿using OLT.Core;
 using System.Linq.Expressions;
+using System.Reflection.Emit;
 
 namespace System.Linq
 {
@@ -16,10 +17,7 @@ namespace System.Linq
         /// <returns></returns>
         public static IOrderedQueryable<T> OrderByPropertyName<T>(this IQueryable<T> queryable, string memberPath, bool isAscending)
         {
-            if (queryable == null)
-            {
-                throw new ArgumentNullException(nameof(queryable));
-            }
+            ArgumentNullException.ThrowIfNull(queryable);
 
             var parameter = Expression.Parameter(typeof(T), "item");
             var member = memberPath.Split('.').Aggregate((Expression)parameter, Expression.PropertyOrField);
@@ -38,10 +36,7 @@ namespace System.Linq
         /// <returns></returns>
         public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> queryable, IOltSortParams sortParams)
         {
-            if (sortParams?.PropertyName == null)
-            {
-                throw new ArgumentNullException(nameof(sortParams));
-            }
+            ArgumentNullException.ThrowIfNull(sortParams?.PropertyName);
             return OrderByPropertyName(queryable, sortParams.PropertyName, sortParams.IsAscending);
         }
 
@@ -58,15 +53,8 @@ namespace System.Linq
         /// <exception cref="ArgumentNullException"></exception>
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> queryable, IOltSortParams sortParams, Func<IQueryable<T>, IQueryable<T>> defaultOrderBy)
         {
-            if (queryable == null)
-            {
-                throw new ArgumentNullException(nameof(queryable));
-            }
-
-            if (defaultOrderBy == null)
-            {
-                throw new ArgumentNullException(nameof(defaultOrderBy));
-            }
+            ArgumentNullException.ThrowIfNull(queryable);
+            ArgumentNullException.ThrowIfNull(defaultOrderBy);
 
             if (sortParams?.PropertyName != null && !string.IsNullOrEmpty(sortParams.PropertyName))
             {

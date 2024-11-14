@@ -126,15 +126,7 @@ namespace System.Reflection
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static Stream? GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
         {
-            if (resourceName == null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
-
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new ArgumentException($"{resourceName} cannot be null or whitespace");
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(resourceName);
 
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
@@ -171,25 +163,8 @@ namespace System.Reflection
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static void EmbeddedResourceToFile(this Assembly assembly, string resourceName, string fileName)
         {
-            if (resourceName == null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
-
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new ArgumentException($"{resourceName} cannot be null or whitespace");
-            }
-
-            if (fileName == null)
-            {
-                throw new ArgumentNullException(nameof(fileName));
-            }
-
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                throw new ArgumentException($"{fileName} cannot be null or whitespace");
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(resourceName);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(fileName);
 
             if (File.Exists(fileName))
             {
@@ -221,15 +196,7 @@ namespace System.Reflection
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static string? GetEmbeddedResourceString(this Assembly assembly, string resourceName)
         {
-            if (resourceName == null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
-
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new ArgumentException($"{resourceName} cannot be null or whitespace");
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(resourceName);
 
             var resource = GetEmbeddedResourceStream(assembly, resourceName);
             if (resource == null) return null;

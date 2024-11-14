@@ -21,9 +21,9 @@ namespace OLT.Logging.Serilog
         public virtual string? Message { get; set; }
         public virtual List<OltNgxLoggerStackJson>? Stack { get; set; }
 
-        public Exception ToException()
+        public ApplicationException ToException()
         {
-            var ex = new Exception(Message)
+            var ex = new ApplicationException(Message)
             {
                 Source = Id
             };
