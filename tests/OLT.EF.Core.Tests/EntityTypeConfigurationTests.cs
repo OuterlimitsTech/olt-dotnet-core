@@ -120,8 +120,8 @@ namespace OLT.EF.Core.Tests
 
 
                     var config = new NegativeEnumConfiguration();
-                    var exception = Assert.Throws<OltException>(() => config.Configure(entityTypeBuilder));
-                    Assert.Equal($"Enum underlying value must be greater or equal to 1", exception.Message);
+                    var exception = Assert.Throws<Exception>(() => config.Configure(entityTypeBuilder));
+                    Assert.Equal("Enum underlying value must be greater or equal to 1", exception.Message);
                 }
             }
         }

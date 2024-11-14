@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
 		<RootNamespace>OLT.Core</RootNamespace>
 		<Description>OLT AspNetCore Library</Description>
 		<ProjectGuid>f7464890-ef2e-48cf-9ea0-3fed39757135</ProjectGuid>
@@ -14,15 +14,10 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
-	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Hosting.Abstractions\OLT.Core.Hosting.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Extensions.DependencyInjection\OLT.Extensions.DependencyInjection.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
 	</ItemGroup>
 
 </Project>
