@@ -141,11 +141,7 @@ namespace System.Reflection
             var resourceCompare = resourceName.ToLower();
             var resources = new List<string>();
 
-#if NET6_0_OR_GREATER
             resources.AddRange(from resource in arrResources where resource.Contains(resourceCompare, StringComparison.OrdinalIgnoreCase) select resource);
-#else
-            resources.AddRange(from resource in arrResources where resource.ToLower().Contains(resourceCompare) select resource);
-#endif
 
             var name = resources.FirstOrDefault();
             if (resources.Count > 1)

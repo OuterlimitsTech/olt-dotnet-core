@@ -23,20 +23,8 @@ namespace OLT.Core
         public static string? GetOltConnectionString(this IConfiguration config, string name)
         {
 
-#if NET6_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(config);
             ArgumentNullException.ThrowIfNull(name);
-#else
-
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-#endif
 
             return config.GetValue<string>($"connection-strings:{name}") ??
                    config.GetConnectionString(name);

@@ -7,13 +7,8 @@ namespace OLT.Core
     {
         protected OltGenericParameterParser(string key)
         {
-#if NET6_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(key);
             ArgumentNullException.ThrowIfNull(key);
-#else
-            OltArgumentNullException.ThrowIfNull(key, nameof(key));
-            OltArgumentNullException.ThrowIfNull(key, nameof(key));
-#endif
 
             Key = key;
         }

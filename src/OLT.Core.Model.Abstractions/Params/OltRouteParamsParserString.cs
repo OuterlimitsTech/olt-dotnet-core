@@ -1,8 +1,5 @@
-﻿using System;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-
     public class OltRouteParamsParserString : OltRouteParamsParser<string?>
     {
         public override bool TryParse(string? param, out string? value)
@@ -17,7 +14,5 @@ namespace OLT.Core
             return false;
         }
     }
-
-
 
 }

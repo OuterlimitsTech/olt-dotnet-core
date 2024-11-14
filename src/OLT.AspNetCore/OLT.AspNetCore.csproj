@@ -13,7 +13,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Hosting.Abstractions\OLT.Core.Hosting.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />

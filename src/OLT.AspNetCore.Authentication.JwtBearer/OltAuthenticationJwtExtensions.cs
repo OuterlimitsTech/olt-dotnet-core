@@ -52,17 +52,10 @@ namespace OLT.Core
             ArgumentNullException.ThrowIfNull(services);
             ArgumentNullException.ThrowIfNull(schemeBuilder);
 
-#if NET8_0_OR_GREATER
             // https://github.com/dotnet/aspnetcore/issues/52075
             //JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
-#else
-            //But with the Security Token Handler not using the custom RoleClaimType correctly
-            //Clearing the DefaultInboundClaimTypeMap before adding the auth fixes the role claims
-            //https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/1349
-            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-#endif
 
-            
+
 
             var builder = services
                 .AddAuthentication(opt =>

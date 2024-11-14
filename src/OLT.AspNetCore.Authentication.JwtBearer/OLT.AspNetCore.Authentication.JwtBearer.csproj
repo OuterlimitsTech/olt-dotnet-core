@@ -16,4 +16,8 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
+	</ItemGroup>
+
 </Project>

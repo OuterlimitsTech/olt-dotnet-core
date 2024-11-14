@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public class OltRouteParamsParserGuid : OltRouteParamsParser<Guid>
     {
@@ -9,7 +7,5 @@ namespace OLT.Core
             return Guid.TryParse(param, out value);
         }
     }
-
-
 
 }

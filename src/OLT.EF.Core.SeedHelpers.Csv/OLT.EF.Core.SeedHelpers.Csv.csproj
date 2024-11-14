@@ -10,10 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.0.1" />
-  </ItemGroup>
+  </ItemGroup>	
 
   <ItemGroup>
-    <ProjectReference Include="..\OLT.EF.Core\OLT.EF.Core.csproj" />
+    <ProjectReference Include="..\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
+    <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
   </ItemGroup>
 
 </Project>

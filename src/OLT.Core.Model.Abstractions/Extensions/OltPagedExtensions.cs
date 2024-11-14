@@ -27,13 +27,8 @@
         /// <exception cref="ArgumentNullException"></exception>
         public static IOltPaged<T> ToPaged<T>(this IQueryable<T> queryable, IOltPagingParams pagingParams, Func<IQueryable<T>, IQueryable<T>>? orderBy)
         {
-#if NET6_0_OR_GREATER
             ArgumentNullException.ThrowIfNull(queryable);
             ArgumentNullException.ThrowIfNull(pagingParams);
-#else
-            OltArgumentNullException.ThrowIfNull(queryable, nameof(queryable));
-            OltArgumentNullException.ThrowIfNull(pagingParams, nameof(pagingParams));            
-#endif
 
             var cnt = queryable.Count();
 

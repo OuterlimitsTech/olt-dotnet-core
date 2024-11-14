@@ -1,11 +1,11 @@
-﻿using System;
-using System.Text;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OLT.Constants;
 using OLT.Core;
+using System;
+using System.Text;
 
 namespace OLT.AspNetCore.Authentication
 {
@@ -13,15 +13,7 @@ namespace OLT.AspNetCore.Authentication
     {
         public OltAuthenticationJwtBearer(string jwtSecret)
         {
-#if NET8_0_OR_GREATER
             ArgumentNullException.ThrowIfNullOrWhiteSpace(jwtSecret);
-#else
-            if (string.IsNullOrWhiteSpace(jwtSecret))
-            {
-                throw new ArgumentNullException(nameof(jwtSecret));
-            }
-#endif
-
             JwtSecret = jwtSecret;
         }
 
