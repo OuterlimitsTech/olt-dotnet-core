@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OLT.Constants;
+using System;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing 9.x, provides little value")]
     public class OltAspNetCoreCorsPolicyWildcard : IOltAspNetCoreCorsPolicy
     {
 

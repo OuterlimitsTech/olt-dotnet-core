@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing 9.x, provides little value")]
     public static partial class OltCorsExtensions
     {
 
@@ -17,6 +18,7 @@ namespace OLT.Core
         /// <param name="assembliesToScan">List of Assemblies to scan</param>
         /// <param name="filter"></param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
+        [Obsolete("Removing 9.x, provides little value")]
         public static IServiceCollection AddCors(this IServiceCollection services, List<Assembly> assembliesToScan, OltAssemblyFilter? filter = null)
         {
             if (services == null)
@@ -45,6 +47,7 @@ namespace OLT.Core
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="policy"><seealso cref="IOltAspNetCoreCorsPolicy"/></param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
+        [Obsolete("Removing 9.x, provides little value")]
         public static IServiceCollection AddCors(this IServiceCollection services, IOltAspNetCoreCorsPolicy policy)
         {
             if (services == null)
@@ -61,14 +64,15 @@ namespace OLT.Core
         }
 
         /// <summary>
-        /// Registers middleware <seealso cref="CorsMiddlewareExtensions"/> using <seealso cref="IOltOptionsAspNetHosting.CorsPolicyName"/> 
+        /// Registers middleware <seealso cref="CorsMiddlewareExtensions"/> using <seealso cref="OltAspNetHostingOptions.CorsPolicyName"/> 
         /// </summary>
         /// <typeparam name="TOptions"></typeparam>
         /// <param name="app"><seealso cref="IApplicationBuilder"/></param>
-        /// <param name="options"><seealso cref="IOltOptionsAspNetHosting"/></param>
+        /// <param name="options"><seealso cref="OltAspNetHostingOptions"/></param>
         /// <returns><seealso cref="IApplicationBuilder"/></returns>
+        [Obsolete("Removing 9.x, provides little value")]
         public static IApplicationBuilder UseCors<TOptions>(this IApplicationBuilder app, TOptions options)
-            where TOptions : IOltOptionsAspNetHosting
+            where TOptions : OltAspNetHostingOptions
         {
             if (app == null)
             {

@@ -1,8 +1,9 @@
-﻿using System;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.AspNetCore;
+using System;
+
 
 namespace OLT.Logging.Serilog
 {
@@ -24,12 +25,7 @@ namespace OLT.Logging.Serilog
             }
 
             return services
-                .Configure<OltSerilogOptions>(binding =>
-                {
-                    var serilogOptions = new OltSerilogOptions();
-                    configOptions(serilogOptions);
-                    binding.ShowExceptionDetails = serilogOptions.ShowExceptionDetails;
-                })
+                .Configure<OltSerilogOptions>(binding => configOptions(binding))
                 .AddScoped<OltMiddlewarePayload>()
                 .AddScoped<OltMiddlewareSession>();
         }

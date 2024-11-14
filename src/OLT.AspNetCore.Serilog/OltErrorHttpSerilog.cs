@@ -5,13 +5,10 @@ using System.Text.Json;
 
 namespace OLT.Logging.Serilog
 {
-
     public class OltErrorHttpSerilog : IOltErrorHttp
     {
         public Guid? ErrorUid { get; set; }
-
         public string? Message { get; set; }
-
         public List<string> Errors { get; set; } = new List<string>();
 
         public string ToJson()
@@ -29,7 +26,4 @@ namespace OLT.Logging.Serilog
             return ToJson();
         }
     }
-
-    
-
 }

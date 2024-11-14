@@ -11,6 +11,8 @@
             public const string DbUsername = "DbUsername";
             public const string EventType = "OltEventType";
             public const string Environment = "Environment";
+
+            [Obsolete("Removing in 9.x")]
             public const string DebuggerAttached = "DebuggerAttached";
             public const string Application = "Application";
 

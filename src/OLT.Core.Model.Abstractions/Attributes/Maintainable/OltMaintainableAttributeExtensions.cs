@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     [Obsolete("Being Removed in 9.x")]
     public static class OltMaintainableAttributeExtensions

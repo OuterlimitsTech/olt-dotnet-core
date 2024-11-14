@@ -2,6 +2,7 @@
 
 namespace OLT.Core
 {
+    [Obsolete("Removing 9.x, provides little value")]
     public interface IOltAspNetCoreCorsPolicy
     {
         string PolicyName { get; }

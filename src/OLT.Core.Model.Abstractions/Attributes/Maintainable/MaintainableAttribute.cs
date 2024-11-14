@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     [Obsolete("Being Removed in 9.x")]
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]    

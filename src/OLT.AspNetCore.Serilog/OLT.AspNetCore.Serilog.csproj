@@ -9,16 +9,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Serilog" Version="4.0.2" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />    
+		<!--<FrameworkReference Include="Microsoft.AspNetCore.App" />-->
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
-  </ItemGroup>
+		<PackageReference Include="Serilog" Version="4.0.2" />
+		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+	</ItemGroup>
   <ItemGroup>
-		<ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
-		<ProjectReference Include="..\OLT.Logging.Serilog.Abstractions\OLT.Logging.Serilog.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Logging.Serilog.Hosting\OLT.Logging.Serilog.Hosting.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />

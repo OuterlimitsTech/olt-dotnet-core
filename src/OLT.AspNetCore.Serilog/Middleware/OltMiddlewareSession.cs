@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using OLT.Constants;
+﻿using Microsoft.AspNetCore.Http;
 using OLT.Core;
+using System.Threading.Tasks;
 using LogContext = Serilog.Context.LogContext;
 
 namespace OLT.Logging.Serilog
