@@ -27,3 +27,30 @@ _Extension to return string value from CodeAttribute_
 ```csharp
 ApplicationTypes.New.GetCodeEnum()
 ```
+
+#### Not Empty Attributes 
+
+| Utility/Item/Object      | Description                            | 
+| ------------------------ | -------------------------------------- | 
+| OltNotGuidEmptyAttribute | Validation that Guid is not Guid.Empty | 
+| OltNotNullAttribute      | Validation that object is not null     | 
+
+
+```csharp
+
+public class MyPersonModel
+{
+    [OltNotGuidEmpty]
+    public Guid Id { get; set; }
+
+    [StringLength(100)]
+    [Required(AllowEmptyStrings = false)]
+    public string Value { get; set; }
+
+    [OltNotNull]
+    public MyOtherModel Other { get; set; }
+
+}
+
+```
+

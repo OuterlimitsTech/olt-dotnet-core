@@ -16,9 +16,4 @@
 	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Exceptions\" />
-	</ItemGroup>
-	
-
 </Project>

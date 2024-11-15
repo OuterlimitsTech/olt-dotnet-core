@@ -6,6 +6,7 @@
 		<LangVersion>Latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<Description>Base Context, Context Extensions, Seed Helpers, Entity Interfaces, Base Entity Models</Description>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -15,10 +16,10 @@
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
-		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+		<!--<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Service.Abstractions\OLT.Core.Service.Abstractions.csproj" />
-	  <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />
+	  <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />-->
 	</ItemGroup>
 
 

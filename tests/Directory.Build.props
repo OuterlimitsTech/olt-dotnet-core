@@ -3,9 +3,25 @@
     <SonarQubeExclude>true</SonarQubeExclude>
     <UserSecretsId>a1ca46fa-4371-49cb-b686-334363ca01f1</UserSecretsId>
     <IsPackable>false</IsPackable>
-  </PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<IsPackable>false</IsPackable>
+	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="coverlet.collector" Version="6.0.2" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" PrivateAssets="All" />
+		<PackageReference Include="Faker.Net" Version="2.0.163" PrivateAssets="All" />
+		<PackageReference Include="xunit" Version="2.9.2" />
+		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+	</ItemGroup>
+	
   <PropertyGroup>
     <NoWarn>$(NoWarn);SYSLIB0011</NoWarn>
   </PropertyGroup>
+
+	<ItemGroup>
+		<Using Include="Xunit" />
+	</ItemGroup>
+	
 </Project>

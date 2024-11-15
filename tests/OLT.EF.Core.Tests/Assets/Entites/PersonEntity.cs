@@ -16,8 +16,10 @@ namespace OLT.EF.Core.Tests.Assets.Entites
         [MaxLength(50)]
         [Required]
         public string NameFirst { get; set; } = default!;
+
         [MaxLength(50)]
         public string? NameMiddle { get; set; }
+
         [MaxLength(50)]
         [Required]
         public string NameLast { get; set; } = default!;

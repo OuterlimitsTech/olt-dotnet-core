@@ -4,7 +4,7 @@ using System;
 // ReSharper disable once CheckNamespace
 namespace OLT.Core
 {
-    [Obsolete("Being Removed in 9.x -> Reason for Class")]
+    [Obsolete("Being Removed in 9.x -> This class provides no value")]
     public class OltIdentityAspNetCore : OltIdentity
     {
         private readonly IHttpContextAccessor _httpContext;

@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OLT.Core;
 using OLT.EF.Core.SqlServer.Tests.Assests.Entites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.EF.Core.SqlServer.Tests.Assests
 {
 
     public class UnitTestSqlContext : OltSqlDbContext<UnitTestSqlContext>
     {
+
         public UnitTestSqlContext(DbContextOptions<UnitTestSqlContext> options) : base(options)
         {
         }
