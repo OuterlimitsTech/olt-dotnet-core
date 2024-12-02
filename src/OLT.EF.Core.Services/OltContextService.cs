@@ -134,7 +134,7 @@ namespace OLT.Core
         {
             if (entity is IOltEntityDeletable deletableEntity)
             {
-                deletableEntity.DeletedOn = DateTimeOffset.Now;
+                deletableEntity.DeletedOn = DateTimeOffset.UtcNow;
                 deletableEntity.DeletedBy = Context.AuditUser;
                 SaveChanges();
                 return true;
@@ -149,7 +149,7 @@ namespace OLT.Core
         {
             if (entity is IOltEntityDeletable deletableEntity)
             {
-                deletableEntity.DeletedOn = DateTimeOffset.Now;
+                deletableEntity.DeletedOn = DateTimeOffset.UtcNow;
                 deletableEntity.DeletedBy = Context.AuditUser;
                 await SaveChangesAsync(cancellationToken);
                 return true;

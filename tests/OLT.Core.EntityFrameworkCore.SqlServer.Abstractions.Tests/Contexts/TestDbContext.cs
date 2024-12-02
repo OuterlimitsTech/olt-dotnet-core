@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OLT.Core.EntityFrameworkCore.SqlServer.Abstractions.Tests.Contexts.Entities;
-using Testcontainers.MsSql;
 
 namespace OLT.Core.EntityFrameworkCore.SqlServer.Abstractions.Tests.Contexts;
 
