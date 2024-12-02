@@ -10,30 +10,15 @@
 		<PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-		<!--<PackageReference Include="OLT.Extensions.DependencyInjection.AutoMapper" Version="13.1.0-beta-0004" />-->
+		<PackageReference Include="OLT.Extensions.DependencyInjection.AutoMapper" Version="13.1.0-beta-0006" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\olt-automapper\src\OLT.Extensions.DependencyInjection.AutoMapper\OLT.Extensions.DependencyInjection.AutoMapper.csproj" />
 		<ProjectReference Include="..\..\src\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
-		<!--<ProjectReference Include="..\..\src\OLT.DataAdapters\OLT.DataAdapters.csproj" />-->
 		<ProjectReference Include="..\..\src\OLT.EF.Core.Services\OLT.EF.Core.Services.csproj" />
 		<ProjectReference Include="..\OLT.EF.Core.Services.Tests.Lib\OLT.EF.Core.Services.Tests.Lib.csproj" />
 	</ItemGroup>
 	
-  <!--<PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.2" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
-    <PackageReference Include="xunit" Version="2.9.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
-  </ItemGroup>-->
 
 </Project>
