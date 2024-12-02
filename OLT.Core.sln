@@ -179,19 +179,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.Extensions.DependencyInjection.AutoMapper", "..\olt-automapper\src\OLT.Extensions.DependencyInjection.AutoMapper\OLT.Extensions.DependencyInjection.AutoMapper.csproj", "{C956C04F-4523-4F68-961C-8174803AA073}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.DataAdapters.AutoMapper", "..\olt-automapper\src\OLT.DataAdapters.AutoMapper\OLT.DataAdapters.AutoMapper.csproj", "{07F972FB-E132-4FBF-B52F-DC18A2FFB622}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.EF.Core.Services.Tests.Automapper", "tests\OLT.EF.Core.Services.Tests.Automapper\OLT.EF.Core.Services.Tests.Automapper.csproj", "{D31F71E7-B539-44BE-AAB2-15A44494EB1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.EF.Core.Services.Tests.DataAdapter", "tests\OLT.EF.Core.Services.Tests.DataAdapter\OLT.EF.Core.Services.Tests.DataAdapter.csproj", "{F3859362-D168-499C-B363-4F5BCFC22A6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.EF.Core.Services.Tests.Lib", "tests\OLT.EF.Core.Services.Tests.Lib\OLT.EF.Core.Services.Tests.Lib.csproj", "{4F3D19FD-215F-44B5-A483-E9FC1E1C6B44}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.DataAdapters", "..\olt-dotnet-dataadapter\src\OLT.DataAdapters\OLT.DataAdapters.csproj", "{43C6E220-97A1-4A8D-8B00-D816FBCB9D38}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OLT.DataAdapters.Abstractions", "..\olt-dotnet-dataadapter\src\OLT.DataAdapters.Abstractions\OLT.DataAdapters.Abstractions.csproj", "{5B69C25D-94BF-427D-9416-B6AAEC916139}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -423,14 +415,6 @@ Global
 		{284F8CE5-CB80-4D5B-8220-CA7EEA8231C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{284F8CE5-CB80-4D5B-8220-CA7EEA8231C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{284F8CE5-CB80-4D5B-8220-CA7EEA8231C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C956C04F-4523-4F68-961C-8174803AA073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C956C04F-4523-4F68-961C-8174803AA073}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C956C04F-4523-4F68-961C-8174803AA073}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C956C04F-4523-4F68-961C-8174803AA073}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07F972FB-E132-4FBF-B52F-DC18A2FFB622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07F972FB-E132-4FBF-B52F-DC18A2FFB622}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07F972FB-E132-4FBF-B52F-DC18A2FFB622}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07F972FB-E132-4FBF-B52F-DC18A2FFB622}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D31F71E7-B539-44BE-AAB2-15A44494EB1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D31F71E7-B539-44BE-AAB2-15A44494EB1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D31F71E7-B539-44BE-AAB2-15A44494EB1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -443,14 +427,6 @@ Global
 		{4F3D19FD-215F-44B5-A483-E9FC1E1C6B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F3D19FD-215F-44B5-A483-E9FC1E1C6B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F3D19FD-215F-44B5-A483-E9FC1E1C6B44}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43C6E220-97A1-4A8D-8B00-D816FBCB9D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43C6E220-97A1-4A8D-8B00-D816FBCB9D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43C6E220-97A1-4A8D-8B00-D816FBCB9D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43C6E220-97A1-4A8D-8B00-D816FBCB9D38}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B69C25D-94BF-427D-9416-B6AAEC916139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B69C25D-94BF-427D-9416-B6AAEC916139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B69C25D-94BF-427D-9416-B6AAEC916139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B69C25D-94BF-427D-9416-B6AAEC916139}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -521,13 +497,9 @@ Global
 		{E70BCBEB-164C-4163-BD50-A723A3BD2E38} = {E3F519D6-745C-49C8-8C03-02C70F0B205A}
 		{BBA37A7A-9A00-4796-B2C9-154AA3596779} = {51D74B1E-DFBD-4D98-B67E-A752AB29D49C}
 		{284F8CE5-CB80-4D5B-8220-CA7EEA8231C1} = {51D74B1E-DFBD-4D98-B67E-A752AB29D49C}
-		{C956C04F-4523-4F68-961C-8174803AA073} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
-		{07F972FB-E132-4FBF-B52F-DC18A2FFB622} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
 		{D31F71E7-B539-44BE-AAB2-15A44494EB1B} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
 		{F3859362-D168-499C-B363-4F5BCFC22A6E} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
 		{4F3D19FD-215F-44B5-A483-E9FC1E1C6B44} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
-		{43C6E220-97A1-4A8D-8B00-D816FBCB9D38} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
-		{5B69C25D-94BF-427D-9416-B6AAEC916139} = {E0AD6097-897A-47D0-B615-780E364FA5F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {94B70EDC-6E19-4295-BFA0-9474A97DF56F}
