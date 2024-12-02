@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public abstract class OltAdapterQueryable<TSource, TModel> : OltAdapter<TSource, TModel>, IOltAdapterQueryable<TSource, TModel>
         where TSource : class, new()

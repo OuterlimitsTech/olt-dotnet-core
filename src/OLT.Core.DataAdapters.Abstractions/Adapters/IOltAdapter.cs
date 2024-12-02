@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-    public interface IOltAdapter : IOltInjectableSingleton
+    public interface IOltAdapter  // IOltInjectableSingleton
     {
         string Name { get; }
     }

@@ -9,6 +9,7 @@ using OLT.EF.Core.Tests.Assets;
 using System;
 using System.Collections.Generic;
 using OLT.EF.Core.Services.Tests.Assets.Models.Adapters;
+using OLT.Utility.AssemblyScanner;
 
 namespace OLT.EF.Core.Services.Tests
 {
@@ -33,18 +34,31 @@ namespace OLT.EF.Core.Services.Tests
 
 
             services                
-                .AddSingleton<IOltAdapterResolver, OltAdapterResolverAutoMapper>()
+                //.AddSingleton<IOltAdapterResolver, OltAdapterResolverAutoMapper>()
                 .AddScoped<IOltServiceManager, OltEfCoreServiceManager>()
                 .AddScoped<IContextService, ContextService>()
                 .AddScoped<IPersonService, PersonService>()
                 .AddScoped<IPersonUniqueIdService, PersonUniqueIdService>()
                 .AddScoped<IUserService, UserService>() 
-                .AddSingleton<IOltAdapter, UserModelAdapter>()
-                .AddSingleton<IOltAdapter, UserDtoAdapter>()
-                .AddSingleton<IOltAdapter, PersonDtoAdapter>()
-                .AddSingleton<IOltAdapter, PersonWithAddressDtoAdapter>()
+                //.AddSingleton<IOltAdapter, UserModelAdapter>()
+                //.AddSingleton<IOltAdapter, UserDtoAdapter>()
+                //.AddSingleton<IOltAdapter, PersonDtoAdapter>()
+                //.AddSingleton<IOltAdapter, PersonWithAddressDtoAdapter>()
                 .AddScoped<IOltDbAuditUser, DbAuditUserService>();
 
+            services.AddOltAdapters(builder =>
+            {
+                builder.AssemblyScanner.IncludeAssembly(typeof(UserModelAdapter).Assembly);
+            });
+
+            services.AddOltAutoMapper(builder =>
+            {
+                builder.AddMaps(typeof(UserModelAdapter).Assembly);
+            });
+
+            //var builder = new OltDataAdapterBuilder(services);
+            //builder.AssemblyScanner.IncludeAssembly(typeof(UserModelAdapter).Assembly);
+            //builder.Build();
 
             return services.BuildServiceProvider();
         }

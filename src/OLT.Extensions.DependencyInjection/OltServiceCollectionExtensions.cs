@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OLT.Utility.AssemblyScanner;
 using System.Reflection;
-using static System.Net.WebRequestMethods;
 
 namespace OLT.Core
 {

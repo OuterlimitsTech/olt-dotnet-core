@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
 
-    public class OltAdapterResolver : OltDisposable, IOltAdapterResolver
+    public class OltAdapterResolver : IOltAdapterResolver
     {
 
         public OltAdapterResolver(IServiceProvider serviceProvider)
@@ -46,7 +42,6 @@ namespace OLT.Core
         }
 
         #endregion
-
 
         #region [ ProjectTo ]
 

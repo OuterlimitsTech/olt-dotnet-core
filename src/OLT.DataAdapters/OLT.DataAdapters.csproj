@@ -15,7 +15,8 @@
 
 	
   <ItemGroup>
-		<ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.DataAdapters.Abstractions\OLT.Core.DataAdapters.Abstractions.csproj" />
+		<!--<ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />-->
   </ItemGroup>
 	
 </Project>

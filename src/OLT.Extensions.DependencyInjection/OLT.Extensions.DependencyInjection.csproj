@@ -12,7 +12,7 @@
 	
 	<ItemGroup>
 		<PackageReference Include="OLT.Utility.AssemblyScanner" Version="1.0.0" />
-		<PackageReference Include="Scrutor" Version="5.0.2" />		
+		<PackageReference Include="Scrutor" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

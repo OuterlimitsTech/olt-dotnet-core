@@ -1,17 +1,9 @@
 ﻿using OLT.Core;
-using OLT.DataAdapters.Tests.Assets.Models;
 using OLT.DataAdapters.Tests.PagedAdapterTests.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.DataAdapters.Tests.PagedAdapterTests.Adapters
 {
-#pragma warning disable CS0618 // Type or member is obsolete
     public class AdapterObject1ToAdapterObject2PagedAdapter : OltAdapterPaged<PagedAdapterObject1, PagedAdapterObject2>
-#pragma warning restore CS0618 // Type or member is obsolete
     {
         public override void Map(PagedAdapterObject1 source, PagedAdapterObject2 destination)
         {

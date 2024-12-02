@@ -1,16 +1,16 @@
 ﻿using OLT.Core;
 using OLT.EF.Core.Services.Tests.Assets.Entites;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
 {
 
-    public class UserModelAdapter : OltAdapterPaged<UserEntity, UserModel>
+    public class UserModelAdapter : OltAdapterQueryable<UserEntity, UserModel>
     {
+        public UserModelAdapter()
+        {
+            this.WithOrderBy(o => o.OrderBy(p => p.LastName).ThenBy(p => p.FirstName).ThenBy(p => p.Id));
+        }
+
         public override void Map(UserEntity source, UserModel destination)
         {
             destination.UserId = source.Id;
@@ -44,11 +44,6 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
                     Suffix = entity.NameSuffix
                 }
             });
-        }
-
-        public override IOrderedQueryable<UserEntity> DefaultOrderBy(IQueryable<UserEntity> queryable)
-        {
-            return queryable.OrderBy(p => p.LastName).ThenBy(p => p.FirstName).ThenBy(p => p.Id);            
-        }
+        }      
     }
 }

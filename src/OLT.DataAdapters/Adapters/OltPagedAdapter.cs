@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public abstract class OltAdapterPaged<TSource, TDestination> : OltAdapterQueryable<TSource, TDestination>, IOltAdapterPaged<TSource, TDestination>
         where TSource : class, new()

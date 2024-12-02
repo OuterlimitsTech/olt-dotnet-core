@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public interface IOltAdapterPaged<TEntity, TDestination> : IOltAdapterQueryable<TEntity, TDestination>
     {

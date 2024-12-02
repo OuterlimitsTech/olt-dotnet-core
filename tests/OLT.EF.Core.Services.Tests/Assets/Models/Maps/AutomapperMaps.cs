@@ -13,9 +13,6 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Maps
             NameAutoMapperModel.BuildMap(CreateMap<PersonEntity, NameAutoMapperModel>()).WithOrderBy(p => p.OrderBy(o => o.NameLast).ThenBy(o => o.NameFirst));
             NameAutoMapperModel.BuildMap(CreateMap<UserEntity, NameAutoMapperModel>()).AfterMap(new NameAutoMapperModelAfterMap());
             PersonAutoMapperPagedDto.BuildMap(CreateMap<PersonEntity, PersonAutoMapperPagedDto>()).WithOrderBy(p => p.OrderBy(o => o.NameLast).ThenBy(o => o.NameFirst).ThenBy(p => p.Id));
-
-            //PersonWithAddressDto.BuildMap(CreateMap<PersonEntity, PersonWithAddressDto>());
-            //AddressDto.BuildMap(CreateMap<AddressEntity, AddressDto>());
         }
     }
 }

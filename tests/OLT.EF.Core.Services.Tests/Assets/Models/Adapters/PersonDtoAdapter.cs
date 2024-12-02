@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
 {
-    public class PersonDtoAdapter : OltAdapterPaged<PersonEntity, PersonDto>
+    public class PersonDtoAdapter : OltAdapterQueryable<PersonEntity, PersonDto>
     {
         public PersonDtoAdapter()
         {
-
+            this.WithOrderBy(o => o.OrderBy(p => p.NameLast).ThenBy(p => p.NameFirst).ThenBy(p => p.Id));
         }
 
         public override void Map(PersonEntity source, PersonDto destination)
@@ -44,11 +44,5 @@ namespace OLT.EF.Core.Services.Tests.Assets.Models.Adapters
                 Last = entity.NameLast
             });
         }
-
-        public override IOrderedQueryable<PersonEntity> DefaultOrderBy(IQueryable<PersonEntity> queryable)
-        {
-            return queryable.OrderBy(p => p.NameLast).ThenBy(p => p.NameFirst).ThenBy(p => p.Id);
-        }
-
     }
 }

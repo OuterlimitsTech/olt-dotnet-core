@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public interface IOltAdapterQueryable<in TEntity, out TDestination> : IOltAdapter
     {
