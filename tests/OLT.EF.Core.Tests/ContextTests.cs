@@ -1,14 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using OLT.Constants;
 using OLT.Core;
 using OLT.EF.Core.Tests.Assets;
 using OLT.EF.Core.Tests.Assets.Entites;
-using Serilog;
-using System;
-using System.Linq;
-using Xunit;
 
 
 namespace OLT.EF.Core.Tests

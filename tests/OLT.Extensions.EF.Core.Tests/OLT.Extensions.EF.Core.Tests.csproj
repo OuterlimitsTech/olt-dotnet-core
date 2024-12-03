@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OLT.EF.Core\OLT.EF.Core.csproj" />
+    <ProjectReference Include="..\..\src\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj" />
   </ItemGroup>
