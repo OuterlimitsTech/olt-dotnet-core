@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OLT.Constants
+﻿namespace OLT.Constants
 {
     public static class OltEFCoreConstants
     {

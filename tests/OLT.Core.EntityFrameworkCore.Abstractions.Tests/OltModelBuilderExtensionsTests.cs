@@ -37,11 +37,6 @@ public class OltModelBuilderExtensionsTests : IAsyncLifetime
         using var context = new TestDbContext(options);
         await context.Database.EnsureCreatedAsync();
 
-        // Act
-        context.ModelBuilder.EntitiesOfType<ITestEntity>(builder =>
-        {
-            builder.Property<string>("TestProperty").HasMaxLength(50);
-        });
 
         // Assert
         var entityType = context.Model.FindEntityType(typeof(TestEntity));
@@ -61,13 +56,12 @@ public class OltModelBuilderExtensionsTests : IAsyncLifetime
         using var context = new TestDbContext(options);
         await context.Database.EnsureCreatedAsync();
 
-        // Act
-        context.ModelBuilder.SetSoftDeleteGlobalFilter();
 
         // Assert
         var entityType = context.Model.FindEntityType(typeof(TestEntity));
         var queryFilter = entityType.GetQueryFilter();
         Assert.NotNull(queryFilter);
+        Assert.Contains("DeletedOn", queryFilter.Body.ToString());
     }
 
     public interface ITestEntity
@@ -88,13 +82,16 @@ public class OltModelBuilderExtensionsTests : IAsyncLifetime
     {
         public TestDbContext(DbContextOptions<TestDbContext> options) : base(options) { }
 
-        public DbSet<TestEntity> TestEntities => Set<TestEntity>();
-
-        public ModelBuilder ModelBuilder { get; private set; } = default!;
+        public DbSet<TestEntity> TestEntities => Set<TestEntity>();        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ModelBuilder = modelBuilder;
+            modelBuilder.EntitiesOfType<ITestEntity>(builder =>
+            {
+                builder.Property<string>("TestProperty").HasMaxLength(50);
+            });
+
+            modelBuilder.SetSoftDeleteGlobalFilter();
             modelBuilder.Entity<TestEntity>();
             base.OnModelCreating(modelBuilder);
         }
