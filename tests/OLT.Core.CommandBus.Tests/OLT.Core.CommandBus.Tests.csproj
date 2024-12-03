@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.Core.CommandBus\OLT.Core.CommandBus.csproj" />
-		<ProjectReference Include="..\..\src\OLT.EF.Core\OLT.EF.Core.csproj" />
 	</ItemGroup>
 
 </Project>
