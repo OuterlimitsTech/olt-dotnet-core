@@ -3,14 +3,14 @@ using Testcontainers.PostgreSql;
 
 namespace OLT.Core.EntityFrameworkCore.Abstractions.Tests;
 
-public class OltEntityTransactionExtensionsTests : IAsyncLifetime
+public class OltModelBuilderExtensionsTests : IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgreSqlContainer;
 
-    public OltEntityTransactionExtensionsTests()
+    public OltModelBuilderExtensionsTests()
     {
         _postgreSqlContainer = new PostgreSqlBuilder()
-            .WithDatabase("OltEntityTransactionDb")
+            .WithDatabase("OltModelBuilderExtensionDb")
             .WithUsername("postgres")
             .WithPassword("yourStrong(!)Password")
             .Build();
@@ -27,7 +27,7 @@ public class OltEntityTransactionExtensionsTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task UsingDbTransactionAsync_ShouldCommitTransaction()
+    public async Task EntitiesOfType_ShouldApplyBuildAction()
     {
         // Arrange
         var options = new DbContextOptionsBuilder<TestDbContext>()
@@ -38,19 +38,20 @@ public class OltEntityTransactionExtensionsTests : IAsyncLifetime
         await context.Database.EnsureCreatedAsync();
 
         // Act
-        await context.Database.UsingDbTransactionAsync(async () =>
+        context.ModelBuilder.EntitiesOfType<ITestEntity>(builder =>
         {
-            context.TestEntities.Add(new TestEntity { Name = "Test" });
-            await context.SaveChangesAsync();
+            builder.Property<string>("TestProperty").HasMaxLength(50);
         });
 
         // Assert
-        var entity = await context.TestEntities.FirstOrDefaultAsync(e => e.Name == "Test");
-        Assert.NotNull(entity);
+        var entityType = context.Model.FindEntityType(typeof(TestEntity));
+        var property = entityType.FindProperty("TestProperty");
+        Assert.NotNull(property);
+        Assert.Equal(50, property.GetMaxLength());
     }
 
     [Fact]
-    public async Task UsingDbTransactionAsync_ShouldRollbackTransactionOnException()
+    public async Task SetSoftDeleteGlobalFilter_ShouldApplyGlobalFilter()
     {
         // Arrange
         var options = new DbContextOptionsBuilder<TestDbContext>()
@@ -60,25 +61,27 @@ public class OltEntityTransactionExtensionsTests : IAsyncLifetime
         using var context = new TestDbContext(options);
         await context.Database.EnsureCreatedAsync();
 
-        // Act & Assert
-        await Assert.ThrowsAsync<InvalidOperationException>(async () =>
-        {
-            await context.Database.UsingDbTransactionAsync(async () =>
-            {
-                context.TestEntities.Add(new TestEntity { Name = "Test" });
-                await context.SaveChangesAsync();
-                throw new InvalidOperationException("Test exception");
-            });
-        });
+        // Act
+        context.ModelBuilder.SetSoftDeleteGlobalFilter();
 
-        var entity = await context.TestEntities.FirstOrDefaultAsync(e => e.Name == "Test");
-        Assert.Null(entity);
-    }  
+        // Assert
+        var entityType = context.Model.FindEntityType(typeof(TestEntity));
+        var queryFilter = entityType.GetQueryFilter();
+        Assert.NotNull(queryFilter);
+    }
 
-    public class TestEntity
+    public interface ITestEntity
+    {
+        int Id { get; set; }
+        string Name { get; set; }
+    }
+
+    public class TestEntity : ITestEntity, IOltEntityDeletable
     {
         public int Id { get; set; }
         public string? Name { get; set; }
+        public DateTimeOffset? DeletedOn { get; set; }
+        public string? DeletedBy { get; set; }
     }
 
     public class TestDbContext : DbContext
@@ -87,10 +90,14 @@ public class OltEntityTransactionExtensionsTests : IAsyncLifetime
 
         public DbSet<TestEntity> TestEntities => Set<TestEntity>();
 
+        public ModelBuilder ModelBuilder { get; private set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            ModelBuilder = modelBuilder;
             modelBuilder.Entity<TestEntity>();
             base.OnModelCreating(modelBuilder);
         }
     }
+
 }

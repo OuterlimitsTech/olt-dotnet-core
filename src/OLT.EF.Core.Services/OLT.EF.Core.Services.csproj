@@ -15,7 +15,6 @@
     <ProjectReference Include="..\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
     <ProjectReference Include="..\OLT.Core.Service.Abstractions\OLT.Core.Service.Abstractions.csproj" />    
 		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
-		<ProjectReference Include="..\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj" />
   </ItemGroup>
 
 </Project>
