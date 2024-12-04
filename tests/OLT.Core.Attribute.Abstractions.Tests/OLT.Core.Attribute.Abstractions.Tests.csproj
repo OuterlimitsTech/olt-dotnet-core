@@ -5,10 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.20.72" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\..\src\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
   </ItemGroup>
 

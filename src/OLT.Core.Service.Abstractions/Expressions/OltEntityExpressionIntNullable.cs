@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace OLT.Core
 {
@@ -22,7 +21,5 @@ namespace OLT.Core
                 return (value) => Value == value;
             }
         }
-
-
     }
 }

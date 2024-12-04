@@ -7,6 +7,7 @@
 
         public CodeAttribute(string code)
         {
+            ArgumentNullException.ThrowIfNullOrEmpty(code);
             this.Code = code;
         }
     }

@@ -1,8 +1,5 @@
-﻿using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
-
     public abstract class OltEntityExpressionBuilder<TEntity, TValueType> : IOltEntityQueryBuilder<TEntity>
         where TEntity : class, IOltEntity
     {

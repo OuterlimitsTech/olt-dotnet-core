@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class KeyValueAttribute : Attribute

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace OLT.Core
 {
-
     /// <summary>
     /// Used with the BuildExpression() extenstion
     /// example: searcherExpressionObject.BuildExpression(); or queryable.Where(searcherExpressionObject.BuildExpression());
