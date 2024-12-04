@@ -54,4 +54,11 @@ public static class TestHelper
         return list;
     }
 
+
+    public static DateTimeOffset FakerDateTimePast()
+    {
+        var milliseconds = Faker.RandomNumber.Next(10000, 100000) * -1;
+        return DateTimeOffset.Now.AddMilliseconds(milliseconds);
+    }
+
 }

@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core.Common.Tests.Assets;
-using Xunit;
 
 namespace OLT.Core.Common.Tests;
 
