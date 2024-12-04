@@ -1,9 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public static class OltCodeAttributeExtensions
     {
@@ -22,6 +17,16 @@ namespace OLT.Core
                 .Cast<CodeAttribute>()
                 .SingleOrDefault();
             return attribute?.Code;
+        }
+
+        /// <summary>
+        /// Returns Code value from <see cref="CodeAttribute"/> attribute
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns><see cref="string"/> Code from <see cref="CodeAttribute"/> or <see langword="null"/></returns>
+        public static string GetCodeEnumSafe(this Enum value)
+        {
+            return GetCodeEnum(value) ?? throw new Exception("Code Enum Not Found");
         }
 
 

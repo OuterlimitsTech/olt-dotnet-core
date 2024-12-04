@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

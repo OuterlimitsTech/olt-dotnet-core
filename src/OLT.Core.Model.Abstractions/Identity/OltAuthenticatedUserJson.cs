@@ -1,6 +1,4 @@
 ﻿using OLT.Constants;
-using System;
-using System.Collections.Generic;
 
 namespace OLT.Core
 {
@@ -15,25 +13,6 @@ namespace OLT.Core
     public class OltAuthenticatedUserJson<TNameModel>
         where TNameModel : class, IOltPersonName, new()
     {
-
-        /// <summary>
-        /// User Principal Name (usually the Id of the user) 
-        /// </summary>
-        /// <remarks>
-        /// Claim <see cref="OltClaimTypes.NameId"/>
-        /// </remarks>
-        [Obsolete("Move to NameId")]
-        public virtual string? UserPrincipalName
-        {
-            get
-            {
-                return NameId;
-            }
-            set
-            {
-                NameId = value;
-            }
-        }
 
         /// <summary>
         /// User's Unique Identifer for the Provider
@@ -77,25 +56,6 @@ namespace OLT.Core
         /// </remarks>
         public virtual TNameModel Name { get; set; } = new TNameModel();
 
-
-        /// <summary>
-        /// Auth Type/Method (Bearer, API Key, etc.)
-        /// </summary>
-        /// <remarks>
-        /// Claim <see cref="OltClaimTypes.TokenType"/>
-        /// </remarks>     
-        [Obsolete("Move to TokenType")]
-        public virtual string? AuthenticationType
-        {
-            get
-            {
-                return TokenType;
-            }
-            set
-            {
-                TokenType = value;
-            }
-        }
 
         /// <summary>
         /// Auth Type/Method (Bearer, API Key, etc.)

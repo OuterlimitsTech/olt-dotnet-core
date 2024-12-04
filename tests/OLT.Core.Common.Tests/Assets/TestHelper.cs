@@ -7,7 +7,7 @@ namespace OLT.Core.Common.Tests.Assets;
 
 public static class TestHelper
 {
-    public static OltPersonName FakerPersonName(string nameSuffix)
+    public static OltPersonName FakerPersonName(string? nameSuffix)
     {
         return new OltPersonName
         {

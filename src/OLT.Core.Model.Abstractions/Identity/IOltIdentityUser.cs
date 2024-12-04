@@ -1,19 +1,9 @@
 ﻿using OLT.Constants;
-using System;
 
 namespace OLT.Core
 {
     public interface IOltIdentityUser
     {
-        /// <summary>
-        /// User principal name (UPN)
-        /// </summary>
-        /// <remarks>
-        /// To Be used for local system Id
-        /// </remarks>
-        /// <value><see cref="OltClaimTypes.NameId"/></value>
-        [Obsolete("Move to Name Id")]
-        string? UserPrincipalName { get; }
 
         /// <summary>
         /// End-User's Unique Name Id. Should be Used for the unique Id of the User

@@ -101,16 +101,7 @@ namespace OLT.Core
         /// <value><see cref="OltClaimTypes.Name"/></value>
         public virtual string? FullName => GetClaims(OltClaimTypes.Name).FirstOrDefault()?.Value;
 
-        /// <summary>
-        /// The identifier of the user - Default Claim 
-        /// -> Windows Identities <see cref="System.Security.Claims.ClaimTypes.Upn"/>
-        /// -> Falls Back to <see cref="NameId"/>
-        /// </summary>
-        [Obsolete("Move To NameId - This is a legacy AD claim")]
-        public virtual string? UserPrincipalName => 
-            GetClaims(System.Security.Claims.ClaimTypes.Upn).FirstOrDefault()?.Value ?? //Support for Legacy Microsoft Identities
-            NameId; 
-
+        
         /// <summary>
         /// Get all claims for given <see cref="Identity"/>
         /// </summary>
