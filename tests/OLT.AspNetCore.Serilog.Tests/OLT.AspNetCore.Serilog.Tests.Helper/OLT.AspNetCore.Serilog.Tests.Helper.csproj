@@ -5,17 +5,12 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-		<PackageReference Include="Faker.Net" Version="2.0.163" />
-    <PackageReference Include="FluentAssertions" Version="6.12.1" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="9.0.0" />
     <PackageReference Include="Serilog.Sinks.InMemory" Version="0.11.0" />
     <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
-		<!--<PackageReference Include="Serilog.Sinks.TestCorrelator" Version="4.0.0" />-->
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
-		<PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>
