@@ -1,4 +1,5 @@
 ﻿using OLT.Constants;
+using System.Reflection;
 
 namespace OLT.Core
 {
@@ -25,10 +26,7 @@ namespace OLT.Core
         public static List<System.Security.Claims.Claim> ToClaims<TNameModel>(this OltAuthenticatedUserJson<TNameModel> model)
             where TNameModel : class, IOltPersonName, new()
         {
-            if (model == null)
-            {
-                throw new System.ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             var list = new List<System.Security.Claims.Claim>();            
             list.AddClaim(OltClaimTypes.Name, model.FullName);
@@ -53,10 +51,7 @@ namespace OLT.Core
         /// <exception cref="System.ArgumentNullException"></exception>
         public static List<System.Security.Claims.Claim> ToClaims(this IOltPersonName model)
         {
-            if (model == null)
-            {
-                throw new System.ArgumentNullException(nameof(model));
-            }
+            ArgumentNullException.ThrowIfNull(model);
 
             var list = new List<System.Security.Claims.Claim>();
                         
@@ -84,15 +79,8 @@ namespace OLT.Core
         /// <exception cref="System.ArgumentNullException"></exception>
         public static void AddClaim(this List<System.Security.Claims.Claim> claims, string type, string? value)
         {
-            if (claims == null)
-            {
-                throw new System.ArgumentNullException(nameof(claims));
-            }
-
-            if (type == null)
-            {
-                throw new System.ArgumentNullException(nameof(type));
-            }
+            ArgumentNullException.ThrowIfNull(claims);
+            ArgumentNullException.ThrowIfNullOrEmpty(type);
 
             if (value != null)
             {
@@ -109,15 +97,8 @@ namespace OLT.Core
         /// <exception cref="System.ArgumentNullException"></exception>
         public static void AddClaim(this List<System.Security.Claims.Claim> claims, System.Security.Claims.Claim claim)
         {
-            if (claims == null)
-            {
-                throw new System.ArgumentNullException(nameof(claims));
-            }
-
-            if (claim == null)
-            {
-                throw new System.ArgumentNullException(nameof(claim));
-            }
+            ArgumentNullException.ThrowIfNull(claims);
+            ArgumentNullException.ThrowIfNull(claim);
 
             if (!string.IsNullOrWhiteSpace(claim.Value))
             {

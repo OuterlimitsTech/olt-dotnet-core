@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
@@ -27,5 +28,27 @@ namespace OLT.Core
             return builder;
         }
 
+
+        /// <summary>
+        /// Adds development configuration settings to the application builder if <seealso cref="System.Diagnostics.Debugger.IsAttached"/>
+        /// </summary>
+        /// <remarks>
+        /// This should be wrapped with 
+        /// </remarks>        
+        /// <typeparam name="T">The type used to identify the user secrets configuration.</typeparam>
+        /// <param name="builder">The application builder to add the configuration to.</param>
+        /// <param name="debuggerAttached">A boolean indicating if the debugger is attached. <seealso cref="System.Diagnostics.Debugger.IsAttached"/></param>
+        /// <returns>The updated application builder.</returns>
+        public static IOltApplicationBuilder AddDevelopmentConfig<T>(this IOltApplicationBuilder builder, bool debuggerAttached) where T : class
+        {
+            if (debuggerAttached)
+            {
+                builder.Configuration
+                    .AddJsonFile("appsettings.Development.json", true, true)
+                    .AddUserSecrets<T>();
+            }
+
+            return builder;
+        }
     }
 }
