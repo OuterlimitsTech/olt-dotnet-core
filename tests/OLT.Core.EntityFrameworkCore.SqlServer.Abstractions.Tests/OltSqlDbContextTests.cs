@@ -76,6 +76,7 @@ public class OltSqlDbContextTests : IAsyncLifetime
         
         var entity = columns.FirstOrDefault(p => p.TABLE_NAME == "TestEntities");
 
+        await serviceProvider.DisposeAsync();
     }
 
     private async Task<int> AddRecord(TestSqlContext context, int expected)

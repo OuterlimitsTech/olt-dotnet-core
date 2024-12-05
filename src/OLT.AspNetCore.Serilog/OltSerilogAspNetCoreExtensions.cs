@@ -38,7 +38,6 @@ namespace OLT.Logging.Serilog
             ArgumentNullException.ThrowIfNull(app);
 
             return app
-                //.UseSerilogRequestLogging(configureOptions)
                 .UseMiddleware<OltMiddlewareSession>()
                 .UseMiddleware<OltMiddlewarePayload>();
         }

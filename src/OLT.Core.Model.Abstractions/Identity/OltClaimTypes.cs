@@ -1,13 +1,19 @@
-﻿namespace OLT.Constants
+﻿using static System.Net.WebRequestMethods;
+
+namespace OLT.Constants
 {
 
     /// <summary>
     /// List of registered claims from different sources
-    /// https://datatracker.ietf.org/doc/html/rfc7519#section-4
-    /// http://openid.net/specs/openid-connect-core-1_0.html#IDToken
-    /// https://github.com/openiddict/openiddict-core/blob/dev/src/OpenIddict.Abstractions/OpenIddictConstants.cs
-    /// https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/23808d5c7b11c3e0e9f202e48129c054e2b4f7ab/src/Microsoft.IdentityModel.JsonWebTokens/JwtRegisteredClaimNames.cs
     /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    /// <item><see href="https://datatracker.ietf.org/doc/html/rfc7519#section-4"/></item>
+    /// <item><see href="http://openid.net/specs/openid-connect-core-1_0.html#IDToken"/></item>
+    /// <item><see href="https://github.com/openiddict/openiddict-core/blob/cc1a7b300ba59fc574171361a27471a46e12f3ad/src/OpenIddict.Abstractions/OpenIddictConstants.cs"/></item>
+    /// <item><see href="https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/23808d5c7b11c3e0e9f202e48129c054e2b4f7ab/src/Microsoft.IdentityModel.JsonWebTokens/JwtRegisteredClaimNames.cs"/></item>
+    /// </list>
+    /// </remarks>
     public static class OltClaimTypes
     {
         /// <summary>
@@ -237,9 +243,6 @@
         /// End-User's Unique Name Id 
         /// </summary>
         public const string NameId = "nameid";
-
-        [Obsolete("Change to NameId")]
-        public const string NameIdentifier = "nameid";
 
         /// <summary>
         /// Casual name of the End-User that may or may not be the same as the given_name. For instance, a nickname value of Mike might be returned alongside a given_name value of Michael.

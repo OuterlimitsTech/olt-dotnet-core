@@ -162,7 +162,7 @@ public class OltDbContextTests : IAsyncLifetime
 
         var entity = new TestEntity { Name = null! };
         await context.TestEntities.AddAsync(entity);
-        await Assert.ThrowsAsync<DbUpdateException>(() => context.SaveChangesAsync());
+        await Assert.ThrowsAsync<AggregateException>(() => context.SaveChangesAsync());
 
         await serviceProvider.DisposeAsync();
     }

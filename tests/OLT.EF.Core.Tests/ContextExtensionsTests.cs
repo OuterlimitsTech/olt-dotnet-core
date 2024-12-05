@@ -33,7 +33,7 @@
 //            {
 //                const string expected = "PersonEntityId";
 //                var context = provider.GetRequiredService<UnitTestContext>();
-                
+
 //                var columns = OltContextExtensions.GetColumns<PersonEntity>(context).ToList();
 //                //columns.ForEach(col =>
 //                //{                    
@@ -80,7 +80,7 @@
 
 //                context.SaveChanges();
 //                var list = context.People.IgnoreQueryFilters().ToList();
-                
+
 
 //                OltContextExtensions.InitializeQueryable<PersonEntity>(context).Should().BeEquivalentTo(list);
 //                OltContextExtensions.InitializeQueryable<PersonEntity>(context, false).Should().BeEquivalentTo(list.Where(p => p.DeletedOn == null));

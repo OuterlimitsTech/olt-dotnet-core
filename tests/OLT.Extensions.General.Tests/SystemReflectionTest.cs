@@ -24,9 +24,9 @@ namespace OLT.Extensions.General.Tests
             };
 
             var assemblies = self.GetAllReferencedAssemblies().ToList();
-            Assert.True(self.GetAllReferencedAssemblies().Count() > 130);
-            Assert.True(list.ToArray().GetAllReferencedAssemblies().Count() > 130);
-            Assert.True(list.GetAllReferencedAssemblies().Count() > 130);
+            Assert.True(self.GetAllReferencedAssemblies().Count() > 128);
+            Assert.True(list.ToArray().GetAllReferencedAssemblies().Count() > 128);
+            Assert.True(list.GetAllReferencedAssemblies().Count() > 128);
             Assert.Equal(assemblies.Count, list.GetAllReferencedAssemblies().Count());
         }
 

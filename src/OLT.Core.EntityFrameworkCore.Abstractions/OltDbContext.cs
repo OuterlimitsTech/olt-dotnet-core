@@ -52,9 +52,9 @@ namespace OLT.Core
             }
         }
 
-        protected virtual void ProcessException(Exception exception)
+        protected virtual AggregateException BuildException(Exception exception)
         {
-            OltContextExtensions.ProcessException(this, exception);
+            return OltContextExtensions.BuildException(this, exception);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
@@ -66,9 +66,8 @@ namespace OLT.Core
                 return await base.SaveChangesAsync(cancellationToken);
             }
             catch (Exception exception)
-            {
-                ProcessException(exception);
-                throw;
+            {                
+                throw BuildException(exception);
             }
         }
 
@@ -81,8 +80,7 @@ namespace OLT.Core
             }
             catch (Exception exception)
             {
-                ProcessException(exception);
-                throw;
+                throw BuildException(exception);                
             }
         }
 

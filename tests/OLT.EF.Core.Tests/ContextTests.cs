@@ -41,7 +41,7 @@
 //            {
 //                var context1 = provider.GetRequiredService<UnitTestContext>();
 //                var context2 = provider.GetRequiredService<UnitTestAlternateContext>();
-                
+
 //                var entity1 = PersonEntity.FakerEntity();
 //                entity1.DeletedBy = Faker.Internet.Email();
 //                entity1.DeletedOn = System.DateTimeOffset.Now;
@@ -55,7 +55,7 @@
 //                entity2.DeletedBy = Faker.Internet.Email();
 //                entity2.DeletedOn = System.DateTimeOffset.Now;
 //                context2.People.Add(entity2);
-//                context2.SaveChanges();                
+//                context2.SaveChanges();
 //                Assert.NotNull(context2.People.FirstOrDefault(p => p.Id == entity2.Id));
 
 //            }
