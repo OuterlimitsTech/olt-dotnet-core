@@ -18,7 +18,7 @@ namespace OLT.Core
     ///   </item>    
     /// </list>
     /// </remarks>
-    public class OltConnectionConfigSftp
+    public class OltConnectionConfigSftp : IOltConnectionStringParser
     {
         public virtual string? Host { get; set; }
         public virtual string? Username { get; set; }

@@ -18,7 +18,7 @@ namespace OLT.Core
     ///   </item>    
     /// </list>
     /// </remarks>
-    public class OltConnectionConfigWcf
+    public class OltConnectionConfigWcf : IOltConnectionStringParser
     {
         public virtual string? Endpoint { get; set; }
         public virtual string? Username { get; set; }

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
 
     public abstract class OltGenericParameterParser<TValueType> : IOltGenericParameterParser<TValueType>
@@ -13,7 +11,7 @@ namespace OLT.Core
             Key = key;
         }
 
-        public virtual string Key { get; } = default!;
+        public virtual string Key { get; }
         public abstract bool HasValue { get; }
         public abstract bool Parse(IOltGenericParameter parameters);
         public virtual TValueType Value { get; set; } = default!;

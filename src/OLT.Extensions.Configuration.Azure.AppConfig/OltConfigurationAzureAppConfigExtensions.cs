@@ -22,7 +22,7 @@ namespace OLT.Core
         /// <param name="credential">Credential to use (Default is <see cref="ManagedIdentityCredential"/>)</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static AzureAppConfigurationOptions Connect(this AzureAppConfigurationOptions options, string endpoint, TokenCredential credential = null)
+        public static AzureAppConfigurationOptions Connect(this AzureAppConfigurationOptions options, string endpoint, TokenCredential? credential = null)
         {
             ArgumentNullException.ThrowIfNull(options);
             ArgumentNullException.ThrowIfNull(endpoint);

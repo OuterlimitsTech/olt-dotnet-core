@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\OLT.Extensions.Configuration.Amazon.SystemManager\OLT.Extensions.Configuration.Amazon.SystemManager.csproj" />
+		<ProjectReference Include="..\..\src\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
+		<ProjectReference Include="..\..\src\OLT.Extensions.Configuration.Amazon.SystemManager\OLT.Extensions.Configuration.Amazon.SystemManager.csproj" />
     <ProjectReference Include="..\..\src\OLT.Extensions.Configuration.Azure.AppConfig\OLT.Extensions.Configuration.Azure.AppConfig.csproj" />
     <ProjectReference Include="..\..\src\OLT.Extensions.Configuration\OLT.Extensions.Configuration.csproj" />
   </ItemGroup>
