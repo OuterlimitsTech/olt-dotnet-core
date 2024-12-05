@@ -555,8 +555,9 @@ public class EntityIdServiceTests : BaseUnitTests
             var model = PersonModel.FakerEntity();
             await service.AddAsync(model);
             service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault()));
-
-            Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault())));
+            
+            Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault(), true)));
+            Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault())));
             Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault(), false)));
         }
 

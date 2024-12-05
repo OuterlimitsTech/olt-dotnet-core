@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public class OltSearcherGetById<TEntity> : OltSearcher<TEntity>
         where TEntity : class, IOltEntityId

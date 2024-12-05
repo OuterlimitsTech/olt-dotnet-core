@@ -159,8 +159,9 @@ public class EntityUidServiceTests : BaseUnitTests
             Assert.True(await service.SoftDeleteAsync(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
             Assert.False(await service.SoftDeleteAsync(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
 
-            Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
+            Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value, true)));
             Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value, false)));
+            Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
         }
 
         using (var provider = BuildProvider())
@@ -174,8 +175,9 @@ public class EntityUidServiceTests : BaseUnitTests
             Assert.True(service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
             Assert.False(service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(Guid.NewGuid())));
 
-            Assert.NotNull(service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
+            Assert.NotNull(service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value, true)));
             Assert.Null(service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value, false)));
+            Assert.Null(service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.Value)));
         }
     }
 
@@ -307,7 +309,7 @@ public class EntityUidServiceTests : BaseUnitTests
             var newDto = await service.AddAsync(PersonModel.FakerEntity());
             await service.SoftDeleteAsync(newDto.UniqueId.GetValueOrDefault());
             var result = await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(newDto.UniqueId.GetValueOrDefault()));
-            Assert.Equal(newDto.UniqueId, result?.UniqueId);
+            Assert.Null(result?.UniqueId);
         }
 
 
@@ -318,7 +320,7 @@ public class EntityUidServiceTests : BaseUnitTests
             var newDto = service.Add(PersonModel.FakerEntity());
             service.SoftDelete(newDto.UniqueId.GetValueOrDefault());
             var result = service.Get<PersonDto>(new OltSearcherGetByUid<PersonEntity>(newDto.UniqueId.GetValueOrDefault()));
-            Assert.Equal(newDto.UniqueId, result?.UniqueId);
+            Assert.Null(result?.UniqueId);
         }
 
 
@@ -431,8 +433,9 @@ public class EntityUidServiceTests : BaseUnitTests
             await service.AddAsync(model);
             service.SoftDelete(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault()));
 
-            Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault())));
+            Assert.NotNull(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault(), true)));
             Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault(), false)));
+            Assert.Null(await service.GetAsync<PersonDto>(new OltSearcherGetByUid<PersonEntity>(model.UniqueId.GetValueOrDefault())));
         }
 
     }

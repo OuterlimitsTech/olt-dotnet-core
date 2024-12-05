@@ -24,7 +24,7 @@ public class OltKeyGeneratorTests
         bool useNumbers = true;
 
         // Act
-        string password = OltKeyGenerator.GeneratePassword(useNumbers: useNumbers);
+        string password = OltKeyGenerator.GeneratePassword(length: 20, useNumbers: useNumbers, useSymbols: false, useLowerCaseLetters: false, useUpperCaseLetters: false);
 
         // Assert
         Assert.Contains(password, char.IsDigit);
@@ -37,7 +37,7 @@ public class OltKeyGeneratorTests
         bool useLowerCaseLetters = true;
 
         // Act
-        string password = OltKeyGenerator.GeneratePassword(useLowerCaseLetters: useLowerCaseLetters);
+        string password = OltKeyGenerator.GeneratePassword(length: 20, useLowerCaseLetters: useLowerCaseLetters, useSymbols: false, useNumbers: false, useUpperCaseLetters: false);
 
         // Assert
         Assert.Contains(password, char.IsLower);
@@ -50,7 +50,7 @@ public class OltKeyGeneratorTests
         bool useUpperCaseLetters = true;
 
         // Act
-        string password = OltKeyGenerator.GeneratePassword(useUpperCaseLetters: useUpperCaseLetters);
+        string password = OltKeyGenerator.GeneratePassword(length: 20, useUpperCaseLetters: useUpperCaseLetters, useSymbols: false, useLowerCaseLetters: false, useNumbers: false);
 
         // Assert
         Assert.Contains(password, char.IsUpper);
@@ -63,7 +63,7 @@ public class OltKeyGeneratorTests
         bool useSymbols = true;
 
         // Act
-        string password = OltKeyGenerator.GeneratePassword(useSymbols: useSymbols);
+        string password = OltKeyGenerator.GeneratePassword(length: 20, useSymbols: useSymbols);
 
         // Assert
         Assert.Contains(password, ch => !char.IsLetterOrDigit(ch));

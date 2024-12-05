@@ -1,13 +1,10 @@
-﻿using System;
-using System.Linq;
-
-namespace OLT.Core
+﻿namespace OLT.Core
 {
     public class OltSearcherGetByUid<TEntity> : OltSearcher<TEntity>
         where TEntity : class, IOltEntityUniqueId
     {
 
-        public OltSearcherGetByUid(Guid uid, bool includeDeleted = true)
+        public OltSearcherGetByUid(Guid uid, bool includeDeleted = false)
         {
             Uid = uid;
             IncludeDeleted = includeDeleted;
