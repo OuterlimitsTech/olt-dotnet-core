@@ -50,6 +50,7 @@ namespace OLT.Core
             ArgumentNullException.ThrowIfNullOrWhiteSpace(cacheKeyPrefix);
 
             redisConfiguration.Name = redisConfiguration.Name ?? redisConfiguration.ConfigurationOptions.ClientName;
+            redisConfiguration.AllowAdmin = true;
 
             services.AddSingleton((provider) => provider.GetRequiredService<IRedisClientFactory>().GetDefaultRedisClient());
             services.AddSingleton((provider) => provider.GetRequiredService<IRedisClientFactory>().GetDefaultRedisClient().GetDefaultDatabase());
@@ -61,7 +62,7 @@ namespace OLT.Core
             return services
                 .Configure<OltCacheOptions>(opt =>
                 {
-                    opt.DefaultAbsoluteExpiration = defaultAbsoluteExpiration;
+                    opt.DefaultAbsoluteExpiration = defaultAbsoluteExpiration;                    
                 })
                 .AddSingleton<IOltCacheService, OltRedisCache>()                
                 .AddSingleton(redisConfiguration)

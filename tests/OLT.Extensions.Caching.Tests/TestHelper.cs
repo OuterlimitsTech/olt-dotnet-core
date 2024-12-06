@@ -57,8 +57,9 @@ namespace OLT.Extensions.Caching.Tests
         public static ServiceProvider BuildRedisProvider(RedisContainer container, TimeSpan defaultAbsoluteExpiration, string cacheKeyPrefix)
         {
             var services = new ServiceCollection();
-            services.AddLogging(config => config.AddConsole());            
-            services.AddOltCacheRedis(defaultAbsoluteExpiration, cacheKeyPrefix, container.GetConnectionString());
+            services.AddLogging(config => config.AddConsole());
+            var connStr = $"{container.GetConnectionString()},allowAdmin=true,defaultDatabase=3";
+            services.AddOltCacheRedis(defaultAbsoluteExpiration, cacheKeyPrefix, connStr);
             return services.BuildServiceProvider();
         }
 
