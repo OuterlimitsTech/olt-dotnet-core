@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using OLT.Constants;
 using OLT.Core;
+using OLT.Identity.Abstractions;
 using System;
 using System.Text;
 
 namespace OLT.AspNetCore.Authentication
 {
-    public class OltAuthenticationJwtBearer : IOltAuthenticationJwtBearer
+    public class OltAuthenticationJwtBearer //: IOltAuthenticationJwtBearer
     {
         public OltAuthenticationJwtBearer(string jwtSecret)
         {
@@ -92,8 +92,8 @@ namespace OLT.AspNetCore.Authentication
                 opt.SaveToken = true;
                 opt.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = OltClaimTypes.Name,
-                    RoleClaimType = OltClaimTypes.Role,
+                    NameClaimType = ClaimTypeNames.Name,
+                    RoleClaimType = ClaimTypeNames.Role,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(JwtSecret)),
                     ValidateIssuer = ValidateIssuer,

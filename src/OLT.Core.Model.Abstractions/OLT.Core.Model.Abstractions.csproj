@@ -6,6 +6,15 @@
 		<LangVersion>Latest</LangVersion>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="OLT.Identity.ClaimTypeNames" Version="0.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
+	</ItemGroup>
 	
+
 </Project>
 	

@@ -17,6 +17,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="OLT.Identity.ClaimTypeNames" Version="0.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
 	</ItemGroup>
 

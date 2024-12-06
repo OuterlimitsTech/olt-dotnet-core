@@ -1,5 +1,4 @@
-﻿using OLT.Constants;
-using System.Collections.Generic;
+﻿using OLT.Identity.Abstractions;
 
 namespace OLT.Core
 {
@@ -26,19 +25,19 @@ namespace OLT.Core
         List<System.Security.Claims.Claim> GetClaims(string type);
 
         /// <summary>
-        /// Returns all claims <see cref="OltClaimTypes.Role"/>
+        /// Returns all claims <see cref="ClaimTypeNames.Role"/>
         /// </summary>
         List<System.Security.Claims.Claim> GetRoles();
 
         /// <summary>
-        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists
+        /// Checks if claim <see cref="ClaimTypeNames.Role"/> exists
         /// </summary>
-        /// <param name="claimName"><see cref="OltClaimTypes.Role"/></param>
+        /// <param name="claimName"><see cref="ClaimTypeNames.Role"/></param>
         /// <returns></returns>
         bool HasRole(string? claimName);
 
         /// <summary>
-        /// Checks if claim <see cref="OltClaimTypes.Role"/> exists this Enum 
+        /// Checks if claim <see cref="ClaimTypeNames.Role"/> exists this Enum 
         /// </summary>
         /// <typeparam name="TRoleEnum"></typeparam>
         /// <param name="roles"></param>

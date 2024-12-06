@@ -71,7 +71,7 @@ public class OltCodeAttributeExtensionsTests
         var enumValue = TestEnum.ValueWithoutCode;
 
         // Act & Assert
-        Assert.Throws<Exception>(() => enumValue.GetCodeEnumSafe());
+        Assert.Throws<NullReferenceException>(() => enumValue.GetCodeEnumSafe());
     }
 
     [Fact]

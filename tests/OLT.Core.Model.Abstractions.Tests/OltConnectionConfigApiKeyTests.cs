@@ -73,7 +73,7 @@ public class OltConnectionConfigApiKeyTests
     [InlineData("", null, null)]
     [InlineData(" ", null, null)]
     [InlineData(null, null, null)]
-    public void Parse_ConnectionStrings(string connectionString, string expectedEndpoint, string expectedApiKey)
+    public void Parse_ConnectionStrings(string? connectionString, string? expectedEndpoint, string? expectedApiKey)
     {
         var config = new OltConnectionConfigApiKey();
         config.Parse(connectionString);

@@ -22,5 +22,10 @@ namespace OLT.Core.Hosting.Abstractions.Tests
         {
             return true;
         }
+
+        public override bool HasRole<TRoleEnum>(params TRoleEnum[] roles)
+        {
+            return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
+        }
     }
 }

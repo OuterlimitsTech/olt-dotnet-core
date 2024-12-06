@@ -1,5 +1,4 @@
 ﻿using OLT.Core;
-using System.Collections.Generic;
 using System.Security.Principal;
 
 namespace OLT.Extensions.DependencyInjection.Tests.Assets
@@ -38,6 +37,11 @@ namespace OLT.Extensions.DependencyInjection.Tests.Assets
         public override bool HasRole(string? claimName)
         {
             return true;
+        }
+
+        public override bool HasRole<TRoleEnum>(params TRoleEnum[] roles)
+        {
+            return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
         }
     }
 }

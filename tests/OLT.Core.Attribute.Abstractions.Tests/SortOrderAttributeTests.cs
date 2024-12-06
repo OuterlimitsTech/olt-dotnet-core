@@ -1,3 +1,5 @@
+using System;
+
 namespace OLT.Core.Attribute.Abstractions.Tests;
 
 public class SortOrderAttributeTests
@@ -38,4 +40,31 @@ public class SortOrderAttributeTests
         // Assert
         Assert.Equal(newSortOrder, attribute.SortOrder);
     }
+
+    public enum TestValue
+    {
+        [SortOrder(10)]
+        Valid,
+
+        NoAttrib,
+    }
+
+    [Theory]
+    [InlineData(10, TestValue.Valid)]
+    [InlineData(9999, TestValue.NoAttrib)]
+    public void GetSortOrderFromEnumValue_ReturnsExpectedSortOrder(int? expected, TestValue value)
+    {        
+        var sortOrder = OltSortOrderAttributeExtensions.GetSortOrderEnum(value);
+        Assert.Equal(expected, sortOrder);
+    }
+
+    [Theory]
+    [InlineData(10, TestValue.Valid)]
+    [InlineData(-1, TestValue.NoAttrib)]
+    public void GetSortOrderFromEnumValue_ReturnsExpectedDefault(int? expected, TestValue value)
+    {
+        var sortOrder = OltSortOrderAttributeExtensions.GetSortOrderEnum(value, -1);
+        Assert.Equal(expected, sortOrder);
+    }
+
 }

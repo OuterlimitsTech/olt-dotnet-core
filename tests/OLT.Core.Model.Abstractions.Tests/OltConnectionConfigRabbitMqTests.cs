@@ -62,7 +62,7 @@ public class OltConnectionConfigRabbitMqTests
     [InlineData("", null, null, null)]
     [InlineData(" ", null, null, null)]
     [InlineData(null, null, null, null)]
-    public void Parse_ConnectionStrings(string connectionString, string expectedHost, string expectedUsername, string expectedPassword)
+    public void Parse_ConnectionStrings(string? connectionString, string? expectedHost, string? expectedUsername, string? expectedPassword)
     {
         var config = new OltConnectionConfigRabbitMq();
         config.Parse(connectionString);

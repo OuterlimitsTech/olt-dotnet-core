@@ -24,9 +24,10 @@
         /// </summary>
         /// <param name="value"></param>
         /// <returns><see cref="string"/> Code from <see cref="CodeAttribute"/> or <see langword="null"/></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public static string GetCodeEnumSafe(this Enum value)
         {
-            return GetCodeEnum(value) ?? throw new Exception("Code Enum Not Found");
+            return GetCodeEnum(value) ?? throw new NullReferenceException("Code Enum Not Found");
         }
 
 

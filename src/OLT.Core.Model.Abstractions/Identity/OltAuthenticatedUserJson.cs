@@ -1,4 +1,4 @@
-﻿using OLT.Constants;
+﻿using OLT.Identity.Abstractions;
 
 namespace OLT.Core
 {
@@ -18,7 +18,7 @@ namespace OLT.Core
         /// User's Unique Identifer for the Provider
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.NameId"/>
+        /// Claim <see cref="ClaimTypeNames.NameId"/>
         /// </remarks>        
         public virtual string? NameId { get; set; }
 
@@ -26,7 +26,7 @@ namespace OLT.Core
         /// Username of user
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.PreferredUsername"/>
+        /// Claim <see cref="ClaimTypeNames.PreferredUsername"/>
         /// </remarks>
         public virtual string? Username { get; set; }
 
@@ -34,7 +34,7 @@ namespace OLT.Core
         /// Email of user
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.Email"/>
+        /// Claim <see cref="ClaimTypeNames.Email"/>
         /// </remarks>
         public virtual string? Email { get; set; }
 
@@ -43,7 +43,7 @@ namespace OLT.Core
         /// Full name of user using <see cref="IOltPersonName.FullName"/>
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.Name"/>
+        /// Claim <see cref="ClaimTypeNames.Name"/>
         /// </remarks>
         public virtual string? FullName => Name.FullName;
 
@@ -52,7 +52,7 @@ namespace OLT.Core
         /// Full name of user using <see cref="IOltPersonName.FullName"/>
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.GivenName"/> <see cref="OltClaimTypes.MiddleName"/> <see cref="OltClaimTypes.FamilyName"/>
+        /// Claim <see cref="ClaimTypeNames.GivenName"/> <see cref="ClaimTypeNames.MiddleName"/> <see cref="ClaimTypeNames.FamilyName"/>
         /// </remarks>
         public virtual TNameModel Name { get; set; } = new TNameModel();
 
@@ -61,7 +61,7 @@ namespace OLT.Core
         /// Auth Type/Method (Bearer, API Key, etc.)
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.TokenType"/>
+        /// Claim <see cref="ClaimTypeNames.TokenType"/>
         /// </remarks>        
         public virtual string? TokenType { get; set; }
 
@@ -69,7 +69,7 @@ namespace OLT.Core
         /// Roles for User
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.Role"/>
+        /// Claim <see cref="ClaimTypeNames.Role"/>
         /// </remarks>   
         public virtual List<string> Roles { get; set; } = new List<string>();
 
@@ -77,7 +77,7 @@ namespace OLT.Core
         /// Permissions for User
         /// </summary>
         /// <remarks>
-        /// Claim <see cref="OltClaimTypes.Role"/>
+        /// Claim <see cref="ClaimTypeNames.Role"/>
         /// </remarks>   
         public virtual List<string> Permissions { get; set; } = new List<string>();
     }

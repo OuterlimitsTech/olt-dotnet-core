@@ -1,5 +1,5 @@
 using FluentAssertions;
-using OLT.Constants;
+using OLT.Identity.Abstractions;
 using System.Security.Claims;
 
 namespace OLT.Core.Model.Abstractions.Tests;
@@ -35,20 +35,20 @@ public class OltClaimExtensionsTests
         Assert.Equal(fullName, user.FullName);
 
         // Assert
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Name && c.Value == fullName);
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Email && c.Value == "testuser@example.com");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.TokenType && c.Value == "Bearer");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.NameId && c.Value == "123");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.PreferredUsername && c.Value == "testuser");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Username && c.Value == "testuser");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Nickname && c.Value == "Test");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.GivenName && c.Value == "Test");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.MiddleName && c.Value == "Middle");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.FamilyName && c.Value == "User Jr");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Role && c.Value == "Admin");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Role && c.Value == "User");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Role && c.Value == "Read");
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Role && c.Value == "Write");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Name && c.Value == fullName);
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Email && c.Value == "testuser@example.com");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.TokenType && c.Value == "Bearer");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.NameId && c.Value == "123");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.PreferredUsername && c.Value == "testuser");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Username && c.Value == "testuser");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Nickname && c.Value == "Test");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.GivenName && c.Value == "Test");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.MiddleName && c.Value == "Middle");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.FamilyName && c.Value == "User Jr");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Role && c.Value == "Admin");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Role && c.Value == "User");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Role && c.Value == "Read");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Role && c.Value == "Write");
 
 
 
@@ -60,26 +60,26 @@ public class OltClaimExtensionsTests
         var totalClaims = nameClaims + userClaims + model.Roles.Count + model.Permissions.Count;
 
         Assert.Equal(totalClaims, claims.Count);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Name);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Email);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Username);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Nickname);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Name);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Email);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.TokenType);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.NameId);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.PreferredUsername);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Username);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Nickname);
 
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Name && p.Value == model.FullName);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Email && p.Value == model.Email);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.TokenType && p.Value == model.TokenType);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.NameId && p.Value == model.NameId);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.PreferredUsername && p.Value == model.Username);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.Nickname && p.Value == model.Name.First);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Name && p.Value == model.FullName);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Email && p.Value == model.Email);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.TokenType && p.Value == model.TokenType);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.NameId && p.Value == model.NameId);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.PreferredUsername && p.Value == model.Username);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.Nickname && p.Value == model.Name.First);
 
         var roleClaims = new List<string>();
         roleClaims.AddRange(model.Roles);
         roleClaims.AddRange(model.Permissions);
 
-        claims.Where(p => p.Type == OltClaimTypes.Role).Select(s => s.Value).Should().BeEquivalentTo(roleClaims);
+        claims.Where(p => p.Type == ClaimTypeNames.Role).Select(s => s.Value).Should().BeEquivalentTo(roleClaims);
     }
 
     [Fact]
@@ -99,10 +99,10 @@ public class OltClaimExtensionsTests
         var claims = new List<Claim>();
 
         // Act
-        claims.AddClaim(OltClaimTypes.Name, "Test User");
+        claims.AddClaim(ClaimTypeNames.Name, "Test User");
 
         // Assert
-        Assert.Contains(claims, c => c.Type == OltClaimTypes.Name && c.Value == "Test User");
+        Assert.Contains(claims, c => c.Type == ClaimTypeNames.Name && c.Value == "Test User");
     }
 
     [Fact]
@@ -112,10 +112,10 @@ public class OltClaimExtensionsTests
         var claims = new List<Claim>();
 
         // Act
-        claims.AddClaim(OltClaimTypes.Name, null);
+        claims.AddClaim(ClaimTypeNames.Name, null);
 
         // Assert
-        Assert.DoesNotContain(claims, c => c.Type == OltClaimTypes.Name);
+        Assert.DoesNotContain(claims, c => c.Type == ClaimTypeNames.Name);
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class OltClaimExtensionsTests
         List<Claim>? claims = null;
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => claims.AddClaim(OltClaimTypes.Name, "Test User"));
+        Assert.Throws<ArgumentNullException>(() => claims.AddClaim(ClaimTypeNames.Name, "Test User"));
     }
 
     [Fact]
@@ -155,13 +155,13 @@ public class OltClaimExtensionsTests
         var lastName = string.IsNullOrWhiteSpace(model.Suffix) ? model.Last : $"{model.Last} {model.Suffix}";
 
         Assert.Equal(nameClaims, claims.Count);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.GivenName);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.MiddleName);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.FamilyName);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.GivenName);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.MiddleName);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.FamilyName);
 
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.GivenName && p.Value == model.First);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.MiddleName && p.Value == model.Middle);
-        Assert.Contains(claims, p => p.Type == OltClaimTypes.FamilyName && p.Value == lastName);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.GivenName && p.Value == model.First);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.MiddleName && p.Value == model.Middle);
+        Assert.Contains(claims, p => p.Type == ClaimTypeNames.FamilyName && p.Value == lastName);
     }
 
     [Theory]

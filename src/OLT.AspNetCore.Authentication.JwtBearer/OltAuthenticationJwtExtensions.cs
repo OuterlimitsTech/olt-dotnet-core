@@ -1,11 +1,8 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.JsonWebTokens;
 using OLT.AspNetCore.Authentication;
+using System;
 
 namespace OLT.Core
 {
@@ -16,11 +13,10 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TScheme"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="schemeBuilder"><seealso cref="IOltAuthenticationJwtBearer"/></param>
+        /// <param name="schemeBuilder"><seealso cref="OltAuthenticationJwtBearer"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static AuthenticationBuilder AddJwtBearer<TScheme>(this IServiceCollection services, TScheme schemeBuilder)
-            where TScheme : IOltAuthenticationJwtBearer
+        public static AuthenticationBuilder AddJwtBearer(this IServiceCollection services, OltAuthenticationJwtBearer schemeBuilder)
             => services.AddJwtBearer(schemeBuilder, null, null);
 
         /// <summary>
@@ -28,12 +24,11 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TScheme"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="schemeBuilder"><seealso cref="IOltAuthenticationJwtBearer"/></param>
+        /// <param name="schemeBuilder"><seealso cref="OltAuthenticationJwtBearer"/></param>
         /// <param name="configureOptions"><seealso cref="JwtBearerOptions"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static AuthenticationBuilder AddJwtBearer<TScheme>(this IServiceCollection services, TScheme schemeBuilder, Action<JwtBearerOptions>? configureOptions)
-            where TScheme : IOltAuthenticationJwtBearer
+        public static AuthenticationBuilder AddJwtBearer(this IServiceCollection services, OltAuthenticationJwtBearer schemeBuilder, Action<JwtBearerOptions>? configureOptions)
             => services.AddJwtBearer(schemeBuilder, configureOptions, null);
 
         /// <summary>
@@ -41,13 +36,12 @@ namespace OLT.Core
         /// </summary>
         /// <typeparam name="TScheme"></typeparam>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
-        /// <param name="schemeBuilder"><seealso cref="IOltAuthenticationJwtBearer"/></param>
+        /// <param name="schemeBuilder"><seealso cref="OltAuthenticationJwtBearer"/></param>
         /// <param name="authOptionsAction"><seealso cref="AuthenticationOptions"/></param>
         /// <param name="schemeOptions"><seealso cref="JwtBearerOptions"/></param>
         /// <returns><seealso cref="AuthenticationBuilder"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static AuthenticationBuilder AddJwtBearer<TScheme>(this IServiceCollection services, TScheme schemeBuilder, Action<JwtBearerOptions>? schemeOptions, Action<AuthenticationOptions>? authOptionsAction)
-            where TScheme: IOltAuthenticationJwtBearer
+        public static AuthenticationBuilder AddJwtBearer(this IServiceCollection services, OltAuthenticationJwtBearer schemeBuilder, Action<JwtBearerOptions>? schemeOptions, Action<AuthenticationOptions>? authOptionsAction)
         {
             ArgumentNullException.ThrowIfNull(services);
             ArgumentNullException.ThrowIfNull(schemeBuilder);

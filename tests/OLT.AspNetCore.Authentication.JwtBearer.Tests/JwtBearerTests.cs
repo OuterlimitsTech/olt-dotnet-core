@@ -31,14 +31,14 @@ namespace OLT.AspNetCore.Authentication.JwtBearer.Tests
             };
 
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions));
-            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null));
+            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer(services, null));
 
 
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions, null));
-            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action));
+            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer(services, null, action));
 
             Assert.Throws<ArgumentNullException>("services", () => OltAuthenticationJwtExtensions.AddJwtBearer(null, validOptions, action, authAction));
-            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer<OltAuthenticationJwtBearer>(services, null, action, authAction));
+            Assert.Throws<ArgumentNullException>("schemeBuilder", () => OltAuthenticationJwtExtensions.AddJwtBearer(services, null, action, authAction));
 
             Assert.Throws<ArgumentNullException>("jwtSecret", () => new OltAuthenticationJwtBearer(null).AddScheme(null, null));
         }

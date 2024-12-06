@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Security.Principal;
 
-namespace OLT.Core.Identity.Abstractions.Tests;
+namespace OLT.Core.Model.Abstractions.Tests;
 
 public class TestIdentity : OltIdentity
 {
@@ -23,4 +23,9 @@ public class TestIdentity : OltIdentity
     }
 
     public override ClaimsPrincipal? Identity => _identity;
+
+    public override bool HasRole<TRoleEnum>(params TRoleEnum[] roles)
+    {
+        return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
+    }
 }

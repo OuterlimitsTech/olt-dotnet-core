@@ -137,7 +137,7 @@ public class OltConnectionConfigSmtpTests
     [InlineData("", null, null, null, 587, null)]
     [InlineData(" ", null, null, null, 587, null)]
     [InlineData(null, null, null, null, 587, null)]
-    public void Parse_ConnectionStrings(string connectionString, string expectedHost, string expectedUsername, string expectedPassword, int? expectedPort, bool? expectedSsl)
+    public void Parse_ConnectionStrings(string? connectionString, string? expectedHost, string? expectedUsername, string? expectedPassword, int? expectedPort, bool? expectedSsl)
     {
         var config = new OltConnectionConfigSmtp();
         config.Parse(connectionString);

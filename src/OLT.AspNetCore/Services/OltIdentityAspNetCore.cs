@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Linq;
 
 // ReSharper disable once CheckNamespace
 namespace OLT.Core
@@ -16,6 +17,9 @@ namespace OLT.Core
 
         public override System.Security.Claims.ClaimsPrincipal? Identity => _httpContext.HttpContext?.User;
 
-
+        public override bool HasRole<TRoleEnum>(params TRoleEnum[] roles)
+        {
+            return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
+        }
     }
 }

@@ -110,7 +110,7 @@ public class OltConnectionConfigSftpTests
     [InlineData("", null, null, null, 22, null)]
     [InlineData(" ", null, null, null, 22, null)]
     [InlineData(null, null, null, null, 22, null)]
-    public void Parse_ConnectionStrings(string connectionString, string expectedHost, string expectedUsername, string expectedPassword, int? expectedPort, string expectedWorkingDir)
+    public void Parse_ConnectionStrings(string? connectionString, string? expectedHost, string? expectedUsername, string? expectedPassword, int? expectedPort, string? expectedWorkingDir)
     {
         var config = new OltConnectionConfigSftp();
         config.Parse(connectionString);

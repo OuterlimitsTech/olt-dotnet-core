@@ -63,7 +63,7 @@ public class OltConnectionConfigAmazonTests
     [InlineData("", null, null, null)]
     [InlineData(" ", null, null, null)]
     [InlineData(null, null, null, null)]
-    public void Parse_ConnectionStrings(string connectionString, string expectedRegion, string expectedUsername, string expectedPassword)
+    public void Parse_ConnectionStrings(string? connectionString, string? expectedRegion, string? expectedUsername, string? expectedPassword)
     {
         var config = new OltConnectionConfigAmazon();
         config.Parse(connectionString);

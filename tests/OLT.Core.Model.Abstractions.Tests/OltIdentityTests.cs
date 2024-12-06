@@ -1,11 +1,11 @@
-using OLT.Constants;
+﻿using OLT.Identity.Abstractions;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace OLT.Core.Identity.Abstractions.Tests;
+namespace OLT.Core.Model.Abstractions.Tests;
 
 public class OltIdentityTests
-{     
+{
 
     [Fact]
     public void IsAnonymous_ShouldReturnTrue_WhenIdentityIsNull()
@@ -42,7 +42,7 @@ public class OltIdentityTests
         // Arrange
         var claims = new List<Claim>
         {
-            new Claim(OltClaimTypes.Username, "testuser")
+            new Claim(ClaimTypeNames.Username, "testuser")
         };
         var identity = new ClaimsIdentity(claims);
         var principal = new ClaimsPrincipal(identity);
@@ -61,16 +61,16 @@ public class OltIdentityTests
         // Arrange
         var claims = new List<Claim>
         {
-            new Claim(OltClaimTypes.Username, "testuser"),
-            new Claim(OltClaimTypes.Email, "testuser@example.com")
+            new Claim(ClaimTypeNames.Username, "testuser"),
+            new Claim(ClaimTypeNames.Email, "testuser@example.com")
         };
         var identity = new ClaimsIdentity(claims);
         var principal = new ClaimsPrincipal(identity);
         var oltIdentity = new TestIdentity(principal);
 
         // Act
-        var usernameClaims = oltIdentity.GetClaims(OltClaimTypes.Username);
-        var emailClaims = oltIdentity.GetClaims(OltClaimTypes.Email);
+        var usernameClaims = oltIdentity.GetClaims(ClaimTypeNames.Username);
+        var emailClaims = oltIdentity.GetClaims(ClaimTypeNames.Email);
 
         // Assert
         Assert.Single(usernameClaims);
@@ -85,7 +85,7 @@ public class OltIdentityTests
         // Arrange
         var claims = new List<Claim>
         {
-            new Claim(OltClaimTypes.Username, "testuser")
+            new Claim(ClaimTypeNames.Username, "testuser")
         };
         var identity = new ClaimsIdentity(claims);
         var principal = new ClaimsPrincipal(identity);
@@ -104,7 +104,7 @@ public class OltIdentityTests
         // Arrange
         var claims = new List<Claim>
         {
-            new Claim(OltClaimTypes.Name, "Test User")
+            new Claim(ClaimTypeNames.Name, "Test User")
         };
         var identity = new ClaimsIdentity(claims);
         var principal = new ClaimsPrincipal(identity);
@@ -123,7 +123,7 @@ public class OltIdentityTests
         // Arrange
         var claims = new List<Claim>
         {
-            new Claim(OltClaimTypes.Role, "Admin")
+            new Claim(ClaimTypeNames.Role, "Admin")
         };
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims));
         var oltIdentity = new TestIdentity(principal);
@@ -135,7 +135,7 @@ public class OltIdentityTests
         Assert.True(hasRole);
 
 
-        var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
+        var user = OltIdentityTests.FakerAuthUserToken(Faker.Name.Suffix());
         user.Roles.Add(TestSecurityRoles.RoleOne.GetCodeEnumSafe());
         user.Roles.Add(TestSecurityRoles.RoleThree.GetCodeEnumSafe());
         user.Permissions.Add(TestSecurityPermissions.PermTwo.GetCodeEnumSafe());
@@ -163,7 +163,7 @@ public class OltIdentityTests
         // Arrange
         var claims = new List<Claim>
         {
-            new Claim(OltClaimTypes.Role, "User")
+            new Claim(ClaimTypeNames.Role, "User")
         };
         var identity = new ClaimsIdentity(claims);
         var principal = new ClaimsPrincipal(identity);
@@ -184,7 +184,7 @@ public class OltIdentityTests
         Assert.Null(model.Identity);
         Assert.True(model.IsAnonymous);
         Assert.Empty(model.GetAllClaims());
-        Assert.Empty(model.GetClaims(OltClaimTypes.Name));
+        Assert.Empty(model.GetClaims(ClaimTypeNames.Name));
         Assert.Empty(model.GetClaims(null));
         Assert.Null(model.GetDbUsername());
         Assert.False(model.HasRole(null));
@@ -207,12 +207,12 @@ public class OltIdentityTests
         var model = new TestIdentity();
         Assert.True(model.IsAnonymous);
 
-        var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
+        var user = OltIdentityTests.FakerAuthUserToken(Faker.Name.Suffix());
         var identity = new GenericIdentity(user.FullName);
         model = new TestIdentity(identity);
         Assert.True(model.IsAnonymous);
 
-        identity.AddClaim(new System.Security.Claims.Claim(OltClaimTypes.PreferredUsername, Faker.Internet.UserName()));
+        identity.AddClaim(new System.Security.Claims.Claim(ClaimTypeNames.PreferredUsername, Faker.Internet.UserName()));
         model = new TestIdentity(identity);
         Assert.False(model.IsAnonymous);
     }
@@ -228,11 +228,11 @@ public class OltIdentityTests
     [InlineData(" ", " ", false)]
     public void Claims_ShouldReturnCorrectClaims(string? nameSuffix, string? phone, bool? phoneVerified)
     {
-        var user = TestHelper.FakerAuthUserToken(nameSuffix);
+        var user = OltIdentityTests.FakerAuthUserToken(nameSuffix);
 
         var claims = user.ToClaims();
-        claims.AddClaim(OltClaimTypes.PhoneNumber, phone);
-        claims.AddClaim(OltClaimTypes.PhoneNumberVerified, phoneVerified?.ToString());
+        claims.AddClaim(ClaimTypeNames.PhoneNumber, phone);
+        claims.AddClaim(ClaimTypeNames.PhoneNumberVerified, phoneVerified?.ToString());
 
         var identity = new GenericIdentity(user.FullName);
         identity.AddClaims(claims);
@@ -273,7 +273,7 @@ public class OltIdentityTests
     [Fact]
     public void HasRoleEnum_ShouldReturnCorrectRoleStatus()
     {
-        var user = TestHelper.FakerAuthUserToken(Faker.Name.Suffix());
+        var user = OltIdentityTests.FakerAuthUserToken(Faker.Name.Suffix());
         user.Roles.Add(TestSecurityRoles.RoleOne.GetCodeEnumSafe());
         user.Roles.Add(TestSecurityRoles.RoleThree.GetCodeEnumSafe());
         user.Permissions.Add(TestSecurityPermissions.PermTwo.GetCodeEnumSafe());
@@ -323,7 +323,7 @@ public class OltIdentityTests
         Assert.Equal(phoneVerified, model.PhoneVerified);
     }
 
-    public enum TestSecurityRoles
+    private enum TestSecurityRoles
     {
         [Code("role-one")]
         RoleOne = 1000,
@@ -335,7 +335,7 @@ public class OltIdentityTests
         RoleThree = 3000,
     }
 
-    public enum TestSecurityPermissions
+    private enum TestSecurityPermissions
     {
         [Code("perm-one")]
         PermOne = 11000,
@@ -343,4 +343,42 @@ public class OltIdentityTests
         [Code("perm-two")]
         PermTwo = 12000,
     }
+
+    private static OltPersonName FakerPersonName(string? nameSuffix)
+    {
+        return new OltPersonName
+        {
+            First = Faker.Name.First(),
+            Middle = Faker.Name.Middle(),
+            Last = Faker.Name.Last(),
+            Suffix = string.IsNullOrWhiteSpace(nameSuffix) ? null : nameSuffix,
+        };
+    }
+
+    private static OltAuthenticatedUserJwtTokenJson<OltPersonName> FakerAuthUserToken(string? nameSuffix)
+    {
+        return new OltAuthenticatedUserJwtTokenJson<OltPersonName>()
+        {
+            Name = FakerPersonName(nameSuffix),
+            NameId = Faker.RandomNumber.Next(1050).ToString(),
+            Username = Faker.Internet.UserName(),
+            Email = Faker.Internet.Email(),
+            TokenType = Faker.Internet.DomainWord(),
+            Token = Faker.Lorem.Words(8).Last(),
+            Issued = DateTimeOffset.Now.AddMinutes(Faker.RandomNumber.Next(2, 10)),
+            Expires = DateTimeOffset.Now.AddMinutes(Faker.RandomNumber.Next(20, 40)),
+            Roles = FakerRoleList("role-", 8, 15),
+            Permissions = FakerRoleList("perm-", 10, 23)
+        };
+    }
+    private static List<string> FakerRoleList(string prefix, int minMix = 5, int maxMix = 10)
+    {
+        var list = new List<string>();
+        for (int i = 1; i <= Faker.RandomNumber.Next(minMix, maxMix); i++)
+        {
+            list.Add($"{prefix}{i}");
+        }
+        return list;
+    }
+
 }

@@ -2,7 +2,7 @@
 
 ## Custom Attribute Classes
 
-### CodeAttribute
+### CodeAttribute & DescriptionAttribute
 
  _Enum Attribute to add a Code string value to an enum_
 
@@ -11,12 +11,12 @@
 ```csharp
 public enum ApplicationTypes
 {
-    [Code("New")] 
-    [Description("New")] 
+    [Code("new-app")] 
+    [Description("New Application")] 
     New = 1000,
 
-    [Code("Renew")] 
-    [Description("Renew")] 
+    [Code("renew-app")] 
+    [Description("Renew Application")] 
     Renew = 2000,
 }
 ```
@@ -25,10 +25,71 @@ public enum ApplicationTypes
 
 _Extension to return string value from CodeAttribute_
 ```csharp
-ApplicationTypes.New.GetCodeEnum()
+ApplicationTypes.New.GetCodeEnum();  //new-app
+
+ApplicationTypes.Renew.GetDescription();  //Renew Application
 ```
 
-#### Not Empty Attributes 
+### KeyValueAttribute
+
+```csharp
+public enum ApplicationTypes
+{
+    [KeyValue("Custom", "Another Test 1")]
+    New = 1000,
+
+    [KeyValue("Custom", "Value Test 2")]
+    [KeyValue("Another", "Another Value")]
+    Renew = 2000,
+}
+```
+
+#### GetKeyValueAttributes Extension
+
+_Extension to return KeyValueAttribute from Enum_
+```csharp
+ApplicationTypes.New.GetKeyValueAttributes().FirstOrDefault(p => p.Key == "Custom")?.Value;
+
+
+ApplicationTypes.Renew.GetKeyValueAttributes().Where(p => p.Key == "Custom");
+```
+
+### UniqueIdAttribute
+
+```csharp
+public enum ApplicationTypes
+{
+    [UniqueId("1393fff9-3850-4bb2-848b-18973a9f88d0")]
+    New = 1000,
+}
+```
+
+#### GetKeyValueAttributes Extension
+
+_Extension to return Guid value from UniqueId_
+```csharp
+var uid = OltAttributeExtensions.GetAttributeInstance<UniqueIdAttribute, ApplicationTypes>(ApplicationTypes.New)?.UniqueId;
+```
+
+### SortOrderAttribute
+
+```csharp
+public enum ApplicationTypes
+{
+    [SortOrder(10)]
+    New = 1000,
+}
+```
+
+#### OltSortOrderAttributeExtensions Extension
+
+_Extension to return Sort Order or default value_
+```csharp
+var sortOrder = ApplicationTypes.New.GetSortOrderEnum();
+```
+
+
+### Not Empty Attributes 
 
 | Utility/Item/Object      | Description                            | 
 | ------------------------ | -------------------------------------- | 
