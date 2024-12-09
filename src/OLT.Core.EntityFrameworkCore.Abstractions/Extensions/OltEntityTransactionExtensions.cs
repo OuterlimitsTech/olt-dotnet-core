@@ -12,7 +12,7 @@ namespace OLT.Core
                 using var transaction = await database.BeginTransactionAsync(cancellationToken);
                 try
                 {
-                    var result = await CreateSubTransactionAsync(transaction, action);
+                    var result = await CreateSubTransactionAsync(transaction, action, cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     return result;
                 }
@@ -35,7 +35,7 @@ namespace OLT.Core
                 using var transaction = await database.BeginTransactionAsync(cancellationToken);
                 try
                 {
-                    await CreateSubTransactionAsync(transaction, action);
+                    await CreateSubTransactionAsync(transaction, action, cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                 }
                 catch (Exception)

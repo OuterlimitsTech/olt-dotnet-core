@@ -1,65 +1,78 @@
-//using Microsoft.Extensions.Configuration;
-//using Microsoft.Extensions.DependencyInjection;
-//using Moq;
-//using OLT.Core;
-//using Serilog;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using OLT.Core;
+using Serilog;
+using System.Diagnostics.CodeAnalysis;
 
-//namespace OLT.Logging.Serilog.Tests;
+namespace OLT.Logging.Serilog.Tests;
 
-//public class OltSerilogBuilderHostingExtensionsTests
-//{
-//    [Fact]
-//    public void ConfigureLogging_ConfiguresSerilogCorrectly()
-//    {
-//        // Arrange
-//        var loggerConfiguration = new LoggerConfiguration();
-//        var configurationMock = new Mock<IConfigurationManager>();
-//        var services = new ServiceCollection();
-//        var builderMock = new Mock<IOltSerilogHostApplicationBuilder>();
+public class OltSerilogBuilderHostingExtensionsTests
+{
+    [Fact]
+    public void ConfigureLogging_ConfiguresSerilogCorrectly()
+    {
+        // Arrange
+        var builder = new TestApplicationBuilder(Host.CreateApplicationBuilder());
 
-//        builderMock.SetupGet(b => b.LoggerConfiguration).Returns(loggerConfiguration);
-//        builderMock.SetupGet(b => b.Configuration).Returns(configurationMock.Object);
-//        builderMock.SetupGet(b => b.Services).Returns(services);
+        OltSerilogBuilderHostingExtensions.ConfigureLogging(builder);
+        OltSerilogBuilderHostingExtensions.AddSerilog(builder);
 
-//        // Act
-//        var result = builderMock.Object.ConfigureLogging();
 
-//        // Assert
-//        Assert.NotNull(Log.Logger);
-//        builderMock.Verify(b => b.AddSerilog(), Times.Once);
-//    }
+        // Act
+        var serviceProvider = builder.Services.BuildServiceProvider();
+        var logger = serviceProvider.GetService<ILogger>();
+        var serilog = Log.Logger;
 
-//    [Fact]
-//    public void AddSerilog_AddsSerilogToServices()
-//    {
-//        // Arrange
-//        var services = new ServiceCollection();
-//        var builderMock = new Mock<IOltSerilogHostApplicationBuilder>();
+        // Assert
+        Assert.NotNull(Log.Logger);
+        Assert.NotNull(logger);
+        logger.Should().BeSameAs(Log.Logger);        
+    } 
 
-//        builderMock.SetupGet(b => b.Services).Returns(services);
+    [Fact]
+    public void BuildSerilogConfig_ConfiguresLoggerConfigurationCorrectly()
+    {
+        // Arrange
+        var builder = new TestApplicationBuilder(Host.CreateApplicationBuilder());
+        OltSerilogBuilderHostingExtensions.ConfigureLogging(builder);
+        OltSerilogBuilderHostingExtensions.AddSerilog(builder);        
 
-//        // Act
-//        var result = builderMock.Object.AddSerilog();
+        var serviceProvider = builder.Services.BuildServiceProvider();
 
-//        // Assert
-//        var serviceProvider = services.BuildServiceProvider();
-//        var logger = serviceProvider.GetService<ILogger>();
-//        Assert.NotNull(logger);
-//    }
+        var test = serviceProvider.GetService<ILogger>();
 
-//    [Fact]
-//    public void BuildSerilogConfig_ConfiguresLoggerConfigurationCorrectly()
-//    {
-//        // Arrange
-//        var loggerConfiguration = new LoggerConfiguration();
-//        var configurationMock = new Mock<IConfiguration>();
+        // Assert
+        Assert.NotNull(builder.LoggerConfiguration);        
+    }
 
-//        // Act
-//        var result = loggerConfiguration.BuildSerilogConfig(configurationMock.Object);
 
-//        // Assert
-//        Assert.NotNull(result);
-//    }
-//}
+    public class TestApplicationBuilder : OltHostApplicationBuilder<HostApplicationBuilder>, IOltSerilogHostApplicationBuilder
+    {
+        public TestApplicationBuilder([NotNull] HostApplicationBuilder builder) : base(builder)
+        {
+            LoggerConfiguration = new LoggerConfiguration();
+        }
+
+        public LoggerConfiguration LoggerConfiguration { get; }
+
+        public override void AddConfiguration()
+        {
+
+        }
+
+        public override void AddLoggingConfiguration()
+        {
+            base.Logging.AddSerilog();
+        }
+
+        public override void AddServices()
+        {
+            //this.AddOltIdentity<IOltIdentity, TestIdentity>();
+        }
+    }
+
+
+}
 
 
