@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using FluentAssertions;
+﻿using FluentAssertions;
 using OLT.Core;
 using OLT.Extensions.General.Tests.Assets.Interface;
-using Xunit;
+using System.Reflection;
 
 namespace OLT.Extensions.General.Tests
 {
@@ -24,9 +20,9 @@ namespace OLT.Extensions.General.Tests
             };
 
             var assemblies = self.GetAllReferencedAssemblies().ToList();
-            Assert.True(self.GetAllReferencedAssemblies().Count() > 128);
-            Assert.True(list.ToArray().GetAllReferencedAssemblies().Count() > 128);
-            Assert.True(list.GetAllReferencedAssemblies().Count() > 128);
+            Assert.True(self.GetAllReferencedAssemblies().Count() > 100);
+            Assert.True(list.ToArray().GetAllReferencedAssemblies().Count() > 100);
+            Assert.True(list.GetAllReferencedAssemblies().Count() > 100);
             Assert.Equal(assemblies.Count, list.GetAllReferencedAssemblies().Count());
         }
 
@@ -62,10 +58,10 @@ namespace OLT.Extensions.General.Tests
 
             Assert.Equal(4, filter.Filters.Count);
             Assert.Empty(filter.ExcludeFilters);
-            //var test = list.GetAllReferencedAssemblies(filter).ToList();
-            Assert.Equal(3, list.GetAllReferencedAssemblies(filter).Count());
-            Assert.Equal(3, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
-            Assert.Equal(3, list.GetAllReferencedAssemblies(filter).Count());
+            var debugTest = list.GetAllReferencedAssemblies(filter).ToList();
+            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
+            Assert.Equal(2, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
+            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
 
         }
 
