@@ -1,7 +1,7 @@
 using FluentAssertions;
 using System.Linq.Expressions;
 
-namespace OLT.Core.Service.Abstractions.Tests;
+namespace OLT.Core.Model.Abstractions.Tests;
 
 public class OltPredicateBuilderTests
 {
@@ -66,7 +66,7 @@ public class OltPredicateBuilderTests
         };
 
         // Act
-        var expression = OltPredicateBuilder.BuildExpression(dynamicFilter);
+        var expression = dynamicFilter.BuildExpression();
 
         // Assert
         var compiled = expression.Compile();
@@ -151,5 +151,6 @@ public class OltPredicateBuilderTests
         results = queryable.Where(expression).ToList();
         results.Should().HaveCount(1);
         results.FirstOrDefault().Should().BeEquivalentTo(person);
-    }
+    }  
+
 }
