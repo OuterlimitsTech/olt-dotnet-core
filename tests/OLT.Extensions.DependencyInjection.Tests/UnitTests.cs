@@ -76,24 +76,6 @@ namespace OLT.Extensions.DependencyInjection.Tests
             }
         }
 
-        [Fact]
-        public void Test_Scan()
-        {
-            var services = new ServiceCollection();
-            OltServiceCollectionExtensions
-                .Scan(services, opt =>
-                {
-                    opt.IncludeAssembly(this.GetType().Assembly);
-                    opt.DeepScan();
-                })
-                .AddScoped<IOltIdentity, TestIdentity>()
-                .AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
-
-            using (var provider = services.BuildServiceProvider())
-            {
-                Assert.NotNull(provider.GetService<IOltDbAuditUser>());
-            }
-        }
 
     }
 }

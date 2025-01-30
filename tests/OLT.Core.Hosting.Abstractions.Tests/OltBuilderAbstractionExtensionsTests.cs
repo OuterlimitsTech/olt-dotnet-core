@@ -64,7 +64,7 @@ public class OltBuilderAbstractionExtensionsTests
     }
 
 
-    public class TestApplicationBuilder : OltHostApplicationBuilder<HostApplicationBuilder>
+    public class TestApplicationBuilder : OltApplicationHostBuilder<HostApplicationBuilder>
     {
         public TestApplicationBuilder([NotNull] HostApplicationBuilder builder) : base(builder)
         {

@@ -13,7 +13,7 @@ namespace OLT.Core
         /// <typeparam name="TC"></typeparam>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IOltApplicationBuilder AddOltIdentity<T, TC>(this IOltApplicationBuilder builder)
+        public static IOltApplicationHostBuilder AddOltIdentity<T, TC>(this IOltApplicationHostBuilder builder)
             where T : IOltIdentity
             where TC : class, IOltIdentity
         {
@@ -39,7 +39,7 @@ namespace OLT.Core
         /// <param name="builder">The application builder to add the configuration to.</param>
         /// <param name="debuggerAttached">A boolean indicating if the debugger is attached. <seealso cref="System.Diagnostics.Debugger.IsAttached"/></param>
         /// <returns>The updated application builder.</returns>
-        public static IOltApplicationBuilder AddDevelopmentConfig<T>(this IOltApplicationBuilder builder, bool debuggerAttached) where T : class
+        public static IOltApplicationHostBuilder AddDevelopmentConfig<T>(this IOltApplicationHostBuilder builder, bool debuggerAttached) where T : class
         {
             if (debuggerAttached)
             {

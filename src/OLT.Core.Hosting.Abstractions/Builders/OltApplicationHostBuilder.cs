@@ -7,11 +7,11 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace OLT.Core
 {
-    public abstract class OltHostApplicationBuilder<THostBuilder> : IOltApplicationBuilder
+    public abstract class OltApplicationHostBuilder<THostBuilder> : IOltApplicationHostBuilder
         where THostBuilder : class, IHostApplicationBuilder
     {
 
-        protected OltHostApplicationBuilder([NotNull] THostBuilder builder)
+        protected OltApplicationHostBuilder([NotNull] THostBuilder builder)
         {
             ArgumentNullException.ThrowIfNull(builder);
             Builder = builder;

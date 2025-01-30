@@ -2,7 +2,7 @@
 
 namespace OLT.Core
 {
-    public interface IOltSerilogHostApplicationBuilder : IOltApplicationBuilder
+    public interface IOltSerilogHostApplicationBuilder : IOltApplicationHostBuilder
     {
         LoggerConfiguration LoggerConfiguration { get; }
     }
