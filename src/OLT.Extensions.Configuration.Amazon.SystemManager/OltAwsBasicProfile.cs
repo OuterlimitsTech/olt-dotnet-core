@@ -10,20 +10,9 @@ namespace OLT.Core
         public OltAwsBasicProfile(RegionEndpoint region, string accessKey, string secretKey, string profileName = "default")
         {
 
-            if (region == null)
-            {
-                throw new ArgumentNullException(nameof(region));
-            }
-
-            if (string.IsNullOrWhiteSpace(accessKey))
-            {
-                throw new ArgumentNullException(nameof(accessKey));
-            }
-
-            if (string.IsNullOrWhiteSpace(secretKey))
-            {
-                throw new ArgumentNullException(nameof(secretKey));
-            }
+            ArgumentNullException.ThrowIfNull(region);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(accessKey);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(secretKey);
 
 
             if (string.IsNullOrWhiteSpace(profileName))

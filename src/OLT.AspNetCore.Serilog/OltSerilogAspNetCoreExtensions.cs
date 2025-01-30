@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.AspNetCore;
+using System;
+
 
 namespace OLT.Logging.Serilog
 {
@@ -19,18 +19,10 @@ namespace OLT.Logging.Serilog
         /// <returns></returns>
         public static IServiceCollection AddOltSerilog(this IServiceCollection services, Action<OltSerilogOptions> configOptions)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             return services
-                .Configure<OltSerilogOptions>(binding =>
-                {
-                    var serilogOptions = new OltSerilogOptions();
-                    configOptions(serilogOptions);
-                    binding.ShowExceptionDetails = serilogOptions.ShowExceptionDetails;
-                })
+                .Configure<OltSerilogOptions>(binding => configOptions(binding))
                 .AddScoped<OltMiddlewarePayload>()
                 .AddScoped<OltMiddlewareSession>();
         }
@@ -43,13 +35,9 @@ namespace OLT.Logging.Serilog
         /// <returns><seealso cref="IApplicationBuilder"/></returns>
         public static IApplicationBuilder UseOltSerilogRequestLogging(this IApplicationBuilder app, Action<RequestLoggingOptions>? configureOptions = null)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
+            ArgumentNullException.ThrowIfNull(app);
 
             return app
-                //.UseSerilogRequestLogging(configureOptions)
                 .UseMiddleware<OltMiddlewareSession>()
                 .UseMiddleware<OltMiddlewarePayload>();
         }

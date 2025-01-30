@@ -17,7 +17,7 @@ namespace System
     {
         public static byte[] ToBytes<T>(this string value) where T : System.Text.Encoding, new()
         {
-            if (value == null) throw new ArgumentNullException(nameof(value));
+            ArgumentNullException.ThrowIfNull(value);            
             var encoding = new T();
             return encoding.GetBytes(value);
         }
@@ -77,6 +77,11 @@ namespace System
 
         #endregion
 
+        /// <summary>
+        /// Removes double spaces using <see cref="OltRegExPatterns.Spaces"/>
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static string? RemoveDoubleSpaces(this string? self)
         {
             if (string.IsNullOrEmpty(self))
@@ -100,6 +105,11 @@ namespace System
             return OltRegExPatterns.RemoveSpecialCharacters.Replace(self, replaceWith);
         }
 
+        /// <summary>
+        /// Removes special characters using <see cref="OltRegExPatterns.RemoveSpecialCharacters"/> and double spaces using <see cref="OltRegExPatterns.Spaces"/>
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
         public static string? CleanForSearch(this string? self)
         {
             return self?.RemoveSpecialCharacters()?.Trim().RemoveDoubleSpaces();

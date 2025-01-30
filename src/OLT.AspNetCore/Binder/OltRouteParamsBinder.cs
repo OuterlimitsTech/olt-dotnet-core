@@ -4,7 +4,6 @@ using System;
 namespace OLT.Core
 {
 
-
     public class OltRouteParamsBinder<TModelType, TValue> : IOltRouteParamsBinder
         where TModelType : notnull
     {

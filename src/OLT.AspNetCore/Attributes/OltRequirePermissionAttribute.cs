@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using OLT.Constants;
+using OLT.Identity.Abstractions;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OLT.Core
 {
@@ -16,7 +16,7 @@ namespace OLT.Core
 
         public virtual void OnAuthorization(AuthorizationFilterContext context)
         {
-            if (context.HttpContext.User.Identity?.IsAuthenticated == true && context.HttpContext.User.FindAll(OltClaimTypes.Role).Any(p => RoleClaims.Contains(p.Value)))
+            if (context.HttpContext.User.Identity?.IsAuthenticated == true && context.HttpContext.User.FindAll(ClaimTypeNames.Role).Any(p => RoleClaims.Contains(p.Value)))
             {
                 return;
             }

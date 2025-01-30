@@ -4,7 +4,8 @@ using System.Linq;
 using System.Reflection;
 
 namespace OLT.Core
-{    
+{
+    [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
     public class OltAssemblyFilter
     {
         /// <summary>

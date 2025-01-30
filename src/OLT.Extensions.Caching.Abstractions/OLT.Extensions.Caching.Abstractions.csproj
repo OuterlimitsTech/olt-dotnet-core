@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+	<PropertyGroup>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>Latest</LangVersion>
+		<Nullable>enable</Nullable>		
+		<Description>Abstraction Service for Caching (Memory or Redis)</Description>
+		<RootNamespace>OLT.Core</RootNamespace>
+	</PropertyGroup>	
+	
+</Project>

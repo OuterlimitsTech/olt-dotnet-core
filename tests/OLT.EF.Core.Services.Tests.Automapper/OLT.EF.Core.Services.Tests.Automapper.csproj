@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="OLT.Extensions.DependencyInjection.AutoMapper" Version="13.1.0-beta-0006" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+		<ProjectReference Include="..\..\src\OLT.EF.Core.Services\OLT.EF.Core.Services.csproj" />
+		<ProjectReference Include="..\OLT.EF.Core.Services.Tests.Lib\OLT.EF.Core.Services.Tests.Lib.csproj" />
+	</ItemGroup>
+	
+
+</Project>

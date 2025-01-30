@@ -134,7 +134,7 @@ namespace OLT.Core
         {
             if (entity is IOltEntityDeletable deletableEntity)
             {
-                deletableEntity.DeletedOn = DateTimeOffset.Now;
+                deletableEntity.DeletedOn = DateTimeOffset.UtcNow;
                 deletableEntity.DeletedBy = Context.AuditUser;
                 SaveChanges();
                 return true;
@@ -149,7 +149,7 @@ namespace OLT.Core
         {
             if (entity is IOltEntityDeletable deletableEntity)
             {
-                deletableEntity.DeletedOn = DateTimeOffset.Now;
+                deletableEntity.DeletedOn = DateTimeOffset.UtcNow;
                 deletableEntity.DeletedBy = Context.AuditUser;
                 await SaveChangesAsync(cancellationToken);
                 return true;
@@ -286,7 +286,7 @@ namespace OLT.Core
                 using var transaction = await Context.Database.BeginTransactionAsync(cancellationToken);
                 try
                 {
-                    var result = await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(transaction, action, cancellationToken);
+                    var result = await OltEntityTransactionExtensions.CreateSubTransactionAsync(transaction, action, cancellationToken);
                     await transaction.CommitAsync(cancellationToken);
                     return result;
                 }
@@ -298,7 +298,7 @@ namespace OLT.Core
             }
             else
             {
-                return await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action, cancellationToken);
+                return await OltEntityTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action, cancellationToken);
             }
         }
 
@@ -309,7 +309,7 @@ namespace OLT.Core
                 using var transaction = await Context.Database.BeginTransactionAsync();
                 try
                 {
-                    await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(transaction, action);
+                    await OltEntityTransactionExtensions.CreateSubTransactionAsync(transaction, action);
                     await transaction.CommitAsync();
                 }
                 catch (Exception)
@@ -320,7 +320,7 @@ namespace OLT.Core
             }
             else
             {
-                await OltEntityFrameworkCoreExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
+                await OltEntityTransactionExtensions.CreateSubTransactionAsync(Context.Database.CurrentTransaction, action);
             }
         }
 

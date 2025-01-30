@@ -20,6 +20,7 @@ namespace System.Reflection
         /// <param name="assembly"></param>
         /// <param name="filter">Assembly Filter.</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly assembly, OltAssemblyFilter? filter = null)
         {
             return GetAllReferencedAssemblies(new List<Assembly> { assembly }, filter);
@@ -30,7 +31,8 @@ namespace System.Reflection
         /// </summary>
         /// <param name="assembliesToScan"></param>
         /// <param name="filter">Assembly Filter.</param>
-        /// <returns></returns>
+        /// <returns></returns>\
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this Assembly[] assembliesToScan, OltAssemblyFilter? filter = null)
         {
             return GetAllReferencedAssemblies(assembliesToScan.AsEnumerable(), filter);
@@ -42,6 +44,7 @@ namespace System.Reflection
         /// <param name="assembliesToScan">The assemblies to scan for references.</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns>A filtered collection of assemblies according to the provided OltAssemblyFilter.</returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IEnumerable<Assembly> GetAllReferencedAssemblies(this IEnumerable<Assembly> assembliesToScan, OltAssemblyFilter? filter = null)
         {
             filter ??= new OltAssemblyFilter();
@@ -123,26 +126,14 @@ namespace System.Reflection
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static Stream? GetEmbeddedResourceStream(this Assembly assembly, string resourceName)
         {
-            if (resourceName == null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
-
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new ArgumentException($"{resourceName} cannot be null or whitespace");
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(resourceName);
 
             // Get all embedded resources
             string[] arrResources = assembly.GetManifestResourceNames();
             var resourceCompare = resourceName.ToLower();
             var resources = new List<string>();
 
-#if NET6_0_OR_GREATER
             resources.AddRange(from resource in arrResources where resource.Contains(resourceCompare, StringComparison.OrdinalIgnoreCase) select resource);
-#else
-            resources.AddRange(from resource in arrResources where resource.ToLower().Contains(resourceCompare) select resource);
-#endif
 
             var name = resources.FirstOrDefault();
             if (resources.Count > 1)
@@ -172,25 +163,8 @@ namespace System.Reflection
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static void EmbeddedResourceToFile(this Assembly assembly, string resourceName, string fileName)
         {
-            if (resourceName == null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
-
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new ArgumentException($"{resourceName} cannot be null or whitespace");
-            }
-
-            if (fileName == null)
-            {
-                throw new ArgumentNullException(nameof(fileName));
-            }
-
-            if (string.IsNullOrWhiteSpace(fileName))
-            {
-                throw new ArgumentException($"{fileName} cannot be null or whitespace");
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(resourceName);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(fileName);
 
             if (File.Exists(fileName))
             {
@@ -222,15 +196,7 @@ namespace System.Reflection
         /// <returns>return stream of embedded resource or null if not found</returns>
         public static string? GetEmbeddedResourceString(this Assembly assembly, string resourceName)
         {
-            if (resourceName == null)
-            {
-                throw new ArgumentNullException(nameof(resourceName));
-            }
-
-            if (string.IsNullOrWhiteSpace(resourceName))
-            {
-                throw new ArgumentException($"{resourceName} cannot be null or whitespace");
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(resourceName);
 
             var resource = GetEmbeddedResourceStream(assembly, resourceName);
             if (resource == null) return null;

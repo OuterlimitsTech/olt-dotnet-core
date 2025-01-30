@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
 		<RootNamespace>OLT.Core</RootNamespace>
 		<Description>Command Bus Abstractions for CQRS architecture</Description>
 		<ProjectGuid>{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}</ProjectGuid>
@@ -9,15 +9,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="11.9.1" />
+		<PackageReference Include="FluentValidation" Version="11.10.0" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-		<ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+	  <ProjectReference Include="..\OLT.Core.DependencyInjection.Abstractions\OLT.Core.DependencyInjection.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	</ItemGroup>
 
 

@@ -1,6 +1,7 @@
 ﻿using OLT.Core;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.Principal;
 
 namespace OLT.AspNetCore.Serilog.Tests
@@ -25,6 +26,11 @@ namespace OLT.AspNetCore.Serilog.Tests
         public override bool HasRole(string? claimName)
         {
             return true;
+        }
+
+        public override bool HasRole<TRoleEnum>(params TRoleEnum[] roles)
+        {
+            return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
         }
     }
 }

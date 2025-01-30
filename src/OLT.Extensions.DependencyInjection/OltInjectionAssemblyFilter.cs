@@ -1,5 +1,8 @@
-﻿namespace OLT.Core
+﻿using System;
+
+namespace OLT.Core
 {
+    [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
     public class OltInjectionAssemblyFilter : OltAssemblyFilter
     {
         /// <summary>
@@ -11,4 +14,4 @@
             base.WithDefaultDIExclusionFilters();
         }
     }
-}
+}   

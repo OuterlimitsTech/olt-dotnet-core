@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using System;
-using System.Threading.Tasks;
 
 namespace OLT.Core
 {
-    public class OltMemoryCache : OltCacheService
+    [Obsolete("Removing in 10.x, Move to FusionCache")]
+    public class OltMemoryCache : OltCacheService, IOltMemoryCache
     {
         private readonly IMemoryCache _memoryCache;
         private readonly OltCacheOptions _cacheOptions;

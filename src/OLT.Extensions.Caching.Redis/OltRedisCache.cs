@@ -1,113 +1,158 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using StackExchange.Redis;
+﻿using Microsoft.Extensions.Options;
 using StackExchange.Redis.Extensions.Core.Abstractions;
-using System;
-using System.Threading.Tasks;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing in 10.x, Move to FusionCache")]
     public class OltRedisCache : OltCacheService
     {
         private readonly OltRedisCacheOptions _cacheOptions;
         private readonly IRedisClientFactory _redisFactory;
+        private readonly IOltMemoryCache _memoryCache;
 
         public OltRedisCache(
             IRedisClientFactory redisFactory,
-            IOptions<OltRedisCacheOptions> options)
+            IOptions<OltRedisCacheOptions> options,
+            IOltMemoryCache memoryCache)
         {
             _cacheOptions = options.Value;
             _redisFactory = redisFactory;
+            _memoryCache = memoryCache;
         }
 
         protected override string ToCacheKey(string key)
         {
             return $"{_cacheOptions.CacheKeyPrefix}:{base.ToCacheKey(key)}";
         }
-
-        private string BuildKey<TEntry>(string key, Func<TEntry> factory)
-        {
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }
-
-            return ToCacheKey(key);
-        }
+             
 
         public override TEntry Get<TEntry>(string key, Func<TEntry> factory, TimeSpan? absoluteExpiration = null)
         {
-            var cacheKey = BuildKey(key, factory);
-
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
-            if (redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult())
+            ArgumentNullException.ThrowIfNull(factory);
+            try
             {
-                return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
+                var cacheKey = ToCacheKey(key);
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+                if (redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult())
+                {
+                    return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult() ?? factory();
+                }
+
+                TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
+
+                var value = factory();
+                redisDatabase.AddAsync(cacheKey, value, expireAt.Value).GetAwaiter().GetResult();
+
+                return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult() ?? throw new ApplicationException("Invalid Cache Requests");
             }
-
-            TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
-
-            var value = factory();
-            redisDatabase.AddAsync(cacheKey, value, expireAt.Value).GetAwaiter().GetResult();
-
-            return redisDatabase.GetAsync<TEntry>(cacheKey).GetAwaiter().GetResult();
+            catch
+            {
+                return _memoryCache.Get(key, factory, absoluteExpiration);
+            }
         }
 
         public override async Task<TEntry> GetAsync<TEntry>(string key, Func<Task<TEntry>> factory, TimeSpan? absoluteExpiration = null)
         {
-            var cacheKey = BuildKey(key, factory);
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+            ArgumentNullException.ThrowIfNull(factory);
 
-            if (await redisDatabase.ExistsAsync(cacheKey))
+            try
             {
-                return await redisDatabase.GetAsync<TEntry>(cacheKey);
+                var cacheKey = ToCacheKey(key);
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+
+                if (await redisDatabase.ExistsAsync(cacheKey))
+                {
+                    return await redisDatabase.GetAsync<TEntry>(cacheKey) ?? await factory();
+                }
+
+                TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
+
+                var value = await factory();
+                await redisDatabase.AddAsync(cacheKey, value, expireAt.Value);
+
+                return await redisDatabase.GetAsync<TEntry>(cacheKey) ?? throw new ApplicationException("Invalid Cache Requests");
             }
-
-            TimeSpan? expireAt = absoluteExpiration ?? _cacheOptions.DefaultAbsoluteExpiration;
-
-            var value = await factory();
-            await redisDatabase.AddAsync(cacheKey, value, expireAt.Value);
-
-            return await redisDatabase.GetAsync<TEntry>(cacheKey);
+            catch
+            {
+                return await _memoryCache.GetAsync(key, factory, absoluteExpiration);
+            }
         }
 
         public override void Remove(string key)
         {
-            var cacheKey = ToCacheKey(key);
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
-            redisDatabase.RemoveAsync(cacheKey).GetAwaiter().GetResult();
+            try
+            {
+                var cacheKey = ToCacheKey(key);
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+                redisDatabase.RemoveAsync(cacheKey).GetAwaiter().GetResult();
+            }
+            catch
+            {
+                _memoryCache.Remove(key);
+            }
         }
 
         public override async Task RemoveAsync(string key)
         {
-            var cacheKey = ToCacheKey(key);
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
-            await redisDatabase.RemoveAsync(cacheKey);
+            try
+            {
+                var cacheKey = ToCacheKey(key);
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+                await redisDatabase.RemoveAsync(cacheKey);
+            }
+            catch
+            {
+                await _memoryCache.RemoveAsync(key);
+            }
         }
 
         public override bool Exists(string key)
         {
-            var cacheKey = ToCacheKey(key);
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
-            return redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult();
+            try
+            {
+                var cacheKey = ToCacheKey(key);
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+                return redisDatabase.ExistsAsync(cacheKey).GetAwaiter().GetResult();
+            }
+            catch
+            {
+                return _memoryCache.Exists(key);
+            }
         }
 
         public override async Task<bool> ExistsAsync(string key)
         {
-            var cacheKey = ToCacheKey(key);
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
-            return await redisDatabase.ExistsAsync(cacheKey);
+            try
+            {
+                var cacheKey = ToCacheKey(key);
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+                return await redisDatabase.ExistsAsync(cacheKey);
+            }
+            catch
+            {
+                return await _memoryCache.ExistsAsync(key);
+            }
         }
 
         public override void Flush()
         {
-            FlushAsync().GetAwaiter().GetResult();
+            FlushAsync().GetAwaiter().GetResult();            
         }
 
         public override async Task FlushAsync()
         {
-            var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
-            await redisDatabase.FlushDbAsync();
+            await _memoryCache.FlushAsync();
+
+            try
+            {
+                var redisDatabase = _redisFactory.GetDefaultRedisDatabase();
+                await redisDatabase.FlushDbAsync();
+            }
+            catch
+            {
+                //Do Nothing (Eat Error)
+            }
+            
         }
     }
 }

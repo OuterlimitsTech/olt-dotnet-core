@@ -33,7 +33,7 @@ namespace OLT.Logging.Serilog.Tests.NgxLogger
             model.Stack.Add(NgxTestHelper.FakerStackJson(25));
             
 
-            var stack = model.Stack.Select(s => $"{OltNgxLoggerExtensions.FormatStack(s)}{Environment.NewLine}").ToList();
+            var stack = model.Stack.Select(s => $"{OltNgxLoggerStackExtensions.FormatStack(s)}{Environment.NewLine}").ToList();
             var expected = string.Join($"----------------------------{Environment.NewLine}", stack);
 
             exception = model.ToException();

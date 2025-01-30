@@ -14,6 +14,7 @@ namespace OLT.Core
         /// <param name="services"></param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Action<IMvcBuilder>? action = null)
         {
             return AddOltAspNetCore(services, new OltInjectionAssemblyFilter(), action);
@@ -26,6 +27,7 @@ namespace OLT.Core
         /// <param name="action">Invoked after initialized</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
             return AddOltAspNetCore(services, new List<Assembly>(), filter, action);
@@ -38,6 +40,7 @@ namespace OLT.Core
         /// <param name="baseAssembly">Assembly to include in scan for interfaces</param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, Action<IMvcBuilder>? action = null)
         {
             return AddOltAspNetCore(services, baseAssembly, new OltInjectionAssemblyFilter(), action);
@@ -51,12 +54,10 @@ namespace OLT.Core
         /// <param name="action">Invoked after initialized</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, Assembly baseAssembly, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
-            if (baseAssembly == null)
-            {
-                throw new ArgumentNullException(nameof(baseAssembly));
-            }
+            ArgumentNullException.ThrowIfNull(baseAssembly);
             return AddOltAspNetCore(services, new List<Assembly>() { baseAssembly }, filter, action);
         }
 
@@ -67,6 +68,7 @@ namespace OLT.Core
         /// <param name="baseAssemblies">List of assemblies to include in scan for interfaces</param>
         /// <param name="action">Invoked after initialized</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, Action<IMvcBuilder>? action = null)
         {
             return AddOltAspNetCore(services, baseAssemblies, new OltInjectionAssemblyFilter(), action);
@@ -81,13 +83,10 @@ namespace OLT.Core
         /// <param name="action">Invoked after initialized</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns></returns>
+        [Obsolete("Move to Nuget Package OLT.Utility.AssemblyScanner")]
         public static IServiceCollection AddOltAspNetCore(this IServiceCollection services, List<Assembly> baseAssemblies, OltInjectionAssemblyFilter filter, Action<IMvcBuilder>? action = null)
         {
-
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             if (baseAssemblies == null)
             {

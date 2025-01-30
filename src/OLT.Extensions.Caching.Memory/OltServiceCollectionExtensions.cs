@@ -16,12 +16,10 @@ namespace OLT.Core
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="defaultAbsoluteExpiration">Default expire cache at. (uses default if not supplied)</param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
+        [Obsolete("Removing in 10.x, Move to FusionCache")]
         public static IServiceCollection AddOltCacheMemory(this IServiceCollection services, TimeSpan defaultAbsoluteExpiration)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             return services
                 .AddSingleton<IOltCacheService, OltMemoryCache>()

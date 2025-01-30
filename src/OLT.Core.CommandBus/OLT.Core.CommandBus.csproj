@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
 		<RootNamespace>OLT.Core</RootNamespace>
 		<Description>Command Bus for CQRS style architecture.  Wraps Commands within a DB Transaction</Description>
 		<ProjectGuid>043f2d15-646e-4541-9995-e85c93a6896d</ProjectGuid>
@@ -10,12 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OLT.Core.CommandBus.Abstractions\OLT.Core.CommandBus.Abstractions.csproj" />
-    <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-    <ProjectReference Include="..\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+    <ProjectReference Include="..\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

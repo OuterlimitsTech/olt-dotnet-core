@@ -22,16 +22,9 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static IConfigurationBuilder AddSystemsManager(this IConfigurationBuilder builder, OltAwsConfigurationOptions options, TimeSpan? reloadAfter = null, bool optional = false)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
+            ArgumentNullException.ThrowIfNull(builder);
+            ArgumentNullException.ThrowIfNull(options);
+          
 
             var aws = options.Profile.Build();
             builder.AddSystemsManager(options.BuildPathFallback(), aws, optional: optional, reloadAfter ?? TimeSpan.FromMinutes(10));

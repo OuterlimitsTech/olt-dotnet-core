@@ -1,15 +1,8 @@
 using FluentAssertions;
-using OLT.Logging.Serilog.Enricher;
+using OLT.Core;
 using Serilog;
 using Serilog.Sinks.TestCorrelator;
-using Serilog.Core;
-using Serilog.Events;
-using System;
-using System.Linq;
-using Xunit;
 using Xunit.Abstractions;
-using OLT.Constants;
-using OLT.Core;
 
 namespace OLT.Logging.Serilog.Tests
 {

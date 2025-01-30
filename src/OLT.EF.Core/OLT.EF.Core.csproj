@@ -1,31 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
-		<RootNamespace>OLT.Core</RootNamespace>
-		<Description>Base Context, Context Extensions, Seed Helpers, Entity Interfaces, Base Entity Models</Description>
-		<ProjectGuid>15d0bf6d-f636-4dbd-a7d5-5d0b97829b49</ProjectGuid>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<LangVersion>Latest</LangVersion>
 		<Nullable>enable</Nullable>
+		<Description>Base Context, Context Extensions, Seed Helpers, Entity Interfaces, Base Entity Models</Description>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.14" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <ProjectReference Include="..\OLT.Core.Common.Abstractions\OLT.Core.Common.Abstractions.csproj" />
-	  <ProjectReference Include="..\OLT.Core.Common\OLT.Core.Common.csproj" />
-	  <ProjectReference Include="..\OLT.Extensions.EF.Core\OLT.Extensions.EF.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
+	  <ProjectReference Include="..\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
+		<!--<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Identity.Abstractions\OLT.Core.Identity.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Core.Service.Abstractions\OLT.Core.Service.Abstractions.csproj" />
+	  <ProjectReference Include="..\OLT.Extensions.General\OLT.Extensions.General.csproj" />-->
 	</ItemGroup>
 
 

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFrameworks>net8.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
     <RootNamespace>OLT.Serilog</RootNamespace>
     <Description>Register Serilog Middleware to log all exceptions</Description>
     <ProjectGuid>15400B99-351E-4BA4-AFD1-4573E7964062</ProjectGuid>
@@ -9,17 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Serilog" Version="4.0.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />    
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-  </ItemGroup>
+		<PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
+	</ItemGroup>
+	
   <ItemGroup>
-    <ProjectReference Include="..\OLT.AspNetCore.Shared\OLT.AspNetCore.Shared.csproj" />
-    <ProjectReference Include="..\OLT.Logging.Serilog\OLT.Logging.Serilog.csproj" />
+		<ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
+		<ProjectReference Include="..\OLT.Logging.Serilog.Hosting\OLT.Logging.Serilog.Hosting.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.SourceLink.GitHub" Version="8.0.0" />
-  </ItemGroup>
+	
+
 </Project>

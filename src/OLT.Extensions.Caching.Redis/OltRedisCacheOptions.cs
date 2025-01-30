@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Options;
-using System;
+﻿using System;
 
 namespace OLT.Core
 {
-    public class OltRedisCacheOptions : OltCacheOptions, IOptions<OltRedisCacheOptions>
+    [Obsolete("Removing in 10.x, Move to FusionCache")]
+    public class OltRedisCacheOptions : OltCacheOptions
     {
         public OltRedisCacheOptions() { }
 

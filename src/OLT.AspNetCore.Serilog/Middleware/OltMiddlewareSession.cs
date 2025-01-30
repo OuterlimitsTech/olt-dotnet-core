@@ -1,7 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using OLT.Constants;
+﻿using Microsoft.AspNetCore.Http;
 using OLT.Core;
+using System.Threading.Tasks;
 using LogContext = Serilog.Context.LogContext;
 
 namespace OLT.Logging.Serilog
@@ -18,7 +17,6 @@ namespace OLT.Logging.Serilog
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-
             using (LogContext.PushProperty(OltSerilogConstants.Properties.Username, _identity?.Username))
             using (LogContext.PushProperty(OltSerilogConstants.Properties.DbUsername, _identity?.GetDbUsername()))
             {

@@ -40,11 +40,11 @@ namespace System.IO
         /// <returns><see cref="byte"/> array</returns>
         public static byte[] ToBytes(this Stream stream)
         {
-            byte[] val = new byte[stream.Length];
-            int idx = 0;
-            stream.Read(val, idx, (int)stream.Length);
-            stream.Close();
-            return val;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
 
 
@@ -55,11 +55,14 @@ namespace System.IO
         /// <returns><see cref="byte"/></returns>
         public static byte[] ToBytes(this FileInfo file)
         {
-            var fStream = file.OpenRead();
-            var fileData = new byte[fStream.Length];
-            fStream.Read(fileData, 0, ToInt(fStream.Length));
-            fStream.Close();
-            return fileData;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                using (var fStream = file.OpenRead())
+                {
+                    fStream.CopyTo(memoryStream);
+                    return memoryStream.ToArray();
+                }
+            }
         }
 
 

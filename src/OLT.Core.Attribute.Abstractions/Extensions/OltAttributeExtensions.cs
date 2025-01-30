@@ -1,0 +1,157 @@
+﻿using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.Serialization;
+
+
+namespace OLT.Core
+{
+    public static class OltAttributeExtensions
+    {
+        /// <summary>
+        /// Returns first instance of <typeparamref name="T"/> attribute on <typeparamref name="TEnum"/>
+        /// </summary>
+        /// <typeparam name="T">Type of <see cref="Attribute"/> to search for</typeparam>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="item"></param>
+        /// <returns>First instance of <see cref="Attribute"/></returns>
+        /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
+        public static T? GetAttributeInstance<T, TEnum>(this TEnum item)
+            where T : Attribute
+            where TEnum : System.Enum
+        {            
+            var type = item.GetType();
+            var field = item.ToString();
+            var attribute = type.GetField(field)?.GetCustomAttributes(typeof(T), false).Cast<T>().SingleOrDefault();
+            return attribute;
+        }
+
+        /// <summary>
+        /// Returns first instance of <typeparamref name="T"/> attribute on <seealso cref="Enum"/>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns>First instance of <see cref="Attribute"/> to search for or <see langword="null"/></returns>
+        /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
+        public static T? GetAttributeInstance<T>(this Enum item)
+            where T : Attribute
+        {
+            if (item == null) return null;
+            var type = item.GetType();
+            var attribute = type.GetField(item.ToString())?.GetCustomAttributes(typeof(T), false).Cast<T>().SingleOrDefault();
+            return attribute;
+        }
+
+        /// <summary>
+        /// Returns first instance of <typeparamref name="T"/> attribute on a class property
+        /// </summary>
+        /// <typeparam name="T">Type of <see cref="Attribute"/> to search for</typeparam>
+        /// <param name="property"><see cref="PropertyInfo"/></param>
+        /// <param name="inherit">include inherited attributes</param>
+        /// <returns>First instance of <see cref="Attribute"/> to search for or <see langword="null"/></returns>
+        /// <exception cref="InvalidOperationException">Sequence contains more than one element</exception>
+        public static T? GetAttributeInstance<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
+        {
+            return property?.GetAttributeInstances<T>(inherit)?.SingleOrDefault();
+        }
+
+        /// <summary>
+        /// Returns all instances of <typeparamref name="T"/> attribute on a class property
+        /// </summary>
+        /// <typeparam name="T">Type of <see cref="Attribute"/> to search for</typeparam>
+        /// <param name="property"><see cref="PropertyInfo"/></param>
+        /// <param name="inherit">include inherited attributes</param>
+        /// <returns>Returns all instances of <see cref="Attribute"/></returns>
+        public static List<T>? GetAttributeInstances<T>(this PropertyInfo property, bool inherit = false) where T : Attribute
+        {
+            return property?.GetCustomAttributes(typeof(T), inherit).Cast<T>().ToList();
+        }
+
+        /// <summary>
+        /// Gets <see cref="DescriptionAttribute"/>
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns><see cref="DescriptionAttribute.Description"/> or <seealso cref="Enum"/> ToString() or <see langword="null"/></returns>
+        public static string? GetDescription(this Enum value)
+        {
+            var attribute = GetAttributeInstance<DescriptionAttribute>(value);
+            return attribute?.Description ?? value?.ToString();
+        }
+
+
+        /// <summary>
+        /// Searches <typeparamref name="TEnum"/> for <see cref="DescriptionAttribute"/> or Name matching string
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="source"></param>
+        /// <returns>First instance of <typeparamref name="TEnum"/></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TEnum FromDescription<TEnum>(this string source) where TEnum : System.Enum, IConvertible
+        {
+            var type = typeof(TEnum);
+
+            foreach (var en in Enum.GetValues(type))
+            {
+                var member = en.ToString();
+                if (member == null) continue;
+                var memInfo = type.GetMember(member);
+
+                if (memInfo != null && memInfo.Length > 0)
+                {
+
+                    var attrs = memInfo[0].GetCustomAttributes(typeof(DescriptionAttribute), false);
+
+                    if (attrs != null && attrs.Length > 0)
+                    {
+                        var description = ((DescriptionAttribute)attrs[0]).Description;
+                        if (string.Equals(source, description, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return (TEnum)en;
+                        }
+                    }
+                }
+            }            
+
+            return (TEnum)Enum.Parse(type, source, true);
+        }
+
+        /// <summary>
+        /// Searches <typeparamref name="TEnum"/> for <see cref="EnumMemberAttribute"/> 
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="source"></param>
+        /// <returns>First instance of <typeparamref name="TEnum"/></returns>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TEnum FromEnumMember<TEnum>(this string source) where TEnum : System.Enum, IConvertible
+        {
+            ArgumentNullException.ThrowIfNull(source);
+
+            var type = typeof(TEnum);
+
+            foreach (var en in Enum.GetValues(type))
+            {
+                var member = en.ToString();
+                if (member == null) continue;
+                var memInfo = type.GetMember(member);
+
+                if (memInfo != null && memInfo.Length > 0)
+                {
+
+                    var attrs = memInfo[0].GetCustomAttributes(typeof(EnumMemberAttribute), false);
+
+                    if (attrs != null && attrs.Length > 0)
+                    {
+                        var value = ((EnumMemberAttribute)attrs[0]).Value;
+                        if (string.Equals(source, value, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return (TEnum)en;
+                        }
+                    }
+                }
+            }
+
+            throw new ArgumentException("Unable to find EnumMember", nameof(source));
+        }
+    }
+}

@@ -1,5 +1,4 @@
-﻿using System;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 
@@ -20,18 +19,10 @@ namespace OLT.Core
         /// <param name="credential">Credential to use (Default is <see cref="ManagedIdentityCredential"/>)</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static AzureAppConfigurationOptions Connect(this AzureAppConfigurationOptions options, string endpoint, TokenCredential credential = null)
+        public static AzureAppConfigurationOptions Connect(this AzureAppConfigurationOptions options, string endpoint, TokenCredential? credential = null)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-
-            if (endpoint == null)
-            {
-                throw new ArgumentNullException(nameof(endpoint));
-            }
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(endpoint);
 
             credential = credential ?? new ManagedIdentityCredential();
             return options.Connect(new Uri(endpoint), credential);
@@ -47,15 +38,8 @@ namespace OLT.Core
         /// <exception cref="ArgumentNullException"></exception>
         public static AzureAppConfigurationOptions OltAzureConfigDefault(this AzureAppConfigurationOptions options, OltOptionsAzureConfig config)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(config);
 
             var keyFilter = $"{config.KeyPrefix}*";
 

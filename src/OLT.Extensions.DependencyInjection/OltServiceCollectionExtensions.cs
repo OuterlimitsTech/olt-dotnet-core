@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Extensions.DependencyInjection;
+using OLT.Utility.AssemblyScanner;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace OLT.Core
 {
@@ -12,12 +10,10 @@ namespace OLT.Core
         /// <summary>
         /// Scans <see cref="IOltInjectableScoped"/>, <see cref="IOltInjectableSingleton"/>, and <see cref="IOltInjectableTransient"/> to associated DI
         /// </summary>
-        /// <remarks>
-        /// Adds <see cref="IOltDbAuditUser"/> to resolve to <see cref="IOltIdentity"/> as scoped
-        /// </remarks>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns><param typeof="IServiceCollection"></param></returns>
+        [Obsolete("Use Scan")]
         public static IServiceCollection AddOltInjection(this IServiceCollection services, OltInjectionAssemblyFilter? filter = null)
         {
             return AddOltInjection(services, new List<Assembly>(), filter);
@@ -27,20 +23,14 @@ namespace OLT.Core
         /// <summary>
         /// Scans <see cref="IOltInjectableScoped"/>, <see cref="IOltInjectableSingleton"/>, and <see cref="IOltInjectableTransient"/> to associated DI
         /// </summary>
-        /// <remarks>
-        /// Adds <see cref="IOltDbAuditUser"/> to resolve to <see cref="IOltIdentity"/> as scoped
-        /// </remarks>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="baseAssembly">Assembly to include in scan for interfaces</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns><param typeof="IServiceCollection"></param></returns>
+        [Obsolete("Use Scan")]
         public static IServiceCollection AddOltInjection(this IServiceCollection services, Assembly baseAssembly, OltInjectionAssemblyFilter? filter = null)
         {
-            if (baseAssembly == null)
-            {
-                throw new ArgumentNullException(nameof(baseAssembly));
-            }
-
+            ArgumentNullException.ThrowIfNull(baseAssembly);
             return AddOltInjection(services, new List<Assembly>() { baseAssembly }, filter);
         }
 
@@ -48,19 +38,14 @@ namespace OLT.Core
         /// <summary>
         /// Scans <see cref="IOltInjectableScoped"/>, <see cref="IOltInjectableSingleton"/>, and <see cref="IOltInjectableTransient"/> to associated DI
         /// </summary>
-        /// <remarks>
-        /// Adds <see cref="IOltDbAuditUser"/> to resolve to <see cref="IOltIdentity"/> as scoped
-        /// </remarks>
         /// <param name="services"><seealso cref="IServiceCollection"/></param>
         /// <param name="baseAssemblies">List of Assemblies To Scan for interfaces</param>
         /// <param name="filter">Assembly Filter</param>
         /// <returns><seealso cref="IServiceCollection"/></returns>
+        [Obsolete("Use Scan")]
         public static IServiceCollection AddOltInjection(this IServiceCollection services, List<Assembly> baseAssemblies, OltInjectionAssemblyFilter? filter = null)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+            ArgumentNullException.ThrowIfNull(services);
 
             if (baseAssemblies == null)
             {
@@ -80,9 +65,44 @@ namespace OLT.Core
 
             filter.RemoveAllExclusions(assembliesToScan);
 
+
+            return Scan(services, assembliesToScan);
+        }
+
+
+        /// <summary>
+        /// Scans <see cref="IOltInjectableScoped"/>, <see cref="IOltInjectableSingleton"/>, and <see cref="IOltInjectableTransient"/> to associated DI
+        /// </summary>
+        /// <remarks>
+        /// See <a href="https://github.com/OuterlimitsTech/olt-dotnet-utility-libraries/blob/e77797d1c8a783fe7fda49968c5a45bf59add7d8/src/OLT.Utility.AssemblyScanner/README.md">documentation</a> for more details.
+        /// </remarks>
+        /// <param name="services"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static IServiceCollection Scan(this IServiceCollection services, Action<OltAssemblyScanBuilder> action)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+
+            var builder = new OltAssemblyScanBuilder();
+            action(builder);
+            var assemblies = builder.Build();
+
+            return Scan(services, assemblies);
+        }
+
+        /// <summary>
+        /// Scans <see cref="IOltInjectableScoped"/>, <see cref="IOltInjectableSingleton"/>, and <see cref="IOltInjectableTransient"/> to associated DI
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="assemblies"></param>
+        /// <returns></returns>
+        public static IServiceCollection Scan(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+        {
+            ArgumentNullException.ThrowIfNull(services);
+
             services
                 .Scan(sc =>
-                    sc.FromAssemblies(assembliesToScan)
+                    sc.FromAssemblies(assemblies)
                         .AddClasses(classes => classes.AssignableTo<IOltInjectableScoped>())
                         .AsImplementedInterfaces()
                         .WithScopedLifetime()
@@ -93,7 +113,7 @@ namespace OLT.Core
                         .AsImplementedInterfaces()
                         .WithSingletonLifetime());
 
-            return services.AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
+            return services;
         }
 
     }

@@ -26,28 +26,6 @@ namespace OLT.Extensions.General.Tests
         }
 
 
-        public static IEnumerable<object[]> DelimitedStringData =>
-            new List<object[]>
-            {
-                new object[] { new HelperToDelimitedString(",", false, "", "Item1", "Item2") },
-                new object[] { new HelperToDelimitedString(",", true, "", "Item1", "Item2") },
-                new object[] { new HelperToDelimitedString(",", true, "\"", "Item1", "Item2") },
-                new object[] { new HelperToDelimitedString(",", false, "\"", "Item1", "Item2") },
-                new object[] { new HelperToDelimitedString(":", true, "", "Item1", "Item2", "Item3", "Item4") },
-                new object[] { new HelperToDelimitedString(":", false, "'", "Item1", "Item2", "Item6", "Item7", "Item9") },
-                new object[] { new HelperToDelimitedString(null, true, "", "Item1", "Item2", "Item3", "Item4") },
-                new object[] { new HelperToDelimitedString("-", true, null, "Item1", "Item2", "Item6", "Item7", "Item9") },
-                new object[] { new HelperToDelimitedString(",", false, "") },
-            };
-
-
-        [Theory]
-        [MemberData(nameof(DelimitedStringData))]
-        [Obsolete]
-        public void DelimitedString(HelperToDelimitedString request)
-        {
-            Assert.Equal(request.Expected, request.Values.ToDelimitedString(request.Delimiter, request.InsertSpaces, request.Qualifier));
-        }
 
     }
 }
