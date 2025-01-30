@@ -63,7 +63,7 @@ namespace OLT.Core
             baseAssemblies.Add(Assembly.GetExecutingAssembly());
             var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies(filter).ToList();
             filter.RemoveAllExclusions(assembliesToScan);
-            return OltDependencyInjectionExtensions.AddServicesFromAssemblies(services, opt => opt.AddAssemblies(assembliesToScan));
+            return OltDependencyInjectionExtensions.AddServicesFromAssemblies(services, opt => opt.IncludeAssemblies(assembliesToScan));
         }
 
 
