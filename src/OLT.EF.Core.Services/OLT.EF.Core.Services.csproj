@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OLT.DataAdapters.Abstractions" Version="9.0.0-beta-0005" />
+    <PackageReference Include="OLT.DataAdapters.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -70,8 +70,7 @@ public abstract class BaseUnitTests : IAsyncLifetime
 
         services.AddOltAdapters(builder =>
         {
-            builder.AssemblyScanner.IncludeFilter("OLT.");
-            builder.AssemblyScanner.IncludeAssembly(this.GetType().Assembly, typeof(UserDtoAdapter).Assembly);
+            builder.AddAdapters(this.GetType().Assembly, typeof(UserDtoAdapter).Assembly);
         });
 
         //services.AddOltAutoMapper(builder =>
