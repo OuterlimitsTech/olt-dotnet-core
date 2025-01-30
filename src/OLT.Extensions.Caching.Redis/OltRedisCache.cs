@@ -3,6 +3,7 @@ using StackExchange.Redis.Extensions.Core.Abstractions;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing in 10.x, Move to FusionCache")]
     public class OltRedisCache : OltCacheService
     {
         private readonly OltRedisCacheOptions _cacheOptions;

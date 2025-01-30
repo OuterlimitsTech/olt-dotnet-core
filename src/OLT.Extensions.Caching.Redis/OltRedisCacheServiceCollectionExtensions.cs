@@ -24,6 +24,7 @@ namespace OLT.Core
         /// <returns><seealso cref="IServiceCollection"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
+        [Obsolete("Removing in 10.x, Move to FusionCache")]
         public static IServiceCollection AddOltCacheRedis(this IServiceCollection services, TimeSpan defaultAbsoluteExpiration, string cacheKeyPrefix, string connectionString)
         {
             ArgumentNullException.ThrowIfNullOrWhiteSpace(connectionString);
@@ -43,6 +44,7 @@ namespace OLT.Core
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentException"></exception>
+        [Obsolete("Removing in 10.x, Move to FusionCache")]
         public static IServiceCollection AddOltCacheRedis(this IServiceCollection services, TimeSpan defaultAbsoluteExpiration, string cacheKeyPrefix, RedisConfiguration redisConfiguration)
         {
             ArgumentNullException.ThrowIfNull(services);

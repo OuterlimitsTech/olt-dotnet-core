@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace OLT.Core
 {
+    [Obsolete("Removing in 10.x, Move to FusionCache")]
     public class OltMemoryCache : OltCacheService, IOltMemoryCache
     {
         private readonly IMemoryCache _memoryCache;

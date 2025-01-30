@@ -1,5 +1,6 @@
 ﻿namespace OLT.Core
 {
+    [Obsolete("Removing in 10.x, Move to FusionCache")]
     public abstract class OltCacheService : IOltCacheService
     {
         protected virtual string ToCacheKey(string key)

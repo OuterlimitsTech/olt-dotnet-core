@@ -20,6 +20,7 @@ namespace OLT.Core
         /// <param name="config"><see cref="IConfiguration"/></param>
         /// <param name="name">Connection String Key Name</param>
         /// <returns>Connection String or <see langword="null"/></returns>
+        [Obsolete("Removing in 10.x, this extension provides no value now")]
         public static string? GetOltConnectionString(this IConfiguration config, string name)
         {
 

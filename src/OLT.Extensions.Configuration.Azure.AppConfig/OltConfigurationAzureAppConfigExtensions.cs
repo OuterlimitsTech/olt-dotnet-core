@@ -1,9 +1,6 @@
-﻿using System;
-using System.Net;
-using Azure.Core;
+﻿using Azure.Core;
 using Azure.Identity;
 using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OLT.Core
 {

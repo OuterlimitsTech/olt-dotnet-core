@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using Xunit;
-
-namespace OLT.Extensions.General.Tests
+﻿namespace OLT.Extensions.General.Tests
 {
     public class DateTimeExtensionTests
     {
@@ -33,6 +28,10 @@ namespace OLT.Extensions.General.Tests
             {
                 new object[] { new DateTime(2020, 1, 31) },
                 new object[] { new DateTime(2020, 2, 29) },
+                new object[] { new DateTime(2024, 2, 28) },
+                new object[] { new DateTime(2024, 2, 29) },
+                new object[] { new DateTime(2024, 3, 1) },
+                new object[] { new DateTime(DateTime.Today.Year - 1, 3, 1) },
                 new object[] { DateTime.Today },
                 new object[] { DateTime.Today.AddDays(-1) },
                 new object[] { DateTime.Today.AddDays(1) },
@@ -44,8 +43,9 @@ namespace OLT.Extensions.General.Tests
         [MemberData(nameof(CalculateAgeData))]
         public void CalculateAge(DateTime birthDate)
         {
-            var expectedResult = birthDate > DateTime.Today ? 0 : (int)Math.Floor((DateTime.Now - birthDate).TotalDays / 365.25D);
-            Assert.Equal(expectedResult, birthDate.CalculateAge());
+            var expectedResult = birthDate > DateTime.Today ? 0 : (int)Math.Floor((DateTime.Today - birthDate).TotalDays / 365.25D);
+            var result = birthDate.CalculateAge();
+            Assert.Equal(expectedResult, result);
         }
 
         public static IEnumerable<object[]> ToISO8601Data =>
