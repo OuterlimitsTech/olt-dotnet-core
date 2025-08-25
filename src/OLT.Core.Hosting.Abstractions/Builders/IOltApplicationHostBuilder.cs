@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace OLT.Core
 {
-    public interface IOltApplicationBuilder
+    public interface IOltApplicationHostBuilder : IOltHostBuilder
     {
         /// <summary>
         /// Gets the set of key/value configuration properties.
@@ -31,10 +30,6 @@ namespace OLT.Core
         /// </summary>
         IMetricsBuilder Metrics { get; }
 
-        /// <summary>
-        /// Gets a collection of services for the application to compose. This is useful for adding user provided or framework provided services.
-        /// </summary>
-        IServiceCollection Services { get; }
 
 
         void AddConfiguration();

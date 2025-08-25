@@ -12,7 +12,6 @@
 	
 	<ItemGroup>
 		<PackageReference Include="OLT.Utility.AssemblyScanner" Version="1.0.1" />
-		<PackageReference Include="Scrutor" Version="5.0.2" />
   </ItemGroup>
 
   <ItemGroup>

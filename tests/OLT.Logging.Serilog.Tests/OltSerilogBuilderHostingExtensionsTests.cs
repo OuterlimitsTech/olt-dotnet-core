@@ -47,7 +47,7 @@ public class OltSerilogBuilderHostingExtensionsTests
     }
 
 
-    public class TestApplicationBuilder : OltHostApplicationBuilder<HostApplicationBuilder>, IOltSerilogHostApplicationBuilder
+    public class TestApplicationBuilder : OltApplicationHostBuilder<HostApplicationBuilder>, IOltSerilogHostApplicationBuilder
     {
         public TestApplicationBuilder([NotNull] HostApplicationBuilder builder) : base(builder)
         {
