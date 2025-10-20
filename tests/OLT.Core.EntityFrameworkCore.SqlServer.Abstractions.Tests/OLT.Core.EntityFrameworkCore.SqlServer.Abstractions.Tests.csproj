@@ -22,15 +22,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.Core.EntityFrameworkCore.SqlServer.Abstractions\OLT.Core.EntityFrameworkCore.SqlServer.Abstractions.csproj" />
   </ItemGroup>
-	
-  <ItemGroup>
-    <None Update="README.md">
-      <PackagePath></PackagePath>
-      <Pack>True</Pack>
-    </None>
-  </ItemGroup>
-	
-  <ItemGroup>
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.0" />
-  </ItemGroup>
+
 </Project>

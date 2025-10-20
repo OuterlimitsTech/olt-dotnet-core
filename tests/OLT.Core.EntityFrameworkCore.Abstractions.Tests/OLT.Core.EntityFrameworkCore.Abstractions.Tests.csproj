@@ -14,8 +14,4 @@
     <ProjectReference Include="..\..\src\OLT.Core.EntityFrameworkCore.Abstractions\OLT.Core.EntityFrameworkCore.Abstractions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.0" />
-  </ItemGroup>
-
 </Project>
