@@ -24,7 +24,7 @@ namespace OLT.Core
 
         public IQueryable<TEntity> BuildQueryable(IQueryable<TEntity> queryable)
         {
-            return queryable.Where(EntityExpressionExtensions.BuildExpression(FieldExpression, WhereExpression));
+            return queryable.Where(OltEntityExpressionExtensions.BuildExpression(FieldExpression, WhereExpression));
         }
     }
 }

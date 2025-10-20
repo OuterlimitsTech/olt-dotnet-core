@@ -2,7 +2,7 @@
 
 namespace OLT.Core;
 
-public static class EntityExpressionExtensions
+public static class OltEntityExpressionExtensions
 {
     /// <summary>
     /// Builds Queryable Expression using provided Query Expression and Field Expression within Dynamic Filter
