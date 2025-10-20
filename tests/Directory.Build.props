@@ -11,12 +11,11 @@
 	<ItemGroup>
 		<PackageReference Include="AwesomeAssertions" Version="9.2.1" />
 		<PackageReference Include="Faker.Net" Version="2.0.163" />
-		<!--<PackageReference Include="FluentAssertions" Version="7.0.0" />-->
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" PrivateAssets="All" />
 		<PackageReference Include="Faker.Net" Version="2.0.163" PrivateAssets="All" />
 		<PackageReference Include="xunit" Version="2.9.2" />
 		<!-- <PackageReference Include="Xunit.DependencyInjection" Version="9.7.0" /> -->
