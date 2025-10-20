@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.AspNetCore.TestHost;
 using Newtonsoft.Json;
 using OLT.AspNetCore.Tests.Assets;

@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using static OLT.Core.Model.Abstractions.Tests.TestHelper;
 
 namespace OLT.Core.Model.Abstractions.Tests;

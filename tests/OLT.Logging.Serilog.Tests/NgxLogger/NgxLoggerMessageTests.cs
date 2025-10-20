@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using OLT.Constants;
 using Serilog;
 using Serilog.Events;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace OLT.Core.Model.Abstractions.Tests;
 

@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace OLT.Core.Service.Abstractions.Tests;
 

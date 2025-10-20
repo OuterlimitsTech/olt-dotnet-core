@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using OLT.Identity.Abstractions;
 using System.Security.Claims;
 

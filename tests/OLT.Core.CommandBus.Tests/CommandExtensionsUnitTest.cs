@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
-using FluentAssertions;
+using AwesomeAssertions;
 using OLT.Core.CommandBus.Tests.Assets.Models;
 
 namespace OLT.Core.CommandBus.Tests

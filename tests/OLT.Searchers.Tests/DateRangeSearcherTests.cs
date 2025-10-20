@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using FluentDateTimeOffset;
 using OLT.Core;
 using OLT.Searchers.Tests.Assets;

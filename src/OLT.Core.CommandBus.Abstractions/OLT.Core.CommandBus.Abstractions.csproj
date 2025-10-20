@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net9.0;net8.0</TargetFrameworks>
+		<TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
 		<RootNamespace>OLT.Core</RootNamespace>
 		<Description>Command Bus Abstractions for CQRS architecture</Description>
 		<ProjectGuid>{526FA222-2F9F-4BD1-91D9-34F0FBAA7C57}</ProjectGuid>

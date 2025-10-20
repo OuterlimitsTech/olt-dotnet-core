@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using OLT.Core;
 using OLT.Extensions.General.Tests.Assets.Interface;
 using System.Reflection;

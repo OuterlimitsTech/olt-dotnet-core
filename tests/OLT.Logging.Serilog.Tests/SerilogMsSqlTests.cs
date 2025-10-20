@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Serilog;
 using System.Linq;
 using Xunit;

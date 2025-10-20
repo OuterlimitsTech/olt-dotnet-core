@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using StackExchange.Redis.Extensions.Core.Configuration;

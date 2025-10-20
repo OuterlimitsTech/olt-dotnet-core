@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
 using OLT.Core.CommandBus.Tests.Assets.Models;
 using OLT.Core.CommandBus.Tests.Assets.Validators;

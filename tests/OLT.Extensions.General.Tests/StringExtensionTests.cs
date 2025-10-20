@@ -362,7 +362,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData("FooBar", 0d, 0d)]
         [InlineData("45.234", 45.234, 0.0)]
         [InlineData("-1", -1d)]
-        public void ToDouble(string value, double? expectedResult, double? defaultValue = null)
+        public void ToDouble(string? value, double? expectedResult, double? defaultValue = null)
         {
             Assert.Equal(expectedResult, defaultValue.HasValue ? OltStringExtensions.ToDouble(value, defaultValue.Value) : OltStringExtensions.ToDouble(value));
         }
@@ -377,7 +377,7 @@ namespace OLT.Extensions.General.Tests
         [InlineData(UnitTestConstants.StringValues.AlphaNumeric, false)]
         [InlineData(UnitTestConstants.BoolValues.FalseValues.String, true)]
         [InlineData(UnitTestConstants.BoolValues.FalseValues.Int, true)]
-        public void IsBool(string value, bool expectedResult)
+        public void IsBool(string? value, bool expectedResult)
         {
             Assert.Equal(expectedResult, value.IsBool());
         }

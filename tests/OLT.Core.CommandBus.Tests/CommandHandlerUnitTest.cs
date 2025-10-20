@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OLT.Core.CommandBus.Tests.Assets.Handlers;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
 using OLT.Core.CommandBus.Tests.Assets.Models;
-using FluentAssertions;
+using AwesomeAssertions;
 
 namespace OLT.Core.CommandBus.Tests
 {
