@@ -6,8 +6,8 @@
 	
 	<ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="10.0.0-rc.2.25502.107" />
-    <PackageReference Include="Serilog.Sinks.InMemory" Version="0.11.0" />
-    <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="3.2.0" />
+    <PackageReference Include="Serilog.Sinks.InMemory" Version="2.0.0" />
+    <PackageReference Include="Serilog.Sinks.TestCorrelator" Version="4.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.0-rc.2.25502.107" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.0-rc.2.25502.107" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0-rc.2.25502.107" />
@@ -15,6 +15,10 @@
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\src\OLT.Extensions.General\OLT.Extensions.General.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.0" />
 	</ItemGroup>
 
 	<PropertyGroup>

@@ -7,13 +7,17 @@
   <ItemGroup>		
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0-rc.2.25502.107" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.0-rc.2.25502.107" />
-		<PackageReference Include="Testcontainers.Redis" Version="4.0.0" />
+		<PackageReference Include="Testcontainers.Redis" Version="4.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.Core.Model.Abstractions\OLT.Core.Model.Abstractions.csproj" />
     <ProjectReference Include="..\..\src\OLT.Extensions.Caching.Memory\OLT.Extensions.Caching.Memory.csproj" />
     <ProjectReference Include="..\..\src\OLT.Extensions.Caching.Redis\OLT.Extensions.Caching.Redis.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.0.0" />
   </ItemGroup>
 
 </Project>
