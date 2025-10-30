@@ -21,37 +21,44 @@ namespace OLT.AspNetCore.Serilog.Tests.ValidationError
         public async Task MiddlewareTests()
         {
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupMiddleware>()))
+            var builder = TestHelper.WebHostBuilder<StartupMiddleware>();
+            using (var host = builder.Build())
             {
-                using (var logger = new LoggerConfiguration().WriteTo.Sink(new TestCorrelatorSink()).Enrich.FromLogContext().CreateLogger())
+                //await host.StartAsync();
+
+                using (var testServer = new TestServer(host.Services))
                 {
-                    Log.Logger = logger;
-                    var identity = testServer.Services.GetRequiredService<IOltIdentity>();
+                    using (var logger = new LoggerConfiguration().WriteTo.Sink(new TestCorrelatorSink()).Enrich.FromLogContext().CreateLogger())
+                    {
+                        Log.Logger = logger;
+                        var identity = testServer.Services.GetRequiredService<IOltIdentity>();
 
-                    var request = testServer.CreateRequest("/api/validation-error");
-                    var response = await request.GetAsync();
-                    Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-                    var body = await response.Content.ReadAsStringAsync();
+                        var request = testServer.CreateRequest("/api/validation-error");
+                        var response = await request.GetAsync();
+                        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+                        var body = await response.Content.ReadAsStringAsync();
 
-                    var logs = TestCorrelator.GetLogEventsFromCurrentContext().ToList();
-                    logs.Should().HaveCount(1);
+                        var logs = TestCorrelator.GetLogEventsFromCurrentContext().ToList();
+                        logs.Should().HaveCount(1);
 
-                    var json = JsonConvert.DeserializeObject<OltErrorHttpSerilog>(body);
-                    var payload = logs.First(p => p.MessageTemplate.Text == OltSerilogConstants.Templates.AspNetCore.Payload);
+                        var json = JsonConvert.DeserializeObject<OltErrorHttpSerilog>(body);
+                        var payload = logs.First(p => p.MessageTemplate.Text == OltSerilogConstants.Templates.AspNetCore.Payload);
 
 
-                    Assert.NotNull(json);
-                    Assert.NotNull(payload);
-                    Assert.Equal("Please correct the validation errors", json.Message);
+                        Assert.NotNull(json);
+                        Assert.NotNull(payload);
+                        Assert.Equal("Please correct the validation errors", json.Message);
 
-                    TestHelper.ValidatePayloadProperties(payload.Properties);
-                    TestHelper.TestIdentityProperties(payload.Properties, identity);
-                    TestHelper.ValidateAppRequestUid(json, payload);
+                        TestHelper.ValidatePayloadProperties(payload.Properties);
+                        TestHelper.TestIdentityProperties(payload.Properties, identity);
+                        TestHelper.ValidateAppRequestUid(json, payload);
 
-                    TestHelper.CleanValue(payload.Properties[OltSerilogConstants.Properties.AspNetCore.ResponseBody]).Should().Contain(json.ErrorUid.ToString());
+                        TestHelper.CleanValue(payload.Properties[OltSerilogConstants.Properties.AspNetCore.ResponseBody]).Should().Contain(json.ErrorUid.ToString());
 
+                    }
                 }
             }
+           
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Seriolog
     /// </summary>
     public static class SerilogWebHostBuilderExtensions
     {
-        public static IWebHostBuilder UseSerilog_local(this IWebHostBuilder builder, Serilog.ILogger? logger = null, bool dispose = false, LoggerProviderCollection? providers = null)
+        public static IHostBuilder UseSerilog_local(this IHostBuilder builder, Serilog.ILogger? logger = null, bool dispose = false, LoggerProviderCollection? providers = null)
         {
             LoggerProviderCollection? providers2 = providers;
             Serilog.ILogger? logger2 = logger;
@@ -77,21 +77,27 @@ namespace OLT.AspNetCore.Serilog.Tests
     public static class TestHelper
     {
 
-        public static IWebHostBuilder WebHostBuilder<T>() where T : class
+        public static IHostBuilder WebHostBuilder<T>() where T : class
         {
-            var webBuilder = new WebHostBuilder();
+            var webBuilder = new HostBuilder();
 
-            webBuilder
-                .UseSerilog_local()
-                .ConfigureAppConfiguration(builder =>
-                {
-                    builder
-                        .SetBasePath(AppContext.BaseDirectory)
-                        .AddUserSecrets<T>()
-                        .AddJsonFile("appsettings.json", true, false)
-                        .AddEnvironmentVariables();
-                })                
-                .UseStartup<T>();
+            webBuilder.UseSerilog_local();
+            webBuilder.ConfigureWebHostDefaults(webHost =>
+            {
+                webHost.UseStartup<T>();
+            });
+
+            //webBuilder
+            //    .UseSerilog_local()
+            //    .ConfigureAppConfiguration(builder =>
+            //    {
+            //        builder
+            //            .SetBasePath(AppContext.BaseDirectory)
+            //            .AddUserSecrets<T>()
+            //            .AddJsonFile("appsettings.json", true, false)
+            //            .AddEnvironmentVariables();
+            //    })                
+            //    .UseStartup<T>();
 
 
             return webBuilder;
