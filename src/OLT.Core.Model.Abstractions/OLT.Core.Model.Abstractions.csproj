@@ -14,6 +14,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\OLT.Core.Attribute.Abstractions\OLT.Core.Attribute.Abstractions.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Attributes\" />
+	</ItemGroup>
 	
 
 </Project>

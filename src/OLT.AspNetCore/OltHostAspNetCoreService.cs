@@ -3,7 +3,7 @@ using System.IO;
 
 namespace OLT.Core
 {
-    public class OltHostAspNetCoreService : IOltHostService
+    public class OltHostAspNetCoreService : OltDisposable, IOltHostService
     {
         private readonly IWebHostEnvironment _hostEnvironment;
 

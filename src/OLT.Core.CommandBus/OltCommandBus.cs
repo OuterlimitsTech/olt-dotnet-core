@@ -157,7 +157,7 @@ namespace OLT.Core
         /// <exception cref="OltValidationException"></exception>
         /// <exception cref="NullReferenceException">Thrown is command result is null</exception>
         /// <exception cref="InvalidCastException">Thrown if command result can not be cast to <typeparamref name="T"/></exception>
-        // [Obsolete("ProcessAsync<T> is deprecated, use IOltCommand<TResult>")] //Issue #149
+        [Obsolete("Removing in 10.x, ProcessAsync<T> is deprecated, use IOltCommand<TResult>")] //Issue #149
         public virtual async Task<T> ProcessAsync<T>(IOltCommand command)
         {
             var result = await ExecuteAsync(GetHandler(command), command);
