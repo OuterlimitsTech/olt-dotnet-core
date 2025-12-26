@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Results;
-using System.Threading.Tasks;
 
 namespace OLT.Core.CommandBus.Tests.Assets.Handlers
 {
