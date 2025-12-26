@@ -1,19 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Hosting;
 using OLT.AspNetCore.Tests.Assets;
-using System.Collections.Generic;
 using System.Net;
 using System.Security.Principal;
-using System.Threading.Tasks;
-using Xunit;
 
 namespace OLT.AspNetCore.Tests
 {
+   
+
     public class RequirePermissionAttributeTests
     {
 
@@ -28,14 +29,22 @@ namespace OLT.AspNetCore.Tests
             actionFilter.OnAuthorization(authorizationFilterContext);
             Assert.NotNull(authorizationFilterContext.Result as UnauthorizedResult);
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupWithAuth>()))
-            {
-                using (var client = testServer.CreateClient())
+            using var host = new HostBuilder()
+                .ConfigureWebHost(webHostBuilder =>
                 {
-                    var response = await client.GetAsync("/api/permissions-test");
-                    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-                }
-            }
+                    webHostBuilder
+                        .UseTestServer() // If using TestServer
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseStartup<StartupWithAuth>()
+                        ;
+                })
+                .Build();
+            await host.StartAsync();
+
+            using var testServer = host.GetTestServer();
+            using var client = testServer.CreateClient();
+            var response = await client.GetAsync("/api/permissions-test");
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
 
         }
 
@@ -52,15 +61,24 @@ namespace OLT.AspNetCore.Tests
             actionFilter.OnAuthorization(authorizationFilterContext);
             Assert.NotNull(authorizationFilterContext.Result as UnauthorizedResult);
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupWithAuth>()))
-            {
-                using (var client = testServer.CreateClient())
+            using var host = new HostBuilder()
+                .ConfigureWebHost(webHostBuilder =>
                 {
-                    client.DefaultRequestHeaders.Add("X-API-Key", "123");
-                    var response = await client.GetAsync("/api/permissions-test");
-                    Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-                }
-            }
+                    webHostBuilder
+                        .UseTestServer() // If using TestServer
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseStartup<StartupWithAuth>()
+                        ;
+                })
+                .Build();
+            await host.StartAsync();
+
+            using var testServer = host.GetTestServer();
+            using var client = testServer.CreateClient();
+            client.DefaultRequestHeaders.Add("X-API-Key", "123");
+            var response = await client.GetAsync("/api/permissions-test");
+            Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+
         }
 
         [Fact]
@@ -78,15 +96,24 @@ namespace OLT.AspNetCore.Tests
             Assert.NotNull(authorizationFilterContext.Result as UnauthorizedResult);
 
 
-            using (var testServer = new TestServer(TestHelper.WebHostBuilder<StartupWithAuth>()))
-            {
-                using (var client = testServer.CreateClient())
+            using var host = new HostBuilder()
+                .ConfigureWebHost(webHostBuilder =>
                 {
-                    client.DefaultRequestHeaders.Add("X-API-Key", "XYZ");
-                    var response = await client.GetAsync("/api/permissions-test");
-                    Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-                }
-            }
+                    webHostBuilder
+                        .UseTestServer() // If using TestServer
+                        .UseContentRoot(Directory.GetCurrentDirectory())
+                        .UseStartup<StartupWithAuth>()
+                        ;
+                })
+                .Build();
+            await host.StartAsync();
+
+            using var testServer = host.GetTestServer();
+            using var client = testServer.CreateClient();
+            client.DefaultRequestHeaders.Add("X-API-Key", "XYZ");
+            var response = await client.GetAsync("/api/permissions-test");
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
         }
 
      

@@ -2,10 +2,6 @@
 {
     public class OltAspNetHostingOptions : OltHostingOptions
     {
-
-        [Obsolete("Removing 9.x, provides little value")]
-        public virtual string CorsPolicyName { get; set; } = OLT.Constants.OltAspNetDefaults.CorsPolicies.Disabled;
-
         /// <summary>
         /// Adds middleware for using HSTS, which adds the Strict-Transport-Security header.
         /// </summary>

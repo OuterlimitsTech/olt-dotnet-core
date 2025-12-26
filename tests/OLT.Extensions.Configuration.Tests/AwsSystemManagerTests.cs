@@ -1,13 +1,9 @@
 ﻿using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
-using FluentAssertions;
+using AwesomeAssertions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using OLT.Core;
-using System;
-using System.Linq;
-using Xunit;
 
 namespace OLT.Extensions.Configuration.Tests
 {

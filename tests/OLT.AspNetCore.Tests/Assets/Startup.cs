@@ -2,9 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
-using System;
-using System.Linq;
-using System.Text;
+using OLT.Utility.AssemblyScanner;
 
 namespace OLT.AspNetCore.Tests.Assets
 {
@@ -21,8 +19,23 @@ namespace OLT.AspNetCore.Tests.Assets
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services);
-            services.AddRouting();            
+            var assemblies = new OltAssemblyScanBuilder()
+                .IncludeFilter("OLT.")
+                .ExcludeMicrosoft()
+                .ExcludeAutomapper()
+                .DeepScan()
+                .Build();
+
+
+            services.AddServicesFromAssemblies(builder => builder.IncludeAssemblies(assemblies));
+
+            services.AddHttpContextAccessor();
+           
+            //services.AddSingleton<IOltHostService, OltHostAspNetCoreService>();
+            services.AddScoped<IOltIdentity, TestIdentity>();
+            services.AddScoped<IOltDbAuditUser>(x => x.GetRequiredService<IOltIdentity>());
+            services.AddRouting();
+            services.AddControllers();
         }
 
 
@@ -33,4 +46,5 @@ namespace OLT.AspNetCore.Tests.Assets
         }
 
     }
+
 }

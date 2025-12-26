@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Linq;
+using OLT.Core;
 
-// ReSharper disable once CheckNamespace
-namespace OLT.Core
+namespace OLT.AspNetCore.Tests.Assets
 {
-    [Obsolete("Being Removed in 9.x -> This class provides no value")]
-    public class OltIdentityAspNetCore : OltIdentity
+    public class TestIdentity : OltIdentity
     {
         private readonly IHttpContextAccessor _httpContext;
 
-        public OltIdentityAspNetCore(IHttpContextAccessor httpContext)
+        public TestIdentity(IHttpContextAccessor httpContext)
         {
             _httpContext = httpContext;
         }
@@ -22,4 +19,5 @@ namespace OLT.Core
             return roles?.Any(role => HasRole(role.GetCodeEnum())) == true;
         }
     }
+
 }

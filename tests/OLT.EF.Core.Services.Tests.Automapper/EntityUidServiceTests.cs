@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.EF.Core.Services.Tests.Assets.Entites;

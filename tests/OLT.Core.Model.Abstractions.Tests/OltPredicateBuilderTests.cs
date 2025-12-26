@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using System.Linq.Expressions;
 
 namespace OLT.Core.Model.Abstractions.Tests;

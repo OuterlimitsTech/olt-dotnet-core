@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize, reopened]
 
 env:
-  SOLUTION_FILE: "OLT.Core.sln"
+  SOLUTION_FILE: "OLT.Core.slnx"
   SOURCE_DIRECTORY: ${{ github.workspace }}
   SENDGRID_TMPL_JSON: ${{ secrets.SENDGRID_TMPL_JSON }}
   SENDGRID_TMPL_TAG: ${{ secrets.SENDGRID_TMPL_TAG }}
@@ -27,7 +27,8 @@ env:
   AZURE_APP_CONFIG_CONNECTION_STRING: ${{ secrets.AZURE_APP_CONFIG_CONNECTION_STRING }}
   AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
   AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
-  REDIS_CACHE: ${{ secrets.REDIS_CACHE }}
+  REDIS_CACHE: ${{ secrets.REDIS_CACHE }}  
+  AUTOMAPPER_LICENSE_KEY: ${{ secrets.AUTOMAPPER_LICENSE_KEY }}
 
 jobs:
   build:
@@ -64,6 +65,7 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+            10.0.x
 
       - name: Get branch name
         id: branch-name

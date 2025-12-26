@@ -1,79 +1,16 @@
-﻿using FluentAssertions;
-using OLT.Core;
-using OLT.Extensions.General.Tests.Assets.Interface;
+﻿using OLT.Extensions.General.Tests.Assets.Interface;
+using OLT.Utility.AssemblyScanner;
 using System.Reflection;
 
 namespace OLT.Extensions.General.Tests
 {
     public class SystemReflectionTest
     {
-
-        [Fact]
-        public void GetReferencedAssemblies()
-        {
-            var self = this.GetType().Assembly;
-            var list = new List<Assembly>
-            {
-                self,
-                self,  //Listed twice to confirm we get a unique list back
-                typeof(OltSystemReflectionExtensions).Assembly
-            };
-
-            var assemblies = self.GetAllReferencedAssemblies().ToList();
-            Assert.True(self.GetAllReferencedAssemblies().Count() > 100);
-            Assert.True(list.ToArray().GetAllReferencedAssemblies().Count() > 100);
-            Assert.True(list.GetAllReferencedAssemblies().Count() > 100);
-            Assert.Equal(assemblies.Count, list.GetAllReferencedAssemblies().Count());
-        }
-
-        [Fact]
-        public void GetReferencedWithFilterAssemblies()
-        {
-            var filter = new Core.OltAssemblyFilter("OLT.Extensions.General");
-
-            var self = this.GetType().Assembly;
-            var list = new List<Assembly>
-            {
-                self,
-            };
-
-            Assert.True(filter.Filters.Count == 1);
-
-            Assert.Single(list.GetAllReferencedAssemblies(filter));
-            Assert.Single(list.ToArray().GetAllReferencedAssemblies(filter));
-            Assert.Single(list.GetAllReferencedAssemblies(filter));
-
-        }
-
-        [Fact]
-        public void GetReferencedWithWildcardFilterAssemblies()
-        {
-            var filter = new Core.OltAssemblyFilter(" ", string.Empty, null, "OLT.*");
-
-            var self = this.GetType().Assembly;
-            var list = new List<Assembly>
-            {
-                self,
-            };
-
-            Assert.Equal(4, filter.Filters.Count);
-            Assert.Empty(filter.ExcludeFilters);
-            var debugTest = list.GetAllReferencedAssemblies(filter).ToList();
-            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
-            Assert.Equal(2, list.ToArray().GetAllReferencedAssemblies(filter).Count());            
-            Assert.Equal(2, list.GetAllReferencedAssemblies(filter).Count());
-
-        }
-
         [Fact]
         public void GetAllImplements()
         {
-            var baseAssemblies = new List<Assembly>
-            {
-                Assembly.GetEntryAssembly(), 
-                Assembly.GetExecutingAssembly()
-            };
-            var assembliesToScan = baseAssemblies.GetAllReferencedAssemblies();
+            var assembliesToScan = new OltAssemblyScanBuilder().IncludeAssembly(Assembly.GetEntryAssembly(), Assembly.GetExecutingAssembly()) .Build();
+
             Assert.Equal(4, assembliesToScan.GetAllImplements<ITestInterface>().Count());
             Assert.Equal(4, assembliesToScan.ToArray().GetAllImplements<ITestInterface>().Count());
             Assert.Equal(4, this.GetType().Assembly.GetAllImplements<ITestInterface>().Count());
@@ -99,28 +36,7 @@ namespace OLT.Extensions.General.Tests
             
         }
 
-        [Fact]
-        public void GetReferencedWithExcludeFilterAssemblies()
-        {
-            var filter = new Core.OltAssemblyFilter().WithDefaultDIExclusionFilters();
-
-            var self = this.GetType().Assembly;
-            var list = new List<Assembly>
-            {
-                self,
-            };
-
-            Assert.Empty(filter.Filters);
-            Assert.Equal(2, filter.ExcludeFilters.Count);
-            var filtered = list.GetAllReferencedAssemblies(filter).ToList();
-
-            filtered.Should().NotContain(p => p.FullName.StartsWith("Microsoft"));
-            filtered.Should().NotContain(p => p.FullName.StartsWith("System"));
-
-            //By including and excluding the same filter should result in zero results
-            filtered = list.GetAllReferencedAssemblies(new OltAssemblyFilter("Microsoft.*", "System.*").WithDefaultDIExclusionFilters()).ToList();
-            Assert.Empty(filtered);
-        }
+     
 
         
     }

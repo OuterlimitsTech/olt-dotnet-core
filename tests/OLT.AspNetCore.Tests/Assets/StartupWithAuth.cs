@@ -3,11 +3,14 @@ using AspNetCore.Authentication.ApiKey;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using OLT.Core;
 using OLT.Identity.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace OLT.AspNetCore.Tests.Assets
-{
+{   
+
     public class StartupWithAuth : Startup
     {
         public StartupWithAuth(IConfiguration configuration) : base(configuration)
@@ -19,7 +22,8 @@ namespace OLT.AspNetCore.Tests.Assets
         {
             base.ConfigureServices(services);
             services
-                .AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
+                .AddAuthorization()
+                .AddAuthentication(ApiKeyDefaults.AuthenticationScheme)                
                 .AddApiKeyInHeaderOrQueryParams(options =>
                 {
                     options.Realm = "Unit Test";
@@ -50,6 +54,7 @@ namespace OLT.AspNetCore.Tests.Assets
 
         public override void Configure(IApplicationBuilder app)
         {
+
             app.UseRouting();
             app.UseAuthentication();            
             app.UseAuthorization();
