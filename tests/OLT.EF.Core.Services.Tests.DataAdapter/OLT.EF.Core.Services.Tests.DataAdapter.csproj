@@ -7,16 +7,15 @@
 
 
 	<ItemGroup>		
-		<PackageReference Include="AutoMapper.Collection" Version="10.0.0" />
+		<PackageReference Include="AutoMapper.Collection" Version="12.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-		<PackageReference Include="OLT.DataAdapters" Version="9.0.0" />
+		<PackageReference Include="OLT.DataAdapters" Version="10.0.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\OLT.EF.Core.Services.Tests.Lib\OLT.EF.Core.Services.Tests.Lib.csproj" />
-	</ItemGroup>	
-
+	</ItemGroup>
 
 </Project>

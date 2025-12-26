@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OLT.Core;
 using OLT.EF.Core.Services.Tests.Lib;
@@ -46,9 +47,16 @@ public abstract class BaseUnitTests : IAsyncLifetime
 
     protected ServiceProvider BuildProvider()
     {
+        var configuration = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
+            .AddUserSecrets<BaseUnitTests>()
+            .Build();
+
+
         var services = new ServiceCollection();
 
         services
+            .AddLogging()
             //.AddLogging(config => config.AddConsole())
             //    .AddAutoMapper(this.GetType().Assembly)
             .AddDbContextPool<TestDbContext>((serviceProvider, optionsBuilder) =>
@@ -82,7 +90,8 @@ public abstract class BaseUnitTests : IAsyncLifetime
             builder.AddAdapters(assemblies);
         });
 
-        services.AddOltAutoMapper(builder =>
+        var licenseKey = configuration.GetValue<string>("AUTOMAPPER_LICENSE_KEY") ?? throw new ApplicationException("Unable to load AUTOMAPPER_LICENSE_KEY");
+        services.AddOltAutoMapper(licenseKey, builder =>
         {         
             builder.AddMaps(assemblies);
         });

@@ -3,6 +3,8 @@
     <File Path="src/Directory.Build.props" />
   </Folder>
   <Folder Name="/.build/Pipelines/">
+    <File Path=".config/dotnet-tools.json" />
+    <File Path=".github/dependabot.yml" />
     <File Path=".github/workflows/build.yml" />
     <File Path=".github/workflows/release.yml" />
   </Folder>
