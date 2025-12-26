@@ -17,11 +17,11 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="$(TargetFramework) == 'net10.0'">
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0-rc.2.25502.107" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0" />
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="OLT.Identity.ClaimTypeNames" Version="0.1.0" />
+	  <PackageReference Include="OLT.Identity.ClaimTypeNames" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

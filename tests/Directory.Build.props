@@ -16,7 +16,6 @@
       <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.0" PrivateAssets="All" />
-		<PackageReference Include="Faker.Net" Version="2.0.163" PrivateAssets="All" />
 		<PackageReference Include="xunit" Version="2.9.2" />
 		<!-- <PackageReference Include="Xunit.DependencyInjection" Version="9.7.0" /> -->
 		<PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
