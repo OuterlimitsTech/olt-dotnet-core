@@ -2,7 +2,7 @@
 
 namespace OLT.Core
 {
-    [Obsolete("Removing in 10.x, Complete<T> is deprecated, use IOltCommand<TResult> with OltCommandHandler<TCommand, TResult>")]
+    
     public record OltCommandResult(object? Result = null) : IOltCommandResult
     {
         public static OltCommandResult Complete()
@@ -10,7 +10,7 @@ namespace OLT.Core
             return new OltCommandResult();
         }
 
-        
+        [Obsolete("Removing in 10.x, Complete<T> is deprecated, use IOltCommand<TResult> with OltCommandHandler<TCommand, TResult>")]
         public static OltCommandResult Complete<T>(T result)  //Issue #149
         {
             return new OltCommandResult(result);
