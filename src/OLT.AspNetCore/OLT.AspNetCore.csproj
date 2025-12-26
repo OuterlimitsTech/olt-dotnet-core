@@ -15,7 +15,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\OLT.Core.Exception.Abstractions\OLT.Core.Exception.Abstractions.csproj" />
 	  <ProjectReference Include="..\OLT.Core.Hosting.Abstractions\OLT.Core.Hosting.Abstractions.csproj" />
-	  <ProjectReference Include="..\OLT.Extensions.DependencyInjection\OLT.Extensions.DependencyInjection.csproj" />
 	</ItemGroup>
 
 </Project>

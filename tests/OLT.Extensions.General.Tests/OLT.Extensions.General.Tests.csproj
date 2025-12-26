@@ -21,6 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="OLT.Utility.AssemblyScanner" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />

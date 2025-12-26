@@ -21,7 +21,7 @@ namespace OLT.AspNetCore.Tests.Assets
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services);
+            //OltServiceCollectionAspnetCoreExtensions.AddOltAspNetCore(services);
             services.AddRouting();            
         }
 

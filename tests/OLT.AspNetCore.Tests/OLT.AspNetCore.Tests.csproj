@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OLT.AspNetCore\OLT.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\OLT.Extensions.General\OLT.Extensions.General.csproj" />
   </ItemGroup>
 
 </Project>
