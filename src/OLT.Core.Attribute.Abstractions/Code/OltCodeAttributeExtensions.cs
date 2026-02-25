@@ -23,7 +23,7 @@
         /// Returns Code value from <see cref="CodeAttribute"/> attribute
         /// </summary>
         /// <param name="value"></param>
-        /// <returns><see cref="string"/> Code from <see cref="CodeAttribute"/> or <see langword="null"/></returns>
+        /// <returns><see cref="string"/> Code from <see cref="CodeAttribute"/></returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static string GetCodeEnumSafe(this Enum value)
         {

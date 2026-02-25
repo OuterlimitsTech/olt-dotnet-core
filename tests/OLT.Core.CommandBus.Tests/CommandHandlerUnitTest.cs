@@ -1,12 +1,10 @@
-﻿using OLT.Core.CommandBus.Tests.Assets;
-using System;
-using Xunit;
-using System.Threading.Tasks;
+﻿using AwesomeAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using OLT.Core.CommandBus.Tests.Assets.Handlers;
+using OLT.Core.CommandBus.Tests.Assets;
 using OLT.Core.CommandBus.Tests.Assets.EfCore.Entites;
+using OLT.Core.CommandBus.Tests.Assets.Handlers;
 using OLT.Core.CommandBus.Tests.Assets.Models;
-using AwesomeAssertions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace OLT.Core.CommandBus.Tests
 {
@@ -19,28 +17,28 @@ namespace OLT.Core.CommandBus.Tests
         {
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new DuplicateHandlerCommand();
                 await Assert.ThrowsAsync<OltCommandHandlerMultipleException>(() => commandBus.ProcessAsync(command));
             }
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new NoHandlerCommand();
                 await Assert.ThrowsAsync<OltCommandHandlerNotFoundException>(() => commandBus.ProcessAsync(command));
             }         
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new SimpleCommand();
                 await Assert.ThrowsAsync<NullReferenceException>(() => commandBus.ProcessAsync<UserEntity>(command));
             }
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new UserEntityCommand();
                 await Assert.ThrowsAsync<InvalidCastException>(() => commandBus.ProcessAsync<TestPersonDto>(command));
             }           
@@ -53,32 +51,35 @@ namespace OLT.Core.CommandBus.Tests
            
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new UserEntityCommandWithResult();
-                var handler = new UserEntityCommandWithResultHandler();
-                var result = await commandBus.ProcessAsync(command);
+                var handler = new UserEntityCommandWithResultHandler();                
                 Assert.Equal(command.ActionName, handler.ActionName);
+                var result = await commandBus.ProcessAsync(command);
                 Assert.Equal(typeof(UserEntity), result.GetType());
             }
 
+            
+
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new UserEntityCommand();
                 var handler = new UserEntityCommandHandler();
-                var result = await commandBus.ProcessAsync<UserEntity>(command);
                 Assert.Equal(command.ActionName, handler.ActionName);
+                var result = await commandBus.ProcessAsync<UserEntity>(command);                
                 Assert.Equal(typeof(UserEntity), result.GetType());
             }
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TypedWithUnTypeHandlerCommand();
                 var handler = new UnTypedCommandHandler();
-                var result = await commandBus.ProcessAsync(command);
+                //var result = await commandBus.ProcessAsync(command);
                 Assert.Equal(command.ActionName, handler.ActionName);
-                Assert.Equal(typeof(UserEntity), result.GetType());                
+                await Assert.ThrowsAsync<InvalidCastException>(() => commandBus.ProcessAsync(command));
+                //Assert.Equal(typeof(UserEntity), result.GetType());
             }
         }
 
@@ -88,7 +89,7 @@ namespace OLT.Core.CommandBus.Tests
         {
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TestPersonCommand(new TestPersonDto());
 
                 //Command Validation
@@ -106,7 +107,7 @@ namespace OLT.Core.CommandBus.Tests
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TestPersonCommandWithResult(new TestPersonDto());
 
                 //Command Validation
@@ -125,7 +126,7 @@ namespace OLT.Core.CommandBus.Tests
             using (var provider = BuildProvider())
             {
                 var dto = TestPersonDto.FakerDto();
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TestPersonCommand(dto);
 
                 //Command Validation
@@ -145,7 +146,7 @@ namespace OLT.Core.CommandBus.Tests
             using (var provider = BuildProvider())
             {
                 var dto = TestPersonDto.FakerDto();
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TestPersonCommandWithResult(dto);
 
                 //Command Validation
@@ -171,7 +172,7 @@ namespace OLT.Core.CommandBus.Tests
             using (var provider = BuildProvider())
             {
                 var dto = TestPersonDto.FakerDto();
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TestPersonCommandWithResult(dto);
                 try
                 {
@@ -186,7 +187,7 @@ namespace OLT.Core.CommandBus.Tests
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var dto = TestPersonDto.FakerDto();
                 var command = new TestPersonCommandWithResult(dto);
                 var handler = new TestPersonCommandWithResultHandler();
@@ -198,7 +199,7 @@ namespace OLT.Core.CommandBus.Tests
             using (var provider = BuildProvider())
             {
                 var dto = TestPersonDto.FakerDto();
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var command = new TestPersonCommand(dto);
                 try
                 {
@@ -214,7 +215,7 @@ namespace OLT.Core.CommandBus.Tests
 
             using (var provider = BuildProvider())
             {
-                var commandBus = provider.GetService<IOltCommandBus>();
+                var commandBus = provider.GetRequiredService<IOltCommandBus>();
                 var dto = TestPersonDto.FakerDto();
                 var command = new TestPersonCommand(dto);
                 var handler = new TestPersonCommandHandler();

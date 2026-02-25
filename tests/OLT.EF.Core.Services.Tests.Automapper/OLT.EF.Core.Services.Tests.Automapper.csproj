@@ -11,7 +11,7 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-		<PackageReference Include="OLT.Extensions.DependencyInjection.AutoMapper" Version="15.0.0-beta-0005" />
+		<PackageReference Include="OLT.Extensions.DependencyInjection.AutoMapper" Version="15.0.0" />
 		<PackageReference Include="OLT.Utility.AssemblyScanner" Version="2.1.0" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
 	</ItemGroup>

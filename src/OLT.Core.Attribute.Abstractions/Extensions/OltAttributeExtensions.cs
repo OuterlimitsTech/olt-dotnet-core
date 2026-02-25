@@ -70,13 +70,12 @@ namespace OLT.Core
         /// Gets <see cref="DescriptionAttribute"/>
         /// </summary>
         /// <param name="value"></param>
-        /// <returns><see cref="DescriptionAttribute.Description"/> or <seealso cref="Enum"/> ToString() or <see langword="null"/></returns>
-        public static string? GetDescription(this Enum value)
+        /// <returns><see cref="DescriptionAttribute.Description"/> or <seealso cref="Enum"/> ToString() </returns>
+        public static string GetDescription(this Enum value)
         {
             var attribute = GetAttributeInstance<DescriptionAttribute>(value);
-            return attribute?.Description ?? value?.ToString();
+            return attribute?.Description ?? value.ToString();
         }
-
 
         /// <summary>
         /// Searches <typeparamref name="TEnum"/> for <see cref="DescriptionAttribute"/> or Name matching string

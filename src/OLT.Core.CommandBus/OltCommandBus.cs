@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OLT.Core
@@ -22,6 +23,8 @@ namespace OLT.Core
         protected virtual ConcurrentQueue<IOltAfterCommandQueueItem> PostProcessItems { get; } = new ConcurrentQueue<IOltAfterCommandQueueItem>();
         protected virtual TContext Context { get; }
         protected virtual List<IOltCommandHandler> Handlers { get; }
+
+        public CancellationToken CancellationToken { get; private set; } = CancellationToken.None;
 
         /// <summary>
         /// Attempts to locate <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
@@ -53,8 +56,8 @@ namespace OLT.Core
         /// <param name="command"></param>
         /// <param name="handler"></param>
         /// <returns></returns>        
-        protected virtual Task<IOltCommandValidationResult> ValidateAsync(IOltCommandHandler handler, IOltCommand command)
-        {
+        protected virtual Task<IOltCommandValidationResult> ValidateAsync_Internal(IOltCommandHandler handler, IOltCommand command)
+        {            
             return handler.ValidateAsync(this, command);
         }
 
@@ -62,12 +65,14 @@ namespace OLT.Core
         /// Validates Command and CommandHandler can Execute
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken">Optional cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
-        /// <exception cref="OltCommandHandlerMultipleException"></exception>
-        public virtual Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command)
+        /// <exception cref="OltCommandHandlerMultipleException"></exception>        
+        public virtual Task<IOltCommandValidationResult> ValidateAsync(IOltCommand command, CancellationToken cancellationToken = default)
         {
-            return this.ValidateAsync(GetHandler(command), command);
+            this.CancellationToken = cancellationToken;
+            return this.ValidateAsync_Internal(GetHandler(command), command);
         }
 
         /// <summary>
@@ -76,9 +81,10 @@ namespace OLT.Core
         /// <param name="command"></param>
         /// <param name="handler"></param>
         /// <returns></returns>
+        [Obsolete("Removing in 10.x, ProcessAsync<T> is deprecated, use IOltCommand<TResult>")]
         protected virtual async Task<IOltCommandBusResult> ExecuteAsync(IOltCommandHandler handler, IOltCommand command)
         {
-            var validationResult = await ValidateAsync(handler, command);
+            var validationResult = await ValidateAsync_Internal(handler, command);
             if (!validationResult.Valid)
             {
                 throw validationResult.ToException();
@@ -95,16 +101,6 @@ namespace OLT.Core
         }
 
 
-        /////// <summary>
-        /////// Executes Command
-        /////// </summary>
-        /////// <param name="command"></param>
-        /////// <returns></returns>
-        ////protected virtual Task<IOltCommandBusResult> ExecuteAsync(IOltCommand command)
-        ////{
-        ////    return ExecuteAsync(GetHandler(command), command);
-        ////}      
-
         /// <summary>
         /// Runs in order (or Queues if in Transaction) the <seealso cref="IOltPostCommandHandler.PostExecuteAsync(IOltCommand, IOltCommandResult)"/> 
         /// </summary>
@@ -115,7 +111,6 @@ namespace OLT.Core
         protected virtual async Task PostExecuteAsync<TResult>(IOltCommandHandler currentHandler, IOltCommand command, TResult result)
             where TResult: notnull
         {
-
             if (currentHandler is IOltPostCommandHandler<TResult> typedPostHandler)
             {
                 PostProcessItems.Enqueue(new OltAfterCommandQueueItem<TResult>(typedPostHandler, command, result));
@@ -138,12 +133,15 @@ namespace OLT.Core
         /// Processes Command using <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken">Optional cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="OltCommandHandlerMultipleException"></exception>
         /// <exception cref="OltValidationException"></exception>
-        public virtual Task ProcessAsync(IOltCommand command)
+        [Obsolete("Removing in 10.x, ProcessAsync<T> is deprecated, use IOltCommand<TResult>")]
+        public virtual Task ProcessAsync(IOltCommand command, CancellationToken cancellationToken = default)
         {
+            this.CancellationToken = cancellationToken;
             return ExecuteAsync(GetHandler(command), command);
         }
 
@@ -165,20 +163,22 @@ namespace OLT.Core
         }
 
 
-
-
         /// <summary>
         /// Processes Command using <see cref="IOltCommandHandler"/> for <see cref="IOltCommand"/>
         /// </summary>
         /// <param name="command"></param>
+        /// <param name="cancellationToken">Optional cancellation token.</param>
         /// <typeparam name="TResult"><see cref="IOltCommandHandler"/> Returned Result</typeparam>
         /// <returns></returns>
         /// <exception cref="OltCommandHandlerNotFoundException"></exception>
         /// <exception cref="NullReferenceException">Thrown is command result is null</exception>        
         /// <exception cref="OltValidationException"></exception>
+        /// <exception cref="InvalidCastException"></exception>
         /// <returns></returns>        
-        public virtual async Task<TResult> ProcessAsync<TResult>(IOltCommand<TResult> command) where TResult : notnull
+        public virtual async Task<TResult> ProcessAsync<TResult>(IOltCommand<TResult> command, CancellationToken cancellationToken = default) where TResult : notnull
         {
+            this.CancellationToken = cancellationToken;
+
             var validationResult = await ValidateAsync(command);
             if (!validationResult.Valid)
             {
@@ -199,7 +199,7 @@ namespace OLT.Core
                 return result;
             }
 
-            return await ProcessAsync<TResult>((IOltCommand)command);
+            throw new InvalidCastException($"Unable to cast to {typeof(IOltCommandHandler<TResult>)}");
         }
     }
 }
