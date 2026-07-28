@@ -7,6 +7,8 @@ namespace OLT.Core
     public interface IOltCommandBus : IOltInjectableScoped
     {
 
+        CancellationToken CancellationToken { get; }
+
         /// <summary>
         /// Runs Command Validation
         /// </summary>
